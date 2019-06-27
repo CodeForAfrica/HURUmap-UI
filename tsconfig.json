@@ -19,6 +19,6 @@
       "declaration": true,
       "rootDirs": ["src", "stories"] 
     },
-    "include": ["src/"],
+    "include": ["src", "stories"],
     "exclude": ["node_modules", "build", "docs"]
   }
