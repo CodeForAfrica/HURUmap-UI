@@ -1,1 +1,0 @@
-{"version":3,"file":"main.080cbd5858066d294de3.bundle.js","sources":["webpack:///./src/components/BarChart.tsx"],"sourcesContent":["import React from 'react';\n\nfunction BarChart() {\n  return <div/>;\n}\n\nexport default BarChart;\n"],"mappings":"AAMA","sourceRoot":""}
