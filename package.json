@@ -27,7 +27,6 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "lint": "tslint --fix src",
-    "lint-staged": "lint-staged",
     "start": "start-storybook",
     "build": "yarn build:lib",
     "build:lib": "tsc && yarn copy-svg-to-lib && yarn copy-png-to-lib",
@@ -50,5 +49,12 @@
     "hooks": {
       "pre-commit": "yarn lint-staged"
     }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "yarn lint",
+      "prettier --write",
+      "git add"
+    ]
   }
 }
