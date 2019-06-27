@@ -1,0 +1,51 @@
+{
+  "name": "react-hurumap",
+  "version": "1.0.0",
+  "description": "Hurumap charts, map and other components.",
+  "author": "Karim Kawambwa",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "@storybook/react": "^5.1.9",
+    "@types/react": "^16.8.22",
+    "@types/react-dom": "^16.8.4",
+    "@types/storybook__react": "^4.0.2",
+    "awesome-typescript-loader": "^5.2.1",
+    "babel-loader": "^8.0.6",
+    "cpx": "^1.5.0",
+    "husky": "^2.4.1",
+    "lint-staged": "^8.2.1",
+    "prettier": "^1.18.2",
+    "tslint": "^5.18.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "typescript": "^3.5.2"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "lint": "tslint --fix src",
+    "lint-staged": "lint-staged",
+    "start": "start-storybook",
+    "build": "yarn build:lib && yarn build:storybook",
+    "build:lib": "tsc && yarn copy-svg-to-lib && yarn copy-png-to-lib",
+    "build:storybook": "build-storybook -o docs/",
+    "copy-svg-to-lib": "cpx \"./src/**/*.svg\" ./dist",
+    "copy-png-to-lib": "cpx \"./src/**/*.png\" ./dist"
+  },
+  "dependencies": {
+    "parcel-bundler": "^1.12.3",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
+  "peerDependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint-staged"
+    }
+  }
+}
