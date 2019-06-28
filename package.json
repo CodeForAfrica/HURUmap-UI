@@ -1,9 +1,9 @@
 {
-  "name": "react-hurumap",
-  "version": "1.0.0",
-  "description": "Hurumap charts, map and other components.",
-  "author": "Karim Kawambwa",
-  "license": "MIT",
+  "name": "hurumap-ui",
+  "version": "0.1.0",
+  "description": "HURUmap charts, map and other components.",
+  "author": "Code for Africa <hello@codeforafrica.org> (https://codeforafrica.org)",
+  "license": "GPL-3.0-or-later",
   "private": false,
   "devDependencies": {
     "@storybook/react": "^5.1.9",
