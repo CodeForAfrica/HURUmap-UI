@@ -4,6 +4,7 @@
     "rules": {
         "no-implicit-dependencies": [true, "dev"],
         "import-name": [true, { "react": "React" }],
-        "function-name": false
+        "function-name": false,
+        "object-literal-sort-keys": false
     }
 }
