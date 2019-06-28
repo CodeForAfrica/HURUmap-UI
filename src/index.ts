@@ -1,3 +1,4 @@
 import BarChart from './components/BarChart';
 
-export { BarChart };
+// Until we have more than one component, lets default export BarChart
+export default BarChart;

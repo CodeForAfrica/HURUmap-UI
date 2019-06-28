@@ -1,15 +1,15 @@
-import { Grid } from '@material-ui/core';
-import { storiesOf } from '@storybook/react';
 import React from 'react';
-import { BarChart } from '../src';
+import { Grid } from '@material-ui/core';
+import { storiesOf, RenderFunction } from '@storybook/react';
 
-// tslint:disable-next-line: variable-name
-const CenterDecorator = (storyFn: any) => (
+import BarChart from '../src';
+
+const CenterDecorator = (storyFn: RenderFunction) => (
   <Grid container justify="center" alignItems="center">
     {storyFn()}
   </Grid>
 );
 
-storiesOf('Hurumap UI|Charts/BarChart', module)
+storiesOf('HURUmap UI|Charts/BarChart', module)
   .addDecorator(CenterDecorator)
   .add('Default', () => <BarChart />);

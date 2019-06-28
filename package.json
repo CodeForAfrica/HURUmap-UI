@@ -20,7 +20,9 @@
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-json": "^1.4.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-markdown": "^1.0.0",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.2",
     "eslint-plugin-react-hooks": "^1.6.1",
@@ -32,7 +34,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "lint": "yarn eslint --fix --ext *.ts,.tsx,*.json,*.md src/",
+    "lint": "yarn eslint --fix --ext '*.js,*.jsx*,.ts,.tsx,*.json,*.md' './**'",
     "lint-staged": "yarn eslint --fix",
     "start": "start-storybook",
     "build": "yarn build:lib",

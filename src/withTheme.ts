@@ -1,9 +1,9 @@
 import { withTheme, WithTheme } from '@material-ui/core';
-import { ConsistentWith, PropInjector } from '@material-ui/types';
+import { ConsistentWith } from '@material-ui/types';
 
 import Theme from './Theme';
 
-export default (C: React.ComponentType<ConsistentWith<{}, WithTheme>>): any => {
+export default (C: React.ComponentType<ConsistentWith<{}, WithTheme>>) => {
   const wrapped = withTheme(C);
 
   wrapped.defaultProps = {
