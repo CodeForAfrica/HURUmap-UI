@@ -14,7 +14,10 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
   },
+  plugins: ['@typescript-eslint', 'react-hooks'],
   rules: {
-    'react/jsx-filename-extension': [1, { 'extensions': ['.tsx'] }]
+    'react/jsx-filename-extension': [1, { 'extensions': ['.tsx'] }],
+    'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
+    'react-hooks/exhaustive-deps': 'warn' // Checks effect dependencies
   },
 };
