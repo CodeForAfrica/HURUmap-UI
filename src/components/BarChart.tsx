@@ -1,21 +1,19 @@
-import { withStyles } from '@material-ui/core';
-// tslint:disable-next-line: no-submodule-imports
-import { createStyles, Theme, WithStyles } from '@material-ui/core/styles';
 import React from 'react';
+import { withStyles } from '@material-ui/core';
+import { createStyles, StyleRules, WithStyles } from '@material-ui/core/styles';
 
 import withTheme from '../withTheme';
 
-const styles = (theme: Theme) => {
+const styles = (): StyleRules => {
   return createStyles({
-    root: {},
+    root: {}
   });
 };
 
-interface IBarChartProps extends WithStyles<typeof styles> {
-}
-
-function BarChart({ classes }: IBarChartProps) {
-  return <div className={classes.root}/>;
+function BarChart({
+  classes
+}: WithStyles<typeof styles>): React.FunctionComponentElement<{}> {
+  return <div className={classes.root} />;
 }
 
 export default withTheme(withStyles(styles)(BarChart));
