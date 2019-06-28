@@ -13,7 +13,7 @@ const styles = (): StyleRules => {
 function BarChart({
   classes
 }: WithStyles<typeof styles>): React.FunctionComponentElement<{}> {
-  return <div className={classes.root} />;
+  return <h1 className={classes.root}>Bar Chart</h1>;
 }
 
 export default withTheme(withStyles(styles)(BarChart));

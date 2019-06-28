@@ -3,9 +3,7 @@ import { ConsistentWith, PropInjector } from '@material-ui/types';
 
 import Theme from './Theme';
 
-export default (
-  C: React.ComponentType<ConsistentWith<{}, WithTheme>>
-): PropInjector => {
+export default (C: React.ComponentType<ConsistentWith<{}, WithTheme>>): any => {
   const wrapped = withTheme(C);
 
   wrapped.defaultProps = {
