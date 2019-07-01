@@ -34,7 +34,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "lint": "yarn eslint --fix --ext '*.js,*.jsx*,.ts,.tsx,*.json,*.md' './**'",
+    "lint": "yarn eslint --fix --ignore-path './.gitignore' --ext '.js,.ts,.tsx,.json,.md' './'",
     "lint-staged": "yarn eslint --fix",
     "start": "start-storybook",
     "build": "yarn build:lib",
@@ -59,7 +59,7 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{ts,tsx,json,md}": [
+    "src/**/*.{js,ts,tsx,json,md}": [
       "yarn lint-staged",
       "git add"
     ]
