@@ -1,16 +1,11 @@
-import { Grid } from '@material-ui/core';
-import { storiesOf } from '@storybook/react';
 import React from 'react';
+import { Grid } from '@material-ui/core';
+import { storiesOf, RenderFunction } from '@storybook/react';
+
 import { BarChart, MapIt } from '../src';
 
-// tslint:disable-next-line: variable-name
-const CenterDecorator = (storyFn: any) => (
-  <Grid
-    container
-    justify="center"
-    alignItems="center"
-    style={{ width: '100%', height: '500px', overflow: 'hidden' }}
-  >
+const CenterDecorator = (storyFn: RenderFunction) => (
+  <Grid container justify="center" alignItems="center">
     {storyFn()}
   </Grid>
 );
