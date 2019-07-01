@@ -1,10 +1,11 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import { storiesOf, RenderFunction } from '@storybook/react';
-import { withKnobs, text, object, number, array } from '@storybook/addon-knobs';
+import { withKnobs, text, object, number, array, boolean } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 
 import { BarChart, MapIt } from '../src';
+import { TileLayer } from 'leaflet';
 
 const CenterDecorator = (storyFn: RenderFunction) => (
   <Grid
@@ -22,14 +23,16 @@ storiesOf('Hurumap UI|MapIt', module)
   .addDecorator(withKnobs)
   .add('Map', () => (
     <MapIt
-      mapitCodeType={text('mapitCodeType', 'AFR')}
-      countryCodes={array('countryCodes', ["KE", "ZA", "TZ"])}
+      url={text('url', 'https://mapit.hurumap.org')}
+      codeType={text('codeType', 'AFR')}
+      loadChildren={boolean('loadChildren', false)}
+      loadCountries={array('countryCodes', ["KE", "ZA", "TZ"])}
       zoom={number('zoom', 3)}
       center={array('center', [8.7832, 34.5085]) as [number, number]}
-      tileTemplate={text(
-        'tileTemplate',
+      tileLayer={new TileLayer(text(
+        'tileLayer',
         'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
-      )}
+      ))}
       geoLayerStyle={object('geoLayerStyle', {
         color: '#00d',
         fillColor: '#ccc',

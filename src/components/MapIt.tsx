@@ -1,9 +1,9 @@
 import { withStyles } from '@material-ui/core';
 // tslint:disable-next-line: no-submodule-imports
 import { createStyles, Theme, WithStyles } from '@material-ui/core/styles';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-import leaflet, { MapOptions, TileLayerOptions, PathOptions } from 'leaflet';
+import leaflet, { MapOptions, PathOptions, TileLayer } from 'leaflet';
 
 // tslint:disable-next-line: no-submodule-imports
 import 'leaflet/dist/leaflet.css';
@@ -19,28 +19,28 @@ const styles = (theme: Theme) => {
 
 interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   id?: string;
-  mapitUrl?: string;
-  mapitCodeType?: string;
+  url?: string;
+  loadChildren?: boolean;
+  loadCountries?: string[];
+  codeType?: string;
   generation?: string;
-  countryCodes?: string[];
-  tileTemplate?: string;
-  tileOptions?: TileLayerOptions;
+  tileLayer?: TileLayer;
   geoLayerStyle?: PathOptions;
   geoLayerHoverStyle?: {};
+  geoLevel?: string;
   onClickGeoLayer?: (link: string) => void;
 }
 
 function MapIt({
   id,
   classes,
-  mapitUrl = 'https://mapit.hurumap.org',
-  mapitCodeType = 'AFR',
+  url = 'https://mapit.hurumap.org',
+  codeType = 'AFR',
+  geoLevel = 'country',
   generation = '1',
-  countryCodes = ['KE', 'ZA'],
-  tileTemplate = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
-  tileOptions = {
-    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
-  },
+  loadChildren,
+  loadCountries = ['KE', 'ZA'],
+  tileLayer,
   geoLayerStyle = {
     color: '#00d',
     fillColor: '#ccc',
@@ -56,68 +56,50 @@ function MapIt({
   ...leafletProps
 }: MapItProps) {
   const mapId = id || 'mapit';
+  const mapRef = useRef<leaflet.Map | null>(null);
 
-  const fetchGeoCodes = (
-    level: string,
-    geoCode: string
-  ): Promise<{ type: string; country: string }> => {
-    return fetch(
-      `${mapitUrl}/code/${mapitCodeType}/${level}-${geoCode}?generation=${generation}`
-    ).then(codesRes => {
-      if (!codesRes.ok) return Promise.reject();
-      return codesRes.json();
+  function fetchGeoJson(areaKeys: string): any {
+    return fetch(`${url}/areas/${areaKeys}.geojson`).then(geoRes => {
+      if (!geoRes.ok) return Promise.reject();
+      return geoRes.json().then(({ features }) => {
+        return features || [];
+      });
     });
-  };
+  }
 
-  const loadGeometryForLevel = (
-    level: string,
-    geoCode: string
-  ): Promise<any> => {
-    return fetchGeoCodes(level, geoCode).then(({ type: areaType, country }) => {
-      // If we need to draw country level let's not filter with country
-      const areaCountry = level === 'country' ? '' : country;
+  const loadGeometryForChildLevel = (areaId: string): Promise<any> => {
+    return fetch(`${url}/area/${areaId}/children`).then(areasRes => {
+      if (!areasRes.ok) return Promise.reject();
 
-      return fetch(
-        `${mapitUrl}/areas/${areaType}?generation=${generation}&country=${areaCountry}`
-      ).then(areasRes => {
-        if (!areasRes.ok) return Promise.reject();
+      return areasRes.json().then((data: { [key: string]: any }) => {
+        const areaKeys = Object.keys(data).join();
 
-        return areasRes.json().then(data => {
-          let areaKeys = Object.keys(data).join();
-          // If area_type is country, then filter to only dominion countries
-          if (areaType === 'COUNTRY') {
-            areaKeys = (Object.values(data) as any[])
-              .filter(({ country: countryCode }) =>
-                countryCodes.includes(countryCode)
-              )
-              .map(area => area.id)
-              .join();
-          }
-
-          return fetch(`${mapitUrl}/areas/${areaKeys}.geojson`).then(geoRes => {
-            if (!geoRes.ok) return Promise.reject();
-            return geoRes.json().then(({ features }) => {
-              if (features) {
-                return features.map((feature: any) => ({
-                  ...feature,
-                  properties: {
-                    ...feature.properties,
-                    // eslint-disable-next-line
-                    area_type: areaType,
-                    // eslint-disable-next-line
-                    country_code: areaCountry
-                  }
-                }));
-              }
-              return [];
-            });
-          });
-        });
+        return fetchGeoJson(areaKeys);
       });
     });
   };
 
-  const loadGeometryForChildLevel = () => {};
+  const loadGeometryForCountryLevel = (): Promise<any> => {
+    return fetch(
+      `${url}/areas/COUNTRY?generation=${generation}&country=${loadCountries.join()}`
+    ).then(areasRes => {
+      if (!areasRes.ok) return Promise.reject();
+
+      return areasRes.json().then((data: { [key: string]: any }) => {
+        const areaKeys = Object.keys(data).join();
+
+        if (loadChildren) {
+          return Promise.all(
+            Object.values(data).map(area => {
+              return loadGeometryForChildLevel(area.id);
+            })
+          );
+        }
+
+        return fetchGeoJson(areaKeys);
+      });
+    });
+  };
 
   const getFeatureInfo = (data: any) =>
     Object.values(data)[0] as {
@@ -138,7 +120,7 @@ function MapIt({
     return leaflet
       .geoJSON(features, {
         onEachFeature: (feature, layer: leaflet.Path) => {
-          layer.bindTooltip(feature.properties.name);
+          layer.bindTooltip(feature.properties.name, { direction: 'auto' });
           layer.on('mouseover', () => {
             layer.setStyle(geoLayerHoverStyle);
           });
@@ -146,14 +128,14 @@ function MapIt({
             layer.setStyle(geoLayerStyle);
           });
           layer.on('click', () => {
-            let uri = `${mapitUrl}/areas/${feature.properties.name.toLowerCase()}?generation=${generation}&type=${feature.properties.area_type.toUpperCase()}`;
+            let uri = `${url}/areas/${feature.properties.name.toLowerCase()}?generation=${generation}&type=${feature.properties.area_type.toUpperCase()}`;
             if (feature.properties.country_code) {
               uri += `&country=${feature.properties.country_code}`;
             }
             fetch(uri).then(res => {
               if (!res.ok) return;
               res.json().then(featureInfo => {
-                const geoID = getFeatureInfo(featureInfo).codes[mapitCodeType];
+                const geoID = getFeatureInfo(featureInfo).codes[codeType];
 
                 if (onClickGeoLayer) {
                   onClickGeoLayer(`/profiles/${geoID}/`);
@@ -170,7 +152,11 @@ function MapIt({
   };
 
   useEffect(() => {
-    const map = leaflet.map(mapId, {
+    if (mapRef.current) {
+      mapRef.current.remove();
+    }
+
+    mapRef.current = leaflet.map(mapId, {
       boxZoom: false,
       doubleClickZoom: false,
       dragging: true,
@@ -183,6 +169,8 @@ function MapIt({
       ...leafletProps
     });
 
+    const map = mapRef.current;
+
     if (map.dragging) {
       map.addControl(
         new leaflet.Control.Zoom({
@@ -191,18 +179,33 @@ function MapIt({
       );
     }
 
-    leaflet.tileLayer(tileTemplate, tileOptions).addTo(map);
+    if (tileLayer) {
+      tileLayer.addTo(map);
+    } else {
+      leaflet
+        .tileLayer(
+          'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+          {
+            attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+          }
+        )
+        .addTo(map);
+    }
 
-    loadGeometryForLevel('country', 'KE').then(features => {
-      drawFeatures(map, features);
+    loadGeometryForCountryLevel().then(features => {
+      if (loadChildren) {
+        features.forEach((f: any) => drawFeatures(map, f));
+      } else {
+        drawFeatures(map, features);
+      }
     });
   }, [
     mapId,
     leafletProps,
-    loadGeometryForLevel,
-    tileTemplate,
-    tileOptions,
-    drawFeatures
+    loadGeometryForCountryLevel,
+    drawFeatures,
+    tileLayer,
+    loadChildren
   ]);
 
   return <div id={mapId} className={classes.root} />;
