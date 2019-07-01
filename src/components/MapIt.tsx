@@ -1,9 +1,7 @@
 import { withStyles } from '@material-ui/core';
 // tslint:disable-next-line: no-submodule-imports
 import { createStyles, Theme, WithStyles } from '@material-ui/core/styles';
-import React, { useEffect, useState } from 'react';
-
-import withTheme from '../withTheme';
+import React, { useEffect } from 'react';
 
 import leaflet, { MapOptions } from 'leaflet';
 
@@ -19,7 +17,7 @@ const styles = (theme: Theme) => {
   });
 };
 
-interface IMapItProps extends WithStyles<typeof styles>, MapOptions {
+interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   id?: string;
   mapitUrl?: string;
   mapitCodeType?: string;
@@ -33,44 +31,8 @@ function MapIt({
   mapitCodeType = 'AFR',
   countryCodes = ['KE', 'ZA'],
   ...leafletProps
-}: IMapItProps) {
+}: MapItProps) {
   const mapId = id || 'mapit';
-  useEffect(() => {
-    const map = leaflet.map(mapId, {
-      boxZoom: false,
-      doubleClickZoom: false,
-      dragging: true,
-      keyboard: false,
-      scrollWheelZoom: false,
-      touchZoom: false,
-      zoomControl: false,
-      center: [0, 0],
-      zoom: 3,
-      ...leafletProps
-    });
-
-    if (map.dragging) {
-      map.addControl(
-        new leaflet.Control.Zoom({
-          position: 'bottomright'
-        })
-      );
-    }
-
-    leaflet
-      .tileLayer(
-        // tslint:disable-next-line: max-line-length
-        'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
-        {
-          attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
-        }
-      )
-      .addTo(map);
-
-    loadGeometryForLevel('country', 'KE', '1').then(features => {
-      drawFeatures(map, features);
-    });
-  }, []);
 
   const fetchGeoCodes = (
     level: string,
@@ -117,12 +79,16 @@ function MapIt({
                 if (!geoRes.ok) return Promise.reject();
                 return geoRes.json().then(({ features }) => {
                   if (features) {
-                    Object.values(features).forEach((feature: any) => {
-                      feature.properties.area_type = areaType;
-                      feature.properties.country_code = areaCountry;
-                    });
-
-                    return features;
+                    return features.map((feature: any) => ({
+                      ...feature,
+                      properties: {
+                        ...feature.properties,
+                        // eslint-disable-next-line
+                        area_type: areaType,
+                        // eslint-disable-next-line
+                        country_code: areaCountry
+                      }
+                    }));
                   }
                   return [];
                 });
@@ -166,7 +132,44 @@ function MapIt({
       .addTo(map);
   };
 
+  useEffect(() => {
+    const map = leaflet.map(mapId, {
+      boxZoom: false,
+      doubleClickZoom: false,
+      dragging: true,
+      keyboard: false,
+      scrollWheelZoom: false,
+      touchZoom: false,
+      zoomControl: false,
+      center: [0, 0],
+      zoom: 3,
+      ...leafletProps
+    });
+
+    if (map.dragging) {
+      map.addControl(
+        new leaflet.Control.Zoom({
+          position: 'bottomright'
+        })
+      );
+    }
+
+    leaflet
+      .tileLayer(
+        // tslint:disable-next-line: max-line-length
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+        {
+          attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+        }
+      )
+      .addTo(map);
+
+    loadGeometryForLevel('country', 'KE', '1').then(features => {
+      drawFeatures(map, features);
+    });
+  }, [mapId, leafletProps, loadGeometryForLevel]);
+
   return <div id={mapId} className={classes.root} />;
 }
 
-export default withTheme(withStyles(styles)(MapIt));
+export default withStyles(styles)(MapIt);

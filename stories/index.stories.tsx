@@ -5,7 +5,12 @@ import { storiesOf, RenderFunction } from '@storybook/react';
 import { BarChart, MapIt } from '../src';
 
 const CenterDecorator = (storyFn: RenderFunction) => (
-  <Grid container justify="center" alignItems="center">
+  <Grid
+    container
+    justify="center"
+    alignItems="center"
+    style={{ width: '100%', height: '500px', overflow: 'hidden' }}
+  >
     {storyFn()}
   </Grid>
 );
