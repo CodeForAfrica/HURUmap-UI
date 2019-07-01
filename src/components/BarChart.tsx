@@ -1,19 +1,16 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core';
-import { createStyles, StyleRules, WithStyles } from '@material-ui/core/styles';
+import { createStyles } from '@material-ui/core/styles';
+import { VictoryBar } from 'victory';
 
 import withTheme from '../withTheme';
 
-const styles = (): StyleRules => {
-  return createStyles({
-    root: {}
-  });
-};
+const styles = createStyles({
+  root: {}
+});
 
-function BarChart({
-  classes
-}: WithStyles<typeof styles>): React.FunctionComponentElement<{}> {
-  return <h1 className={classes.root}>Bar Chart</h1>;
+function BarChart({ classes, theme }: any) {
+  return <VictoryBar theme={theme.chart} />;
 }
 
 export default withTheme(withStyles(styles)(BarChart));
