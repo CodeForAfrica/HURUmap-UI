@@ -1,6 +1,8 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import { storiesOf, RenderFunction } from '@storybook/react';
+import { withKnobs, text, object, number, array } from '@storybook/addon-knobs';
+import { action } from '@storybook/addon-actions';
 
 import { BarChart, MapIt } from '../src';
 
@@ -17,8 +19,29 @@ const CenterDecorator = (storyFn: RenderFunction) => (
 
 storiesOf('Hurumap UI|MapIt', module)
   .addDecorator(CenterDecorator)
-  .add('Map', () => <MapIt />);
+  .addDecorator(withKnobs)
+  .add('Map', () => (
+    <MapIt
+      mapitCodeType={text('mapitCodeType', 'AFR')}
+      countryCodes={array('countryCodes', ["KE", "ZA", "TZ"])}
+      zoom={number('zoom', 3)}
+      center={array('center', [8.7832, 34.5085]) as [number, number]}
+      tileTemplate={text(
+        'tileTemplate',
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
+      )}
+      geoLayerStyle={object('geoLayerStyle', {
+        color: '#00d',
+        fillColor: '#ccc',
+        weight: 1.0,
+        opacity: 0.3,
+        fillOpacity: 0.3
+      })}
+      onClickGeoLayer={action('onClickGeoLayer')}
+    />
+  ));
 
 storiesOf('Hurumap UI|Charts/BarChart', module)
   .addDecorator(CenterDecorator)
+  .addDecorator(withKnobs)
   .add('Default', () => <BarChart />);
