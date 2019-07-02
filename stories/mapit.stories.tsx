@@ -144,6 +144,13 @@ storiesOf('Hurumap UI|MapIt/Country', module)
         opacity: 0.3,
         fillOpacity: 0.3
       })}
+      geoLayerFocusStyle={object('geoLayerFocusStyle', {
+        color: '#ccc',
+        fillColor: '#0f0',
+        weight: 1.0,
+        opacity: 0.3,
+        fillOpacity: 0.3
+      })}
       onClickGeoLayer={action('onClickGeoLayer')}
     />
   ));
