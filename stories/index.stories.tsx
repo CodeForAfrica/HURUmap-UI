@@ -25,14 +25,93 @@ const CenterDecorator = (storyFn: RenderFunction) => (
   </Grid>
 );
 
-storiesOf('Hurumap UI|MapIt', module)
+storiesOf('Hurumap UI|MapIt/Continent', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
-  .add('Map', () => (
+  .add('Default', () => (
     <MapIt
       url={text('url', 'https://mapit.hurumap.org')}
       loadChildren={boolean('loadChildren', false)}
       loadCountries={array('countryCodes', ['KE', 'ZA', 'TZ'])}
+      zoom={number('zoom', 3)}
+      center={array('center', [8.7832, 34.5085]) as [number, number]}
+      tileLayer={
+        new TileLayer(
+          text(
+            'tileLayer',
+            'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
+          )
+        )
+      }
+      geoLayerStyle={object('geoLayerStyle', {
+        color: '#00d',
+        fillColor: '#ccc',
+        weight: 1.0,
+        opacity: 0.3,
+        fillOpacity: 0.3
+      })}
+      onClickGeoLayer={action('onClickGeoLayer')}
+    />
+  ))
+  .add('Default + Children', () => (
+    <MapIt
+      url={text('url', 'https://mapit.hurumap.org')}
+      loadChildren={boolean('loadChildren', true)}
+      loadCountries={array('countryCodes', ['KE', 'ZA', 'TZ'])}
+      zoom={number('zoom', 3)}
+      center={array('center', [8.7832, 34.5085]) as [number, number]}
+      tileLayer={
+        new TileLayer(
+          text(
+            'tileLayer',
+            'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
+          )
+        )
+      }
+      geoLayerStyle={object('geoLayerStyle', {
+        color: '#00d',
+        fillColor: '#ccc',
+        weight: 1.0,
+        opacity: 0.3,
+        fillOpacity: 0.3
+      })}
+      onClickGeoLayer={action('onClickGeoLayer')}
+    />
+  ));
+
+storiesOf('Hurumap UI|MapIt/Country', module)
+  .addDecorator(CenterDecorator)
+  .addDecorator(withKnobs)
+  .add('Default', () => (
+    <MapIt
+      url={text('url', 'https://mapit.hurumap.org')}
+      loadChildren={boolean('loadChildren', false)}
+      loadCountries={array('countryCodes', ['KE'])}
+      zoom={number('zoom', 3)}
+      center={array('center', [8.7832, 34.5085]) as [number, number]}
+      tileLayer={
+        new TileLayer(
+          text(
+            'tileLayer',
+            'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
+          )
+        )
+      }
+      geoLayerStyle={object('geoLayerStyle', {
+        color: '#00d',
+        fillColor: '#ccc',
+        weight: 1.0,
+        opacity: 0.3,
+        fillOpacity: 0.3
+      })}
+      onClickGeoLayer={action('onClickGeoLayer')}
+    />
+  ))
+  .add('Default + Children', () => (
+    <MapIt
+      url={text('url', 'https://mapit.hurumap.org')}
+      loadChildren={boolean('loadChildren', true)}
+      loadCountries={array('countryCodes', ['KE'])}
       zoom={number('zoom', 3)}
       center={array('center', [8.7832, 34.5085]) as [number, number]}
       tileLayer={
