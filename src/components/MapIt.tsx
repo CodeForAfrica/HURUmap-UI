@@ -28,7 +28,7 @@ interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   geoLayerStyle?: PathOptions;
   geoLayerHoverStyle?: {};
   geoLevel?: string;
-  onClickGeoLayer?: (link: string) => void;
+  onClickGeoLayer?: (geoID: string) => void;
 }
 
 function MapIt({
@@ -138,9 +138,7 @@ function MapIt({
                 const geoID = getFeatureInfo(featureInfo).codes[codeType];
 
                 if (onClickGeoLayer) {
-                  onClickGeoLayer(`/profiles/${geoID}/`);
-                } else {
-                  window.location.href = `/profiles/${geoID}/`;
+                  onClickGeoLayer(geoID);
                 }
               });
             });
