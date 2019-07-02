@@ -2,7 +2,12 @@ import { withStyles } from '@material-ui/core';
 import { createStyles, Theme, WithStyles } from '@material-ui/core/styles';
 import React, { useEffect, useRef, useCallback } from 'react';
 
-import leaflet, { MapOptions, PathOptions, TileLayer } from 'leaflet';
+import leaflet, {
+  MapOptions,
+  PathOptions,
+  TileLayer,
+  LatLngBounds
+} from 'leaflet';
 
 import 'leaflet/dist/leaflet.css';
 
@@ -18,11 +23,13 @@ const styles = (theme: Theme) => {
 interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   id?: string;
   url?: string;
+  focusOn?: number;
   loadChildren?: boolean;
   loadCountries?: string[];
   generation?: string;
   tileLayer?: TileLayer;
-  geoLayerStyle?: PathOptions;
+  geoLayerFocusStyle?: PathOptions;
+  geoLayerBlurStyle?: PathOptions;
   geoLayerHoverStyle?: {};
   onClickGeoLayer?: (geoID: string) => void;
 }
@@ -32,10 +39,18 @@ function MapIt({
   classes,
   url = 'https://mapit.hurumap.org',
   generation = '1',
+  focusOn,
   loadChildren,
   loadCountries = ['KE', 'ZA'],
   tileLayer,
-  geoLayerStyle = {
+  geoLayerFocusStyle = {
+    color: '#777',
+    fillColor: '#0F0',
+    weight: 2,
+    opacity: 0.3,
+    fillOpacity: 0.5
+  },
+  geoLayerBlurStyle = {
     color: '#00d',
     fillColor: '#ccc',
     weight: 1.0,
@@ -146,13 +161,17 @@ function MapIt({
     (map: leaflet.Map, features: any) => {
       return leaflet
         .geoJSON(features, {
-          onEachFeature: (feature, layer: leaflet.Path) => {
+          onEachFeature: (feature, layer: any) => {
             layer.bindTooltip(feature.properties.name, { direction: 'auto' });
             layer.on('mouseover', () => {
               layer.setStyle(geoLayerHoverStyle);
             });
             layer.on('mouseout', () => {
-              layer.setStyle(geoLayerStyle);
+              if (feature.properties.id === focusOn) {
+                layer.setStyle(geoLayerFocusStyle);
+              } else {
+                layer.setStyle(geoLayerBlurStyle);
+              }
             });
             layer.on('click', () => {
               if (onClickGeoLayer) {
@@ -160,12 +179,24 @@ function MapIt({
                 onClickGeoLayer(info);
               }
             });
+
+            if (feature.properties.id === focusOn) {
+              layer.setStyle(geoLayerFocusStyle);
+              map.fitBounds(layer.getBounds());
+            } else {
+              layer.setStyle(geoLayerBlurStyle);
+            }
           }
         })
-        .setStyle(geoLayerStyle)
         .addTo(map);
     },
-    [geoLayerHoverStyle, geoLayerStyle, onClickGeoLayer]
+    [
+      geoLayerHoverStyle,
+      geoLayerBlurStyle,
+      geoLayerFocusStyle,
+      onClickGeoLayer,
+      focusOn
+    ]
   );
 
   const load = useCallback(() => {
@@ -176,12 +207,24 @@ function MapIt({
     }
     loadGeometryForCountryLevel().then(features => {
       if (loadChildren) {
-        features.forEach((f: any) => drawFeatures(map, f));
+        const layers: leaflet.GeoJSON[] = features.map((f: any) => {
+          return drawFeatures(map, f);
+        });
+
+        if (!focusOn) {
+          map.fitBounds(
+            layers
+              .map(layer => layer.getBounds())
+              .reduce((prev, curr) => curr.extend(prev))
+          );
+        }
       } else {
-        drawFeatures(map, features);
+        const layer = drawFeatures(map, features);
+
+        map.fitBounds(layer.getBounds());
       }
     });
-  }, [loadChildren, loadGeometryForCountryLevel, drawFeatures]);
+  }, [loadGeometryForCountryLevel, loadChildren, focusOn, drawFeatures]);
 
   useEffect(() => {
     if (mapRef.current) {
