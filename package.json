@@ -63,5 +63,8 @@
       "yarn lint-staged",
       "git add"
     ]
+  },
+  "engines" : { 
+    "node" : ">=10.16.0 <=12.x"
   }
 }
