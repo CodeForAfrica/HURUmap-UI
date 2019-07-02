@@ -20,7 +20,6 @@ interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   url?: string;
   loadChildren?: boolean;
   loadCountries?: string[];
-  codeType?: string;
   generation?: string;
   tileLayer?: TileLayer;
   geoLayerStyle?: PathOptions;
