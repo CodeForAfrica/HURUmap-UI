@@ -133,21 +133,6 @@ function MapIt({
     });
   };
 
-  const getFeatureInfo = (data: any) =>
-    Object.values(data)[0] as {
-      parent_area: number;
-      generation_high: number;
-      all_names: {};
-      id: number;
-      codes: { [key: string]: string };
-      name: string;
-      country: string;
-      type_name: string;
-      generation_low: number;
-      country_name: string;
-      type: string;
-    };
-
   const drawFeatures = (map: leaflet.Map, features: any) => {
     return leaflet
       .geoJSON(features, {
