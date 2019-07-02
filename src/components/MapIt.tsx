@@ -56,11 +56,45 @@ function MapIt({
   const mapId = id || 'mapit';
   const mapRef = useRef<leaflet.Map | null>(null);
 
-  function fetchGeoJson(areaKeys: string): any {
+  // The `extra` parameter is an object with properties that are not returned in a geojson call
+  // The geojson only returns the name in the properties which is not sufficient
+  // in retrieving the are information on click.
+  //
+  // We append the area information after the geojson is received to avoid another load
+  // But also to have sufficient data to use like the `id` if we want to retrieve
+  // more data using an api call
+  function fetchGeoJson(
+    areaKeys: string,
+    areas: {
+      id: string;
+      name: string;
+      generation_high: number;
+      generation_low: number;
+      all_names: any;
+      codes: { [key: string]: string };
+      country: string;
+      country_name: string;
+      type_name: string;
+      type: string;
+    }[]
+  ): any {
     return fetch(`${url}/areas/${areaKeys}.geojson`).then(geoRes => {
       if (!geoRes.ok) return Promise.reject();
       return geoRes.json().then(({ features }) => {
-        return features || [];
+        return features
+          ? features.map((feature: { properties: { name: string } }) => {
+              const areaInfo = areas.find(
+                area => area.name === feature.properties.name
+              );
+              return {
+                ...feature,
+                properties: {
+                  ...feature.properties,
+                  ...areaInfo
+                }
+              };
+            })
+          : [];
       });
     });
   }
@@ -72,7 +106,7 @@ function MapIt({
       return areasRes.json().then((data: { [key: string]: any }) => {
         const areaKeys = Object.keys(data).join();
 
-        return fetchGeoJson(areaKeys);
+        return fetchGeoJson(areaKeys, Object.values(data));
       });
     });
   };
@@ -94,7 +128,7 @@ function MapIt({
           );
         }
 
-        return fetchGeoJson(areaKeys);
+        return fetchGeoJson(areaKeys, Object.values(data));
       });
     });
   };
@@ -126,20 +160,10 @@ function MapIt({
             layer.setStyle(geoLayerStyle);
           });
           layer.on('click', () => {
-            let uri = `${url}/areas/${feature.properties.name.toLowerCase()}?generation=${generation}&type=${feature.properties.area_type.toUpperCase()}`;
-            if (feature.properties.country_code) {
-              uri += `&country=${feature.properties.country_code}`;
+            if (onClickGeoLayer) {
+              const info = feature.properties;
+              onClickGeoLayer(info);
             }
-            fetch(uri).then(res => {
-              if (!res.ok) return;
-              res.json().then(featureInfo => {
-                const geoID = getFeatureInfo(featureInfo).codes[codeType];
-
-                if (onClickGeoLayer) {
-                  onClickGeoLayer(geoID);
-                }
-              });
-            });
           });
         }
       })
