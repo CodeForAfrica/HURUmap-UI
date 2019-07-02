@@ -1,11 +1,9 @@
 import { withStyles } from '@material-ui/core';
-// tslint:disable-next-line: no-submodule-imports
 import { createStyles, Theme, WithStyles } from '@material-ui/core/styles';
 import React, { useEffect, useRef } from 'react';
 
 import leaflet, { MapOptions, PathOptions, TileLayer } from 'leaflet';
 
-// tslint:disable-next-line: no-submodule-imports
 import 'leaflet/dist/leaflet.css';
 
 const styles = (theme: Theme) => {
