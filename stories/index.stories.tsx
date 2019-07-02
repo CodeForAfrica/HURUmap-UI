@@ -12,7 +12,7 @@ import {
 import { action } from '@storybook/addon-actions';
 
 import { TileLayer } from 'leaflet';
-import { BarChart, MapIt } from '../src';
+import { BarChart, LineChart, MapIt } from '../src';
 
 const CenterDecorator = (storyFn: RenderFunction) => (
   <Grid
@@ -136,4 +136,9 @@ storiesOf('Hurumap UI|MapIt/Country', module)
 storiesOf('Hurumap UI|Charts/BarChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
-  .add('Default', () => <BarChart />);
+  .add('Default', () => <BarChart />)
+  .add('Horizontal', () => <BarChart horizontal />);
+
+storiesOf('HURUmap UI|Charts/LineChart', module)
+  .addDecorator(CenterDecorator)
+  .add('Default', () => <LineChart />);
