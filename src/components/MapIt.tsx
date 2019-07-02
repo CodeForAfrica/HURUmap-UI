@@ -1,6 +1,6 @@
 import { withStyles } from '@material-ui/core';
 import { createStyles, Theme, WithStyles } from '@material-ui/core/styles';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 
 import leaflet, { MapOptions, PathOptions, TileLayer } from 'leaflet';
 
@@ -25,7 +25,6 @@ interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   tileLayer?: TileLayer;
   geoLayerStyle?: PathOptions;
   geoLayerHoverStyle?: {};
-  geoLevel?: string;
   onClickGeoLayer?: (geoID: string) => void;
 }
 
@@ -33,8 +32,6 @@ function MapIt({
   id,
   classes,
   url = 'https://mapit.hurumap.org',
-  codeType = 'AFR',
-  geoLevel = 'country',
   generation = '1',
   loadChildren,
   loadCountries = ['KE', 'ZA'],
@@ -63,55 +60,61 @@ function MapIt({
   // We append the area information after the geojson is received to avoid another load
   // But also to have sufficient data to use like the `id` if we want to retrieve
   // more data using an api call
-  function fetchGeoJson(
-    areaKeys: string,
-    areas: {
-      id: string;
-      name: string;
-      generation_high: number;
-      generation_low: number;
-      all_names: any;
-      codes: { [key: string]: string };
-      country: string;
-      country_name: string;
-      type_name: string;
-      type: string;
-    }[]
-  ): any {
-    return fetch(`${url}/areas/${areaKeys}.geojson`).then(geoRes => {
-      if (!geoRes.ok) return Promise.reject();
-      return geoRes.json().then(({ features }) => {
-        return features
-          ? features.map((feature: { properties: { name: string } }) => {
-              const areaInfo = areas.find(
-                area => area.name === feature.properties.name
-              );
-              return {
-                ...feature,
-                properties: {
-                  ...feature.properties,
-                  ...areaInfo
-                }
-              };
-            })
-          : [];
+  const fetchGeoJson = useCallback(
+    (
+      areaKeys: string,
+      areas: {
+        id: string;
+        name: string;
+        generation_high: number;
+        generation_low: number;
+        all_names: {};
+        codes: { [key: string]: string };
+        country: string;
+        country_name: string;
+        type_name: string;
+        type: string;
+      }[]
+    ): any => {
+      return fetch(`${url}/areas/${areaKeys}.geojson`).then(geoRes => {
+        if (!geoRes.ok) return Promise.reject();
+        return geoRes.json().then(({ features }) => {
+          return features
+            ? features.map((feature: { properties: { name: string } }) => {
+                const areaInfo = areas.find(
+                  area => area.name === feature.properties.name
+                );
+                return {
+                  ...feature,
+                  properties: {
+                    ...feature.properties,
+                    ...areaInfo
+                  }
+                };
+              })
+            : [];
+        });
       });
-    });
-  }
+    },
+    [url]
+  );
 
-  const loadGeometryForChildLevel = (areaId: string): Promise<any> => {
-    return fetch(`${url}/area/${areaId}/children`).then(areasRes => {
-      if (!areasRes.ok) return Promise.reject();
+  const loadGeometryForChildLevel = useCallback(
+    (areaId: string): Promise<any> => {
+      return fetch(`${url}/area/${areaId}/children`).then(areasRes => {
+        if (!areasRes.ok) return Promise.reject();
 
-      return areasRes.json().then((data: { [key: string]: any }) => {
-        const areaKeys = Object.keys(data).join();
+        return areasRes.json().then((data: { [key: string]: any }) => {
+          const areaKeys = Object.keys(data).join();
 
-        return fetchGeoJson(areaKeys, Object.values(data));
+          return fetchGeoJson(areaKeys, Object.values(data));
+        });
       });
-    });
-  };
+    },
+    [fetchGeoJson, url]
+  );
 
-  const loadGeometryForCountryLevel = (): Promise<any> => {
+  const loadGeometryForCountryLevel = useCallback((): Promise<any> => {
     return fetch(
       `${url}/areas/COUNTRY?generation=${generation}&country=${loadCountries.join()}`
     ).then(areasRes => {
@@ -131,30 +134,55 @@ function MapIt({
         return fetchGeoJson(areaKeys, Object.values(data));
       });
     });
-  };
+  }, [
+    fetchGeoJson,
+    generation,
+    loadChildren,
+    loadCountries,
+    loadGeometryForChildLevel,
+    url
+  ]);
 
-  const drawFeatures = (map: leaflet.Map, features: any) => {
-    return leaflet
-      .geoJSON(features, {
-        onEachFeature: (feature, layer: leaflet.Path) => {
-          layer.bindTooltip(feature.properties.name, { direction: 'auto' });
-          layer.on('mouseover', () => {
-            layer.setStyle(geoLayerHoverStyle);
-          });
-          layer.on('mouseout', () => {
-            layer.setStyle(geoLayerStyle);
-          });
-          layer.on('click', () => {
-            if (onClickGeoLayer) {
-              const info = feature.properties;
-              onClickGeoLayer(info);
-            }
-          });
-        }
-      })
-      .setStyle(geoLayerStyle)
-      .addTo(map);
-  };
+  const drawFeatures = useCallback(
+    (map: leaflet.Map, features: any) => {
+      return leaflet
+        .geoJSON(features, {
+          onEachFeature: (feature, layer: leaflet.Path) => {
+            layer.bindTooltip(feature.properties.name, { direction: 'auto' });
+            layer.on('mouseover', () => {
+              layer.setStyle(geoLayerHoverStyle);
+            });
+            layer.on('mouseout', () => {
+              layer.setStyle(geoLayerStyle);
+            });
+            layer.on('click', () => {
+              if (onClickGeoLayer) {
+                const info = feature.properties;
+                onClickGeoLayer(info);
+              }
+            });
+          }
+        })
+        .setStyle(geoLayerStyle)
+        .addTo(map);
+    },
+    [geoLayerHoverStyle, geoLayerStyle, onClickGeoLayer]
+  );
+
+  const load = useCallback(() => {
+    const map = mapRef.current;
+    if (!map) {
+      console.error('Map not loaded!');
+      return;
+    }
+    loadGeometryForCountryLevel().then(features => {
+      if (loadChildren) {
+        features.forEach((f: any) => drawFeatures(map, f));
+      } else {
+        drawFeatures(map, features);
+      }
+    });
+  }, [loadChildren, loadGeometryForCountryLevel, drawFeatures]);
 
   useEffect(() => {
     if (mapRef.current) {
@@ -197,21 +225,8 @@ function MapIt({
         .addTo(map);
     }
 
-    loadGeometryForCountryLevel().then(features => {
-      if (loadChildren) {
-        features.forEach((f: any) => drawFeatures(map, f));
-      } else {
-        drawFeatures(map, features);
-      }
-    });
-  }, [
-    mapId,
-    leafletProps,
-    loadGeometryForCountryLevel,
-    drawFeatures,
-    tileLayer,
-    loadChildren
-  ]);
+    load();
+  }, [mapId, leafletProps, tileLayer, load]);
 
   return <div id={mapId} className={classes.root} />;
 }
