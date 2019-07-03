@@ -1,4 +1,4 @@
-import BarChart from './components/BarChart';
-import LineChart from './components/LineChart';
+import BarChart from './BarChart';
+import LineChart from './LineChart';
 
 export { BarChart, LineChart };
