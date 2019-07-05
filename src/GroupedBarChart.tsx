@@ -16,38 +16,17 @@ const styles = createStyles({
 });
 
 interface Props extends WithStyles<typeof styles>, VictoryBarProps {
-  comparsion?: boolean;
+  data: {
+    xLabel: string;
+    data: {
+      x: string | number;
+      y: number;
+    }[];
+  }[];
 }
 
-//
-//
-function GroupedBarChart({ comparsion = false, ...props }: Props) {
+function GroupedBarChart({ data, ...props }: Props) {
   const theme = useTheme<Theme>();
-  const { horizontal } = props;
-
-  const data = [
-    {
-      label: 'Slept under any net last night',
-      data: [
-        { x: 'Pregnant Women', y: Math.random() * 10 },
-        { x: 'Children', y: Math.random() * 10 }
-      ]
-    },
-    {
-      label: 'Used ITN last night',
-      data: [
-        { x: 'Pregnant Women', y: Math.random() * 10 },
-        { x: 'Children', y: Math.random() * 10 }
-      ]
-    },
-    {
-      label: 'Used ITN all year ',
-      data: [
-        { x: 'Pregnant Women', y: Math.random() * 10 },
-        { x: 'Children', y: Math.random() * 10 }
-      ]
-    }
-  ];
   return (
     <VictoryChart domainPadding={40} height={250}>
       <VictoryGroup offset={22} style={{ data: { width: 20 } }}>
