@@ -13,6 +13,7 @@ const CenterDecorator = (storyFn: RenderFunction) => (
 storiesOf('HURUmap UI|Charts/BarChart', module)
   .addDecorator(CenterDecorator)
   .add('Default', () => <BarChart />)
+  .add('Comparison', () => <BarChart comparsion/>)
   .add('Horizontal', () => <BarChart horizontal />);
 
 storiesOf('HURUmap UI|Charts/LineChart', module)
