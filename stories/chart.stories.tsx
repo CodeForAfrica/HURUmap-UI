@@ -1,18 +1,14 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
-import { storiesOf, RenderFunction } from '@storybook/react';
+import { storiesOf } from '@storybook/react';
+import { withKnobs } from '@storybook/addon-knobs';
 
 import { BarChart, LineChart, GroupedBarChart } from '../src';
 import { object } from '@storybook/addon-knobs';
+import { CenterDecorator } from './common';
 
-const CenterDecorator = (storyFn: RenderFunction) => (
-  <Grid container justify="center" alignItems="center">
-    {storyFn()}
-  </Grid>
-);
-
-storiesOf('HURUmap UI|Charts/BarChart', module)
+storiesOf('Hurumap UI|Charts/BarChart', module)
   .addDecorator(CenterDecorator)
+  .addDecorator(withKnobs)
   .add('Default', () => <BarChart />)
   .add('Horizontal', () => <BarChart horizontal />);
 
