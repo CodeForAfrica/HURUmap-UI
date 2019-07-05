@@ -5,8 +5,8 @@ import {
   VictoryBar,
   VictoryBarProps,
   VictoryChart,
-  VictoryLine,
-  VictoryGroup
+  VictoryGroup,
+  VictoryAxis
 } from 'victory';
 
 import ThemedComponent from './ThemedComponent';
@@ -16,6 +16,7 @@ const styles = createStyles({
 });
 
 interface Props extends WithStyles<typeof styles>, VictoryBarProps {
+  barWidth?: number;
   data: {
     xLabel: string;
     data: {
@@ -25,22 +26,21 @@ interface Props extends WithStyles<typeof styles>, VictoryBarProps {
   }[];
 }
 
-function GroupedBarChart({ data, ...props }: Props) {
+function GroupedBarChart({ data, barWidth = 40, ...props }: Props) {
   const theme = useTheme<Theme>();
   return (
-    <VictoryChart domainPadding={40} height={250}>
-      <VictoryGroup offset={22} style={{ data: { width: 20 } }}>
+    <VictoryChart>
+      <VictoryGroup offset={barWidth + 5} colorScale="qualitative">
         {data.map(d => (
           <VictoryBar
+            barWidth={barWidth}
             theme={theme.chart}
-            style={{
-              data: { fill: '#7f9442' }
-            }}
             data={d.data}
             {...props}
           />
         ))}
       </VictoryGroup>
+      <VictoryAxis />
     </VictoryChart>
   );
 }
