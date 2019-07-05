@@ -13,7 +13,7 @@ storiesOf('Hurumap UI|Charts/BarChart', module)
   .add('Horizontal', () => <BarChart horizontal />);
 
 
-  const rand = () => Number((Math.random() * 10).toFixed(1));
+  const rand = () => Number((Math.random() * 100).toFixed(1));
 
 storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
   .addDecorator(CenterDecorator)
@@ -22,21 +22,21 @@ storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
       dataUnit={text('dataUnit', "%")}
       data={object('data', [
         {
-          xLabel: 'Slept under any net last night',
+          x: 'Slept under any net last night',
           data: [
             { x: 'Pregnant Women', y: rand() },
             { x: 'Children', y: rand() }
           ]
         },
         {
-          xLabel: 'Used ITN last night',
+          x: 'Used ITN last night',
           data: [
             { x: 'Pregnant Women', y: rand() },
             { x: 'Children', y: rand() }
           ]
         },
         {
-          xLabel: 'Used ITN all year ',
+          x: 'Used ITN all year ',
           data: [
             { x: 'Pregnant Women', y: rand() },
             { x: 'Children', y: rand() }
@@ -50,21 +50,21 @@ storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
       horizontal
       data={object('data', [
         {
-          xLabel: 'Slept under any net last night',
+          x: 'Slept under any net last night',
           data: [
             { x: 'Pregnant Women', y: rand() },
             { x: 'Children', y: rand() }
           ]
         },
         {
-          xLabel: 'Used ITN last night',
+          x: 'Used ITN last night',
           data: [
             { x: 'Pregnant Women', y: rand() },
             { x: 'Children', y: rand() }
           ]
         },
         {
-          xLabel: 'Used ITN all year ',
+          x: 'Used ITN all year ',
           data: [
             { x: 'Pregnant Women', y: rand() },
             { x: 'Children', y: rand() }

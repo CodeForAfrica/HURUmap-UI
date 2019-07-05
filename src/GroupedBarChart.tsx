@@ -19,36 +19,49 @@ interface Props extends WithStyles<typeof styles>, VictoryBarProps {
   barWidth?: number;
   dataUnit?: string;
   data: {
-    xLabel: string;
+    x: string | number;
     data: {
       x: string | number;
       y: number;
     }[];
   }[];
+
+  chartRef?: React.RefObject<VictoryChart>;
+  groupRef?: React.RefObject<VictoryGroup>;
 }
 
 function GroupedBarChart({
+  chartRef,
+  groupRef,
   data,
   dataUnit = '',
   barWidth = 40,
+  width,
+  height,
   ...props
 }: Props) {
   const theme = useTheme<Theme>();
   return (
-    <VictoryChart>
-      <VictoryGroup offset={barWidth + 5} colorScale="qualitative">
-        {data.map(d => (
-          <VictoryBar
-            barWidth={barWidth}
-            theme={theme.chart}
-            data={d.data}
-            {...props}
-            labels={datum => `${datum.y}${dataUnit}`}
-          />
-        ))}
-      </VictoryGroup>
-      <VictoryAxis />
-    </VictoryChart>
+    <div style={{ width, height }}>
+      <VictoryChart ref={chartRef}>
+        <VictoryGroup
+          ref={groupRef}
+          offset={barWidth + 5}
+          colorScale="qualitative"
+        >
+          {data.map(d => (
+            <VictoryBar
+              barWidth={barWidth}
+              theme={theme.chart}
+              data={d.data}
+              labels={datum => `${datum.y}${dataUnit}`}
+              {...props}
+            />
+          ))}
+        </VictoryGroup>
+        <VictoryAxis style={{ axis: { stroke: 'none' } }} />
+      </VictoryChart>
+    </div>
   );
 }
 
