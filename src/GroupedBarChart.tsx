@@ -17,6 +17,7 @@ const styles = createStyles({
 
 interface Props extends WithStyles<typeof styles>, VictoryBarProps {
   barWidth?: number;
+  dataUnit?: string;
   data: {
     xLabel: string;
     data: {
@@ -26,7 +27,12 @@ interface Props extends WithStyles<typeof styles>, VictoryBarProps {
   }[];
 }
 
-function GroupedBarChart({ data, barWidth = 40, ...props }: Props) {
+function GroupedBarChart({
+  data,
+  dataUnit = '',
+  barWidth = 40,
+  ...props
+}: Props) {
   const theme = useTheme<Theme>();
   return (
     <VictoryChart>
@@ -37,6 +43,7 @@ function GroupedBarChart({ data, barWidth = 40, ...props }: Props) {
             theme={theme.chart}
             data={d.data}
             {...props}
+            labels={datum => `${datum.y}${dataUnit}`}
           />
         ))}
       </VictoryGroup>
