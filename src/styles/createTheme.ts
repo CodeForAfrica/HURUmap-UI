@@ -1,15 +1,15 @@
 import createMuiTheme, {
   ThemeOptions
 } from '@material-ui/core/styles/createMuiTheme';
-import { VictoryThemeDefinition, VictoryTheme } from 'victory';
+import { VictoryThemeDefinitionLatest, VictoryTheme } from 'victory';
 
 declare module '@material-ui/core/styles/createMuiTheme' {
   interface Theme {
-    chart: VictoryThemeDefinition;
+    chart: VictoryThemeDefinitionLatest;
   }
 
   interface ThemeOptions {
-    chart?: VictoryThemeDefinition;
+    chart?: VictoryThemeDefinitionLatest;
   }
 }
 
