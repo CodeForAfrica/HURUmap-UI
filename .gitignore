@@ -190,6 +190,11 @@ $RECYCLE.BIN/
 # Custom
 #
 
+### Node ###
+
+# TypeScript custom declaration files
+!typings/
+
 ### Storybook ###
 
 # Build folder
