@@ -2,7 +2,12 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, object, withKnobs, array } from '@storybook/addon-knobs';
 
-import { BarChart, LineChart, PieChart } from '../src';
+import {
+  BarChart,
+  LineChart,
+  NestedProportionalAreaChart,
+  PieChart
+} from '../src';
 import { CenterDecorator } from './common';
 
 storiesOf('HURUmap UI|Charts/BarChart', module)
@@ -52,5 +57,15 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
           { x: 'E', y: 5 }
         ]
       ])}
+    />
+  ));
+
+storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
+  .addDecorator(CenterDecorator)
+  .addDecorator(withKnobs)
+  .add('Default', () => (
+    <NestedProportionalAreaChart
+      square={boolean('square', false)}
+      data={array('data', [100, 45])}
     />
   ));
