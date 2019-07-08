@@ -1,24 +1,21 @@
 {
-    "compilerOptions": {
-      "outDir": "dist",
-      "target": "es5",
-      "lib": [
-        "dom",
-        "dom.iterable",
-        "esnext"
-      ],
-      "skipLibCheck": true,
-      "esModuleInterop": true,
-      "allowSyntheticDefaultImports": true,
-      "strict": true,
-      "forceConsistentCasingInFileNames": true,
-      "module": "esnext",
-      "moduleResolution": "node",
-      "resolveJsonModule": true,
-      "jsx": "react",
-      "declaration": true,
-      "rootDirs": ["src", "stories"] 
-    },
-    "include": ["src", "stories"],
-    "exclude": ["node_modules", "build", "docs"]
-  }
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "jsx": "react",
+    "declaration": true,
+    "rootDirs": ["src", "stories"],
+    "typeRoots": [ "./typings", "node_modules/@types"]
+  },
+  "include": ["src", "stories"],
+  "exclude": ["node_modules", "build", "docs", "typings"]
+}
