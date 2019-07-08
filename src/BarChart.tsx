@@ -41,7 +41,7 @@ function BarChart({
   const theme = useTheme<Theme>();
   return (
     <div>
-      <VictoryChart domainPadding={40} height={500} width={700}>
+      <VictoryChart domainPadding={50} height={500} width={700}>
         <VictoryAxis
           style={{
             axis: { stroke: 'grey' },
@@ -112,17 +112,22 @@ function BarChart({
         {comparsion && (
           <VictoryBar
             horizontal
+            alignment="start"
             theme={theme.chart}
             style={{
               data: { fill: '#DE9F39' }
             }}
-            barWidth={20}
+            groupComponent={<g transform="translate(0 35)" />}
+            barWidth={25}
             {...props}
             data={[
-              { x: 2, y: 4 },
-              { x: 4, y: 3 },
-              { x: 6, y: 4 },
-              { x: 8, y: 6 }
+              { x: 1, y: 10 },
+              { x: 2, y: 6 },
+              { x: 3, y: 15 },
+              { x: 4, y: 32.5 },
+              { x: 5, y: 20 },
+              { x: 6, y: 15.5 },
+              { x: 7, y: 20 }
             ]}
           />
         )}
