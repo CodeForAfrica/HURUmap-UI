@@ -45,11 +45,10 @@ function ChartContainer({
   onShare,
   onInfo,
   classes,
-  children,
-  ...props
+  children
 }: Props) {
   return (
-    <div className={classes.root} style={style} {...props}>
+    <div className={classes.root} style={style}>
       <Grid
         container
         direction="row"

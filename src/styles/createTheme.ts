@@ -1,15 +1,7 @@
 import createMuiTheme, {
   ThemeOptions
 } from '@material-ui/core/styles/createMuiTheme';
-import { VictoryThemeDefinition, VictoryTheme } from 'victory';
-
-interface VictoryThemeDefinitionLatest extends VictoryThemeDefinition {
-  pie?: VictoryThemeDefinition['pie'] & {
-    width: number;
-    height: number;
-    colorScale: string[];
-  };
-}
+import { VictoryThemeDefinitionLatest, VictoryTheme } from 'victory';
 
 declare module '@material-ui/core/styles/createMuiTheme' {
   interface Theme {
