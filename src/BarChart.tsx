@@ -38,6 +38,7 @@ const data = [
   { x: 7, y: 10 }
 ];
 const median = [
+  { x: 0, y: 10 },
   { x: 1, y: 2.5 },
   { x: 2, y: 10 },
   { x: 3, y: 20 },
@@ -45,7 +46,8 @@ const median = [
   { x: 5, y: 10 },
   { x: 4, y: 4 },
   { x: 6, y: 2 },
-  { x: 7, y: 5 }
+  { x: 7, y: 5 },
+  { x: 8, y: 5 }
 ];
 
 function BarChart({
@@ -120,7 +122,7 @@ function BarChart({
               data: { fill: '#DE9F39' }
             }}
             barWidth={25}
-            groupComponent={<g transform="translate(20, 0)" />}
+            groupComponent={<g transform="translate(14, 0)" />}
             data={[
               { x: 1, y: 10 },
               { x: 2, y: 6 },
@@ -132,12 +134,12 @@ function BarChart({
             ]}
           />
         )}
-        {!horizontal && !comparsion && true ? (
+        {!horizontal && !comparsion ? (
           <VictoryLine
             data={median}
             interpolation="step"
             style={{
-              data: { stroke: 'black', strokeWidth: 0.8, opacity: 0.6 }
+              data: { stroke: 'black', strokeWidth: 0.8, opacity: 0.4 }
             }}
           />
         ) : (
