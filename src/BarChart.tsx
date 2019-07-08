@@ -54,7 +54,7 @@ function BarChart({
             axisLabel: { fontSize: 20, padding: 40 },
             grid: { stroke: 'none' },
             ticks: { stroke: 'none' },
-            tickLabels: { fontSize: 15, padding: 10, textAlign: 'right' }
+            tickLabels: { fontSize: 15, padding: 10 }
           }}
           tickValues={[1, 2, 3, 4, 5, 6, 7]}
           tickFormat={[
