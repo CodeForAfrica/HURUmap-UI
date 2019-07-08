@@ -36,7 +36,6 @@ export interface Geography {
 interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   id?: string;
   url?: string;
-  focusOn?: number;
   loadChildren?: boolean;
   drawProfile?: boolean;
   geography?: Geography;
@@ -56,7 +55,6 @@ function MapIt({
   classes,
   url = 'https://mapit.hurumap.org',
   generation = '1',
-  focusOn,
   loadChildren,
   drawProfile,
   geography,
@@ -289,16 +287,24 @@ function MapIt({
     if (drawProfile) {
       const geoLevel = geography ? geography.geo_level : '';
       const geoCode = geography ? geography.geo_code : '';
+      const childLevel = geography ? geography.child_level : '';
+      let areaID = '';
 
-      loadGeometryForGeo(geoLevel, geoCode).then(feature => {
-        drawFocusFeature(map, feature);
-      });
+      loadGeometryForGeo(geoLevel, geoCode)
+        .then(feature => {
+          areaID = feature.properties.id;
+          return drawFocusFeature(map, feature);
+        })
+        .then(() => {
+          if (loadChildren && childLevel !== '') {
+            loadGeometryForChildLevel(areaID).then(childrenFeatures => {
+              drawFeatures(map, childrenFeatures);
+            });
+          }
+        });
 
       loadGeometryForLevel(geoLevel, geoCode).then(features => {
         drawFeatures(map, features);
-        // if(loadChildren && geography!.child_level !== "") {
-
-        // }
       });
     } else {
       loadGeometryForCountryLevel().then(features => {
@@ -315,13 +321,14 @@ function MapIt({
     }
   }, [
     drawProfile,
-    loadGeometryForGeo,
     geography,
+    loadGeometryForGeo,
     loadGeometryForLevel,
     drawFocusFeature,
+    loadChildren,
+    loadGeometryForChildLevel,
     drawFeatures,
-    loadGeometryForCountryLevel,
-    loadChildren
+    loadGeometryForCountryLevel
   ]);
 
   useEffect(() => {

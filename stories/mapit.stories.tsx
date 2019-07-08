@@ -124,7 +124,6 @@ storiesOf('Hurumap UI|MapIt/Country', module)
   .add('Focused Child', () => (
     <MapIt
       url={text('url', 'https://mapit.hurumap.org')}
-      focusOn={number('focusOn', 13)}
       loadChildren={boolean('loadChildren', true)}
       loadCountries={array('loadCountries', ['TZ'])}
       zoom={number('zoom', 3)}
@@ -163,19 +162,19 @@ storiesOf('Hurumap UI|MapIt/Country', module)
       url={text('url', 'https://mapit.hurumap.org')}
       loadChildren={boolean('loadChildren', false)}
       drawProfile={boolean('drawProfile', true)}
-      codeType={text('codeType', 'KEN')}
-      countryCode={text('countryCode', 'KE')}
+      codeType={text('codeType', 'TZA')}
+      countryCode={text('countryCode', 'TZ')}
       geography={object('geography', {
-          geo_code: "8",
-          child_level: "",
-          version: "2009",
-          short_name: "Wajir",
-          name: "Wajir",
-          full_name: "Wajir",
-          parent_geoid: "country-KE",
-          full_geoid: "county-8",
-          square_kms: 55840.6,
-          geo_level: "county"
+        geo_code: "85",
+        child_level: "ward",
+        version: "2009",
+        short_name: "Manyoni",
+        name: "Manyoni",
+        full_name: "Manyoni",
+        parent_geoid: "region-27",
+        full_geoid: "district-85",
+        square_kms: 28620.0,
+        geo_level: "district"
       })}
       zoom={number('zoom', 3)}
       center={array('center', [8.7832, 34.5085]) as [number, number]}
@@ -202,22 +201,22 @@ storiesOf('Hurumap UI|MapIt/Country', module)
       url={text('url', 'https://mapit.hurumap.org')}
       loadChildren={boolean('loadChildren', true)}
       drawProfile={boolean('drawProfile', true)}
-      codeType={text('codeType', 'KEN')}
-      countryCode={text('countryCode', 'KE')}
+      codeType={text('codeType', 'TZA')}
+      countryCode={text('countryCode', 'TZ')}
       geography={object('geography', {
-          geo_code: "8",
-          child_level: "",
-          version: "2009",
-          short_name: "Wajir",
-          name: "Wajir",
-          full_name: "Wajir",
-          parent_geoid: "country-KE",
-          full_geoid: "county-8",
-          square_kms: 55840.6,
-          geo_level: "county"
+        geo_code: "85",
+        child_level: "ward",
+        version: "2009",
+        short_name: "Manyoni",
+        name: "Manyoni",
+        full_name: "Manyoni",
+        parent_geoid: "region-27",
+        full_geoid: "district-85",
+        square_kms: 28620.0,
+        geo_level: "district"
       })}
-      zoom={number('zoom', 3)}
-      center={array('center', [8.7832, 34.5085]) as [number, number]}
+      zoom={number('zoom', 6)}
+      center={array('center', [-6.1523563, 35.6754813]) as [number, number]}
       tileLayer={
         new TileLayer(
           text(
