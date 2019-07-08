@@ -25,6 +25,9 @@ interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   url?: string;
   focusOn?: number;
   loadChildren?: boolean;
+  geography?: {};
+  codeType?: string;
+  countryCode?: string;
   loadCountries?: string[];
   generation?: string;
   tileLayer?: TileLayer;
@@ -41,6 +44,9 @@ function MapIt({
   generation = '1',
   focusOn,
   loadChildren,
+  geography,
+  codeType,
+  countryCode,
   loadCountries = ['KE', 'ZA'],
   tileLayer,
   geoLayerFocusStyle = {
@@ -111,6 +117,41 @@ function MapIt({
       });
     },
     [url]
+  );
+
+  const loadGeometryForLevel = useCallback(
+    (geoLevel: string, geoCode: string): Promise<any> => {
+      let areaType = geoLevel.toUpperCase();
+      let currentCountry = countryCode;
+
+      // for AFR codetype, geo_level do not match to mapit area type
+      // AFR geo_level are level1_TZ_001 while mapit area type are specific ie PROVINCE, REGION, COUNTY
+      // Using the geoid (geoLevel-geoCode) we request mapit api to give us, the type of specific geo
+      if (codeType === 'AFR') {
+        fetch(`${url}/code/${codeType}/${geoLevel}=${geoCode}`).then(
+          areaRes => {
+            if (!areaRes.ok) return Promise.reject();
+            return areaRes.json().then(data => {
+              const { country, type } = data;
+              areaType = type;
+              currentCountry = country;
+            });
+          }
+        );
+      }
+      return fetch(
+        `${url}/areas/${areaType}?generation=${generation}&country=${currentCountry}`
+      ).then(areaRes => {
+        if (!areaRes.ok) return Promise.reject();
+
+        return areaRes.json().then((data: { [key: string]: any }) => {
+          const areaKeys = Object.keys(data).join();
+
+          return fetchGeoJson(areaKeys, Object.values(data));
+        });
+      });
+    },
+    [codeType, countryCode, fetchGeoJson, generation, url]
   );
 
   const loadGeometryForChildLevel = useCallback(
