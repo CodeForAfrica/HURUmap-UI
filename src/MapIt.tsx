@@ -119,6 +119,33 @@ function MapIt({
     [url]
   );
 
+  const loadGeometryForGeo = useCallback(
+    (geoLevel: string, geoCode: string): Promise<any> => {
+      return fetch(`${url}/code/${codeType}/${geoLevel}-${geoCode}`).then(
+        areaRes => {
+          if (!areaRes.ok) return Promise.reject();
+          return areaRes.json().then(data => {
+            return fetch(`${url}/area/${data.id}.geojson`).then(geoRes => {
+              if (!geoRes.ok) return Promise.reject();
+              return geoRes.json().then(feature => {
+                return feature
+                  ? {
+                      ...feature,
+                      properties: {
+                        ...feature.properties,
+                        ...data
+                      }
+                    }
+                  : {};
+              });
+            });
+          });
+        }
+      );
+    },
+    [codeType, url]
+  );
+
   const loadGeometryForLevel = useCallback(
     (geoLevel: string, geoCode: string): Promise<any> => {
       let areaType = geoLevel.toUpperCase();
@@ -128,7 +155,7 @@ function MapIt({
       // AFR geo_level are level1_TZ_001 while mapit area type are specific ie PROVINCE, REGION, COUNTY
       // Using the geoid (geoLevel-geoCode) we request mapit api to give us, the type of specific geo
       if (codeType === 'AFR') {
-        fetch(`${url}/code/${codeType}/${geoLevel}=${geoCode}`).then(
+        fetch(`${url}/code/${codeType}/${geoLevel}-${geoCode}`).then(
           areaRes => {
             if (!areaRes.ok) return Promise.reject();
             return areaRes.json().then(data => {
