@@ -162,19 +162,19 @@ storiesOf('Hurumap UI|MapIt/Country', module)
       url={text('url', 'https://mapit.hurumap.org')}
       loadChildren={boolean('loadChildren', false)}
       drawProfile={boolean('drawProfile', true)}
-      codeType={text('codeType', 'TZA')}
-      countryCode={text('countryCode', 'TZ')}
+      codeType={text('codeType', 'AFR')}
+      countryCode={text('countryCode', '')}
       geography={object('geography', {
-        geo_code: "85",
-        child_level: "ward",
+        geo_code: "KE_1_008",
+        child_level: "",
         version: "2009",
-        short_name: "Manyoni",
-        name: "Manyoni",
-        full_name: "Manyoni",
-        parent_geoid: "region-27",
-        full_geoid: "district-85",
+        short_name: "Wajir",
+        name: "Wajir",
+        full_name: "Wajir",
+        parent_geoid: "country-KE",
+        full_geoid: "level1-KE_1_008",
         square_kms: 28620.0,
-        geo_level: "district"
+        geo_level: "level1"
       })}
       zoom={number('zoom', 3)}
       center={array('center', [8.7832, 34.5085]) as [number, number]}

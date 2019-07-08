@@ -159,42 +159,34 @@ function MapIt({
     [codeType, url]
   );
 
+  async function fetchAreaType(geoLevel: string, geoCode: string) {
+    const areaRes = await fetch(
+      `${url}/code/${codeType}/${geoLevel}-${geoCode}`
+    );
+    return areaRes.json();
+  }
+
   const loadGeometryForLevel = useCallback(
     (geoLevel: string, geoCode: string): Promise<any> => {
-      let areaType = geoLevel.toUpperCase();
-      let currentCountry = countryCode;
-
-      // for AFR codetype, geo_level do not match to mapit area type
+      // geo_level do not always match to mapit area type
       // AFR geo_level are level1_TZ_001 while mapit area type are specific ie PROVINCE, REGION, COUNTY
-      // Using the geoid (geoLevel-geoCode) we request mapit api to give us, the type of specific geo
-      if (codeType === 'AFR') {
-        fetch(`${url}/code/${codeType}/${geoLevel}-${geoCode}`).then(
-          areaRes => {
-            if (!areaRes.ok) return Promise.reject();
-            return areaRes.json().then(data => {
-              const { country, type } = data;
-              areaType = type;
-              currentCountry = country;
-            });
-          }
-        );
-      }
-      console.log(
-        `${url}/areas/${areaType}?generation=${generation}&country=${currentCountry}`
-      );
-      return fetch(
-        `${url}/areas/${areaType}?generation=${generation}&country=${currentCountry}`
-      ).then(areaRes => {
-        if (!areaRes.ok) return Promise.reject();
+      // Using the geoid (geoLevel-geoCode) we will first request mapit api to give us=> mapit type of a specific geo
+      return fetchAreaType(geoLevel, geoCode).then(area => {
+        const { country, type } = area;
+        return fetch(
+          `${url}/areas/${type}?generation=${generation}&country=${country}`
+        ).then(areaRes => {
+          if (!areaRes.ok) return Promise.reject();
 
-        return areaRes.json().then((data: { [key: string]: any }) => {
-          const areaKeys = Object.keys(data).join();
+          return areaRes.json().then((data: { [key: string]: any }) => {
+            const areaKeys = Object.keys(data).join();
 
-          return fetchGeoJson(areaKeys, Object.values(data));
+            return fetchGeoJson(areaKeys, Object.values(data));
+          });
         });
       });
     },
-    [codeType, countryCode, fetchGeoJson, generation, url]
+    [fetchAreaType, fetchGeoJson, generation, url]
   );
 
   const loadGeometryForChildLevel = useCallback(
