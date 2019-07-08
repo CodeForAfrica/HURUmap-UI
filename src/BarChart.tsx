@@ -50,7 +50,7 @@ function BarChart({
       <VictoryChart domainPadding={{ x: 60, y: 200 }} height={550} width={700}>
         <VictoryAxis
           style={{
-            axis: { stroke: 'grey' },
+            axis: { stroke: 'none' },
             axisLabel: { fontSize: 20, padding: 40 },
             grid: { stroke: 'none' },
             ticks: { stroke: 'none' },
@@ -69,6 +69,13 @@ function BarChart({
         />
         <VictoryAxis
           dependentAxis
+          style={{
+            axis: { stroke: 'none' },
+            axisLabel: { fontSize: 20, padding: 40 },
+            grid: { stroke: 'grey', opacity: 0.5 },
+            ticks: { stroke: 'none' },
+            tickLabels: { fontSize: 15, padding: 10 }
+          }}
           tickValues={[0, 17.5, 35]}
           tickFormat={['0%', '17.5%', '35%']}
         />
