@@ -129,7 +129,6 @@ storiesOf('Hurumap UI|MapIt/Country', module)
     <MapIt
       url={text('url', 'https://mapit.hurumap.org')}
       loadChildren={boolean('loadChildren', false)}
-      drawProfile={boolean('drawProfile', true)}
       codeType={text('codeType', 'AFR')}
       countryCode={text('countryCode', '')}
       geoLevel={text('geoLevel', 'level1')}
@@ -160,7 +159,6 @@ storiesOf('Hurumap UI|MapIt/Country', module)
     <MapIt
       url={text('url', 'https://mapit.hurumap.org')}
       loadChildren={boolean('loadChildren', true)}
-      drawProfile={boolean('drawProfile', true)}
       codeType={text('codeType', 'TZA')}
       countryCode={text('countryCode', 'TZ')}
       geoLevel={text('geoLevel', 'district')}

@@ -23,7 +23,6 @@ interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   id?: string;
   url?: string;
   loadChildren?: boolean;
-  drawProfile?: boolean;
   geoLevel?: string;
   geoCode?: string;
   geoChildLevel?: string;
@@ -45,7 +44,6 @@ function MapIt({
   url = 'https://mapit.hurumap.org',
   generation = '1',
   loadChildren,
-  drawProfile,
   geoChildLevel,
   geoCode,
   geoLevel,
@@ -262,13 +260,17 @@ function MapIt({
       console.error('Map not loaded!');
       return;
     }
-    if (drawProfile) {
+    if (geoCode && geoLevel) {
       let areaID = '';
 
-      loadGeometryForGeo()
-        .then(feature => {
-          areaID = feature.properties.id;
-          return drawFocusFeature(map, feature);
+      loadGeometryForGeo().then(feature => {
+        areaID = feature.properties.id;
+        drawFocusFeature(map, feature);
+      });
+
+      loadGeometryForLevel()
+        .then(features => {
+          drawFeatures(map, features);
         })
         .then(() => {
           if (loadChildren && geoChildLevel !== '') {
@@ -277,10 +279,6 @@ function MapIt({
             });
           }
         });
-
-      loadGeometryForLevel().then(features => {
-        drawFeatures(map, features);
-      });
     } else {
       loadGeometryForCountryLevel().then(features => {
         if (loadChildren) {
@@ -295,8 +293,9 @@ function MapIt({
       });
     }
   }, [
-    drawProfile,
     geoChildLevel,
+    geoCode,
+    geoLevel,
     loadGeometryForGeo,
     loadGeometryForLevel,
     drawFocusFeature,
