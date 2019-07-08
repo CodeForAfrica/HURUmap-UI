@@ -10,7 +10,8 @@ import {
   VictoryBar,
   VictoryBarProps,
   VictoryChart,
-  VictoryAxis
+  VictoryAxis,
+  VictoryLine
 } from 'victory';
 
 import ThemedComponent from './ThemedComponent';
@@ -50,11 +51,11 @@ function BarChart({
       <VictoryChart domainPadding={{ x: 60, y: 200 }} height={550} width={700}>
         <VictoryAxis
           style={{
-            axis: { stroke: 'none' },
+            axis: { stroke: 'grey', opacity: 0.2 },
             axisLabel: { fontSize: 20, padding: 40 },
             grid: { stroke: 'none' },
             ticks: { stroke: 'none' },
-            tickLabels: { fontSize: 15, padding: 10 }
+            tickLabels: { fontSize: 15, padding: 10, opacity: 0.5 }
           }}
           tickValues={[1, 2, 3, 4, 5, 6, 7]}
           tickFormat={[
@@ -74,7 +75,7 @@ function BarChart({
             axisLabel: { fontSize: 20, padding: 40 },
             grid: { stroke: 'grey', opacity: 0.5 },
             ticks: { stroke: 'none' },
-            tickLabels: { fontSize: 15, padding: 10 }
+            tickLabels: { fontSize: 15, padding: 10, opacity: 0.5 }
           }}
           tickValues={[0, 17.5, 35]}
           tickFormat={['0%', '17.5%', '35%']}
@@ -122,6 +123,7 @@ function BarChart({
             ]}
           />
         )}
+
         {comparsion && (
           <VictoryBar
             horizontal
