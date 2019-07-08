@@ -10,8 +10,8 @@ storiesOf('Hurumap UI|Charts/BarChart', module)
   .addDecorator(withKnobs)
   .add('Default', () => <BarChart />)
   .add('Horizontal', () => <BarChart horizontal />)
-  .add('Comparison vertical', () => <BarChart vertical />)
-  .add('Comparison horizontal', () => <BarChart comparsion />);
+  .add('Comparison Vertical', () => <BarChart vertical />)
+  .add('Comparison Horizontal', () => <BarChart comparsion />);
 
 storiesOf('HURUmap UI|Charts/LineChart', module)
   .addDecorator(CenterDecorator)

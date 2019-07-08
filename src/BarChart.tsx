@@ -26,7 +26,7 @@ const data = [
   { x: 2, y: 17.5 },
   { x: 3, y: 30 },
   { x: 4, y: 35 },
-  { x: 5, y: 23 },
+  { x: 5, y: 20 },
   { x: 4, y: 8 },
   { x: 6, y: 4 },
   { x: 7, y: 10 }
@@ -48,7 +48,7 @@ function BarChart({
             axisLabel: { fontSize: 20, padding: 40 },
             grid: { stroke: 'none' },
             ticks: { stroke: 'none' },
-            tickLabels: { fontSize: 15, padding: 10 }
+            tickLabels: { fontSize: 15, padding: 10, textAlign: 'right' }
           }}
           tickValues={[1, 2, 3, 4, 5, 6, 7]}
           tickFormat={[
@@ -71,7 +71,7 @@ function BarChart({
           style={{
             data: { fill: '#7f9442' }
           }}
-          barWidth={50}
+          barWidth={30}
           {...props}
           data={data}
           x="x"
@@ -91,17 +91,21 @@ function BarChart({
         )}
         {vertical && (
           <VictoryBar
-            theme={theme.chart}
+            {...props}
+            alignment="start"
             style={{
               data: { fill: '#DE9F39' }
             }}
-            barWidth={20}
-            {...props}
+            barWidth={35}
+            groupComponent={<g transform="translate(20, 0)" />}
             data={[
-              { x: 2, y: 4 },
-              { x: 4, y: 3 },
-              { x: 6, y: 4 },
-              { x: 8, y: 6 }
+              { x: 1, y: 10 },
+              { x: 2, y: 6 },
+              { x: 3, y: 15 },
+              { x: 4, y: 32.5 },
+              { x: 5, y: 20 },
+              { x: 6, y: 15.5 },
+              { x: 7, y: 20 }
             ]}
           />
         )}
