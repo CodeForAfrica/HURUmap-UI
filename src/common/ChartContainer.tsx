@@ -1,13 +1,17 @@
 import React from 'react';
 import { WithStyles, Typography, ButtonBase, Grid } from '@material-ui/core';
-import { createStyles, withStyles } from '@material-ui/styles';
+import { createStyles, withStyles, CSSProperties } from '@material-ui/styles';
 
 const styles = createStyles({
   root: {
+    width: '100%',
+    height: 'auto',
     backgroundColor: '#fff',
     padding: '1.5625rem 1.25rem'
   },
   content: {
+    width: 'available',
+    height: '100%',
     padding: '0 1.25rem'
   },
   button: {
@@ -29,9 +33,13 @@ export interface ChartContainerProps {
 
 interface Props extends WithStyles<typeof styles>, ChartContainerProps {
   children: any;
+  contentRef?: React.RefObject<HTMLDivElement>;
+  style?: CSSProperties;
 }
 
 function ChartContainer({
+  contentRef,
+  style,
   title,
   subtitle,
   onShare,
@@ -41,7 +49,7 @@ function ChartContainer({
   ...props
 }: Props) {
   return (
-    <div className={classes.root} {...props}>
+    <div className={classes.root} style={style} {...props}>
       <Grid
         container
         direction="row"
@@ -67,7 +75,9 @@ function ChartContainer({
           </ButtonBase>
         </Grid>
       </Grid>
-      <div className={classes.content}>{children}</div>
+      <div ref={contentRef} className={classes.content}>
+        {children}
+      </div>
     </div>
   );
 }

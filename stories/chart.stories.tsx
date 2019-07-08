@@ -12,16 +12,17 @@ storiesOf('Hurumap UI|Charts/BarChart', module)
   .add('Default', () => <BarChart />)
   .add('Horizontal', () => <BarChart horizontal />);
 
-
-  const rand = () => Number((Math.random() * 100).toFixed(1));
+const rand = () => Number((Math.random() * 100).toFixed(1));
 
 storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
   .addDecorator(CenterDecorator)
   .add('Default', () => (
     <GroupedBarChart
-      title={text('title', "This is a title")}
-      subtitle={text('subtitle', "This is a subtitle")}
-      dataUnit={text('dataUnit', "%")}
+      width="50%"
+      height="50%"
+      title={text('title', 'This is a title')}
+      subtitle={text('subtitle', 'This is a subtitle')}
+      dataUnit={text('dataUnit', '%')}
       data={object('data', [
         {
           x: 'Slept under any net last night',
@@ -49,12 +50,12 @@ storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
   ))
   .add('Horizontal', () => (
     <GroupedBarChart
-      height={400} // Need to specifcify height when horizotal since the data will overlap otherwise
+      width="50%"
+      height="80%"
       horizontal
-
-      title={text('title', "This is a title")}
-      subtitle={text('subtitle', "This is a subtitle")}
-      dataUnit={text('dataUnit', "%")}
+      title={text('title', 'This is a title')}
+      subtitle={text('subtitle', 'This is a subtitle')}
+      dataUnit={text('dataUnit', '%')}
       data={object('data', [
         {
           x: 'Slept under any net last night',
