@@ -6,10 +6,7 @@ import { VictoryTooltip, VictoryPie, VictoryPieProps } from 'victory';
 import ThemedComponent from './ThemedComponent';
 
 const styles = createStyles({
-  root: {
-    width: '100%',
-    height: '100%'
-  }
+  root: {}
 });
 
 interface Props extends WithStyles<typeof styles>, VictoryPieProps {
