@@ -20,12 +20,26 @@ const styles = (theme: Theme) => {
   });
 };
 
+export interface Geography {
+  geo_code: string;
+  child_level: string;
+  version: string;
+  short_name: string;
+  name: string;
+  full_name: string;
+  parent_geoid: string;
+  full_geoid: string;
+  square_kms: number;
+  geo_level: string;
+}
+
 interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   id?: string;
   url?: string;
   focusOn?: number;
   loadChildren?: boolean;
-  geography?: {};
+  drawProfile?: boolean;
+  geography?: Geography;
   codeType?: string;
   countryCode?: string;
   loadCountries?: string[];
@@ -44,6 +58,7 @@ function MapIt({
   generation = '1',
   focusOn,
   loadChildren,
+  drawProfile,
   geography,
   codeType,
   countryCode,
@@ -166,6 +181,9 @@ function MapIt({
           }
         );
       }
+      console.log(
+        `${url}/areas/${areaType}?generation=${generation}&country=${currentCountry}`
+      );
       return fetch(
         `${url}/areas/${areaType}?generation=${generation}&country=${currentCountry}`
       ).then(areaRes => {
@@ -225,6 +243,17 @@ function MapIt({
     url
   ]);
 
+  const drawFocusFeature = useCallback(
+    (map: leaflet.Map, feature: any) => {
+      const layer = leaflet.geoJSON(feature, {
+        style: geoLayerFocusStyle
+      });
+      map.addLayer(layer);
+      map.fitBounds(layer.getBounds());
+    },
+    [geoLayerFocusStyle]
+  );
+
   const drawFeatures = useCallback(
     (map: leaflet.Map, features: any) => {
       return leaflet
@@ -235,11 +264,7 @@ function MapIt({
               layer.setStyle(geoLayerHoverStyle);
             });
             layer.on('mouseout', () => {
-              if (feature.properties.id === focusOn) {
-                layer.setStyle(geoLayerFocusStyle);
-              } else {
-                layer.setStyle(geoLayerBlurStyle);
-              }
+              layer.setStyle(geoLayerBlurStyle);
             });
             layer.on('click', () => {
               if (onClickGeoLayer) {
@@ -247,24 +272,12 @@ function MapIt({
                 onClickGeoLayer(info);
               }
             });
-
-            if (feature.properties.id === focusOn) {
-              layer.setStyle(geoLayerFocusStyle);
-              map.fitBounds(layer.getBounds());
-            } else {
-              layer.setStyle(geoLayerBlurStyle);
-            }
+            layer.setStyle(geoLayerBlurStyle);
           }
         })
         .addTo(map);
     },
-    [
-      geoLayerHoverStyle,
-      geoLayerBlurStyle,
-      geoLayerFocusStyle,
-      onClickGeoLayer,
-      focusOn
-    ]
+    [geoLayerHoverStyle, geoLayerBlurStyle, onClickGeoLayer]
   );
 
   const load = useCallback(() => {
@@ -273,26 +286,43 @@ function MapIt({
       console.error('Map not loaded!');
       return;
     }
-    loadGeometryForCountryLevel().then(features => {
-      if (loadChildren) {
-        const layers: leaflet.GeoJSON[] = features.map((f: any) => {
-          return drawFeatures(map, f);
-        });
+    if (drawProfile) {
+      const geoLevel = geography ? geography.geo_level : '';
+      const geoCode = geography ? geography.geo_code : '';
 
-        if (!focusOn) {
-          map.fitBounds(
-            layers
-              .map(layer => layer.getBounds())
-              .reduce((prev, curr) => curr.extend(prev))
-          );
+      loadGeometryForGeo(geoLevel, geoCode).then(feature => {
+        drawFocusFeature(map, feature);
+      });
+
+      loadGeometryForLevel(geoLevel, geoCode).then(features => {
+        drawFeatures(map, features);
+        // if(loadChildren && geography!.child_level !== "") {
+
+        // }
+      });
+    } else {
+      loadGeometryForCountryLevel().then(features => {
+        if (loadChildren) {
+          const layers: leaflet.GeoJSON[] = features.map((f: any) => {
+            return drawFeatures(map, f);
+          });
+        } else {
+          const layer = drawFeatures(map, features);
+
+          map.fitBounds(layer.getBounds());
         }
-      } else {
-        const layer = drawFeatures(map, features);
-
-        map.fitBounds(layer.getBounds());
-      }
-    });
-  }, [loadGeometryForCountryLevel, loadChildren, focusOn, drawFeatures]);
+      });
+    }
+  }, [
+    drawProfile,
+    loadGeometryForGeo,
+    geography,
+    loadGeometryForLevel,
+    drawFocusFeature,
+    drawFeatures,
+    loadGeometryForCountryLevel,
+    loadChildren
+  ]);
 
   useEffect(() => {
     if (mapRef.current) {
