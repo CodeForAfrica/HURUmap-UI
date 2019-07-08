@@ -37,6 +37,16 @@ const data = [
   { x: 6, y: 4 },
   { x: 7, y: 10 }
 ];
+const median = [
+  { x: 1, y: 2.5 },
+  { x: 2, y: 10 },
+  { x: 3, y: 20 },
+  { x: 4, y: 15 },
+  { x: 5, y: 10 },
+  { x: 4, y: 4 },
+  { x: 6, y: 2 },
+  { x: 7, y: 5 }
+];
 
 function BarChart({
   classes,
@@ -49,6 +59,16 @@ function BarChart({
   return (
     <div className={classes.root}>
       <VictoryChart domainPadding={{ x: 60, y: 200 }} height={550} width={700}>
+        <VictoryBar
+          style={{
+            data: { fill: '#7f9442' }
+          }}
+          barWidth={25}
+          {...props}
+          data={data}
+          x="x"
+          y="y"
+        />
         <VictoryAxis
           style={{
             axis: { stroke: 'grey', opacity: 0.2 },
@@ -79,17 +99,6 @@ function BarChart({
           }}
           tickValues={[0, 17.5, 35]}
           tickFormat={['0%', '17.5%', '35%']}
-        />
-
-        <VictoryBar
-          style={{
-            data: { fill: '#7f9442' }
-          }}
-          barWidth={25}
-          {...props}
-          data={data}
-          x="x"
-          y="y"
         />
         {horizontal && (
           <VictoryBar
@@ -123,7 +132,17 @@ function BarChart({
             ]}
           />
         )}
-
+        {!horizontal && !comparsion && true ? (
+          <VictoryLine
+            data={median}
+            interpolation="step"
+            style={{
+              data: { stroke: 'black', strokeWidth: 0.8, opacity: 0.6 }
+            }}
+          />
+        ) : (
+          <div />
+        )}
         {comparsion && (
           <VictoryBar
             horizontal
@@ -135,6 +154,7 @@ function BarChart({
             barWidth={25}
             {...props}
             data={[
+              { x: 0, y: 0 },
               { x: 1, y: 10 },
               { x: 2, y: 6 },
               { x: 3, y: 15 },
