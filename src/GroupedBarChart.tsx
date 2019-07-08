@@ -43,7 +43,7 @@ function GroupedBarChart({
   const theme = useTheme<Theme>();
   return (
     <div style={{ width, height }}>
-      <VictoryChart ref={chartRef}>
+      <VictoryChart ref={chartRef} width={width} height={height}>
         <VictoryGroup
           ref={groupRef}
           offset={barWidth + 5}

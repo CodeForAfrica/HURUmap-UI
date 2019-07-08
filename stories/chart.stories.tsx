@@ -47,6 +47,7 @@ storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
   ))
   .add('Horizontal', () => (
     <GroupedBarChart
+      height={400} // Need to specifcify height when horizotal since the data will overlap otherwise
       horizontal
       data={object('data', [
         {
