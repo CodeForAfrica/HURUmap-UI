@@ -132,18 +132,10 @@ storiesOf('Hurumap UI|MapIt/Country', module)
       drawProfile={boolean('drawProfile', true)}
       codeType={text('codeType', 'AFR')}
       countryCode={text('countryCode', '')}
-      geography={object('geography', {
-        geo_code: "KE_1_008",
-        child_level: "",
-        version: "2009",
-        short_name: "Wajir",
-        name: "Wajir",
-        full_name: "Wajir",
-        parent_geoid: "country-KE",
-        full_geoid: "level1-KE_1_008",
-        square_kms: 28620.0,
-        geo_level: "level1"
-      })}
+      geoLevel={text('geoLevel', 'level1')}
+      geoCode={text('geoCode', 'KE_1_008')}
+      geoChildLevel={text('geoChildLevel', '')}
+      geoParentLevel={text('geoParentLevel', 'country-KE')}
       zoom={number('zoom', 3)}
       center={array('center', [8.7832, 34.5085]) as [number, number]}
       tileLayer={
@@ -171,18 +163,10 @@ storiesOf('Hurumap UI|MapIt/Country', module)
       drawProfile={boolean('drawProfile', true)}
       codeType={text('codeType', 'TZA')}
       countryCode={text('countryCode', 'TZ')}
-      geography={object('geography', {
-        geo_code: "85",
-        child_level: "ward",
-        version: "2009",
-        short_name: "Manyoni",
-        name: "Manyoni",
-        full_name: "Manyoni",
-        parent_geoid: "region-27",
-        full_geoid: "district-85",
-        square_kms: 28620.0,
-        geo_level: "district"
-      })}
+      geoLevel={text('geoLevel', 'district')}
+      geoCode={text('geoCode', '85')}
+      geoChildLevel={text('geoChildLevel', 'ward')}
+      geoParentLevel={text('geoParentLevel', 'region-27')}
       zoom={number('zoom', 6)}
       center={array('center', [-6.1523563, 35.6754813]) as [number, number]}
       tileLayer={

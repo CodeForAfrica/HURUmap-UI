@@ -19,26 +19,15 @@ const styles = (theme: Theme) => {
     }
   });
 };
-
-export interface Geography {
-  geo_code: string;
-  child_level: string;
-  version: string;
-  short_name: string;
-  name: string;
-  full_name: string;
-  parent_geoid: string;
-  full_geoid: string;
-  square_kms: number;
-  geo_level: string;
-}
-
 interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   id?: string;
   url?: string;
   loadChildren?: boolean;
   drawProfile?: boolean;
-  geography?: Geography;
+  geoLevel?: string;
+  geoCode?: string;
+  geoChildLevel?: string;
+  geoParentLevel?: string;
   codeType?: string;
   countryCode?: string;
   loadCountries?: string[];
@@ -57,7 +46,10 @@ function MapIt({
   generation = '1',
   loadChildren,
   drawProfile,
-  geography,
+  geoChildLevel,
+  geoCode,
+  geoLevel,
+  geoParentLevel,
   codeType,
   countryCode,
   loadCountries = ['KE', 'ZA'],
@@ -132,62 +124,56 @@ function MapIt({
     [url]
   );
 
-  const loadGeometryForGeo = useCallback(
-    (geoLevel: string, geoCode: string): Promise<any> => {
-      return fetch(`${url}/code/${codeType}/${geoLevel}-${geoCode}`).then(
-        areaRes => {
-          if (!areaRes.ok) return Promise.reject();
-          return areaRes.json().then(data => {
-            return fetch(`${url}/area/${data.id}.geojson`).then(geoRes => {
-              if (!geoRes.ok) return Promise.reject();
-              return geoRes.json().then(feature => {
-                return feature
-                  ? {
-                      ...feature,
-                      properties: {
-                        ...feature.properties,
-                        ...data
-                      }
+  const loadGeometryForGeo = useCallback((): Promise<any> => {
+    return fetch(`${url}/code/${codeType}/${geoLevel}-${geoCode}`).then(
+      areaRes => {
+        if (!areaRes.ok) return Promise.reject();
+        return areaRes.json().then(data => {
+          return fetch(`${url}/area/${data.id}.geojson`).then(geoRes => {
+            if (!geoRes.ok) return Promise.reject();
+            return geoRes.json().then(feature => {
+              return feature
+                ? {
+                    ...feature,
+                    properties: {
+                      ...feature.properties,
+                      ...data
                     }
-                  : {};
-              });
+                  }
+                : {};
             });
           });
-        }
-      );
-    },
-    [codeType, url]
-  );
+        });
+      }
+    );
+  }, [codeType, geoCode, geoLevel, url]);
 
-  async function fetchAreaType(geoLevel: string, geoCode: string) {
+  async function fetchAreaType() {
     const areaRes = await fetch(
       `${url}/code/${codeType}/${geoLevel}-${geoCode}`
     );
     return areaRes.json();
   }
 
-  const loadGeometryForLevel = useCallback(
-    (geoLevel: string, geoCode: string): Promise<any> => {
-      // geo_level do not always match to mapit area type
-      // AFR geo_level are level1_TZ_001 while mapit area type are specific ie PROVINCE, REGION, COUNTY
-      // Using the geoid (geoLevel-geoCode) we will first request mapit api to give us=> mapit type of a specific geo
-      return fetchAreaType(geoLevel, geoCode).then(area => {
-        const { country, type } = area;
-        return fetch(
-          `${url}/areas/${type}?generation=${generation}&country=${country}`
-        ).then(areaRes => {
-          if (!areaRes.ok) return Promise.reject();
+  const loadGeometryForLevel = useCallback((): Promise<any> => {
+    // geo_level do not always match to mapit area type
+    // AFR geo_level are level1_TZ_001 while mapit area type are specific ie PROVINCE, REGION, COUNTY
+    // Using the geoid (geoLevel-geoCode) we will first request mapit api to give us=> mapit type of a specific geo
+    return fetchAreaType().then(area => {
+      const { country, type } = area;
+      return fetch(
+        `${url}/areas/${type}?generation=${generation}&country=${country}`
+      ).then(areaRes => {
+        if (!areaRes.ok) return Promise.reject();
 
-          return areaRes.json().then((data: { [key: string]: any }) => {
-            const areaKeys = Object.keys(data).join();
+        return areaRes.json().then((data: { [key: string]: any }) => {
+          const areaKeys = Object.keys(data).join();
 
-            return fetchGeoJson(areaKeys, Object.values(data));
-          });
+          return fetchGeoJson(areaKeys, Object.values(data));
         });
       });
-    },
-    [fetchAreaType, fetchGeoJson, generation, url]
-  );
+    });
+  }, [fetchAreaType, fetchGeoJson, generation, url]);
 
   const loadGeometryForChildLevel = useCallback(
     (areaId: string): Promise<any> => {
@@ -277,25 +263,22 @@ function MapIt({
       return;
     }
     if (drawProfile) {
-      const geoLevel = geography ? geography.geo_level : '';
-      const geoCode = geography ? geography.geo_code : '';
-      const childLevel = geography ? geography.child_level : '';
       let areaID = '';
 
-      loadGeometryForGeo(geoLevel, geoCode)
+      loadGeometryForGeo()
         .then(feature => {
           areaID = feature.properties.id;
           return drawFocusFeature(map, feature);
         })
         .then(() => {
-          if (loadChildren && childLevel !== '') {
+          if (loadChildren && geoChildLevel !== '') {
             loadGeometryForChildLevel(areaID).then(childrenFeatures => {
               drawFeatures(map, childrenFeatures);
             });
           }
         });
 
-      loadGeometryForLevel(geoLevel, geoCode).then(features => {
+      loadGeometryForLevel().then(features => {
         drawFeatures(map, features);
       });
     } else {
@@ -313,7 +296,7 @@ function MapIt({
     }
   }, [
     drawProfile,
-    geography,
+    geoChildLevel,
     loadGeometryForGeo,
     loadGeometryForLevel,
     drawFocusFeature,
