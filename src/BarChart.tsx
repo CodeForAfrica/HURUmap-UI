@@ -102,6 +102,7 @@ function BarChart({
           tickValues={[0, 17.5, 35]}
           tickFormat={['0%', '17.5%', '35%']}
         />
+
         {horizontal && (
           <VictoryBar
             horizontal
@@ -134,7 +135,7 @@ function BarChart({
             ]}
           />
         )}
-        {!horizontal && !comparsion ? (
+        {!horizontal && !comparsion && vertical ? (
           <VictoryLine
             data={median}
             interpolation="step"
