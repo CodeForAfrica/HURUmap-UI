@@ -19,6 +19,8 @@ storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
   .addDecorator(CenterDecorator)
   .add('Default', () => (
     <GroupedBarChart
+      title={text('title', "This is a title")}
+      subtitle={text('subtitle', "This is a subtitle")}
       dataUnit={text('dataUnit', "%")}
       data={object('data', [
         {
@@ -49,6 +51,9 @@ storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
     <GroupedBarChart
       height={400} // Need to specifcify height when horizotal since the data will overlap otherwise
       horizontal
+
+      title={text('title', "This is a title")}
+      subtitle={text('subtitle', "This is a subtitle")}
       dataUnit={text('dataUnit', "%")}
       data={object('data', [
         {

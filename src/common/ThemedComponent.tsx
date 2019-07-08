@@ -6,7 +6,7 @@ import {
   withStyles
 } from '@material-ui/styles';
 
-import theme from './Theme';
+import theme from '../Theme';
 
 const styles = createStyles({
   root: {}

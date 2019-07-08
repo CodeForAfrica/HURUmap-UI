@@ -9,13 +9,17 @@ import {
   VictoryAxis
 } from 'victory';
 
-import ThemedComponent from './ThemedComponent';
+import ThemedComponent from './common/ThemedComponent';
+import ChartContainer, { ChartContainerProps } from './common/ChartContainer';
 
 const styles = createStyles({
   root: {}
 });
 
-interface Props extends WithStyles<typeof styles>, VictoryBarProps {
+interface Props
+  extends WithStyles<typeof styles>,
+    VictoryBarProps,
+    ChartContainerProps {
   barWidth?: number;
   dataUnit?: string;
   data: {
@@ -38,11 +42,20 @@ function GroupedBarChart({
   barWidth = 40,
   width,
   height,
+  title,
+  subtitle,
+  onInfo,
+  onShare,
   ...props
 }: Props) {
   const theme = useTheme<Theme>();
   return (
-    <div style={{ width, height }}>
+    <ChartContainer
+      title={title}
+      subtitle={subtitle}
+      onInfo={onInfo}
+      onShare={onShare}
+    >
       <VictoryChart ref={chartRef} width={width} height={height}>
         <VictoryGroup
           ref={groupRef}
@@ -61,7 +74,7 @@ function GroupedBarChart({
         </VictoryGroup>
         <VictoryAxis style={{ axis: { stroke: 'none' } }} />
       </VictoryChart>
-    </div>
+    </ChartContainer>
   );
 }
 
