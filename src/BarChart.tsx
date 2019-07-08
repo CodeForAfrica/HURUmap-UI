@@ -1,19 +1,24 @@
 import React from 'react';
 import { Theme, WithStyles } from '@material-ui/core';
-import { createStyles, useTheme, withStyles } from '@material-ui/styles';
+import {
+  createStyles,
+  useTheme,
+  withStyles,
+  mergeClasses
+} from '@material-ui/styles';
 import {
   VictoryBar,
   VictoryBarProps,
   VictoryChart,
-  VictoryLine,
-  VictoryAxis,
-  VictoryGroup
+  VictoryAxis
 } from 'victory';
 
 import ThemedComponent from './ThemedComponent';
 
 const styles = createStyles({
-  root: {}
+  root: {
+    flexGrow: 1
+  }
 });
 
 interface Props extends WithStyles<typeof styles>, VictoryBarProps {
@@ -33,6 +38,7 @@ const data = [
 ];
 
 function BarChart({
+  classes,
   comparsion = false,
   vertical,
   horizontal,
@@ -40,8 +46,8 @@ function BarChart({
 }: Props) {
   const theme = useTheme<Theme>();
   return (
-    <div>
-      <VictoryChart domainPadding={50} height={500} width={700}>
+    <div className={classes.root}>
+      <VictoryChart domainPadding={{ x: 60, y: 200 }} height={550} width={700}>
         <VictoryAxis
           style={{
             axis: { stroke: 'grey' },
@@ -71,7 +77,7 @@ function BarChart({
           style={{
             data: { fill: '#7f9442' }
           }}
-          barWidth={30}
+          barWidth={25}
           {...props}
           data={data}
           x="x"
@@ -84,7 +90,7 @@ function BarChart({
             style={{
               data: { fill: '#7f9442' }
             }}
-            barWidth={30}
+            barWidth={25}
             data={data}
             {...props}
           />
@@ -96,7 +102,7 @@ function BarChart({
             style={{
               data: { fill: '#DE9F39' }
             }}
-            barWidth={35}
+            barWidth={25}
             groupComponent={<g transform="translate(20, 0)" />}
             data={[
               { x: 1, y: 10 },
@@ -112,12 +118,11 @@ function BarChart({
         {comparsion && (
           <VictoryBar
             horizontal
-            alignment="start"
             theme={theme.chart}
             style={{
               data: { fill: '#DE9F39' }
             }}
-            groupComponent={<g transform="translate(0 35)" />}
+            groupComponent={<g transform="translate(0, 25)" />}
             barWidth={25}
             {...props}
             data={[
