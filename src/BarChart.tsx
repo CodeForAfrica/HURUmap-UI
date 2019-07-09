@@ -23,8 +23,7 @@ const styles = createStyles({
 });
 
 interface Props extends WithStyles<typeof styles>, VictoryBarProps {
-  comparsion?: boolean;
-  vertical?: boolean;
+  comparison?: boolean;
 }
 
 const data = [
@@ -49,7 +48,7 @@ const median = [
   { x: 7, y: 5 },
   { x: 8, y: 5 }
 ];
-const comparison = [
+const comparisonData = [
   { x: 0, y: 0 },
   { x: 1, y: 10 },
   { x: 2, y: 6 },
@@ -62,8 +61,7 @@ const comparison = [
 
 function BarChart({
   classes,
-  comparsion = false,
-  vertical,
+  comparison = false,
   horizontal,
   ...props
 }: Props) {
@@ -113,7 +111,7 @@ function BarChart({
           tickValues={[0, 17.5, 35]}
           tickFormat={['0%', '17.5%', '35%']}
         />
-        {comparsion && (
+        {comparison && (
           <VictoryBar
             groupComponent={
               !horizontal ? (
@@ -128,7 +126,17 @@ function BarChart({
             }}
             barWidth={25}
             {...props}
-            data={comparison}
+            data={comparisonData}
+          />
+        )}
+        {!horizontal && comparison && (
+          <VictoryLine
+            horizontal={horizontal}
+            data={median}
+            interpolation="step"
+            style={{
+              data: { stroke: 'black', strokeWidth: 0.8, opacity: 0.4 }
+            }}
           />
         )}
       </VictoryChart>
