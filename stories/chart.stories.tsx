@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { boolean, object, withKnobs, array } from '@storybook/addon-knobs';
+import { boolean, object, withKnobs } from '@storybook/addon-knobs';
 
 import { BarChart, LineChart, PieChart } from '../src';
 import { CenterDecorator } from './common';
