@@ -63,7 +63,7 @@ function BarChart({
   const theme = useTheme<Theme>();
   return (
     <div className={classes.root}>
-      <VictoryChart domainPadding={{ x: 60, y: 200 }} height={550} width={700}>
+      <VictoryChart domainPadding={{ x: 0, y: 200 }} height={550} width={700}>
         <VictoryBar
           horizontal={horizontal}
           style={{
@@ -124,22 +124,20 @@ function BarChart({
             data={comparisonData}
           />
         )}
-        {!horizontal && comparison && (
-          <VictoryLine
-            horizontal={horizontal}
-            data={median}
-            interpolation="step"
-            groupComponent={<g transform="translate(6, 0)" />}
-            style={{
-              data: {
-                stroke: 'black',
-                strokeWidth: 0.8,
-                opacity: 0.4,
-                strokeLinecap: 'round'
-              }
-            }}
-          />
-        )}
+        <VictoryLine
+          horizontal={horizontal}
+          data={median}
+          interpolation="step"
+          groupComponent={<g transform="translate(6, 0)" />}
+          style={{
+            data: {
+              stroke: 'black',
+              strokeWidth: 0.8,
+              opacity: 0.4,
+              strokeLinecap: 'round'
+            }
+          }}
+        />
       </VictoryChart>
     </div>
   );
