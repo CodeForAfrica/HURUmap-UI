@@ -1,24 +1,18 @@
 import { withStyles } from '@material-ui/core';
-import { createStyles, Theme, WithStyles } from '@material-ui/core/styles';
+import { createStyles, WithStyles } from '@material-ui/core/styles';
 import React, { useEffect, useRef, useCallback } from 'react';
 
-import leaflet, {
-  MapOptions,
-  PathOptions,
-  TileLayer,
-  LatLngBounds
-} from 'leaflet';
+import leaflet, { MapOptions, PathOptions, TileLayer } from 'leaflet';
 
 import 'leaflet/dist/leaflet.css';
 
-const styles = (theme: Theme) => {
-  return createStyles({
-    root: {
-      height: '100%',
-      width: '100%'
-    }
-  });
-};
+const styles = createStyles({
+  root: {
+    height: '100%',
+    width: '100%'
+  }
+});
+
 interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   id?: string;
   url?: string;
