@@ -23,12 +23,13 @@ interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   id?: string;
   url?: string;
   loadChildren?: boolean;
+  drawProfile?: boolean;
   geoLevel?: string;
   geoCode?: string;
+  geoId?: string;
   geoChildLevel?: string;
   geoParentLevel?: string;
   codeType?: string;
-  countryCode?: string;
   loadCountries?: string[];
   generation?: string;
   tileLayer?: TileLayer;
@@ -44,12 +45,13 @@ function MapIt({
   url = 'https://mapit.hurumap.org',
   generation = '1',
   loadChildren,
+  drawProfile,
   geoChildLevel,
   geoCode,
+  geoId,
   geoLevel,
   geoParentLevel,
   codeType,
-  countryCode,
   loadCountries = ['KE', 'ZA'],
   tileLayer,
   geoLayerFocusStyle = {
@@ -121,32 +123,7 @@ function MapIt({
     },
     [url]
   );
-
-  const loadGeometryForGeo = useCallback((): Promise<any> => {
-    return fetch(`${url}/code/${codeType}/${geoLevel}-${geoCode}`).then(
-      areaRes => {
-        if (!areaRes.ok) return Promise.reject();
-        return areaRes.json().then(data => {
-          return fetch(`${url}/area/${data.id}.geojson`).then(geoRes => {
-            if (!geoRes.ok) return Promise.reject();
-            return geoRes.json().then(feature => {
-              return feature
-                ? {
-                    ...feature,
-                    properties: {
-                      ...feature.properties,
-                      ...data
-                    }
-                  }
-                : {};
-            });
-          });
-        });
-      }
-    );
-  }, [codeType, geoCode, geoLevel, url]);
-
-  async function fetchAreaType() {
+  async function fetchMapitArea() {
     const areaRes = await fetch(
       `${url}/code/${codeType}/${geoLevel}-${geoCode}`
     );
@@ -157,7 +134,7 @@ function MapIt({
     // geo_level do not always match to mapit area type
     // AFR geo_level are level1_TZ_001 while mapit area type are specific ie PROVINCE, REGION, COUNTY
     // Using the geoid (geoLevel-geoCode) we will first request mapit api to give us=> mapit type of a specific geo
-    return fetchAreaType().then(area => {
+    return fetchMapitArea().then(area => {
       const { country, type } = area;
       return fetch(
         `${url}/areas/${type}?generation=${generation}&country=${country}`
@@ -171,61 +148,28 @@ function MapIt({
         });
       });
     });
-  }, [fetchAreaType, fetchGeoJson, generation, url]);
+  }, [fetchMapitArea, fetchGeoJson, generation, url]);
 
   const loadGeometryForChildLevel = useCallback(
     (areaId: string): Promise<any> => {
+      console.log(`${url}/area/${areaId}/children`);
       return fetch(`${url}/area/${areaId}/children`).then(areasRes => {
         if (!areasRes.ok) return Promise.reject();
 
         return areasRes.json().then((data: { [key: string]: any }) => {
+          if (loadCountries.length > 0 && !drawProfile) {
+            // console.log("I am here, drawing")
+            // data = Object.entries(data).filter(area => {
+            //   return loadCountries.includes(area[1].country)
+            // });
+          }
           const areaKeys = Object.keys(data).join();
 
           return fetchGeoJson(areaKeys, Object.values(data));
         });
       });
     },
-    [fetchGeoJson, url]
-  );
-
-  const loadGeometryForCountryLevel = useCallback((): Promise<any> => {
-    return fetch(
-      `${url}/areas/COUNTRY?generation=${generation}&country=${loadCountries.join()}`
-    ).then(areasRes => {
-      if (!areasRes.ok) return Promise.reject();
-
-      return areasRes.json().then((data: { [key: string]: any }) => {
-        const areaKeys = Object.keys(data).join();
-
-        if (loadChildren) {
-          return Promise.all(
-            Object.values(data).map(area => {
-              return loadGeometryForChildLevel(area.id);
-            })
-          );
-        }
-
-        return fetchGeoJson(areaKeys, Object.values(data));
-      });
-    });
-  }, [
-    fetchGeoJson,
-    generation,
-    loadChildren,
-    loadCountries,
-    loadGeometryForChildLevel,
-    url
-  ]);
-
-  const drawFocusFeature = useCallback(
-    (map: leaflet.Map, feature: any) => {
-      const layer = leaflet.geoJSON(feature, {
-        style: geoLayerFocusStyle
-      });
-      map.addLayer(layer);
-      map.fitBounds(layer.getBounds());
-    },
-    [geoLayerFocusStyle]
+    [fetchGeoJson, drawProfile, loadCountries, url]
   );
 
   const drawFeatures = useCallback(
@@ -233,25 +177,41 @@ function MapIt({
       return leaflet
         .geoJSON(features, {
           onEachFeature: (feature, layer: any) => {
-            layer.bindTooltip(feature.properties.name, { direction: 'auto' });
-            layer.on('mouseover', () => {
-              layer.setStyle(geoLayerHoverStyle);
-            });
-            layer.on('mouseout', () => {
+            if (
+              drawProfile &&
+              geoId === feature.properties.codes[codeType || 'AFR']
+            ) {
+              layer.setStyle(geoLayerFocusStyle);
+              map.fitBounds(layer.getBounds());
+            } else {
+              layer.bindTooltip(feature.properties.name, { direction: 'auto' });
+              layer.on('mouseover', () => {
+                layer.setStyle(geoLayerHoverStyle);
+              });
+              layer.on('mouseout', () => {
+                layer.setStyle(geoLayerBlurStyle);
+              });
+              layer.on('click', () => {
+                if (onClickGeoLayer) {
+                  const info = feature.properties;
+                  onClickGeoLayer(info);
+                }
+              });
               layer.setStyle(geoLayerBlurStyle);
-            });
-            layer.on('click', () => {
-              if (onClickGeoLayer) {
-                const info = feature.properties;
-                onClickGeoLayer(info);
-              }
-            });
-            layer.setStyle(geoLayerBlurStyle);
+            }
           }
         })
         .addTo(map);
     },
-    [geoLayerHoverStyle, geoLayerBlurStyle, onClickGeoLayer]
+    [
+      geoLayerHoverStyle,
+      geoLayerBlurStyle,
+      onClickGeoLayer,
+      geoId,
+      codeType,
+      drawProfile,
+      geoLayerFocusStyle
+    ]
   );
 
   const load = useCallback(() => {
@@ -260,49 +220,46 @@ function MapIt({
       console.error('Map not loaded!');
       return;
     }
-    if (geoCode && geoLevel) {
-      let areaID = '';
-
-      loadGeometryForGeo().then(feature => {
-        areaID = feature.properties.id;
-        drawFocusFeature(map, feature);
-      });
-
+    // if we are not on a profile page, then we are on homepage or country page
+    // where no specific geography is focused, only child levels of the root geography are drawn
+    // For normal hurumap apps, the root geo is country, so we draw all it's child level
+    // And for apps like dominion/takwimu, we start at a continent level and we draw its all child level (country)
+    // but not all child levels are supposed to be drawn (i.e mapit has ethiopia as child of continent but we don't have dominion ethiopia)
+    // so in this case we will filter using loadCountrries
+    if (drawProfile) {
       loadGeometryForLevel()
         .then(features => {
           drawFeatures(map, features);
         })
         .then(() => {
+          // if geo_child level is not empty
           if (loadChildren && geoChildLevel !== '') {
-            loadGeometryForChildLevel(areaID).then(childrenFeatures => {
-              drawFeatures(map, childrenFeatures);
+            fetchMapitArea().then(area => {
+              loadGeometryForChildLevel(area.id).then(childrenFeatures => {
+                drawFeatures(map, childrenFeatures);
+              });
             });
           }
         });
     } else {
-      loadGeometryForCountryLevel().then(features => {
-        if (loadChildren) {
-          const layers: leaflet.GeoJSON[] = features.map((f: any) => {
-            return drawFeatures(map, f);
-          });
-        } else {
-          const layer = drawFeatures(map, features);
-
+      console.log('I am here');
+      fetchMapitArea().then(area => {
+        console.log(area);
+        loadGeometryForChildLevel(area.id).then(childrenFeatures => {
+          console.log(childrenFeatures);
+          const layer = drawFeatures(map, childrenFeatures);
           map.fitBounds(layer.getBounds());
-        }
+        });
       });
     }
   }, [
     geoChildLevel,
-    geoCode,
-    geoLevel,
-    loadGeometryForGeo,
+    drawProfile,
     loadGeometryForLevel,
-    drawFocusFeature,
     loadChildren,
+    fetchMapitArea,
     loadGeometryForChildLevel,
-    drawFeatures,
-    loadGeometryForCountryLevel
+    drawFeatures
   ]);
 
   useEffect(() => {
