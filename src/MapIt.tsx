@@ -125,7 +125,7 @@ function MapIt({
   );
   async function fetchMapitArea() {
     const areaRes = await fetch(
-      `${url}/code/${codeType}/${geoLevel}-${geoCode}`
+      `${url}/code/${codeType}/${geoLevel}-${geoCode}?generation=${generation}`
     );
     return areaRes.json();
   }
@@ -136,9 +136,6 @@ function MapIt({
     // Using the geoid (geoLevel-geoCode) we will first request mapit api to give us=> mapit type of a specific geo
     return fetchMapitArea().then(area => {
       const { country, type } = area;
-      console.log(
-        `${url}/areas/${type}?generation=${generation}&country=${country}`
-      );
       return fetch(
         `${url}/areas/${type}?generation=${generation}&country=${country}`
       ).then(areaRes => {
@@ -155,24 +152,28 @@ function MapIt({
 
   const loadGeometryForChildLevel = useCallback(
     (areaId: string): Promise<any> => {
-      console.log(`${url}/area/${areaId}/children`);
       return fetch(`${url}/area/${areaId}/children`).then(areasRes => {
         if (!areasRes.ok) return Promise.reject();
 
         return areasRes.json().then((data: { [key: string]: any }) => {
-          if (loadCountries.length > 0 && !drawProfile) {
-            // console.log("I am here, drawing")
-            // data = Object.entries(data).filter(area => {
-            //   return loadCountries.includes(area[1].country)
-            // });
+          let areaData = data;
+          if (
+            loadCountries.length > 0 &&
+            !drawProfile &&
+            geoLevel === 'continent'
+          ) {
+            areaData = Object.entries(data).filter(area => {
+              return loadCountries.includes(area[1].country);
+            });
           }
-          const areaKeys = Object.keys(data).join();
+          console.log(areaData);
+          const areaKeys = Object.keys(areaData).join();
 
-          return fetchGeoJson(areaKeys, Object.values(data));
+          return fetchGeoJson(areaKeys, Object.values(areaData));
         });
       });
     },
-    [fetchGeoJson, drawProfile, loadCountries, url]
+    [url, loadCountries, drawProfile, geoLevel, fetchGeoJson]
   );
 
   const drawFeatures = useCallback(
@@ -245,10 +246,8 @@ function MapIt({
           }
         });
     } else {
-      console.log('I am here');
       fetchMapitArea().then(area => {
-        console.log(area);
-        loadGeometryForChildLevel(area.id).then(childrenFeatures => {
+        return loadGeometryForChildLevel(area.id).then(childrenFeatures => {
           console.log(childrenFeatures);
           const layer = drawFeatures(map, childrenFeatures);
           map.fitBounds(layer.getBounds());
