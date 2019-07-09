@@ -8,7 +8,7 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('Default', () => <BarChart />)
-  .add('Horizontal', () => <BarChart horizontal />);
+  .add('Horizontal', () => <BarChart horizontal />)
   .add('Comparison Vertical', () => <BarChart vertical />)
   .add('Comparison Horizontal', () => <BarChart comparsion />);
 
@@ -55,4 +55,3 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
       ])}
     />
   ));
-
