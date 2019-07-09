@@ -1,8 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { BarChart, LineChart, PieChart } from '../src';
 import { withKnobs, text, boolean, object } from '@storybook/addon-knobs';
-import { BarChart, LineChart, PieChart, GroupedBarChart, } from '../src';
+import { BarChart, LineChart, PieChart, GroupedBarChart } from '../src';
 import { CenterDecorator } from './common';
 
 storiesOf('HURUmap UI|Charts/BarChart', module)
