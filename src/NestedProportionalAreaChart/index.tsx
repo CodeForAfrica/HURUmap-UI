@@ -43,30 +43,33 @@ function NestedProportionalAreaChart({ classes, data, square = false }: Props) {
     width: '100%',
     height: '100%'
   });
-  const computeStyle = (i: number) =>
-    i === 0
-      ? chart.style.data
-      : { fill: chart.colorScale[i % chart.colorScale.length] };
+
+  const { data: dataStyle } = chart.style;
+  // Use chart.data as fill style for background/total chart
+  const colorScale =
+    dataStyle && typeof dataStyle.fill === 'string'
+      ? [dataStyle.fill, ...chart.colorScale]
+      : chart.colorScale;
   return (
     <div className={classes.root}>
       <svg style={style} viewBox={`0 0 ${chart.width} ${chart.height}`}>
         {square ? (
           <ScaledSquare
+            colorScale={colorScale}
+            relativeTo={data[0]}
+            sides={data}
+            size={chart.width}
             x={0}
             y={0}
-            sides={data}
-            relativeTo={data[0]}
-            size={chart.width}
-            style={computeStyle}
           />
         ) : (
           <ScaledCircle
+            colorScale={colorScale}
             cx={chart.width / 2}
             cy={chart.width / 2}
             radii={data}
             relativeTo={data[0]}
             size={chart.width / 2}
-            style={computeStyle}
           />
         )}
       </svg>
