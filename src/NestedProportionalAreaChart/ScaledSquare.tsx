@@ -1,9 +1,10 @@
 import React from 'react';
-import { Rect, VictoryStyleObject } from 'victory';
+import { Rect } from 'victory';
 
 interface Props {
   className?: string;
   clipPath?: string;
+  colorScale?: string[];
   events?: React.DOMAttributes<any>;
   role?: string;
   rx?: number;
@@ -11,7 +12,6 @@ interface Props {
   shapeRendering?: string;
   sides?: number[];
   size?: number;
-  style?: VictoryStyleObject | ((i: number) => VictoryStyleObject | undefined);
   transform?: string;
   x?: number;
   y?: number;
@@ -19,12 +19,13 @@ interface Props {
 }
 
 function ScaledSquare({
-  sides = [],
+  colorScale = [],
   relativeTo,
+  sides = [],
   size = 0,
-  style,
   ...props
 }: Props) {
+  // Nested square must be sorted to ensure they're all visible
   return (
     <g>
       {sides
@@ -34,9 +35,10 @@ function ScaledSquare({
           return (
             <Rect
               {...props}
-              width={scaledSide}
+              key={scaledSide}
               height={scaledSide}
-              style={typeof style === 'function' ? style(i) : style}
+              style={{ fill: colorScale[i % colorScale.length] }}
+              width={scaledSide}
             />
           );
         })}
