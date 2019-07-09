@@ -2,16 +2,14 @@ import React from 'react';
 import { Theme, WithStyles } from '@material-ui/core';
 import { createStyles, useTheme, withStyles } from '@material-ui/styles';
 import {
-  Circle,
-  Rect,
   VictoryCommonProps,
   VictoryDatableProps,
   VictoryMultiLabeableProps
 } from 'victory';
 
+import ScaledCircle from './ScaledCircle';
+import ScaledRect from './ScaledRect';
 import ThemedComponent from '../ThemedComponent';
-import SquareChart from './SquareChart';
-import CircleChart from './CircleChart';
 
 const styles = createStyles({
   root: {}
@@ -25,23 +23,69 @@ interface Props
   square?: boolean;
 }
 
-function NestedProportionalAreaChart({
-  data,
-  square = false,
-  ...props
-}: Props) {
+function NestedProportionalAreaChart({ classes, data, square = false }: Props) {
+  const theme = useTheme<Theme>();
   if (!data) {
     return null;
   }
 
+  const {
+    proportionalArea: chart = {
+      colorScale: ['black'],
+      height: 450,
+      padding: 0,
+      style: {},
+      width: 450
+    }
+  } = theme.chart;
+  const padding =
+    typeof chart.padding === 'number'
+      ? { padding: chart.padding }
+      : {
+          paddingTop: chart.padding.top,
+          paddingRight: chart.padding.right,
+          paddingBottom: chart.padding.bottom,
+          paddingLeft: chart.padding.left
+        };
+  const style = Object.assign(padding, chart.style.parent, {
+    width: '100%',
+    height: '100%'
+  });
+  const computeStyle = (i: number) =>
+    i === 0
+      ? chart.style.data
+      : { fill: chart.colorScale[i % chart.colorScale.length] };
   return (
-    <div>
-      <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 450 450">
-        {square ? (
-          <SquareChart data={data} {...props} />
-        ) : (
-          <CircleChart data={data} {...props} />
-        )}
+    <div className={classes.root}>
+      <svg style={style} viewBox={`0 0 ${chart.width} ${chart.height}`}>
+        <g>
+          {square
+            ? data
+                .sort((a, b) => b - a)
+                .map((v, i) => (
+                  <ScaledRect
+                    x={0}
+                    y={0}
+                    width={v}
+                    height={v}
+                    relativeTo={data[0]}
+                    size={chart.width}
+                    style={computeStyle(i)}
+                  />
+                ))
+            : data
+                .sort((a, b) => b - a)
+                .map((v, i) => (
+                  <ScaledCircle
+                    cx={chart.width / 2}
+                    cy={chart.width / 2}
+                    r={v}
+                    relativeTo={data[0]}
+                    size={chart.width / 2}
+                    style={computeStyle(i)}
+                  />
+                ))}
+        </g>
       </svg>
     </div>
   );

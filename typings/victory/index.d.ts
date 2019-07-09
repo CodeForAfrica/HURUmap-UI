@@ -2,16 +2,29 @@ declare module 'victory' {
   import * as React from 'react';
 
   export interface VictoryThemeDefinitionLatest extends VictoryThemeDefinition {
+    area?: VictoryThemeDefinition['area'] & {
+      height: number;
+      padding:
+        | number
+        | { top: number; bottom: number; left: number; right: number };
+      style: VictoryStyleInterface;
+      width: number;
+    };
     pie?: VictoryThemeDefinition['pie'] & {
       colorScale: string[];
       height: number;
-      padding: number;
+      padding:
+        | number
+        | { top: number; bottom: number; left: number; right: number };
       width: number;
     };
     proportionalArea?: {
       colorScale: string[];
       height: number;
-      padding: number;
+      padding:
+        | number
+        | { top: number; bottom: number; left: number; right: number };
+      style: VictoryStyleInterface;
       width: number;
     };
   }
@@ -25,7 +38,7 @@ declare module 'victory' {
     r?: number;
     role?: string;
     shapeRendering?: string;
-    style?: React.CSSProperties;
+    style?: VictoryStyleObject;
     transform?: PropTypes.string;
   }
 
@@ -40,7 +53,7 @@ declare module 'victory' {
     rx?: number;
     ry?: number;
     shapeRendering?: string;
-    style?: React.CSSProperties;
+    style?: VictoryStyleObject;
     transform?: PropTypes.string;
     width?: number;
     x?: number;
