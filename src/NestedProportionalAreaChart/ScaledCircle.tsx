@@ -1,6 +1,8 @@
 import React from 'react';
 import { Circle, VictoryStyleObject } from 'victory';
 
+import PieChart from '../PieChart';
+
 interface Props {
   className?: string;
   clipPath?: string;
@@ -17,6 +19,8 @@ interface Props {
 }
 
 function ScaledCircle({
+  cx,
+  cy,
   radii = [],
   relativeTo,
   size = 0,
@@ -24,20 +28,25 @@ function ScaledCircle({
   ...props
 }: Props) {
   return (
-    <g>
-      {radii
-        .sort((a, b) => b - a)
-        .map((r, i) => {
-          const scaledR = relativeTo ? (r * size) / relativeTo : r;
-          return (
-            <Circle
-              {...props}
-              r={scaledR}
-              style={typeof style === 'function' ? style(i) : style}
-            />
-          );
-        })}
-    </g>
+    <React.Fragment>
+      <g>
+        {radii
+          .sort((a, b) => b - a)
+          .map((r, i) => {
+            const scaledR = relativeTo ? (r * size) / relativeTo : r;
+            return (
+              <Circle
+                cx={cx}
+                cy={cy}
+                {...props}
+                r={scaledR}
+                style={typeof style === 'function' ? style(i) : style}
+              />
+            );
+          })}
+      </g>
+      <PieChart standalone={false} data={[1]} origin={{ x: cx, y: cy }} />
+    </React.Fragment>
   );
 }
 
