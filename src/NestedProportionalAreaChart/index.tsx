@@ -25,19 +25,11 @@ interface Props
 
 function NestedProportionalAreaChart({ classes, data, square = false }: Props) {
   const theme = useTheme<Theme>();
-  if (!data) {
+  const { proportionalArea: chart } = theme.chart;
+  if (!data || !chart) {
     return null;
   }
 
-  const {
-    proportionalArea: chart = {
-      colorScale: ['black'],
-      height: 450,
-      padding: 0,
-      style: {},
-      width: 450
-    }
-  } = theme.chart;
   const padding =
     typeof chart.padding === 'number'
       ? { padding: chart.padding }
