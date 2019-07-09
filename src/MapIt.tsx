@@ -162,11 +162,15 @@ function MapIt({
             !drawProfile &&
             geoLevel === 'continent'
           ) {
-            areaData = Object.entries(data).filter(area => {
-              return loadCountries.includes(area[1].country);
-            });
+            areaData = Object.entries(data)
+              .filter(area => {
+                console.log(area);
+                return loadCountries.includes(area[1].country);
+              })
+              .reduce((accum: { [key: string]: any }, [k, v]) => {
+                return Object.assign({}, accum, { [k]: v });
+              }, {});
           }
-          console.log(areaData);
           const areaKeys = Object.keys(areaData).join();
 
           return fetchGeoJson(areaKeys, Object.values(areaData));
