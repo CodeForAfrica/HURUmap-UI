@@ -23,6 +23,7 @@ module.exports = {
     ],
     'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
-    'react-hooks/exhaustive-deps': 'warn' // Checks effect dependencies
+    'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
+    'no-unused-vars': 'error'
   }
 };
