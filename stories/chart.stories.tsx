@@ -15,12 +15,11 @@ const rand = () => Number((Math.random() * 100).toFixed(1));
 
 storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
   .addDecorator(CenterDecorator)
+  .addDecorator(withKnobs)
   .add('Default', () => (
     <GroupedBarChart
-      width="50%"
-      height="50%"
-      title={text('title', 'This is a title')}
-      subtitle={text('subtitle', 'This is a subtitle')}
+      width={text('width', '80%')}
+      height={text('height', '50%')}
       dataUnit={text('dataUnit', '%')}
       data={object('data', [
         {
@@ -49,11 +48,9 @@ storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
   ))
   .add('Horizontal', () => (
     <GroupedBarChart
-      width="50%"
-      height="80%"
+      width={text('width', '50%')}
+      height={text('height', '100%')}
       horizontal
-      title={text('title', 'This is a title')}
-      subtitle={text('subtitle', 'This is a subtitle')}
       dataUnit={text('dataUnit', '%')}
       data={object('data', [
         {

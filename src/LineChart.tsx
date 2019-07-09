@@ -3,7 +3,7 @@ import { Theme, WithStyles } from '@material-ui/core';
 import { createStyles, useTheme, withStyles } from '@material-ui/styles';
 import { VictoryLine, VictoryLineProps } from 'victory';
 
-import ThemedComponent from './common/ThemedComponent';
+import ThemedComponent from './ThemedComponent';
 
 const styles = createStyles({
   root: {}

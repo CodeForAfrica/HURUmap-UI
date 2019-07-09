@@ -3,14 +3,16 @@ import { Theme, WithStyles } from '@material-ui/core';
 import { createStyles, useTheme, withStyles } from '@material-ui/styles';
 import { VictoryBar, VictoryGroup, VictoryAxis, VictoryChart } from 'victory';
 
-import ThemedComponent from './common/ThemedComponent';
-import ChartContainer, { ChartContainerProps } from './common/ChartContainer';
+import ThemedComponent from './ThemedComponent';
 
 const styles = createStyles({
-  root: {}
+  root: {
+    width: '100%',
+    height: '100%'
+  }
 });
 
-interface Props extends WithStyles<typeof styles>, ChartContainerProps {
+interface Props extends WithStyles<typeof styles> {
   width?: string | number;
   height?: string | number;
   horizontal?: boolean;
@@ -30,24 +32,20 @@ function GroupedBarChart({
   data,
   dataUnit = '',
   barWidth = 40,
-  title,
-  subtitle,
-  onInfo,
-  onShare,
   horizontal,
   width,
   height
 }: Props) {
   const theme = useTheme<Theme>();
-  const chartContainerRef = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [chartDimensions, setChartDimensions] = useState({
     height: 0,
     width: 0
   });
 
   const updateChartDimmensions = useCallback(() => {
-    if (chartContainerRef.current) {
-      const div = chartContainerRef.current;
+    if (ref.current) {
+      const div = ref.current;
       if (
         chartDimensions.height !== div.offsetHeight ||
         chartDimensions.width !== div.offsetWidth
@@ -58,20 +56,12 @@ function GroupedBarChart({
         }));
       }
     }
-  }, [chartContainerRef, chartDimensions]);
+  }, [ref, chartDimensions]);
   useEffect(() => {
     updateChartDimmensions();
-  }, [updateChartDimmensions]);
+  }, [width, height, updateChartDimmensions]);
   return (
-    <ChartContainer
-      contentRef={chartContainerRef}
-      classes={{ root: classes.root }}
-      style={{ width, height }}
-      title={title}
-      subtitle={subtitle}
-      onInfo={onInfo}
-      onShare={onShare}
-    >
+    <div ref={ref} className={classes.root} style={{ width, height }}>
       <VictoryChart
         horizontal={horizontal}
         width={chartDimensions.width}
@@ -94,7 +84,7 @@ function GroupedBarChart({
         </VictoryGroup>
         <VictoryAxis style={{ axis: { stroke: 'none' } }} />
       </VictoryChart>
-    </ChartContainer>
+    </div>
   );
 }
 

@@ -1,8 +1,6 @@
 import { configure, addDecorator } from '@storybook/react';
 import { withConsole } from '@storybook/addon-console';
 
-import './storybook.css'
-
 // In the action logger panel
 // Receive all console messages, warnings, errors
 // Including HMR logs

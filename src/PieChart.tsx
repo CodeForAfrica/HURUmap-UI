@@ -3,7 +3,7 @@ import { Theme, WithStyles } from '@material-ui/core';
 import { createStyles, useTheme, withStyles } from '@material-ui/styles';
 import { VictoryTooltip, VictoryPie, VictoryPieProps } from 'victory';
 
-import ThemedComponent from './common/ThemedComponent';
+import ThemedComponent from './ThemedComponent';
 
 const styles = createStyles({
   root: {}
