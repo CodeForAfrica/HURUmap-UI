@@ -6,7 +6,7 @@ const App: React.FC = () => {
   return (
     <Router>
       <Profile default/>
-      <Profile path=":geo" />
+      <Profile path="/:geoId" />
     </Router>
   );
 };
