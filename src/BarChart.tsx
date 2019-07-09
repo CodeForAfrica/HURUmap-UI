@@ -62,6 +62,7 @@ function BarChart({
     <div className={classes.root}>
       <VictoryChart domainPadding={{ x: 60, y: 200 }} height={550} width={700}>
         <VictoryBar
+          horizontal={horizontal}
           style={{
             data: { fill: '#7f9442' }
           }}
@@ -102,58 +103,19 @@ function BarChart({
           tickValues={[0, 17.5, 35]}
           tickFormat={['0%', '17.5%', '35%']}
         />
-
-        {horizontal && (
-          <VictoryBar
-            horizontal
-            theme={theme.chart}
-            style={{
-              data: { fill: '#7f9442' }
-            }}
-            barWidth={25}
-            data={data}
-            {...props}
-          />
-        )}
-        {vertical && (
-          <VictoryBar
-            {...props}
-            alignment="start"
-            style={{
-              data: { fill: '#DE9F39' }
-            }}
-            barWidth={25}
-            groupComponent={<g transform="translate(14, 0)" />}
-            data={[
-              { x: 1, y: 10 },
-              { x: 2, y: 6 },
-              { x: 3, y: 15 },
-              { x: 4, y: 32.5 },
-              { x: 5, y: 20 },
-              { x: 6, y: 15.5 },
-              { x: 7, y: 20 }
-            ]}
-          />
-        )}
-        {!horizontal && !comparsion && vertical ? (
-          <VictoryLine
-            data={median}
-            interpolation="step"
-            style={{
-              data: { stroke: 'black', strokeWidth: 0.8, opacity: 0.4 }
-            }}
-          />
-        ) : (
-          <div />
-        )}
         {comparsion && (
           <VictoryBar
-            horizontal
+            groupComponent={
+              !horizontal ? (
+                <g transform="translate(14, 0)" />
+              ) : (
+                <g transform="translate(0, 25)" />
+              )
+            }
             theme={theme.chart}
             style={{
               data: { fill: '#DE9F39' }
             }}
-            groupComponent={<g transform="translate(0, 25)" />}
             barWidth={25}
             {...props}
             data={[
