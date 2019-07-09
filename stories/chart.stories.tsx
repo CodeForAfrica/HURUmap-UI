@@ -1,12 +1,13 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { boolean, object, withKnobs, array } from '@storybook/addon-knobs';
+import { withKnobs, array, boolean, object, text } from '@storybook/addon-knobs';
 
 import {
   BarChart,
+  GroupedBarChart,
   LineChart,
-  NestedProportionalAreaChart,
-  PieChart
+  PieChart,
+  NestedProportionalAreaChart
 } from '../src';
 import { CenterDecorator } from './common';
 
@@ -15,6 +16,73 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
   .addDecorator(withKnobs)
   .add('Default', () => <BarChart />)
   .add('Horizontal', () => <BarChart horizontal />);
+
+const rand = () => Number((Math.random() * 100).toFixed(1));
+
+storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
+  .addDecorator(CenterDecorator)
+  .addDecorator(withKnobs)
+  .add('Default', () => (
+    <GroupedBarChart
+      width={text('width', '80%')}
+      height={text('height', '50%')}
+      dataUnit={text('dataUnit', '%')}
+      data={object('data', [
+        {
+          x: 'Slept under any net last night',
+          data: [
+            { x: 'Pregnant Women', y: rand() },
+            { x: 'Children', y: rand() }
+          ]
+        },
+        {
+          x: 'Used ITN last night',
+          data: [
+            { x: 'Pregnant Women', y: rand() },
+            { x: 'Children', y: rand() }
+          ]
+        },
+        {
+          x: 'Used ITN all year ',
+          data: [
+            { x: 'Pregnant Women', y: rand() },
+            { x: 'Children', y: rand() }
+          ]
+        }
+      ])}
+    />
+  ))
+  .add('Horizontal', () => (
+    <GroupedBarChart
+      width={text('width', '50%')}
+      height={text('height', '100%')}
+      horizontal
+      dataUnit={text('dataUnit', '%')}
+      data={object('data', [
+        {
+          x: 'Slept under any net last night',
+          data: [
+            { x: 'Pregnant Women', y: rand() },
+            { x: 'Children', y: rand() }
+          ]
+        },
+        {
+          x: 'Used ITN last night',
+          data: [
+            { x: 'Pregnant Women', y: rand() },
+            { x: 'Children', y: rand() }
+          ]
+        },
+        {
+          x: 'Used ITN all year ',
+          data: [
+            { x: 'Pregnant Women', y: rand() },
+            { x: 'Children', y: rand() }
+          ]
+        }
+      ])}
+    />
+  ));
 
 storiesOf('HURUmap UI|Charts/LineChart', module)
   .addDecorator(CenterDecorator)
