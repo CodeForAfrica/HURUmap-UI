@@ -89,7 +89,6 @@ import { CenterDecorator } from './common';
       geoLevel={text('geoLevel', 'district')}
       geoId={text('geoId', 'district-85')}
       geoCode={text('geoCode', '85')}
-      geoId={text('geoId', 'district-85')}
       geoChildLevel={text('geoChildLevel', 'ward')}
       geoParentLevel={text('geoParentLevel', 'region-27')}
       zoom={number('zoom', 6)}
