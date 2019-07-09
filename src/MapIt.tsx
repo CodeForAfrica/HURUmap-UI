@@ -28,9 +28,8 @@ interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   geoCode?: string;
   geoId?: string;
   geoChildLevel?: string;
-  geoParentLevel?: string;
   codeType?: string;
-  loadCountries?: string[];
+  filterCountries?: string[];
   generation?: string;
   tileLayer?: TileLayer;
   geoLayerFocusStyle?: PathOptions;
@@ -50,9 +49,8 @@ function MapIt({
   geoCode,
   geoId,
   geoLevel,
-  geoParentLevel,
   codeType,
-  loadCountries = ['KE', 'ZA'],
+  filterCountries = ['KE', 'ZA'],
   tileLayer,
   geoLayerFocusStyle = {
     color: '#777',
@@ -158,25 +156,26 @@ function MapIt({
         return areasRes.json().then((data: { [key: string]: any }) => {
           let areaData = data;
           if (
-            loadCountries.length > 0 &&
+            filterCountries.length > 0 &&
             !drawProfile &&
             geoLevel === 'continent'
           ) {
             areaData = Object.entries(data)
               .filter(area => {
-                return loadCountries.includes(area[1].country);
+                return filterCountries.includes(area[1].country);
               })
               .reduce((accum: { [key: string]: any }, [k, v]) => {
                 return Object.assign({}, accum, { [k]: v });
               }, {});
           }
+          console.log(areaData);
           const areaKeys = Object.keys(areaData).join();
 
           return fetchGeoJson(areaKeys, Object.values(areaData));
         });
       });
     },
-    [url, loadCountries, drawProfile, geoLevel, fetchGeoJson]
+    [url, filterCountries, drawProfile, geoLevel, fetchGeoJson]
   );
 
   const drawFeatures = useCallback(
@@ -240,7 +239,7 @@ function MapIt({
         })
         .then(() => {
           // if geo_child level is not empty
-          if (loadChildren && geoChildLevel !== '') {
+          if (loadChildren) {
             fetchMapitArea().then(area => {
               loadGeometryForChildLevel(area.id).then(childrenFeatures => {
                 drawFeatures(map, childrenFeatures);
@@ -257,7 +256,6 @@ function MapIt({
       });
     }
   }, [
-    geoChildLevel,
     drawProfile,
     loadGeometryForLevel,
     loadChildren,

@@ -21,7 +21,7 @@ import { CenterDecorator } from './common';
     <MapIt
       url={text('url', 'https://mapit.hurumap.org')}
       loadChildren={boolean('loadChildren', true)}
-      loadCountries={array('loadCountries', ['KE', 'TZ', 'ZA'])}
+      filterCountries={array('filterCountries', ['KE', 'TZ', 'ZA'])}
       drawProfile={boolean('drawProfile', false)}
       codeType={text('codeType', 'AFR')}
       geoLevel={text('geoLevel', 'continent')}
@@ -52,7 +52,7 @@ import { CenterDecorator } from './common';
     <MapIt
       url={text('url', 'https://mapit.hurumap.org')}
       loadChildren={boolean('loadChildren', true)}
-      loadCountries={array('loadCountries', [])}
+      filterCountries={array('filterCountries', [])}
       drawProfile={boolean('drawProfile', false)}
       codeType={text('codeType', 'KEN')}
       geoLevel={text('geoLevel', 'country')}
@@ -83,7 +83,7 @@ import { CenterDecorator } from './common';
     <MapIt
       url={text('url', 'https://mapit.hurumap.org')}
       loadChildren={boolean('loadChildren', false)}
-      loadCountries={array('loadCountries', [])}
+      filterCountries={array('filterCountries', [])}
       drawProfile={boolean('drawProfile', true)}
       codeType={text('codeType', 'AFR')}
       geoLevel={text('geoLevel', 'level1')}
@@ -114,14 +114,13 @@ import { CenterDecorator } from './common';
     <MapIt
       url={text('url', 'https://mapit.hurumap.org')}
       loadChildren={boolean('loadChildren', true)}
-      loadCountries={array('loadCountries', [])}
+      filterCountries={array('filterCountries', [])}
       drawProfile={boolean('drawProfile', true)}
       codeType={text('codeType', 'TZA')}
       geoLevel={text('geoLevel', 'district')}
       geoId={text('geoId', 'district-85')}
       geoCode={text('geoCode', '85')}
       geoChildLevel={text('geoChildLevel', 'ward')}
-      geoParentLevel={text('geoParentLevel', 'region-27')}
       zoom={number('zoom', 6)}
       center={array('center', [-6.1523563, 35.6754813]) as [number, number]}
       tileLayer={
