@@ -8,7 +8,7 @@ import {
 } from 'victory';
 
 import ScaledCircle from './ScaledCircle';
-import ScaledRect from './ScaledRect';
+import ScaledSquare from './ScaledSquare';
 import ThemedComponent from '../ThemedComponent';
 
 const styles = createStyles({
@@ -58,34 +58,25 @@ function NestedProportionalAreaChart({ classes, data, square = false }: Props) {
   return (
     <div className={classes.root}>
       <svg style={style} viewBox={`0 0 ${chart.width} ${chart.height}`}>
-        <g>
-          {square
-            ? data
-                .sort((a, b) => b - a)
-                .map((v, i) => (
-                  <ScaledRect
-                    x={0}
-                    y={0}
-                    width={v}
-                    height={v}
-                    relativeTo={data[0]}
-                    size={chart.width}
-                    style={computeStyle(i)}
-                  />
-                ))
-            : data
-                .sort((a, b) => b - a)
-                .map((v, i) => (
-                  <ScaledCircle
-                    cx={chart.width / 2}
-                    cy={chart.width / 2}
-                    r={v}
-                    relativeTo={data[0]}
-                    size={chart.width / 2}
-                    style={computeStyle(i)}
-                  />
-                ))}
-        </g>
+        {square ? (
+          <ScaledSquare
+            x={0}
+            y={0}
+            sides={data}
+            relativeTo={data[0]}
+            size={chart.width}
+            style={computeStyle}
+          />
+        ) : (
+          <ScaledCircle
+            cx={chart.width / 2}
+            cy={chart.width / 2}
+            radii={data}
+            relativeTo={data[0]}
+            size={chart.width / 2}
+            style={computeStyle}
+          />
+        )}
       </svg>
     </div>
   );

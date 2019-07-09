@@ -1,23 +1,25 @@
 import React from 'react';
-import { Circle, VictoryStyleObject } from 'victory';
+import { Rect, VictoryStyleObject } from 'victory';
 
 interface Props {
   className?: string;
   clipPath?: string;
-  cx?: number;
-  cy?: number;
   events?: React.DOMAttributes<any>;
-  radii?: number[];
   role?: string;
+  rx?: number;
+  ry?: number;
   shapeRendering?: string;
+  sides?: number[];
   size?: number;
   style?: VictoryStyleObject | ((i: number) => VictoryStyleObject | undefined);
   transform?: string;
+  x?: number;
+  y?: number;
   relativeTo?: number;
 }
 
-function ScaledCircle({
-  radii = [],
+function ScaledSquare({
+  sides = [],
   relativeTo,
   size = 0,
   style,
@@ -25,14 +27,15 @@ function ScaledCircle({
 }: Props) {
   return (
     <g>
-      {radii
+      {sides
         .sort((a, b) => b - a)
-        .map((r, i) => {
-          const scaledR = relativeTo ? (r * size) / relativeTo : r;
+        .map((side, i) => {
+          const scaledSide = relativeTo ? (side * size) / relativeTo : side;
           return (
-            <Circle
+            <Rect
               {...props}
-              r={scaledR}
+              width={scaledSide}
+              height={scaledSide}
               style={typeof style === 'function' ? style(i) : style}
             />
           );
@@ -41,4 +44,4 @@ function ScaledCircle({
   );
 }
 
-export default ScaledCircle;
+export default ScaledSquare;

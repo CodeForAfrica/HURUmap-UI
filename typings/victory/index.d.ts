@@ -39,7 +39,7 @@ declare module 'victory' {
     role?: string;
     shapeRendering?: string;
     style?: VictoryStyleObject;
-    transform?: PropTypes.string;
+    transform?: string;
   }
 
   export class Circle extends React.Component<CircleProps, any> {}
@@ -54,7 +54,7 @@ declare module 'victory' {
     ry?: number;
     shapeRendering?: string;
     style?: VictoryStyleObject;
-    transform?: PropTypes.string;
+    transform?: string;
     width?: number;
     x?: number;
     y?: number;
