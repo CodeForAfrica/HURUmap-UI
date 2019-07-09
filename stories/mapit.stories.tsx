@@ -133,6 +133,7 @@ storiesOf('Hurumap UI|MapIt/Country', module)
       countryCode={text('countryCode', '')}
       geoLevel={text('geoLevel', 'level1')}
       geoCode={text('geoCode', 'KE_1_008')}
+      geoId={text('geoId', 'level1-KE_1_008')}
       geoChildLevel={text('geoChildLevel', '')}
       geoParentLevel={text('geoParentLevel', 'country-KE')}
       zoom={number('zoom', 3)}
@@ -162,6 +163,7 @@ storiesOf('Hurumap UI|MapIt/Country', module)
       codeType={text('codeType', 'TZA')}
       countryCode={text('countryCode', 'TZ')}
       geoLevel={text('geoLevel', 'district')}
+      geoId={text('geoId', 'district-85')}
       geoCode={text('geoCode', '85')}
       geoChildLevel={text('geoChildLevel', 'ward')}
       geoParentLevel={text('geoParentLevel', 'region-27')}

@@ -25,6 +25,7 @@ interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   loadChildren?: boolean;
   geoLevel?: string;
   geoCode?: string;
+  geoId?: string;
   geoChildLevel?: string;
   geoParentLevel?: string;
   codeType?: string;
@@ -46,6 +47,7 @@ function MapIt({
   loadChildren,
   geoChildLevel,
   geoCode,
+  geoId,
   geoLevel,
   geoParentLevel,
   codeType,
@@ -123,6 +125,7 @@ function MapIt({
   );
 
   const loadGeometryForGeo = useCallback((): Promise<any> => {
+    console.log(`${url}/code/${codeType}/${geoLevel}-${geoCode}`);
     return fetch(`${url}/code/${codeType}/${geoLevel}-${geoCode}`).then(
       areaRes => {
         if (!areaRes.ok) return Promise.reject();
@@ -147,6 +150,7 @@ function MapIt({
   }, [codeType, geoCode, geoLevel, url]);
 
   async function fetchAreaType() {
+    console.log(`${url}/code/${codeType}/${geoLevel}-${geoCode}`);
     const areaRes = await fetch(
       `${url}/code/${codeType}/${geoLevel}-${geoCode}`
     );
@@ -159,6 +163,9 @@ function MapIt({
     // Using the geoid (geoLevel-geoCode) we will first request mapit api to give us=> mapit type of a specific geo
     return fetchAreaType().then(area => {
       const { country, type } = area;
+      console.log(
+        `${url}/areas/${type}?generation=${generation}&country=${country}`
+      );
       return fetch(
         `${url}/areas/${type}?generation=${generation}&country=${country}`
       ).then(areaRes => {
@@ -233,25 +240,39 @@ function MapIt({
       return leaflet
         .geoJSON(features, {
           onEachFeature: (feature, layer: any) => {
-            layer.bindTooltip(feature.properties.name, { direction: 'auto' });
-            layer.on('mouseover', () => {
-              layer.setStyle(geoLayerHoverStyle);
-            });
-            layer.on('mouseout', () => {
+            console.log(`I am here ${geoId}`);
+            if (geoId === feature.properties.codes[codeType || 'AFR']) {
+              console.log(`I am here ${geoId}`);
+              layer.setStyle(geoLayerFocusStyle);
+              map.fitBounds(layer.getBounds());
+            } else {
+              layer.bindTooltip(feature.properties.name, { direction: 'auto' });
+              layer.on('mouseover', () => {
+                layer.setStyle(geoLayerHoverStyle);
+              });
+              layer.on('mouseout', () => {
+                layer.setStyle(geoLayerBlurStyle);
+              });
+              layer.on('click', () => {
+                if (onClickGeoLayer) {
+                  const info = feature.properties;
+                  onClickGeoLayer(info);
+                }
+              });
               layer.setStyle(geoLayerBlurStyle);
-            });
-            layer.on('click', () => {
-              if (onClickGeoLayer) {
-                const info = feature.properties;
-                onClickGeoLayer(info);
-              }
-            });
-            layer.setStyle(geoLayerBlurStyle);
+            }
           }
         })
         .addTo(map);
     },
-    [geoLayerHoverStyle, geoLayerBlurStyle, onClickGeoLayer]
+    [
+      geoId,
+      codeType,
+      geoLayerFocusStyle,
+      geoLayerBlurStyle,
+      geoLayerHoverStyle,
+      onClickGeoLayer
+    ]
   );
 
   const load = useCallback(() => {
@@ -261,24 +282,24 @@ function MapIt({
       return;
     }
     if (geoCode && geoLevel) {
-      let areaID = '';
+      const areaID = '';
 
-      loadGeometryForGeo().then(feature => {
-        areaID = feature.properties.id;
-        drawFocusFeature(map, feature);
+      // loadGeometryForGeo().then(feature => {
+      //   areaID = feature.properties.id;
+      // });
+      console.log(geoCode);
+
+      loadGeometryForLevel().then(features => {
+        console.log(features);
+        drawFeatures(map, features);
       });
-
-      loadGeometryForLevel()
-        .then(features => {
-          drawFeatures(map, features);
-        })
-        .then(() => {
-          if (loadChildren && geoChildLevel !== '') {
-            loadGeometryForChildLevel(areaID).then(childrenFeatures => {
-              drawFeatures(map, childrenFeatures);
-            });
-          }
-        });
+      // .then(() => {
+      //   if (loadChildren && geoChildLevel !== '') {
+      //     loadGeometryForChildLevel(areaID).then(childrenFeatures => {
+      //       drawFeatures(map, childrenFeatures);
+      //     });
+      //   }
+      // });
     } else {
       loadGeometryForCountryLevel().then(features => {
         if (loadChildren) {
@@ -293,14 +314,10 @@ function MapIt({
       });
     }
   }, [
-    geoChildLevel,
     geoCode,
     geoLevel,
-    loadGeometryForGeo,
     loadGeometryForLevel,
-    drawFocusFeature,
     loadChildren,
-    loadGeometryForChildLevel,
     drawFeatures,
     loadGeometryForCountryLevel
   ]);
