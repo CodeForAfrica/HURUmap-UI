@@ -164,7 +164,6 @@ function MapIt({
           ) {
             areaData = Object.entries(data)
               .filter(area => {
-                console.log(area);
                 return loadCountries.includes(area[1].country);
               })
               .reduce((accum: { [key: string]: any }, [k, v]) => {
@@ -252,7 +251,6 @@ function MapIt({
     } else {
       fetchMapitArea().then(area => {
         return loadGeometryForChildLevel(area.id).then(childrenFeatures => {
-          console.log(childrenFeatures);
           const layer = drawFeatures(map, childrenFeatures);
           map.fitBounds(layer.getBounds());
         });
