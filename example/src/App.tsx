@@ -1,12 +1,13 @@
 import React from 'react';
-
-import { MapIt } from 'hurumap-ui';
+import { Router } from '@reach/router';
+import Profile from './Profile';
 
 const App: React.FC = () => {
   return (
-    <div style={{ width: "100%", height: "100vh"}}>
-      <MapIt loadCountries={['KE']} />
-    </div>
+    <Router>
+      <Profile default/>
+      <Profile path=":geo" />
+    </Router>
   );
 };
 
