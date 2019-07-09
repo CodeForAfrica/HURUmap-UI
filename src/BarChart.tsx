@@ -49,6 +49,16 @@ const median = [
   { x: 7, y: 5 },
   { x: 8, y: 5 }
 ];
+const comparison = [
+  { x: 0, y: 0 },
+  { x: 1, y: 10 },
+  { x: 2, y: 6 },
+  { x: 3, y: 15 },
+  { x: 4, y: 32.5 },
+  { x: 5, y: 20 },
+  { x: 6, y: 15.5 },
+  { x: 7, y: 20 }
+];
 
 function BarChart({
   classes,
@@ -107,7 +117,7 @@ function BarChart({
           <VictoryBar
             groupComponent={
               !horizontal ? (
-                <g transform="translate(14, 0)" />
+                <g transform="translate(25, 0)" />
               ) : (
                 <g transform="translate(0, 25)" />
               )
@@ -118,16 +128,7 @@ function BarChart({
             }}
             barWidth={25}
             {...props}
-            data={[
-              { x: 0, y: 0 },
-              { x: 1, y: 10 },
-              { x: 2, y: 6 },
-              { x: 3, y: 15 },
-              { x: 4, y: 32.5 },
-              { x: 5, y: 20 },
-              { x: 6, y: 15.5 },
-              { x: 7, y: 20 }
-            ]}
+            data={comparison}
           />
         )}
       </VictoryChart>
