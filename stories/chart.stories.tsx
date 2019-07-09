@@ -68,8 +68,10 @@ storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('Default', () => (
-    <NestedProportionalAreaChart
-      square={boolean('square', false)}
-      data={array('data', [100, 45])}
-    />
+    <div>
+      <NestedProportionalAreaChart
+        square={boolean('square', false)}
+        data={array('data', [100, 45])}
+      />
+    </div>
   ));
