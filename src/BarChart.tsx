@@ -1,11 +1,6 @@
 import React from 'react';
 import { Theme, WithStyles } from '@material-ui/core';
-import {
-  createStyles,
-  useTheme,
-  withStyles,
-  mergeClasses
-} from '@material-ui/styles';
+import { createStyles, useTheme, withStyles } from '@material-ui/styles';
 import {
   VictoryBar,
   VictoryBarProps,
@@ -122,7 +117,7 @@ function BarChart({
             }
             theme={theme.chart}
             style={{
-              data: { fill: '#DE9F39' }
+              data: { fill: '#de9f39' }
             }}
             barWidth={25}
             {...props}
@@ -134,8 +129,14 @@ function BarChart({
             horizontal={horizontal}
             data={median}
             interpolation="step"
+            groupComponent={<g transform="translate(6, 0)" />}
             style={{
-              data: { stroke: 'black', strokeWidth: 0.8, opacity: 0.4 }
+              data: {
+                stroke: 'black',
+                strokeWidth: 0.8,
+                opacity: 0.4,
+                strokeLinecap: 'round'
+              }
             }}
           />
         )}
