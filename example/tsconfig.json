@@ -1,8 +1,12 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -11,11 +15,12 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "jsx": "react",
-    "declaration": true,
-    "rootDirs": ["src", "stories"],
-    "typeRoots": [ "./typings", "node_modules/@types"]
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve"
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "build", "docs", "typings", "stories"]
+  "include": [
+    "src"
+  ],
+  "exclude": ["node_modules"]
 }
