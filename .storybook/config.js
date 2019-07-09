@@ -1,13 +1,14 @@
 import { configure, addDecorator } from '@storybook/react';
 import { withConsole } from '@storybook/addon-console';
 
-
 // In the action logger panel
 // Receive all console messages, warnings, errors
 // Including HMR logs
-addDecorator((storyFn, context) => withConsole({
-  panelExclude: [],
-})(storyFn)(context));
+addDecorator((storyFn, context) =>
+  withConsole({
+    panelExclude: []
+  })(storyFn)(context)
+);
 
 // Automatically import all files ending in *.stories.tsx
 const req = require.context('../stories', true, /\.stories\.tsx$/);
