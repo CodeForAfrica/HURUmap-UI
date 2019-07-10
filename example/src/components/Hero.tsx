@@ -23,6 +23,7 @@ const styles = (theme: Theme) =>
     },
     heroContentGrid: {
       flexGrow: 1,
+      position: 'relative',
       [theme.breakpoints.down('sm')]: {
         margin: 0
       },

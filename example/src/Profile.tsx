@@ -6,6 +6,9 @@ import { RouteComponentProps } from '@reach/router';
 import bg from './assets/images/background.png';
 import ProfileHero from './components/ProfileHero';
 import ProfileTabs from './components/ProfileTabs';
+import ChartsContainer from './components/ChartsContainer';
+import ChartContainer from './components/ChartContainer';
+import { Grid } from '@material-ui/core';
 
 interface Props extends RouteComponentProps {
   geoId?: string;
@@ -22,7 +25,7 @@ function Profile({ geoId, navigate }: Props) {
   console.log(bg);
   return (
     <div
-      style={{ width: '100vw', height: '100vh', backgroundImage: `url(${bg})` }}
+      style={{ width: '100vw', height: '100vh', backgroundImage: `url(${bg})`, overflowX: 'hidden' }}
     >
         <ProfileHero
           geoCode={geoCode}
@@ -69,6 +72,34 @@ function Profile({ geoId, navigate }: Props) {
           />
         </ProfileHero>
         <ProfileTabs tabs={[{ name: 'Tab #1', href: '#1' }, { name: 'Tab #2', href: '#2' },{ name: 'Tab #3', href: '#3' }]} />
+        <ChartsContainer>
+          <Grid container spacing={2}>
+
+          <Grid item md={8}>
+          <ChartContainer title="Population" subtitle="People living there">
+
+          </ChartContainer>
+          </Grid>
+          <Grid item md={4}>
+          <ChartContainer title="Extension" subtitle="Surface in km2">
+
+          </ChartContainer>
+          </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+
+          <Grid item md={8}>
+          <ChartContainer title="Age distribution" subtitle="">
+
+          </ChartContainer>
+          </Grid>
+          <Grid item md={4}>
+          <ChartContainer title="Median age" subtitle="Average age of the population (years old)">
+
+          </ChartContainer>
+          </Grid>
+          </Grid>
+        </ChartsContainer>
     </div>
   );
 }
