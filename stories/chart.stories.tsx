@@ -31,10 +31,22 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
         { x: 6, y: 4 },
         { x: 7, y: 10 }
       ])}
-      tickValues={[1, 2, 3, 4, 5, 6, 7]}
-      tickFormat={['0-9', '10-19', '20-29', '30-39', '40-49', '50-69', '80+']}
-      dependentTickValues={[0, 17.5, 35]}
-      dependentTickFormat={['0%', '17.5%', '35%']}
+      tickValues={object('tickValues', [1, 2, 3, 4, 5, 6, 7])}
+      tickFormat={object('tickFormat', [
+        '0-9',
+        '10-19',
+        '20-29',
+        '30-39',
+        '40-49',
+        '50-69',
+        '80+'
+      ])}
+      dependentTickValues={object('dependentTickValues', [0, 17.5, 35])}
+      dependentTickFormat={object('dependentTickFormat', [
+        '0%',
+        '17.5%',
+        '35%'
+      ])}
     />
   ))
   .add('Horizontal', () => (
@@ -50,10 +62,22 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
         { x: 6, y: 4 },
         { x: 7, y: 10 }
       ])}
-      tickValues={[1, 2, 3, 4, 5, 6, 7]}
-      tickFormat={['0-9', '10-19', '20-29', '30-39', '40-49', '50-69', '80+']}
-      dependentTickValues={[0, 17.5, 35]}
-      dependentTickFormat={['0%', '17.5%', '35%']}
+      tickValues={object('tickValues', [1, 2, 3, 4, 5, 6, 7])}
+      tickFormat={object('tickFormat', [
+        '0-9',
+        '10-19',
+        '20-29',
+        '30-39',
+        '40-49',
+        '50-69',
+        '80+'
+      ])}
+      dependentTickValues={object('dependentTickValues', [0, 17.5, 35])}
+      dependentTickFormat={object('dependentTickFormat', [
+        '0%',
+        '17.5%',
+        '35%'
+      ])}
     />
   ))
   .add('Comparison Vertical', () => (
@@ -91,10 +115,22 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
         { x: 6, y: 15.5 },
         { x: 7, y: 20 }
       ])}
-      tickValues={[1, 2, 3, 4, 5, 6, 7]}
-      tickFormat={['0-9', '10-19', '20-29', '30-39', '40-49', '50-69', '80+']}
-      dependentTickValues={[0, 17.5, 35]}
-      dependentTickFormat={['0%', '17.5%', '35%']}
+      tickValues={object('tickValues', [1, 2, 3, 4, 5, 6, 7])}
+      tickFormat={object('tickFormat', [
+        '0-9',
+        '10-19',
+        '20-29',
+        '30-39',
+        '40-49',
+        '50-69',
+        '80+'
+      ])}
+      dependentTickValues={object('dependentTickValues', [0, 17.5, 35])}
+      dependentTickFormat={object('dependentTickFormat', [
+        '0%',
+        '17.5%',
+        '35%'
+      ])}
     />
   ))
   .add('Comparison Horizontal', () => (
@@ -133,10 +169,22 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
         { x: 6, y: 15.5 },
         { x: 7, y: 20 }
       ])}
-      tickValues={[1, 2, 3, 4, 5, 6, 7]}
-      tickFormat={['0-9', '10-19', '20-29', '30-39', '40-49', '50-69', '80+']}
-      dependentTickValues={[0, 17.5, 35]}
-      dependentTickFormat={['0%', '17.5%', '35%']}
+      tickValues={object('tickValues', [1, 2, 3, 4, 5, 6, 7])}
+      tickFormat={object('tickFormat', [
+        '0-9',
+        '10-19',
+        '20-29',
+        '30-39',
+        '40-49',
+        '50-69',
+        '80+'
+      ])}
+      dependentTickValues={object('dependentTickValues', [0, 17.5, 35])}
+      dependentTickFormat={object('dependentTickFormat', [
+        '0%',
+        '17.5%',
+        '35%'
+      ])}
     />
   ));
 
