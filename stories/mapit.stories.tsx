@@ -14,14 +14,18 @@ import { TileLayer } from 'leaflet';
 import { MapIt } from '../src';
 import { CenterDecorator } from './common';
 
-storiesOf('Hurumap UI|MapIt/Continent', module)
+  storiesOf('Hurumap UI|MapIt/Geography', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
-  .add('Default', () => (
+  .add('ContinentRoot', () => (
     <MapIt
       url={text('url', 'https://mapit.hurumap.org')}
-      loadChildren={boolean('loadChildren', false)}
-      loadCountries={array('loadCountries', ['KE', 'ZA', 'TZ'])}
+      drawChildren={boolean('drawChildren', true)}
+      filterCountries={array('filterCountries', ['KE', 'TZ', 'ZA'])}
+      drawProfile={boolean('drawProfile', false)}
+      codeType={text('codeType', 'AFR')}
+      geoLevel={text('geoLevel', 'continent')}
+      geoCode={text('geoCode', 'AFR')}
       zoom={number('zoom', 3)}
       center={array('center', [8.7832, 34.5085]) as [number, number]}
       tileLayer={
@@ -42,13 +46,75 @@ storiesOf('Hurumap UI|MapIt/Continent', module)
       onClickGeoLayer={action('onClickGeoLayer')}
     />
   ))
-  .add('Children', () => (
+  .add('CountryRoot', () => (
     <MapIt
       url={text('url', 'https://mapit.hurumap.org')}
-      loadChildren={boolean('loadChildren', true)}
-      loadCountries={array('loadCountries', ['KE', 'ZA', 'TZ'])}
+      drawChildren={boolean('drawChildren', true)}
+      filterCountries={array('filterCountries', [])}
+      drawProfile={boolean('drawProfile', false)}
+      codeType={text('codeType', 'KEN')}
+      geoLevel={text('geoLevel', 'country')}
+      geoCode={text('geoCode', 'KE')}
       zoom={number('zoom', 3)}
       center={array('center', [8.7832, 34.5085]) as [number, number]}
+      tileLayer={
+        new TileLayer(
+          text(
+            'tileLayer',
+            'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
+          )
+        )
+      }
+      geoLayerBlurStyle={object('geoLayerBlurStyle', {
+        color: '#00d',
+        fillColor: '#ccc',
+        weight: 1.0,
+        opacity: 0.3,
+        fillOpacity: 0.3
+      })}
+      onClickGeoLayer={action('onClickGeoLayer')}
+    />
+  ))
+  .add('DefaultProfile', () => (
+    <MapIt
+      url={text('url', 'https://mapit.hurumap.org')}
+      drawChildren={boolean('drawChildren', false)}
+      filterCountries={array('filterCountries', [])}
+      drawProfile={boolean('drawProfile', true)}
+      codeType={text('codeType', 'AFR')}
+      geoLevel={text('geoLevel', 'level1')}
+      geoCode={text('geoCode', 'KE_1_008')}
+      zoom={number('zoom', 3)}
+      center={array('center', [8.7832, 34.5085]) as [number, number]}
+      tileLayer={
+        new TileLayer(
+          text(
+            'tileLayer',
+            'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
+          )
+        )
+      }
+      geoLayerBlurStyle={object('geoLayerBlurStyle', {
+        color: '#00d',
+        fillColor: '#ccc',
+        weight: 1.0,
+        opacity: 0.3,
+        fillOpacity: 0.3
+      })}
+      onClickGeoLayer={action('onClickGeoLayer')}
+    />
+  ))
+  .add('ProfileChildren', () => (
+    <MapIt
+      url={text('url', 'https://mapit.hurumap.org')}
+      drawChildren={boolean('drawChildren', true)}
+      filterCountries={array('filterCountries', [])}
+      drawProfile={boolean('drawProfile', true)}
+      codeType={text('codeType', 'TZA')}
+      geoLevel={text('geoLevel', 'district')}
+      geoCode={text('geoCode', '85')}
+      zoom={number('zoom', 6)}
+      center={array('center', [-6.1523563, 35.6754813]) as [number, number]}
       tileLayer={
         new TileLayer(
           text(
@@ -68,89 +134,4 @@ storiesOf('Hurumap UI|MapIt/Continent', module)
     />
   ));
 
-storiesOf('Hurumap UI|MapIt/Country', module)
-  .addDecorator(CenterDecorator)
-  .addDecorator(withKnobs)
-  .add('Default', () => (
-    <MapIt
-      url={text('url', 'https://mapit.hurumap.org')}
-      loadChildren={boolean('loadChildren', false)}
-      loadCountries={array('loadCountries', ['KE'])}
-      zoom={number('zoom', 3)}
-      center={array('center', [8.7832, 34.5085]) as [number, number]}
-      tileLayer={
-        new TileLayer(
-          text(
-            'tileLayer',
-            'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
-          )
-        )
-      }
-      geoLayerBlurStyle={object('geoLayerBlurStyle', {
-        color: '#00d',
-        fillColor: '#ccc',
-        weight: 1.0,
-        opacity: 0.3,
-        fillOpacity: 0.3
-      })}
-      onClickGeoLayer={action('onClickGeoLayer')}
-    />
-  ))
-  .add('Children', () => (
-    <MapIt
-      url={text('url', 'https://mapit.hurumap.org')}
-      loadChildren={boolean('loadChildren', true)}
-      loadCountries={array('loadCountries', ['KE'])}
-      zoom={number('zoom', 3)}
-      center={array('center', [8.7832, 34.5085]) as [number, number]}
-      tileLayer={
-        new TileLayer(
-          text(
-            'tileLayer',
-            'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
-          )
-        )
-      }
-      geoLayerBlurStyle={object('geoLayerBlurStyle', {
-        color: '#00d',
-        fillColor: '#ccc',
-        weight: 1.0,
-        opacity: 0.3,
-        fillOpacity: 0.3
-      })}
-      onClickGeoLayer={action('onClickGeoLayer')}
-    />
-  ))
-  .add('Focused Child', () => (
-    <MapIt
-      url={text('url', 'https://mapit.hurumap.org')}
-      focusOn={number('focusOn', 13)}
-      loadChildren={boolean('loadChildren', true)}
-      loadCountries={array('loadCountries', ['TZ'])}
-      zoom={number('zoom', 3)}
-      center={array('center', [8.7832, 34.5085]) as [number, number]}
-      tileLayer={
-        new TileLayer(
-          text(
-            'tileLayer',
-            'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
-          )
-        )
-      }
-      geoLayerBlurStyle={object('geoLayerBlurStyle', {
-        color: '#00d',
-        fillColor: '#ccc',
-        weight: 1.0,
-        opacity: 0.3,
-        fillOpacity: 0.3
-      })}
-      geoLayerFocusStyle={object('geoLayerFocusStyle', {
-        color: '#ccc',
-        fillColor: '#0f0',
-        weight: 1.0,
-        opacity: 0.3,
-        fillOpacity: 0.3
-      })}
-      onClickGeoLayer={action('onClickGeoLayer')}
-    />
-  ));
+
