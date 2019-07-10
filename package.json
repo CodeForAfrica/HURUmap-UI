@@ -47,6 +47,7 @@
     "lint-staged": "yarn eslint --fix",
     "start": "start-storybook",
     "build": "yarn build:lib",
+    "build:example": "cd example && yarn build",
     "build:lib": "tsc && yarn copy-svg-to-lib && yarn copy-png-to-lib",
     "copy-svg-to-lib": "cpx \"./src/**/*.svg\" ./dist",
     "copy-png-to-lib": "cpx \"./src/**/*.png\" ./dist",
