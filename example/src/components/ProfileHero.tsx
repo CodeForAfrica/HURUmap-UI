@@ -12,6 +12,7 @@ import Hero, { HeroTitle, HeroTitleGrid, HeroDetail } from './Hero';
 // import searchIcon from '../../assets/images/icons/location.svg';
 import { Theme } from '@material-ui/core';
 import { WithStyles } from '@material-ui/core';
+import { Profile } from '../lib/hurumap-dto';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -73,32 +74,7 @@ interface Props extends WithStyles<typeof styles> {
   head2head?: boolean;
   geoLevel: string;
   geoCode: string;
-  profile: {
-    demographics: {
-      total_population: {
-        values: {
-          this: number;
-        };
-      };
-      population_density: {
-        values: {
-          this: number;
-        };
-      };
-    };
-    primary_releases: {
-      active: {
-        citation: string;
-      };
-    };
-    geography: {
-      parents: { [key: string]: { name: string; full_geoid: string } };
-      this: {
-        square_kms: string;
-        short_name: string;
-      };
-    };
-  };
+  profile: Profile;
 }
 
 function ProfileHero({
@@ -110,25 +86,25 @@ function ProfileHero({
   children
 }: Props) {
   const {
-    demographics,
+    // demographics,
     primary_releases: primaryReleases,
     geography
   } = profile;
-  let population;
-  if (demographics.total_population && demographics.total_population.values) {
-    population = demographics.total_population.values.this.toFixed(0);
-  }
-  let populationDensity;
-  if (
-    demographics.population_density &&
-    demographics.population_density.values
-  ) {
-    populationDensity = demographics.population_density.values.this.toFixed(1);
-  }
+  let population = 0;
+  // if (demographics.total_population && demographics.total_population.values) {
+  //   population = demographics.total_population.values.this.toFixed(0);
+  // }
+  let populationDensity = 0;
+  // if (
+  //   demographics.population_density &&
+  //   demographics.population_density.values
+  // ) {
+  //   populationDensity = demographics.population_density.values.this.toFixed(1);
+  // }
   const { active: activeRelease } = primaryReleases;
   const { parents: parentLinks } = geography;
   const { square_kms: squarekmsStr } = geography.this;
-  let squarekms: string | number = parseFloat(squarekmsStr);
+  let squarekms: string | number = squarekmsStr;
   if (!Number.isNaN(squarekms)) {
     if (squarekms < 1.0) {
       squarekms = squarekms.toFixed(3);
@@ -146,15 +122,14 @@ function ProfileHero({
         </HeroTitle>
         <Typography variant="body2" className={classes.caption} component="p">
           {geoLevel}{' '}
-          {parentLinks && Object.keys(parentLinks).length > 1 ? (
+          {parentLinks ? (
             <Typography variant="body1" className={classes.captionItem}>
               in{' '}
-              {Object.keys(parentLinks)
-                .slice(0, -1)
+              {Object.values(parentLinks)
                 .map(item => (
                   <span>
-                    <a href={`/profiles/${parentLinks[item].full_geoid}`}>
-                      {parentLinks[item].name}
+                    <a href={`/profiles/${item.full_geoid}`}>
+                      {item.name}
                     </a>
                     {', '}
                   </span>
