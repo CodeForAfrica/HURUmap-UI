@@ -72,13 +72,14 @@ function Profile({ geoId, navigate }: Props) {
                 subtitle=""
               >
                 <GroupedBarChart
+                  horizontal
                   width="100%"
                   height="200px"
-                  horizontal
+                  barWidth={10}
                   dataUnit="%"
                   data={[
                     {
-                      x: 'Slept under any net last night',
+                      x: '',
                       data: [{ x: '17', y: 50 }, { x: '25', y: 40 }]
                     }
                   ]}
