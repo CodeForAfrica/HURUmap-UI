@@ -120,7 +120,7 @@ function ProfileHero({
         <HeroTitle breakWord small>
           {profileName}
         </HeroTitle>
-        <Typography variant="body2" className={classes.caption} component="p">
+        <Typography variant="body2" className={classes.caption}>
           {geoLevel}{' '}
           {parentLinks ? (
             <Typography variant="body1" className={classes.captionItem}>
@@ -170,7 +170,6 @@ function ProfileHero({
           className={classNames(classes.release, {
             [classes.h2hRelease]: head2head
           })}
-          component="div"
         >
           {activeRelease.citation}
           {/* <ReleaseDropdown primaryReleases={primaryReleases} fromHero /> */}

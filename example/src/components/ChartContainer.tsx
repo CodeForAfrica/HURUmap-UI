@@ -1,6 +1,6 @@
 import React from 'react';
 import { WithStyles, Typography, ButtonBase, Grid } from '@material-ui/core';
-import { createStyles, withStyles, CSSProperties } from '@material-ui/styles';
+import { createStyles, withStyles } from '@material-ui/styles';
 
 const styles = createStyles({
   root: {
@@ -51,11 +51,9 @@ export interface ChartContainerProps {
 
 interface Props extends WithStyles<typeof styles>, ChartContainerProps {
   children: any;
-  style?: CSSProperties;
 }
 
 function ChartContainer({
-  style,
   title,
   subtitle,
   onShare,
@@ -64,7 +62,7 @@ function ChartContainer({
   children
 }: Props) {
   return (
-    <div className={classes.root} style={style}>
+    <div className={classes.root}>
       <Grid
         container
         direction="row"
