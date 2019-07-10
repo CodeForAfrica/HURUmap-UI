@@ -27,11 +27,19 @@ interface Props extends WithStyles<typeof styles>, VictoryBarProps {
     x: string | number;
     y: number | number;
   }[];
+  tickValues?: (string | number)[];
+  tickFormat?: (string | number)[];
+  dependentTickValues?: (string | number)[];
+  dependentTickFormat?: (string | number)[];
 }
 
 function BarChart({
   classes,
   data,
+  tickValues,
+  tickFormat,
+  dependentTickValues,
+  dependentTickFormat,
   median,
   comparisonData,
   comparison = false,
@@ -40,7 +48,6 @@ function BarChart({
   ...props
 }: Props) {
   const theme = useTheme<Theme>();
-
   return (
     <div className={classes.root}>
       <VictoryChart domainPadding={{ x: 0, y: 200 }} height={550} width={700}>
@@ -63,16 +70,8 @@ function BarChart({
             ticks: { stroke: 'none' },
             tickLabels: { fontSize: 15, padding: 10, opacity: 0.5 }
           }}
-          tickValues={[1, 2, 3, 4, 5, 6, 7]}
-          tickFormat={[
-            '0-9',
-            '10-19',
-            '20-29',
-            '30-39',
-            '40-49',
-            '50-69',
-            '80+'
-          ]}
+          tickValues={tickValues}
+          tickFormat={tickFormat}
         />
         <VictoryAxis
           dependentAxis
@@ -83,8 +82,8 @@ function BarChart({
             ticks: { stroke: 'none' },
             tickLabels: { fontSize: 15, padding: 10, opacity: 0.5 }
           }}
-          tickValues={[0, 17.5, 35]}
-          tickFormat={['0%', '17.5%', '35%']}
+          tickValues={dependentTickValues}
+          tickFormat={dependentTickFormat}
         />
         {comparison && comparisonData && (
           <VictoryBar
