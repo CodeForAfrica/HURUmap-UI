@@ -13,15 +13,26 @@ const styles = createStyles({
   }
 });
 
+interface Area {
+  id: string;
+  name: string;
+  generation_high: number;
+  generation_low: number;
+  all_names: {};
+  codes: { [key: string]: string };
+  country: string;
+  country_name: string;
+  type_name: string;
+  type: string;
+}
+
 interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   id?: string;
   url?: string;
-  loadChildren?: boolean;
+  drawChildren?: boolean;
   drawProfile?: boolean;
   geoLevel?: string;
   geoCode?: string;
-  geoId?: string;
-  geoChildLevel?: string;
   codeType?: string;
   filterCountries?: string[];
   generation?: string;
@@ -29,7 +40,7 @@ interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   geoLayerFocusStyle?: PathOptions;
   geoLayerBlurStyle?: PathOptions;
   geoLayerHoverStyle?: {};
-  onClickGeoLayer?: (geoID: string) => void;
+  onClickGeoLayer?: (area: Area) => void;
 }
 
 function MapIt({
@@ -37,11 +48,9 @@ function MapIt({
   classes,
   url = 'https://mapit.hurumap.org',
   generation = '1',
-  loadChildren,
+  drawChildren,
   drawProfile,
-  geoChildLevel,
   geoCode,
-  geoId,
   geoLevel,
   codeType,
   filterCountries = ['KE', 'ZA'],
@@ -78,21 +87,7 @@ function MapIt({
   // But also to have sufficient data to use like the `id` if we want to retrieve
   // more data using an api call
   const fetchGeoJson = useCallback(
-    (
-      areaKeys: string,
-      areas: {
-        id: string;
-        name: string;
-        generation_high: number;
-        generation_low: number;
-        all_names: {};
-        codes: { [key: string]: string };
-        country: string;
-        country_name: string;
-        type_name: string;
-        type: string;
-      }[]
-    ): any => {
+    (areaKeys: string, areas: Area[]): any => {
       return fetch(`${url}/areas/${areaKeys}.geojson`).then(geoRes => {
         if (!geoRes.ok) return Promise.reject();
         return geoRes.json().then(({ features }) => {
@@ -162,7 +157,6 @@ function MapIt({
                 return Object.assign({}, accum, { [k]: v });
               }, {});
           }
-          console.log(areaData);
           const areaKeys = Object.keys(areaData).join();
 
           return fetchGeoJson(areaKeys, Object.values(areaData));
@@ -179,7 +173,8 @@ function MapIt({
           onEachFeature: (feature, layer: any) => {
             if (
               drawProfile &&
-              geoId === feature.properties.codes[codeType || 'AFR']
+              `${geoLevel}-${geoCode}` ===
+                feature.properties.codes[codeType || 'AFR']
             ) {
               layer.setStyle(geoLayerFocusStyle);
               map.fitBounds(layer.getBounds());
@@ -193,8 +188,7 @@ function MapIt({
               });
               layer.on('click', () => {
                 if (onClickGeoLayer) {
-                  const info = feature.properties;
-                  onClickGeoLayer(info);
+                  onClickGeoLayer(feature.properties);
                 }
               });
               layer.setStyle(geoLayerBlurStyle);
@@ -204,13 +198,14 @@ function MapIt({
         .addTo(map);
     },
     [
-      geoLayerHoverStyle,
-      geoLayerBlurStyle,
-      onClickGeoLayer,
-      geoId,
-      codeType,
       drawProfile,
-      geoLayerFocusStyle
+      geoLevel,
+      geoCode,
+      codeType,
+      geoLayerFocusStyle,
+      geoLayerBlurStyle,
+      geoLayerHoverStyle,
+      onClickGeoLayer
     ]
   );
 
@@ -232,8 +227,7 @@ function MapIt({
           drawFeatures(map, features);
         })
         .then(() => {
-          // if geo_child level is not empty
-          if (loadChildren) {
+          if (drawChildren) {
             fetchMapitArea().then(area => {
               loadGeometryForChildLevel(area.id).then(childrenFeatures => {
                 drawFeatures(map, childrenFeatures);
@@ -252,7 +246,7 @@ function MapIt({
   }, [
     drawProfile,
     loadGeometryForLevel,
-    loadChildren,
+    drawChildren,
     fetchMapitArea,
     loadGeometryForChildLevel,
     drawFeatures
