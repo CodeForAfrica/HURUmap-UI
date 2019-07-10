@@ -3,6 +3,9 @@ import React from 'react';
 import { MapIt } from 'hurumap-ui';
 import { RouteComponentProps } from '@reach/router';
 
+import bg from './assets/images/background.png';
+import ProfileHero from './components/ProfileHero';
+
 interface Props extends RouteComponentProps {
   geoId?: string;
 }
@@ -15,10 +18,51 @@ function Profile({ geoId, navigate }: Props) {
     geoLevel = parts[0];
     geoCode = parts[1];
   }
+  console.log(bg);
   return (
-    <div>
-      <div style={{ width: '100%', height: '500px' }}>
-        <div style={{ width: '600px', height: '400px' }}>
+    <div
+      style={{ width: '100vw', height: '100vh', backgroundImage: `url(${bg})` }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          position: 'relative',
+          padding: '50px',
+          maxWidth: '100%',
+          height: '500px'
+        }}
+      >
+        <ProfileHero
+          geoCode={geoCode}
+          geoLevel={geoLevel}
+          profile={{
+            demographics: {
+              total_population: {
+                values: {
+                  this: 9999
+                }
+              },
+              population_density: {
+                values: {
+                  this: 999999.9
+                }
+              }
+            },
+            primary_releases: {
+              active: {
+                citation: 'citation'
+              }
+            },
+            geography: {
+              parents: { example: { name: 'Demo', full_geoid: 'Demo' } },
+              this: {
+                square_kms: '6666.6',
+                short_name: 'Demo'
+              }
+            }
+          }}
+        >
           <MapIt
             drawChildren
             drawProfile={Boolean(geoId)}
@@ -26,13 +70,13 @@ function Profile({ geoId, navigate }: Props) {
             geoLevel={geoLevel}
             geoCode={geoCode}
             filterCountries={['KE', 'TZ', 'ZA']}
-            onClickGeoLayer={(area) => {
+            onClickGeoLayer={area => {
               if (navigate) {
                 navigate(`/${area.codes['AFR']}`);
               }
             }}
           />
-        </div>
+        </ProfileHero>
       </div>
     </div>
   );
