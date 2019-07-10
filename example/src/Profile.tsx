@@ -5,6 +5,7 @@ import { RouteComponentProps } from '@reach/router';
 
 import bg from './assets/images/background.png';
 import ProfileHero from './components/ProfileHero';
+import ProfileTabs from './components/ProfileTabs';
 
 interface Props extends RouteComponentProps {
   geoId?: string;
@@ -23,16 +24,6 @@ function Profile({ geoId, navigate }: Props) {
     <div
       style={{ width: '100vw', height: '100vh', backgroundImage: `url(${bg})` }}
     >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          position: 'relative',
-          padding: '50px',
-          maxWidth: '100%',
-          height: '500px'
-        }}
-      >
         <ProfileHero
           geoCode={geoCode}
           geoLevel={geoLevel}
@@ -77,7 +68,7 @@ function Profile({ geoId, navigate }: Props) {
             }}
           />
         </ProfileHero>
-      </div>
+        <ProfileTabs tabs={[{ name: 'Tab #1', href: '#1' }, { name: 'Tab #2', href: '#2' },{ name: 'Tab #3', href: '#3' }]} />
     </div>
   );
 }
