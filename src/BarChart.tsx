@@ -21,16 +21,6 @@ interface Props extends WithStyles<typeof styles>, VictoryBarProps {
   comparison?: boolean;
 }
 
-const data = [
-  { x: 1, y: 5 },
-  { x: 2, y: 17.5 },
-  { x: 3, y: 30 },
-  { x: 4, y: 35 },
-  { x: 5, y: 20 },
-  { x: 4, y: 8 },
-  { x: 6, y: 4 },
-  { x: 7, y: 10 }
-];
 const median = [
   { x: 0, y: 10 },
   { x: 1, y: 2.5 },
@@ -56,11 +46,14 @@ const comparisonData = [
 
 function BarChart({
   classes,
+  data,
   comparison = false,
+  barWidth = 25,
   horizontal,
   ...props
 }: Props) {
   const theme = useTheme<Theme>();
+
   return (
     <div className={classes.root}>
       <VictoryChart domainPadding={{ x: 0, y: 200 }} height={550} width={700}>
@@ -69,7 +62,7 @@ function BarChart({
           style={{
             data: { fill: '#7f9442' }
           }}
-          barWidth={25}
+          barWidth={barWidth}
           {...props}
           data={data}
           x="x"
@@ -119,7 +112,7 @@ function BarChart({
             style={{
               data: { fill: '#de9f39' }
             }}
-            barWidth={25}
+            barWidth={barWidth}
             {...props}
             data={comparisonData}
           />

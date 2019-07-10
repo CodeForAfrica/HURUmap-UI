@@ -7,10 +7,66 @@ import { CenterDecorator } from './common';
 storiesOf('HURUmap UI|Charts/BarChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
-  .add('Default', () => <BarChart />)
-  .add('Horizontal', () => <BarChart horizontal />)
-  .add('Comparison Vertical', () => <BarChart comparison />)
-  .add('Comparison Horizontal', () => <BarChart comparison horizontal />);
+  .add('Default', () => (
+    <BarChart
+      data={object('data', [
+        { x: 1, y: 5 },
+        { x: 2, y: 17.5 },
+        { x: 3, y: 30 },
+        { x: 4, y: 35 },
+        { x: 5, y: 20 },
+        { x: 4, y: 8 },
+        { x: 6, y: 4 },
+        { x: 7, y: 10 }
+      ])}
+    />
+  ))
+  .add('Horizontal', () => (
+    <BarChart
+      horizontal
+      data={object('data', [
+        { x: 1, y: 5 },
+        { x: 2, y: 17.5 },
+        { x: 3, y: 30 },
+        { x: 4, y: 35 },
+        { x: 5, y: 20 },
+        { x: 4, y: 8 },
+        { x: 6, y: 4 },
+        { x: 7, y: 10 }
+      ])}
+    />
+  ))
+  .add('Comparison Vertical', () => (
+    <BarChart
+      comparison
+      data={object('data', [
+        { x: 1, y: 5 },
+        { x: 2, y: 17.5 },
+        { x: 3, y: 30 },
+        { x: 4, y: 35 },
+        { x: 5, y: 20 },
+        { x: 4, y: 8 },
+        { x: 6, y: 4 },
+        { x: 7, y: 10 }
+      ])}
+    />
+  ))
+  .add('Comparison Horizontal', () => (
+    <BarChart
+      comparison
+      horizontal
+      data={object('data', [
+        { x: 1, y: 5 },
+        { x: 2, y: 17.5 },
+        { x: 3, y: 30 },
+        { x: 4, y: 35 },
+        { x: 5, y: 20 },
+        { x: 4, y: 8 },
+        { x: 6, y: 4 },
+        { x: 7, y: 10 }
+      ])}
+    />
+  ));
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
 
