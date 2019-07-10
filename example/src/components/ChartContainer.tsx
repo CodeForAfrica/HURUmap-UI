@@ -51,12 +51,10 @@ export interface ChartContainerProps {
 
 interface Props extends WithStyles<typeof styles>, ChartContainerProps {
   children: any;
-  contentRef?: React.RefObject<HTMLDivElement>;
   style?: CSSProperties;
 }
 
 function ChartContainer({
-  contentRef,
   style,
   title,
   subtitle,
@@ -92,7 +90,7 @@ function ChartContainer({
           </ButtonBase>
         </Grid>
       </Grid>
-      <div ref={contentRef} className={classes.content}>
+      <div className={classes.content}>
         {children}
       </div>
     </div>

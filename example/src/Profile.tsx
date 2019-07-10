@@ -69,7 +69,7 @@ function Profile({ geoId, navigate }: Props) {
             <Grid item md={4}>
               <ChartContainer
                 title="Median"
-                subtitle="Average age of the population (years old)"
+                subtitle=""
               >
                 <GroupedBarChart
                   width="100%"

@@ -6,9 +6,11 @@ import * as serviceWorker from './serviceWorker';
 
 import Theme from './Theme';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import { CssBaseline } from '@material-ui/core';
 
 ReactDOM.render(
   <MuiThemeProvider theme={Theme}>
+    <CssBaseline />
     <App />
   </MuiThemeProvider>,
   document.getElementById('root')
