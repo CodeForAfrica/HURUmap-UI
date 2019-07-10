@@ -19,34 +19,21 @@ const styles = createStyles({
 
 interface Props extends WithStyles<typeof styles>, VictoryBarProps {
   comparison?: boolean;
+  median?: {
+    x: string | number;
+    y: number | number;
+  }[];
+  comparisonData?: {
+    x: string | number;
+    y: number | number;
+  }[];
 }
-
-const median = [
-  { x: 0, y: 10 },
-  { x: 1, y: 2.5 },
-  { x: 2, y: 10 },
-  { x: 3, y: 20 },
-  { x: 4, y: 15 },
-  { x: 5, y: 10 },
-  { x: 4, y: 4 },
-  { x: 6, y: 2 },
-  { x: 7, y: 5 },
-  { x: 8, y: 5 }
-];
-const comparisonData = [
-  { x: 0, y: 0 },
-  { x: 1, y: 10 },
-  { x: 2, y: 6 },
-  { x: 3, y: 15 },
-  { x: 4, y: 32.5 },
-  { x: 5, y: 20 },
-  { x: 6, y: 15.5 },
-  { x: 7, y: 20 }
-];
 
 function BarChart({
   classes,
   data,
+  median,
+  comparisonData,
   comparison = false,
   barWidth = 25,
   horizontal,
@@ -99,7 +86,7 @@ function BarChart({
           tickValues={[0, 17.5, 35]}
           tickFormat={['0%', '17.5%', '35%']}
         />
-        {comparison && (
+        {comparison && comparisonData && (
           <VictoryBar
             groupComponent={
               !horizontal ? (
@@ -117,20 +104,22 @@ function BarChart({
             data={comparisonData}
           />
         )}
-        <VictoryLine
-          horizontal={horizontal}
-          data={median}
-          interpolation="step"
-          groupComponent={<g transform="translate(6, 0)" />}
-          style={{
-            data: {
-              stroke: 'black',
-              strokeWidth: 0.8,
-              opacity: 0.4,
-              strokeLinecap: 'round'
-            }
-          }}
-        />
+        {median && (
+          <VictoryLine
+            horizontal={horizontal}
+            interpolation="step"
+            data={median}
+            groupComponent={<g transform="translate(6, 0)" />}
+            style={{
+              data: {
+                stroke: 'black',
+                strokeWidth: 0.8,
+                opacity: 0.4,
+                strokeLinecap: 'round'
+              }
+            }}
+          />
+        )}
       </VictoryChart>
     </div>
   );
