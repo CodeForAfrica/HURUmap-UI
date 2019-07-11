@@ -9,11 +9,6 @@ import {
 import ThemedComponent from './ThemedComponent';
 
 interface Props extends VictoryBarProps {
-  comparison?: boolean;
-  comparisonData?: {
-    x: string | number;
-    y: number | number;
-  }[];
   tickValues?: (string | number)[];
   tickFormat?: (string | number)[];
   dependentTickValues?: (string | number)[];
@@ -26,19 +21,27 @@ function BarChart({
   tickFormat,
   dependentTickValues,
   dependentTickFormat,
-  comparisonData,
-  comparison = false,
   barWidth = 25,
   horizontal,
   ...props
 }: Props) {
+  if (!data) {
+    return null;
+  }
+
+  let data1 = data;
+  let data2;
+  if (data.length > 1 && Array.isArray(data[0])) {
+    [data1, data2] = data; // Assume data[2] is also Array
+  }
+
   return (
     <VictoryChart domainPadding={{ x: 0, y: 200 }} height={550} width={700}>
       <VictoryBar
         horizontal={horizontal}
         barWidth={barWidth}
         {...props}
-        data={data}
+        data={data1}
         x="x"
         y="y"
       />
@@ -48,7 +51,7 @@ function BarChart({
         tickValues={dependentTickValues}
         tickFormat={dependentTickFormat}
       />
-      {comparison && comparisonData && (
+      {data2 && data2.length > 0 && (
         <VictoryBar
           groupComponent={
             !horizontal ? (
@@ -59,7 +62,7 @@ function BarChart({
           }
           barWidth={barWidth}
           {...props}
-          data={comparisonData}
+          data={data2}
         />
       )}
     </VictoryChart>

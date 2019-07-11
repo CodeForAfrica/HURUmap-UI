@@ -22,6 +22,7 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
   .addDecorator(withKnobs)
   .add('Default', () => (
     <BarChart
+      horizontal={boolean('horizontal', false)}
       data={object('data', [
         { x: 1, y: 5 },
         { x: 2, y: 17.5 },
@@ -50,119 +51,50 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
       ])}
     />
   ))
-  .add('Horizontal', () => (
-    <BarChart
-      horizontal
-      data={object('data', [
-        { x: 1, y: 5 },
-        { x: 2, y: 17.5 },
-        { x: 3, y: 30 },
-        { x: 4, y: 35 },
-        { x: 5, y: 20 },
-        { x: 4, y: 8 },
-        { x: 6, y: 4 },
-        { x: 7, y: 10 }
-      ])}
-      tickValues={object('tickValues', [1, 2, 3, 4, 5, 6, 7])}
-      tickFormat={object('tickFormat', [
-        '0-9',
-        '10-19',
-        '20-29',
-        '30-39',
-        '40-49',
-        '50-69',
-        '80+'
-      ])}
-      dependentTickValues={object('dependentTickValues', [0, 17.5, 35])}
-      dependentTickFormat={object('dependentTickFormat', [
-        '0%',
-        '17.5%',
-        '35%'
-      ])}
-    />
-  ))
-  .add('Comparison Vertical', () => (
-    <BarChart
-      comparison
-      data={object('data', [
-        { x: 1, y: 5 },
-        { x: 2, y: 17.5 },
-        { x: 3, y: 30 },
-        { x: 4, y: 35 },
-        { x: 5, y: 20 },
-        { x: 4, y: 8 },
-        { x: 6, y: 4 },
-        { x: 7, y: 10 }
-      ])}
-      comparisonData={object('comparisonData', [
-        { x: 0, y: 0 },
-        { x: 1, y: 10 },
-        { x: 2, y: 6 },
-        { x: 3, y: 15 },
-        { x: 4, y: 32.5 },
-        { x: 5, y: 20 },
-        { x: 6, y: 15.5 },
-        { x: 7, y: 20 }
-      ])}
-      tickValues={object('tickValues', [1, 2, 3, 4, 5, 6, 7])}
-      tickFormat={object('tickFormat', [
-        '0-9',
-        '10-19',
-        '20-29',
-        '30-39',
-        '40-49',
-        '50-69',
-        '80+'
-      ])}
-      dependentTickValues={object('dependentTickValues', [0, 17.5, 35])}
-      dependentTickFormat={object('dependentTickFormat', [
-        '0%',
-        '17.5%',
-        '35%'
-      ])}
-    />
-  ))
-  .add('Comparison Horizontal', () => (
-    <BarChart
-      comparison
-      horizontal
-      data={object('data', [
-        { x: 1, y: 5 },
-        { x: 2, y: 17.5 },
-        { x: 3, y: 30 },
-        { x: 4, y: 35 },
-        { x: 5, y: 20 },
-        { x: 4, y: 8 },
-        { x: 6, y: 4 },
-        { x: 7, y: 10 }
-      ])}
-      comparisonData={object('comparisonData', [
-        { x: 0, y: 0 },
-        { x: 1, y: 10 },
-        { x: 2, y: 6 },
-        { x: 3, y: 15 },
-        { x: 4, y: 32.5 },
-        { x: 5, y: 20 },
-        { x: 6, y: 15.5 },
-        { x: 7, y: 20 }
-      ])}
-      tickValues={object('tickValues', [1, 2, 3, 4, 5, 6, 7])}
-      tickFormat={object('tickFormat', [
-        '0-9',
-        '10-19',
-        '20-29',
-        '30-39',
-        '40-49',
-        '50-69',
-        '80+'
-      ])}
-      dependentTickValues={object('dependentTickValues', [0, 17.5, 35])}
-      dependentTickFormat={object('dependentTickFormat', [
-        '0%',
-        '17.5%',
-        '35%'
-      ])}
-    />
+  .add('Comparison', () => (
+    <div>
+      <BarChart
+        horizontal={boolean('horizontal', false)}
+        data={object('data', [
+          [
+            { x: 1, y: 5 },
+            { x: 2, y: 17.5 },
+            { x: 3, y: 30 },
+            { x: 4, y: 35 },
+            { x: 5, y: 20 },
+            { x: 4, y: 8 },
+            { x: 6, y: 4 },
+            { x: 7, y: 10 }
+          ],
+          [
+            { x: 0, y: 0 },
+            { x: 1, y: 10 },
+            { x: 2, y: 6 },
+            { x: 3, y: 15 },
+            { x: 4, y: 32.5 },
+            { x: 5, y: 20 },
+            { x: 6, y: 15.5 },
+            { x: 7, y: 20 }
+          ]
+        ])}
+        tickValues={object('tickValues', [1, 2, 3, 4, 5, 6, 7])}
+        tickFormat={object('tickFormat', [
+          '0-9',
+          '10-19',
+          '20-29',
+          '30-39',
+          '40-49',
+          '50-69',
+          '80+'
+        ])}
+        dependentTickValues={object('dependentTickValues', [0, 17.5, 35])}
+        dependentTickFormat={object('dependentTickFormat', [
+          '0%',
+          '17.5%',
+          '35%'
+        ])}
+      />
+    </div>
   ));
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
