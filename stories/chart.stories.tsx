@@ -21,35 +21,37 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('Default', () => (
-    <BarChart
-      horizontal={boolean('horizontal', false)}
-      data={object('data', [
-        { x: 1, y: 5 },
-        { x: 2, y: 17.5 },
-        { x: 3, y: 30 },
-        { x: 4, y: 35 },
-        { x: 5, y: 20 },
-        { x: 4, y: 8 },
-        { x: 6, y: 4 },
-        { x: 7, y: 10 }
-      ])}
-      tickValues={object('tickValues', [1, 2, 3, 4, 5, 6, 7])}
-      tickFormat={object('tickFormat', [
-        '0-9',
-        '10-19',
-        '20-29',
-        '30-39',
-        '40-49',
-        '50-69',
-        '80+'
-      ])}
-      dependentTickValues={object('dependentTickValues', [0, 17.5, 35])}
-      dependentTickFormat={object('dependentTickFormat', [
-        '0%',
-        '17.5%',
-        '35%'
-      ])}
-    />
+    <div>
+      <BarChart
+        horizontal={boolean('horizontal', false)}
+        data={object('data', [
+          { x: 1, y: 5 },
+          { x: 2, y: 17.5 },
+          { x: 3, y: 30 },
+          { x: 4, y: 35 },
+          { x: 5, y: 20 },
+          { x: 4, y: 8 },
+          { x: 6, y: 4 },
+          { x: 7, y: 10 }
+        ])}
+        tickValues={object('tickValues', [1, 2, 3, 4, 5, 6, 7])}
+        tickFormat={object('tickFormat', [
+          '0-9',
+          '10-19',
+          '20-29',
+          '30-39',
+          '40-49',
+          '50-69',
+          '80+'
+        ])}
+        dependentTickValues={object('dependentTickValues', [0, 17.5, 35])}
+        dependentTickFormat={object('dependentTickFormat', [
+          '0%',
+          '17.5%',
+          '35%'
+        ])}
+      />
+    </div>
   ))
   .add('Comparison', () => (
     <div>

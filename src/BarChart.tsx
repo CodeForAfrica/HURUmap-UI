@@ -36,7 +36,7 @@ function BarChart({
   }
 
   return (
-    <VictoryChart domainPadding={{ x: 0, y: 200 }} height={550} width={700}>
+    <VictoryChart>
       <VictoryBar
         horizontal={horizontal}
         barWidth={barWidth}
