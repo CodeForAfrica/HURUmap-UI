@@ -1,6 +1,6 @@
 import React from 'react';
-import { Theme, WithStyles } from '@material-ui/core';
-import { createStyles, useTheme, withStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
+import { useTheme } from '@material-ui/styles';
 import {
   VictoryBar,
   VictoryBarProps,
@@ -11,11 +11,7 @@ import {
 
 import ThemedComponent from './ThemedComponent';
 
-const styles = createStyles({
-  root: {}
-});
-
-interface Props extends WithStyles<typeof styles>, VictoryBarProps {
+interface Props extends VictoryBarProps {
   comparison?: boolean;
   median?: {
     x: string | number;
@@ -32,7 +28,6 @@ interface Props extends WithStyles<typeof styles>, VictoryBarProps {
 }
 
 function BarChart({
-  classes,
   data,
   tickValues,
   tickFormat,
@@ -50,35 +45,15 @@ function BarChart({
     <VictoryChart domainPadding={{ x: 0, y: 200 }} height={550} width={700}>
       <VictoryBar
         horizontal={horizontal}
-        style={{
-          data: { fill: '#7f9442' }
-        }}
         barWidth={barWidth}
         {...props}
         data={data}
         x="x"
         y="y"
       />
-      <VictoryAxis
-        style={{
-          axis: { stroke: 'grey', opacity: 0.2 },
-          axisLabel: { fontSize: 20, padding: 40 },
-          grid: { stroke: 'none' },
-          ticks: { stroke: 'none' },
-          tickLabels: { fontSize: 15, padding: 10, opacity: 0.5 }
-        }}
-        tickValues={tickValues}
-        tickFormat={tickFormat}
-      />
+      <VictoryAxis tickValues={tickValues} tickFormat={tickFormat} />
       <VictoryAxis
         dependentAxis
-        style={{
-          axis: { stroke: 'none' },
-          axisLabel: { fontSize: 20, padding: 40 },
-          grid: { stroke: 'grey', opacity: 0.5 },
-          ticks: { stroke: 'none' },
-          tickLabels: { fontSize: 15, padding: 10, opacity: 0.5 }
-        }}
         tickValues={dependentTickValues}
         tickFormat={dependentTickFormat}
       />
@@ -92,9 +67,6 @@ function BarChart({
             )
           }
           theme={theme.chart}
-          style={{
-            data: { fill: '#de9f39' }
-          }}
           barWidth={barWidth}
           {...props}
           data={comparisonData}
@@ -120,10 +92,10 @@ function BarChart({
   );
 }
 
-export default withStyles(styles)(({ ...props }: Props) => {
+export default function({ ...props }: Props) {
   return (
     <ThemedComponent>
       <BarChart {...props} />
     </ThemedComponent>
   );
-});
+}
