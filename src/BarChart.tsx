@@ -1,6 +1,4 @@
 import React from 'react';
-import { Theme } from '@material-ui/core';
-import { useTheme } from '@material-ui/styles';
 import {
   VictoryBar,
   VictoryBarProps,
@@ -40,7 +38,6 @@ function BarChart({
   horizontal,
   ...props
 }: Props) {
-  const theme = useTheme<Theme>();
   return (
     <VictoryChart domainPadding={{ x: 0, y: 200 }} height={550} width={700}>
       <VictoryBar
@@ -66,7 +63,6 @@ function BarChart({
               <g transform="translate(0, 25)" />
             )
           }
-          theme={theme.chart}
           barWidth={barWidth}
           {...props}
           data={comparisonData}
