@@ -3,18 +3,13 @@ import {
   VictoryBar,
   VictoryBarProps,
   VictoryChart,
-  VictoryAxis,
-  VictoryLine
+  VictoryAxis
 } from 'victory';
 
 import ThemedComponent from './ThemedComponent';
 
 interface Props extends VictoryBarProps {
   comparison?: boolean;
-  median?: {
-    x: string | number;
-    y: number | number;
-  }[];
   comparisonData?: {
     x: string | number;
     y: number | number;
@@ -31,7 +26,6 @@ function BarChart({
   tickFormat,
   dependentTickValues,
   dependentTickFormat,
-  median,
   comparisonData,
   comparison = false,
   barWidth = 25,
@@ -66,22 +60,6 @@ function BarChart({
           barWidth={barWidth}
           {...props}
           data={comparisonData}
-        />
-      )}
-      {median && (
-        <VictoryLine
-          horizontal={horizontal}
-          interpolation="step"
-          data={median}
-          groupComponent={<g transform="translate(6, 0)" />}
-          style={{
-            data: {
-              stroke: 'black',
-              strokeWidth: 0.8,
-              opacity: 0.4,
-              strokeLinecap: 'round'
-            }
-          }}
         />
       )}
     </VictoryChart>
