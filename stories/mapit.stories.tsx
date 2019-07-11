@@ -14,7 +14,7 @@ import { TileLayer } from 'leaflet';
 import { MapIt } from '../src';
 import { CenterDecorator } from './common';
 
-  storiesOf('Hurumap UI|MapIt/Geography', module)
+storiesOf('HURUmap UI|MapIt/Geography', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('ContinentRoot', () => (
@@ -133,5 +133,3 @@ import { CenterDecorator } from './common';
       onClickGeoLayer={action('onClickGeoLayer')}
     />
   ));
-
-

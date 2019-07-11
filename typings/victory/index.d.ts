@@ -1,3 +1,6 @@
+/* eslint-disable react/no-multi-comp */
+/* eslint-disable react/prefer-stateless-function */
+
 declare module 'victory' {
   import * as React from 'react';
 
