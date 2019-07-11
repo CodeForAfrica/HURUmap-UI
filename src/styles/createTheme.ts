@@ -20,6 +20,7 @@ export default function createTheme(options?: ThemeOptions) {
   // Customize chart proportionalArea props off of chart area props
   chart.proportionalArea = Object.assign(
     {},
+    chart.group,
     chart.area,
     chart.proportionalArea
   );

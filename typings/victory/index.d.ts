@@ -30,6 +30,9 @@ declare module 'victory' {
       style: VictoryStyleInterface;
       width: number;
     };
+    group: {
+      colorScale: ColorScalePropType;
+    }
   }
 
   export interface CircleProps {

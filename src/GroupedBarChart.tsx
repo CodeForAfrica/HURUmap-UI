@@ -66,17 +66,13 @@ function GroupedBarChart({
         horizontal={horizontal}
         width={chartDimensions.width}
         height={chartDimensions.height}
+        theme={theme.chart}
       >
-        <VictoryGroup
-          horizontal={horizontal}
-          offset={barWidth + 5}
-          colorScale="qualitative"
-        >
+        <VictoryGroup horizontal={horizontal} offset={barWidth + 5}>
           {data.map(d => (
             <VictoryBar
               horizontal={horizontal}
               barWidth={barWidth}
-              theme={theme.chart}
               data={d.data}
               labels={datum => `${datum.y}${dataUnit}`}
             />

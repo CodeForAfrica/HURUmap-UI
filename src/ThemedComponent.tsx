@@ -6,7 +6,8 @@ import {
   withStyles
 } from '@material-ui/styles';
 
-import theme from './Theme';
+import { useTheme } from '@material-ui/core';
+import defaultTheme from './Theme';
 
 const styles = createStyles({
   root: {}
@@ -17,7 +18,13 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function ThemedComponent({ children }: Props) {
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+  const theme = useTheme();
+
+  return (
+    <ThemeProvider theme={Object.assign({}, defaultTheme, theme)}>
+      {children}
+    </ThemeProvider>
+  );
 }
 
 export default withStyles(styles)(ThemedComponent);
