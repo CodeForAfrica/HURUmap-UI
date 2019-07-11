@@ -20,7 +20,7 @@ interface Props extends RouteComponentProps {
 function ProfilePage({ geoId, navigate }: Props) {
   const [profile, setProfile] = useState<Profile>();
   let geoLevel = 'country';
-  let geoCode = 'TZ';
+  let geoCode = 'ZA';
   if (geoId) {
     const parts = geoId.split('-');
     geoLevel = parts[0];
@@ -53,7 +53,7 @@ function ProfilePage({ geoId, navigate }: Props) {
           codeType="AFR"
           geoLevel={geoLevel}
           geoCode={geoCode}
-          filterCountries={['KE', 'TZ', 'ZA']}
+          filterCountries={['KE', 'ZA']}
           onClickGeoLayer={area => {
             if (navigate) {
               navigate(`/${area.codes['AFR']}`);

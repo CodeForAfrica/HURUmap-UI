@@ -5,7 +5,7 @@ import Profile from './Profile';
 const App: React.FC = () => {
   return (
     <Router>
-      <Profile default geoId="country-TZ"/>
+      <Profile default geoId="country-ZA"/>
       <Profile path="/:geoId" />
     </Router>
   );
