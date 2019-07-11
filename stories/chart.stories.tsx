@@ -7,6 +7,7 @@ import {
   object,
   text
 } from '@storybook/addon-knobs';
+
 import {
   BarChart,
   GroupedBarChart,
@@ -233,7 +234,48 @@ storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
 
 storiesOf('HURUmap UI|Charts/LineChart', module)
   .addDecorator(CenterDecorator)
-  .add('Default', () => <LineChart />);
+  .addDecorator(withKnobs)
+  .add('Default', () => (
+    <div>
+      <LineChart
+        data={object('data', [
+          { x: 1, y: -3 },
+          { x: 2, y: 5 },
+          { x: 3, y: 3 },
+          { x: 4, y: 0 },
+          { x: 5, y: -2 },
+          { x: 6, y: -2 },
+          { x: 7, y: 5 }
+        ])}
+      />
+    </div>
+  ))
+  .add('Multiple/Comparison', () => (
+    <div>
+      <LineChart
+        data={object('data', [
+          [
+            { x: 1, y: 3 },
+            { x: 2, y: 1 },
+            { x: 3, y: 2 },
+            { x: 4, y: -2 },
+            { x: 5, y: -1 },
+            { x: 6, y: 2 },
+            { x: 7, y: 3 }
+          ],
+          [
+            { x: 1, y: -3 },
+            { x: 2, y: 5 },
+            { x: 3, y: 3 },
+            { x: 4, y: 0 },
+            { x: 5, y: -2 },
+            { x: 6, y: -2 },
+            { x: 7, y: 5 }
+          ]
+        ])}
+      />
+    </div>
+  ));
 
 storiesOf('HURUmap UI|Charts/PieChart', module)
   .addDecorator(CenterDecorator)
@@ -251,10 +293,7 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
         ])}
       />
     </div>
-  ));
-storiesOf('HURUmap UI|Charts/PieChart', module)
-  .addDecorator(CenterDecorator)
-  .addDecorator(withKnobs)
+  ))
   .add('Comparison', () => (
     <div>
       <PieChart
