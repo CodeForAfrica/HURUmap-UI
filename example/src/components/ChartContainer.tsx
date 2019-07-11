@@ -66,14 +66,15 @@ function ChartContainer({
       <Grid
         container
         direction="row"
+        wrap="nowrap"
         justify="space-between"
         alignItems="center"
       >
-        <Grid item>
+        <Grid item xs={10}>
           <Typography className={classes.title} variant="h2">{title}</Typography>
           <Typography className={classes.subtitle} variant="h3">{subtitle}</Typography>
         </Grid>
-        <Grid item>
+        <Grid item container xs={2} justify="flex-end">
           <ButtonBase
             className={classes.button}
             onClick={() => onInfo && onInfo()}
