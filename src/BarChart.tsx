@@ -45,9 +45,6 @@ function BarChart({
     <VictoryChart domainPadding={{ x: 0, y: 200 }} height={550} width={700}>
       <VictoryBar
         horizontal={horizontal}
-        style={{
-          data: { fill: '#7f9442' }
-        }}
         barWidth={barWidth}
         {...props}
         data={data}
@@ -70,9 +67,6 @@ function BarChart({
             )
           }
           theme={theme.chart}
-          style={{
-            data: { fill: '#de9f39' }
-          }}
           barWidth={barWidth}
           {...props}
           data={comparisonData}
