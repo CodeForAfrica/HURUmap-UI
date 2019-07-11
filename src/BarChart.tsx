@@ -1,25 +1,78 @@
 import React from 'react';
-import { Theme, WithStyles } from '@material-ui/core';
-import { createStyles, useTheme, withStyles } from '@material-ui/styles';
-import { VictoryBar, VictoryBarProps } from 'victory';
+import {
+  VictoryBar,
+  VictoryBarProps,
+  VictoryChart,
+  VictoryAxis
+} from 'victory';
 
 import ThemedComponent from './ThemedComponent';
 
-const styles = createStyles({
-  root: {}
-});
-
-interface Props extends WithStyles<typeof styles>, VictoryBarProps {}
-
-function BarChart({ ...props }: Props) {
-  const theme = useTheme<Theme>();
-  return <VictoryBar theme={theme.chart} {...props} />;
+interface Props extends VictoryBarProps {
+  tickValues?: (string | number)[];
+  tickFormat?: (string | number)[];
+  dependentTickValues?: (string | number)[];
+  dependentTickFormat?: (string | number)[];
 }
 
-export default withStyles(styles)(({ ...props }: Props) => {
+function BarChart({
+  data,
+  tickValues,
+  tickFormat,
+  dependentTickValues,
+  dependentTickFormat,
+  barWidth = 25,
+  horizontal,
+  ...props
+}: Props) {
+  if (!data) {
+    return null;
+  }
+
+  let data1 = data;
+  let data2;
+  if (data.length > 1 && Array.isArray(data[0])) {
+    [data1, data2] = data; // Assume data[2] is also Array
+  }
+
+  return (
+    <VictoryChart>
+      <VictoryBar
+        horizontal={horizontal}
+        barWidth={barWidth}
+        {...props}
+        data={data1}
+        x="x"
+        y="y"
+      />
+      <VictoryAxis tickValues={tickValues} tickFormat={tickFormat} />
+      <VictoryAxis
+        dependentAxis
+        tickValues={dependentTickValues}
+        tickFormat={dependentTickFormat}
+      />
+      {data2 && data2.length > 0 && (
+        <VictoryBar
+          groupComponent={
+            !horizontal ? (
+              <g transform="translate(25, 0)" />
+            ) : (
+              <g transform="translate(0, 25)" />
+            )
+          }
+          barWidth={barWidth}
+          {...props}
+          data={data2}
+        />
+      )}
+    </VictoryChart>
+  );
+}
+
+export default function({ ...props }: Props) {
   return (
     <ThemedComponent>
       <BarChart {...props} />
     </ThemedComponent>
   );
-});
+}
