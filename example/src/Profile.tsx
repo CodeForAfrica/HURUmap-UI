@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { MapIt, GroupedBarChart } from 'hurumap-ui';
 import { RouteComponentProps } from '@reach/router';
@@ -11,21 +11,31 @@ import ChartContainer from './components/ChartContainer';
 import { Grid } from '@material-ui/core';
 import { getProfile } from './lib/api';
 import ChartFactory from './components/ChartFactory';
+import { Profile } from './lib/hurumap-dto';
 
 interface Props extends RouteComponentProps {
   geoId?: string;
 }
 
-function Profile({ geoId, navigate }: Props) {
-  let geoLevel = 'continent';
-  let geoCode = 'AFR';
+function ProfilePage({ geoId, navigate }: Props) {
+  const [profile, setProfile] = useState<Profile>();
+  let geoLevel = 'country';
+  let geoCode = 'TZ';
   if (geoId) {
     const parts = geoId.split('-');
     geoLevel = parts[0];
     geoCode = parts[1];
   }
 
-  const profile = getProfile(`${geoLevel}-${geoId}`);
+  useEffect(() => {
+    if (geoId) {
+      getProfile(geoId).then(setProfile);
+    }
+  }, [geoId]);
+
+  if (!profile) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div
@@ -67,10 +77,7 @@ function Profile({ geoId, navigate }: Props) {
               </ChartContainer>
             </Grid>
             <Grid item md={4}>
-              <ChartContainer
-                title="Median"
-                subtitle=""
-              >
+              <ChartContainer title="Median" subtitle="">
                 <GroupedBarChart
                   horizontal
                   width="100%"
@@ -93,4 +100,4 @@ function Profile({ geoId, navigate }: Props) {
   );
 }
 
-export default Profile;
+export default ProfilePage;
