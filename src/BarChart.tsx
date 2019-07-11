@@ -12,9 +12,7 @@ import {
 import ThemedComponent from './ThemedComponent';
 
 const styles = createStyles({
-  root: {
-    flexGrow: 1
-  }
+  root: {}
 });
 
 interface Props extends WithStyles<typeof styles>, VictoryBarProps {
@@ -49,78 +47,76 @@ function BarChart({
 }: Props) {
   const theme = useTheme<Theme>();
   return (
-    <div className={classes.root}>
-      <VictoryChart domainPadding={{ x: 0, y: 200 }} height={550} width={700}>
+    <VictoryChart domainPadding={{ x: 0, y: 200 }} height={550} width={700}>
+      <VictoryBar
+        horizontal={horizontal}
+        style={{
+          data: { fill: '#7f9442' }
+        }}
+        barWidth={barWidth}
+        {...props}
+        data={data}
+        x="x"
+        y="y"
+      />
+      <VictoryAxis
+        style={{
+          axis: { stroke: 'grey', opacity: 0.2 },
+          axisLabel: { fontSize: 20, padding: 40 },
+          grid: { stroke: 'none' },
+          ticks: { stroke: 'none' },
+          tickLabels: { fontSize: 15, padding: 10, opacity: 0.5 }
+        }}
+        tickValues={tickValues}
+        tickFormat={tickFormat}
+      />
+      <VictoryAxis
+        dependentAxis
+        style={{
+          axis: { stroke: 'none' },
+          axisLabel: { fontSize: 20, padding: 40 },
+          grid: { stroke: 'grey', opacity: 0.5 },
+          ticks: { stroke: 'none' },
+          tickLabels: { fontSize: 15, padding: 10, opacity: 0.5 }
+        }}
+        tickValues={dependentTickValues}
+        tickFormat={dependentTickFormat}
+      />
+      {comparison && comparisonData && (
         <VictoryBar
-          horizontal={horizontal}
+          groupComponent={
+            !horizontal ? (
+              <g transform="translate(25, 0)" />
+            ) : (
+              <g transform="translate(0, 25)" />
+            )
+          }
+          theme={theme.chart}
           style={{
-            data: { fill: '#7f9442' }
+            data: { fill: '#de9f39' }
           }}
           barWidth={barWidth}
           {...props}
-          data={data}
-          x="x"
-          y="y"
+          data={comparisonData}
         />
-        <VictoryAxis
+      )}
+      {median && (
+        <VictoryLine
+          horizontal={horizontal}
+          interpolation="step"
+          data={median}
+          groupComponent={<g transform="translate(6, 0)" />}
           style={{
-            axis: { stroke: 'grey', opacity: 0.2 },
-            axisLabel: { fontSize: 20, padding: 40 },
-            grid: { stroke: 'none' },
-            ticks: { stroke: 'none' },
-            tickLabels: { fontSize: 15, padding: 10, opacity: 0.5 }
-          }}
-          tickValues={tickValues}
-          tickFormat={tickFormat}
-        />
-        <VictoryAxis
-          dependentAxis
-          style={{
-            axis: { stroke: 'none' },
-            axisLabel: { fontSize: 20, padding: 40 },
-            grid: { stroke: 'grey', opacity: 0.5 },
-            ticks: { stroke: 'none' },
-            tickLabels: { fontSize: 15, padding: 10, opacity: 0.5 }
-          }}
-          tickValues={dependentTickValues}
-          tickFormat={dependentTickFormat}
-        />
-        {comparison && comparisonData && (
-          <VictoryBar
-            groupComponent={
-              !horizontal ? (
-                <g transform="translate(25, 0)" />
-              ) : (
-                <g transform="translate(0, 25)" />
-              )
+            data: {
+              stroke: 'black',
+              strokeWidth: 0.8,
+              opacity: 0.4,
+              strokeLinecap: 'round'
             }
-            theme={theme.chart}
-            style={{
-              data: { fill: '#de9f39' }
-            }}
-            barWidth={barWidth}
-            {...props}
-            data={comparisonData}
-          />
-        )}
-        {median && (
-          <VictoryLine
-            horizontal={horizontal}
-            interpolation="step"
-            data={median}
-            groupComponent={<g transform="translate(6, 0)" />}
-            style={{
-              data: {
-                stroke: 'black',
-                strokeWidth: 0.8,
-                opacity: 0.4,
-                strokeLinecap: 'round'
-              }
-            }}
-          />
-        )}
-      </VictoryChart>
-    </div>
+          }}
+        />
+      )}
+    </VictoryChart>
   );
 }
 
