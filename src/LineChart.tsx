@@ -1,6 +1,4 @@
 import React from 'react';
-import { Theme } from '@material-ui/core';
-import { useTheme } from '@material-ui/styles';
 import {
   VictoryLine,
   VictoryChartProps,
@@ -19,8 +17,7 @@ interface Props extends VictoryChartProps {
 }
 
 function LineChart({ data, ...props }: Props) {
-  const { chart: theme } = useTheme<Theme>();
-  if (!data || !theme) {
+  if (!data) {
     return null;
   }
 
