@@ -6,3 +6,4 @@ export { default as PieChart } from './PieChart';
 export {
   default as NestedProportionalAreaChart
 } from './NestedProportionalAreaChart';
+export { default as createTheme } from './styles/createTheme';

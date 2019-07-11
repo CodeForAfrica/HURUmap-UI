@@ -1,9 +1,15 @@
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme } from "hurumap-ui";
 
 const FONT_FAMILY_HEADING = '"Lora", "serif"';
 const FONT_FAMILY_TEXT = '"Montserrat", "sans-serif"';
 
-const Theme = createMuiTheme({
+const Theme = createTheme({
+  // Customize charts theme
+  chart: {
+    group: {
+      colorScale: 'blue'
+    }
+  },
   palette: {
     primary: { main: '#2b3129', light: '#f1f1ed', dark: '#222822' },
     secondary: {
