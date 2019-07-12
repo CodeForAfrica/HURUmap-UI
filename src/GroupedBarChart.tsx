@@ -1,21 +1,17 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Theme, WithStyles } from '@material-ui/core';
-import { createStyles, useTheme, withStyles } from '@material-ui/styles';
-import { VictoryBar, VictoryGroup, VictoryAxis, VictoryChart } from 'victory';
+import React from 'react';
+import { Theme } from '@material-ui/core';
+import { useTheme } from '@material-ui/styles';
+import {
+  VictoryBar,
+  VictoryGroup,
+  VictoryAxis,
+  VictoryChart,
+  VictoryBarProps
+} from 'victory';
 
 import ThemedComponent from './ThemedComponent';
 
-const styles = createStyles({
-  root: {
-    width: '100%',
-    height: '100%'
-  }
-});
-
-interface Props extends WithStyles<typeof styles> {
-  width?: string | number;
-  height?: string | number;
-  horizontal?: boolean;
+interface Props extends VictoryBarProps {
   barWidth?: number;
   dataUnit?: string;
   data: {
@@ -28,70 +24,42 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function GroupedBarChart({
-  classes,
   data,
   dataUnit = '',
   barWidth = 40,
   horizontal,
   width,
-  height
+  height,
+  ...props
 }: Props) {
   const theme = useTheme<Theme>();
-  const ref = useRef<HTMLDivElement>(null);
-  const [chartDimensions, setChartDimensions] = useState({
-    height: 0,
-    width: 0
-  });
-
-  const updateChartDimmensions = useCallback(() => {
-    if (ref.current) {
-      const div = ref.current;
-      if (
-        chartDimensions.height !== div.offsetHeight ||
-        chartDimensions.width !== div.offsetWidth
-      ) {
-        setChartDimensions(() => ({
-          height: div.offsetHeight,
-          width: div.offsetWidth
-        }));
-      }
-    }
-  }, [ref, chartDimensions]);
-  useEffect(() => {
-    updateChartDimmensions();
-  }, [width, height, updateChartDimmensions]);
   return (
-    <div ref={ref} className={classes.root} style={{ width, height }}>
-      <VictoryChart
+    <VictoryChart domainPadding={{ x: 20 }} width={width} height={height}>
+      <VictoryGroup
         horizontal={horizontal}
-        width={chartDimensions.width}
-        height={chartDimensions.height}
+        offset={barWidth + 5}
+        colorScale="qualitative"
       >
-        <VictoryGroup
-          horizontal={horizontal}
-          offset={barWidth + 5}
-          colorScale="qualitative"
-        >
-          {data.map(d => (
-            <VictoryBar
-              horizontal={horizontal}
-              barWidth={barWidth}
-              theme={theme.chart}
-              data={d.data}
-              labels={datum => `${datum.y}${dataUnit}`}
-            />
-          ))}
-        </VictoryGroup>
-        <VictoryAxis style={{ axis: { stroke: 'none' } }} />
-      </VictoryChart>
-    </div>
+        {data.map(d => (
+          <VictoryBar
+            horizontal={horizontal}
+            barWidth={barWidth}
+            theme={theme.chart}
+            data={d.data}
+            labels={datum => `${datum.y}${dataUnit}`}
+            {...props}
+          />
+        ))}
+      </VictoryGroup>
+      <VictoryAxis style={{ axis: { stroke: 'none' } }} />
+    </VictoryChart>
   );
 }
 
-export default withStyles(styles)(({ ...props }: Props) => {
+export default ({ ...props }: Props) => {
   return (
     <ThemedComponent>
       <GroupedBarChart {...props} />
     </ThemedComponent>
   );
-});
+};
