@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Theme, WithStyles } from '@material-ui/core';
 import { createStyles, useTheme, withStyles } from '@material-ui/styles';
-import { VictoryBar, VictoryGroup, VictoryAxis, VictoryChart } from 'victory';
-
-import ThemedComponent from './ThemedComponent';
+import {
+  VictoryBar,
+  VictoryGroup,
+  VictoryAxis,
+  VictoryChart,
+  VictoryTheme
+} from 'victory';
 
 const styles = createStyles({
   root: {
@@ -66,7 +70,7 @@ function GroupedBarChart({
         horizontal={horizontal}
         width={chartDimensions.width}
         height={chartDimensions.height}
-        theme={theme.chart}
+        theme={theme ? theme.chart : VictoryTheme.material}
       >
         <VictoryGroup horizontal={horizontal} offset={barWidth + 5}>
           {data.map(d => (
@@ -84,10 +88,4 @@ function GroupedBarChart({
   );
 }
 
-export default withStyles(styles)(({ ...props }: Props) => {
-  return (
-    <ThemedComponent>
-      <GroupedBarChart {...props} />
-    </ThemedComponent>
-  );
-});
+export default withStyles(styles)(GroupedBarChart);

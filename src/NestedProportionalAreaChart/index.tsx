@@ -4,12 +4,13 @@ import { useTheme } from '@material-ui/styles';
 import {
   VictoryCommonProps,
   VictoryDatableProps,
-  VictoryMultiLabeableProps
+  VictoryMultiLabeableProps,
+  VictoryTheme,
+  VictoryThemeInterfaceLatest
 } from 'victory';
 
 import ScaledCircle from './ScaledCircle';
 import ScaledSquare from './ScaledSquare';
-import ThemedComponent from '../ThemedComponent';
 
 interface Props
   extends VictoryCommonProps,
@@ -20,7 +21,9 @@ interface Props
 
 function NestedProportionalAreaChart({ data, square = false }: Props) {
   const theme = useTheme<Theme>();
-  const { proportionalArea: chart } = theme.chart;
+  const { proportionalArea: chart } = theme
+    ? theme.chart
+    : (VictoryTheme as VictoryThemeInterfaceLatest).material;
   if (!data || !chart) {
     return null;
   }
@@ -70,10 +73,4 @@ function NestedProportionalAreaChart({ data, square = false }: Props) {
   );
 }
 
-export default function({ ...props }: Props) {
-  return (
-    <ThemedComponent>
-      <NestedProportionalAreaChart {...props} />
-    </ThemedComponent>
-  );
-}
+export default NestedProportionalAreaChart;

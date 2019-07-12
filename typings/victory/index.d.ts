@@ -4,6 +4,14 @@
 declare module 'victory' {
   import * as React from 'react';
 
+
+  export const VictoryTheme: VictoryThemeInterfaceLatest;
+
+  export interface VictoryThemeInterfaceLatest {
+    grayscale: VictoryThemeDefinitionLatest;
+    material: VictoryThemeDefinitionLatest;
+  }
+
   export interface VictoryThemeDefinitionLatest extends VictoryThemeDefinition {
     area?: VictoryThemeDefinition['area'] & {
       height: number;

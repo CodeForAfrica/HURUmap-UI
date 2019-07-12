@@ -1,9 +1,12 @@
 import React from 'react';
 import { Theme } from '@material-ui/core';
 import { useTheme } from '@material-ui/styles';
-import { VictoryPie, VictoryPieProps, VictoryTooltip } from 'victory';
-
-import ThemedComponent from './ThemedComponent';
+import {
+  VictoryPie,
+  VictoryPieProps,
+  VictoryTooltip,
+  VictoryTheme
+} from 'victory';
 
 interface Props extends VictoryPieProps {
   donut?: boolean;
@@ -82,7 +85,7 @@ function PieChart({
         radius={computedRadii[0]}
         standalone={false}
         startAngle={startAngle1}
-        theme={theme.chart}
+        theme={theme ? theme.chart : VictoryTheme.material}
         {...props}
       />
       {data2 && data2.length > 0 && (
@@ -96,7 +99,7 @@ function PieChart({
           radius={computedRadii[1 % computedRadii.length]}
           standalone={false}
           startAngle={startAngle2}
-          theme={theme.chart}
+          theme={theme ? theme.chart : VictoryTheme.material}
           {...props}
         />
       )}
@@ -113,10 +116,4 @@ function PieChart({
   return <g>{component}</g>;
 }
 
-export default function({ ...props }: Props) {
-  return (
-    <ThemedComponent>
-      <PieChart {...props} />
-    </ThemedComponent>
-  );
-}
+export default PieChart;

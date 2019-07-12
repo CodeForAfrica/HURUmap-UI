@@ -6,10 +6,11 @@ import {
   VictoryGroup,
   VictoryTooltip,
   VictoryScatter,
-  VictoryVoronoiContainer
+  VictoryVoronoiContainer,
+  VictoryTheme
 } from 'victory';
-
-import ThemedComponent from './ThemedComponent';
+import { Theme } from '@material-ui/core';
+import { useTheme } from '@material-ui/styles';
 
 interface Props extends VictoryChartProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,6 +18,7 @@ interface Props extends VictoryChartProps {
 }
 
 function LineChart({ data, ...props }: Props) {
+  const theme = useTheme<Theme>();
   if (!data) {
     return null;
   }
@@ -26,7 +28,11 @@ function LineChart({ data, ...props }: Props) {
       ? [data[0], data.slice(1)]
       : [data, []];
   return (
-    <VictoryChart containerComponent={<VictoryVoronoiContainer />} {...props}>
+    <VictoryChart
+      containerComponent={<VictoryVoronoiContainer />}
+      theme={theme ? theme.chart : VictoryTheme.material}
+      {...props}
+    >
       <VictoryGroup
         labels={d => `${d.y}`}
         labelComponent={<VictoryTooltip />}
@@ -49,10 +55,4 @@ function LineChart({ data, ...props }: Props) {
   );
 }
 
-export default function({ ...props }: Props) {
-  return (
-    <ThemedComponent>
-      <LineChart {...props} />
-    </ThemedComponent>
-  );
-}
+export default LineChart;
