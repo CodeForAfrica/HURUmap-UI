@@ -5,7 +5,8 @@ import {
   array,
   boolean,
   object,
-  text
+  text,
+  number
 } from '@storybook/addon-knobs';
 
 import {
@@ -106,8 +107,8 @@ storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
   .addDecorator(withKnobs)
   .add('Default', () => (
     <GroupedBarChart
-      width={text('width', '80%')}
-      height={text('height', '50%')}
+    width={number('width', 500)}
+    height={number('height', 300)}
       dataUnit={text('dataUnit', '%')}
       data={object('data', [
         {
@@ -136,8 +137,8 @@ storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
   ))
   .add('Horizontal', () => (
     <GroupedBarChart
-      width={text('width', '50%')}
-      height={text('height', '100%')}
+      width={number('width', 500)}
+      height={number('height', 300)}
       horizontal
       dataUnit={text('dataUnit', '%')}
       data={object('data', [

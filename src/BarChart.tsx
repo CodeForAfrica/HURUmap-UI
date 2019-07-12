@@ -3,11 +3,9 @@ import {
   VictoryBar,
   VictoryBarProps,
   VictoryChart,
-  VictoryAxis,
-  VictoryTheme
+  VictoryAxis
 } from 'victory';
-import { useTheme } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
+import withVictoryTheme from './withVictoryTheme';
 
 interface Props extends VictoryBarProps {
   tickValues?: (string | number)[];
@@ -17,6 +15,7 @@ interface Props extends VictoryBarProps {
 }
 
 function BarChart({
+  theme,
   data,
   tickValues,
   tickFormat,
@@ -26,7 +25,6 @@ function BarChart({
   horizontal,
   ...props
 }: Props) {
-  const theme = useTheme<Theme>();
   if (!data) {
     return null;
   }
@@ -38,7 +36,7 @@ function BarChart({
   }
 
   return (
-    <VictoryChart theme={theme ? theme.chart : VictoryTheme.material}>
+    <VictoryChart theme={theme}>
       <VictoryBar
         horizontal={horizontal}
         barWidth={barWidth}
@@ -71,4 +69,4 @@ function BarChart({
   );
 }
 
-export default BarChart;
+export default withVictoryTheme(BarChart);
