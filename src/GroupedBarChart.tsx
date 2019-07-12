@@ -11,6 +11,8 @@ import withVictoryTheme from './withVictoryTheme';
 
 interface Props extends VictoryBarProps {
   barWidth?: number;
+  groupSpacing?: number;
+  barSpacing?: number;
   dataUnit?: string;
   data: {
     x: string | number;
@@ -26,6 +28,8 @@ function GroupedBarChart({
   data,
   dataUnit = '',
   barWidth = 40,
+  groupSpacing = 30,
+  barSpacing = 5,
   horizontal,
   width,
   height,
@@ -36,10 +40,10 @@ function GroupedBarChart({
     <VictoryChart
       horizontal={horizontal}
       theme={theme}
-      width={horizontal ? width : (barWidth + 30) * barCount}
-      height={!horizontal ? height : (barWidth + 30) * barCount}
+      width={horizontal ? width : (barWidth + groupSpacing) * barCount}
+      height={!horizontal ? height : (barWidth + groupSpacing) * barCount}
     >
-      <VictoryGroup offset={barWidth + 5}>
+      <VictoryGroup offset={barWidth + barSpacing}>
         {data.map(d => (
           <VictoryBar
             barWidth={barWidth}

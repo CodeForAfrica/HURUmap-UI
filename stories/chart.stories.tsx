@@ -110,19 +110,21 @@ storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
     const categories = Array(number('data', 3)).fill(null);
 
     return (
-      <GroupedBarChart
-        width={number('width', 500)}
-        height={number('height', 300)}
-        dataUnit={text('dataUnit', '%')}
-        horizontal={boolean('horizontal', false)}
-        data={categories.map((_, index) => ({
-          x: index,
-          data: groups.map((_, groupIndex) => ({
-            x: `Group ${groupIndex}`,
-            y: rand()
-          }))
-        }))}
-      />
+      <div>
+        <GroupedBarChart
+          width={number('width', 500)}
+          height={number('height', 300)}
+          dataUnit={text('dataUnit', '%')}
+          horizontal={boolean('horizontal', false)}
+          data={categories.map((_, index) => ({
+            x: index,
+            data: groups.map((_, groupIndex) => ({
+              x: `Group ${groupIndex}`,
+              y: rand()
+            }))
+          }))}
+        />
+      </div>
     );
   });
 storiesOf('HURUmap UI|Charts/LineChart', module)
