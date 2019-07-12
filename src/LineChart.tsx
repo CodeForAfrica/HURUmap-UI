@@ -6,7 +6,8 @@ import {
   VictoryTooltip,
   VictoryScatter,
   VictoryVoronoiContainer,
-  VictoryLineProps
+  VictoryLineProps,
+  VictoryAxis
 } from 'victory';
 import withVictoryTheme from './withVictoryTheme';
 
@@ -47,6 +48,26 @@ function LineChart({ theme, data }: Props) {
           <VictoryScatter />
         </VictoryGroup>
       ))}
+
+      <VictoryAxis
+        style={{
+          axisLabel: { display: 'block' },
+          tickLabels: { display: 'block' },
+          ticks: { display: 'block' },
+          grid: { display: 'block' },
+          axis: { display: 'block' }
+        }}
+      />
+      <VictoryAxis
+        dependentAxis
+        style={{
+          axisLabel: { display: 'block' },
+          tickLabels: { display: 'block' },
+          ticks: { display: 'block' },
+          grid: { display: 'block' },
+          axis: { display: 'block' }
+        }}
+      />
     </VictoryChart>
   );
 }

@@ -54,9 +54,46 @@ function BarChart({
           data={data2}
         />
       )}
-      <VictoryAxis tickValues={tickValues} tickFormat={tickFormat} />
+      <VictoryAxis
+        style={{
+          axis: {
+            display: 'block'
+          },
+          axisLabel: {
+            display: 'block'
+          },
+          ticks: {
+            display: 'block'
+          },
+          tickLabels: {
+            display: 'block'
+          },
+          grid: {
+            display: 'block'
+          }
+        }}
+        tickValues={tickValues}
+        tickFormat={tickFormat}
+      />
       <VictoryAxis
         dependentAxis
+        style={{
+          axis: {
+            display: 'block'
+          },
+          axisLabel: {
+            display: 'block'
+          },
+          ticks: {
+            display: 'block'
+          },
+          tickLabels: {
+            display: 'block'
+          },
+          grid: {
+            display: 'block'
+          }
+        }}
         tickValues={dependentTickValues}
         tickFormat={dependentTickFormat}
       />

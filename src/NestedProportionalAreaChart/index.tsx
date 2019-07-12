@@ -4,8 +4,7 @@ import {
   VictoryDatableProps,
   VictoryMultiLabeableProps,
   VictoryChart,
-  VictoryThemeDefinitionLatest,
-  VictoryAxis
+  VictoryThemeDefinitionLatest
 } from 'victory';
 
 import ScaledCircle from './ScaledCircle';
@@ -51,23 +50,6 @@ function NestedProportionalAreaChart({ theme, data, square = false }: Props) {
           size={chart.width / 2}
         />
       )}
-      <VictoryAxis
-        style={{
-          tickLabels: { display: 'none' },
-          ticks: { display: 'none' },
-          grid: { display: 'none' },
-          axis: { display: 'none' }
-        }}
-      />
-      <VictoryAxis
-        dependentAxis
-        style={{
-          tickLabels: { display: 'none' },
-          ticks: { display: 'none' },
-          grid: { display: 'none' },
-          axis: { display: 'none' }
-        }}
-      />
     </VictoryChart>
   );
 }

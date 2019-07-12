@@ -3,8 +3,7 @@ import {
   VictoryPie,
   VictoryPieProps,
   VictoryTooltip,
-  VictoryChart,
-  VictoryAxis
+  VictoryChart
 } from 'victory';
 import withVictoryTheme from './withVictoryTheme';
 
@@ -97,25 +96,6 @@ function PieChart({
           {...props}
         />
       )}
-      <VictoryAxis
-        standalone={standalone}
-        style={{
-          tickLabels: { display: 'none' },
-          ticks: { display: 'none' },
-          grid: { display: 'none' },
-          axis: { display: 'none' }
-        }}
-      />
-      <VictoryAxis
-        standalone={standalone}
-        dependentAxis
-        style={{
-          tickLabels: { display: 'none' },
-          ticks: { display: 'none' },
-          grid: { display: 'none' },
-          axis: { display: 'none' }
-        }}
-      />
     </VictoryChart>
   );
 }

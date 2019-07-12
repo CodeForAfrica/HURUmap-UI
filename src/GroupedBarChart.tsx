@@ -56,9 +56,9 @@ function GroupedBarChart({
       </VictoryGroup>
       <VictoryAxis
         style={{
-          axis: { display: 'none' },
-          ticks: { display: 'none' },
-          grid: { display: 'none' }
+          tickLabels: {
+            display: 'block'
+          }
         }}
       />
     </VictoryChart>
