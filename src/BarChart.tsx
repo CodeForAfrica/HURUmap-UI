@@ -38,12 +38,7 @@ function BarChart({
   }
 
   return (
-    <VictoryChart
-      horizontal={horizontal}
-      theme={theme}
-      width={width}
-      height={height}
-    >
+    <VictoryChart horizontal={horizontal} theme={theme}>
       <VictoryBar barWidth={barWidth} {...props} data={data1} x="x" y="y" />
       {data2 && data2.length > 0 && (
         <VictoryBar

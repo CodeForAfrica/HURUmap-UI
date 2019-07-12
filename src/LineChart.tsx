@@ -1,21 +1,21 @@
 import React from 'react';
 import {
   VictoryLine,
-  VictoryChartProps,
   VictoryChart,
   VictoryGroup,
   VictoryTooltip,
   VictoryScatter,
-  VictoryVoronoiContainer
+  VictoryVoronoiContainer,
+  VictoryLineProps
 } from 'victory';
 import withVictoryTheme from './withVictoryTheme';
 
-interface Props extends VictoryChartProps {
+interface Props extends VictoryLineProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
 }
 
-function LineChart({ theme, data, ...props }: Props) {
+function LineChart({ theme, data }: Props) {
   if (!data) {
     return null;
   }
@@ -28,7 +28,6 @@ function LineChart({ theme, data, ...props }: Props) {
     <VictoryChart
       containerComponent={<VictoryVoronoiContainer />}
       theme={theme}
-      {...props}
     >
       <VictoryGroup
         labels={d => `${d.y}`}

@@ -32,7 +32,7 @@ declare module 'victory' {
     };
     group: {
       colorScale: ColorScalePropType;
-    }
+    };
   }
 
   export interface CircleProps {

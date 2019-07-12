@@ -73,6 +73,7 @@ function PieChart({
       width={width}
     >
       <VictoryPie
+        standalone={standalone}
         colorScale={colorScale1}
         data={data1}
         endAngle={endAngle1}
@@ -84,6 +85,7 @@ function PieChart({
       />
       {data2 && data2.length > 0 && (
         <VictoryPie
+          standalone={standalone}
           colorScale={colorScale2}
           data={data2}
           endAngle={endAngle2}
@@ -96,6 +98,7 @@ function PieChart({
         />
       )}
       <VictoryAxis
+        standalone={standalone}
         style={{
           tickLabels: { display: 'none' },
           ticks: { display: 'none' },
@@ -104,6 +107,7 @@ function PieChart({
         }}
       />
       <VictoryAxis
+        standalone={standalone}
         dependentAxis
         style={{
           tickLabels: { display: 'none' },
