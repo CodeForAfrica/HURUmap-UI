@@ -5,8 +5,7 @@ import {
   VictoryChart,
   VictoryAxis
 } from 'victory';
-
-import ThemedComponent from './ThemedComponent';
+import withVictoryTheme from './withVictoryTheme';
 
 interface Props extends VictoryBarProps {
   tickValues?: (string | number)[];
@@ -16,6 +15,7 @@ interface Props extends VictoryBarProps {
 }
 
 function BarChart({
+  theme,
   data,
   tickValues,
   tickFormat,
@@ -23,6 +23,8 @@ function BarChart({
   dependentTickFormat,
   barWidth = 25,
   horizontal,
+  width,
+  height,
   ...props
 }: Props) {
   if (!data) {
@@ -36,21 +38,13 @@ function BarChart({
   }
 
   return (
-    <VictoryChart>
-      <VictoryBar
-        horizontal={horizontal}
-        barWidth={barWidth}
-        {...props}
-        data={data1}
-        x="x"
-        y="y"
-      />
-      <VictoryAxis tickValues={tickValues} tickFormat={tickFormat} />
-      <VictoryAxis
-        dependentAxis
-        tickValues={dependentTickValues}
-        tickFormat={dependentTickFormat}
-      />
+    <VictoryChart
+      horizontal={horizontal}
+      theme={theme}
+      width={width}
+      height={height}
+    >
+      <VictoryBar barWidth={barWidth} {...props} data={data1} x="x" y="y" />
       {data2 && data2.length > 0 && (
         <VictoryBar
           groupComponent={
@@ -65,14 +59,14 @@ function BarChart({
           data={data2}
         />
       )}
+      <VictoryAxis tickValues={tickValues} tickFormat={tickFormat} />
+      <VictoryAxis
+        dependentAxis
+        tickValues={dependentTickValues}
+        tickFormat={dependentTickFormat}
+      />
     </VictoryChart>
   );
 }
 
-export default function({ ...props }: Props) {
-  return (
-    <ThemedComponent>
-      <BarChart {...props} />
-    </ThemedComponent>
-  );
-}
+export default withVictoryTheme(BarChart);

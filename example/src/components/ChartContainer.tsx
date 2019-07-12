@@ -10,8 +10,10 @@ const styles = createStyles({
     padding: '1.5625rem 1.25rem'
   },
   content: {
-    width: 'available',
+    display: 'flex',
+    justifyContent: 'center',
     height: '100%',
+    width: 'available',
     padding: '0 1.25rem'
   },
   button: {
@@ -71,8 +73,12 @@ function ChartContainer({
         alignItems="center"
       >
         <Grid item xs={10}>
-          <Typography className={classes.title} variant="h2">{title}</Typography>
-          <Typography className={classes.subtitle} variant="h3">{subtitle}</Typography>
+          <Typography className={classes.title} variant="h2">
+            {title}
+          </Typography>
+          <Typography className={classes.subtitle} variant="h3">
+            {subtitle}
+          </Typography>
         </Grid>
         <Grid item container xs={2} justify="flex-end">
           <ButtonBase
@@ -90,7 +96,7 @@ function ChartContainer({
         </Grid>
       </Grid>
       <div className={classes.content}>
-        {children}
+        <div>{children}</div>
       </div>
     </div>
   );

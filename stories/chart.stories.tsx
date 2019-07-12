@@ -5,7 +5,8 @@ import {
   array,
   boolean,
   object,
-  text
+  text,
+  number
 } from '@storybook/addon-knobs';
 
 import {
@@ -104,68 +105,28 @@ const rand = () => Number((Math.random() * 100).toFixed(1));
 storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
-  .add('Default', () => (
-    <GroupedBarChart
-      width={text('width', '80%')}
-      height={text('height', '50%')}
-      dataUnit={text('dataUnit', '%')}
-      data={object('data', [
-        {
-          x: 'Slept under any net last night',
-          data: [
-            { x: 'Pregnant Women', y: rand() },
-            { x: 'Children', y: rand() }
-          ]
-        },
-        {
-          x: 'Used ITN last night',
-          data: [
-            { x: 'Pregnant Women', y: rand() },
-            { x: 'Children', y: rand() }
-          ]
-        },
-        {
-          x: 'Used ITN all year ',
-          data: [
-            { x: 'Pregnant Women', y: rand() },
-            { x: 'Children', y: rand() }
-          ]
-        }
-      ])}
-    />
-  ))
-  .add('Horizontal', () => (
-    <GroupedBarChart
-      width={text('width', '50%')}
-      height={text('height', '100%')}
-      horizontal
-      dataUnit={text('dataUnit', '%')}
-      data={object('data', [
-        {
-          x: 'Slept under any net last night',
-          data: [
-            { x: 'Pregnant Women', y: rand() },
-            { x: 'Children', y: rand() }
-          ]
-        },
-        {
-          x: 'Used ITN last night',
-          data: [
-            { x: 'Pregnant Women', y: rand() },
-            { x: 'Children', y: rand() }
-          ]
-        },
-        {
-          x: 'Used ITN all year ',
-          data: [
-            { x: 'Pregnant Women', y: rand() },
-            { x: 'Children', y: rand() }
-          ]
-        }
-      ])}
-    />
-  ));
+  .add('Default', () => {
+    const groups = Array(number('groups', 2)).fill(null);
+    const categories = Array(number('data', 3)).fill(null);
 
+    return (
+      <div>
+        <GroupedBarChart
+          width={number('width', 500)}
+          height={number('height', 300)}
+          dataUnit={text('dataUnit', '%')}
+          horizontal={boolean('horizontal', false)}
+          data={categories.map((_, index) => ({
+            x: index,
+            data: groups.map((_, groupIndex) => ({
+              x: `Group ${groupIndex}`,
+              y: rand()
+            }))
+          }))}
+        />
+      </div>
+    );
+  });
 storiesOf('HURUmap UI|Charts/LineChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)

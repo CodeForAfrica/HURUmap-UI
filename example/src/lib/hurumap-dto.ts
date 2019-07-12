@@ -68,7 +68,7 @@ export interface Chart {
   title: string;
   section: string;
   fields: string;
-  table_data: any; // (MetaData & Data) | (MetaData & GroupedData);
+  table_data: { is_missing?: boolean; }; // (MetaData & Data) | (MetaData & GroupedData);
   table_total_data: {
     name: string;
     numerators: {

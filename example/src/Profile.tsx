@@ -80,8 +80,6 @@ function ProfilePage({ geoId, navigate }: Props) {
               <ChartContainer title="Median" subtitle="">
                 <GroupedBarChart
                   horizontal
-                  width="100%"
-                  height="200px"
                   barWidth={10}
                   dataUnit="%"
                   data={[

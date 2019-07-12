@@ -8,15 +8,14 @@ import {
   VictoryScatter,
   VictoryVoronoiContainer
 } from 'victory';
-
-import ThemedComponent from './ThemedComponent';
+import withVictoryTheme from './withVictoryTheme';
 
 interface Props extends VictoryChartProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
 }
 
-function LineChart({ data, ...props }: Props) {
+function LineChart({ theme, data, ...props }: Props) {
   if (!data) {
     return null;
   }
@@ -26,7 +25,11 @@ function LineChart({ data, ...props }: Props) {
       ? [data[0], data.slice(1)]
       : [data, []];
   return (
-    <VictoryChart containerComponent={<VictoryVoronoiContainer />} {...props}>
+    <VictoryChart
+      containerComponent={<VictoryVoronoiContainer />}
+      theme={theme}
+      {...props}
+    >
       <VictoryGroup
         labels={d => `${d.y}`}
         labelComponent={<VictoryTooltip />}
@@ -49,10 +52,4 @@ function LineChart({ data, ...props }: Props) {
   );
 }
 
-export default function({ ...props }: Props) {
-  return (
-    <ThemedComponent>
-      <LineChart {...props} />
-    </ThemedComponent>
-  );
-}
+export default withVictoryTheme(LineChart);

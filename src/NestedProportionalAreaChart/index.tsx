@@ -1,15 +1,16 @@
 import React from 'react';
-import { Theme } from '@material-ui/core';
-import { useTheme } from '@material-ui/styles';
 import {
   VictoryCommonProps,
   VictoryDatableProps,
-  VictoryMultiLabeableProps
+  VictoryMultiLabeableProps,
+  VictoryChart,
+  VictoryThemeDefinitionLatest,
+  VictoryAxis
 } from 'victory';
 
 import ScaledCircle from './ScaledCircle';
 import ScaledSquare from './ScaledSquare';
-import ThemedComponent from '../ThemedComponent';
+import withVictoryTheme from '../withVictoryTheme';
 
 interface Props
   extends VictoryCommonProps,
@@ -18,27 +19,11 @@ interface Props
   square?: boolean;
 }
 
-function NestedProportionalAreaChart({ data, square = false }: Props) {
-  const theme = useTheme<Theme>();
-  const { proportionalArea: chart } = theme.chart;
+function NestedProportionalAreaChart({ theme, data, square = false }: Props) {
+  const { proportionalArea: chart } = theme as VictoryThemeDefinitionLatest;
   if (!data || !chart) {
     return null;
   }
-
-  const padding =
-    typeof chart.padding === 'number'
-      ? { padding: chart.padding }
-      : {
-          paddingTop: chart.padding.top,
-          paddingRight: chart.padding.right,
-          paddingBottom: chart.padding.bottom,
-          paddingLeft: chart.padding.left
-        };
-  const style = Object.assign(padding, chart.style.parent, {
-    width: '100%',
-    height: '100%'
-  });
-
   const { data: dataStyle } = chart.style;
   // Use chart.data as fill style for background/total chart
   const colorScale =
@@ -46,7 +31,7 @@ function NestedProportionalAreaChart({ data, square = false }: Props) {
       ? [dataStyle.fill, ...chart.colorScale]
       : chart.colorScale;
   return (
-    <svg style={style} viewBox={`0 0 ${chart.width} ${chart.height}`}>
+    <VictoryChart theme={theme}>
       {square ? (
         <ScaledSquare
           colorScale={colorScale}
@@ -66,14 +51,25 @@ function NestedProportionalAreaChart({ data, square = false }: Props) {
           size={chart.width / 2}
         />
       )}
-    </svg>
+      <VictoryAxis
+        style={{
+          tickLabels: { display: 'none' },
+          ticks: { display: 'none' },
+          grid: { display: 'none' },
+          axis: { display: 'none' }
+        }}
+      />
+      <VictoryAxis
+        dependentAxis
+        style={{
+          tickLabels: { display: 'none' },
+          ticks: { display: 'none' },
+          grid: { display: 'none' },
+          axis: { display: 'none' }
+        }}
+      />
+    </VictoryChart>
   );
 }
 
-export default function({ ...props }: Props) {
-  return (
-    <ThemedComponent>
-      <NestedProportionalAreaChart {...props} />
-    </ThemedComponent>
-  );
-}
+export default withVictoryTheme(NestedProportionalAreaChart);
