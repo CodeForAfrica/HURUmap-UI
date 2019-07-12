@@ -31,13 +31,13 @@ function GroupedBarChart({
   height,
   ...props
 }: Props) {
+  const barCount = data[0].data.length * data.length;
   return (
     <VictoryChart
       horizontal={horizontal}
-      domainPadding={20}
       theme={theme}
-      width={width}
-      height={height}
+      width={horizontal ? width : (barWidth + 30) * barCount}
+      height={!horizontal ? height : (barWidth + 30) * barCount}
     >
       <VictoryGroup offset={barWidth + 5}>
         {data.map(d => (

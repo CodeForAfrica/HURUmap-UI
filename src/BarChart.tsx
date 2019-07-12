@@ -23,6 +23,8 @@ function BarChart({
   dependentTickFormat,
   barWidth = 25,
   horizontal,
+  width,
+  height,
   ...props
 }: Props) {
   if (!data) {
@@ -36,21 +38,13 @@ function BarChart({
   }
 
   return (
-    <VictoryChart theme={theme}>
-      <VictoryBar
-        horizontal={horizontal}
-        barWidth={barWidth}
-        {...props}
-        data={data1}
-        x="x"
-        y="y"
-      />
-      <VictoryAxis tickValues={tickValues} tickFormat={tickFormat} />
-      <VictoryAxis
-        dependentAxis
-        tickValues={dependentTickValues}
-        tickFormat={dependentTickFormat}
-      />
+    <VictoryChart
+      horizontal={horizontal}
+      theme={theme}
+      width={width}
+      height={height}
+    >
+      <VictoryBar barWidth={barWidth} {...props} data={data1} x="x" y="y" />
       {data2 && data2.length > 0 && (
         <VictoryBar
           groupComponent={
@@ -65,6 +59,12 @@ function BarChart({
           data={data2}
         />
       )}
+      <VictoryAxis tickValues={tickValues} tickFormat={tickFormat} />
+      <VictoryAxis
+        dependentAxis
+        tickValues={dependentTickValues}
+        tickFormat={dependentTickFormat}
+      />
     </VictoryChart>
   );
 }
