@@ -69,30 +69,32 @@ function ProfilePage({ geoId, navigate }: Props) {
         ]}
       />
       <ChartsContainer>
-        {Object.values(profile.charts).map(chart => (
-          <Grid container spacing={2}>
-            <Grid item md={8}>
-              <ChartContainer title={chart.title} subtitle={chart.section}>
-                {ChartFactory.build(chart)}
-              </ChartContainer>
+        {Object.values(profile.charts)
+          .filter(chart => !chart.table_data.is_missing)
+          .map(chart => (
+            <Grid container spacing={2}>
+              <Grid item md={8}>
+                <ChartContainer title={chart.title} subtitle={chart.section}>
+                  {ChartFactory.build(chart)}
+                </ChartContainer>
+              </Grid>
+              <Grid item md={4}>
+                <ChartContainer title="Median" subtitle="">
+                  <GroupedBarChart
+                    horizontal
+                    barWidth={10}
+                    dataUnit="%"
+                    data={[
+                      {
+                        x: '',
+                        data: [{ x: '17', y: 50 }, { x: '25', y: 40 }]
+                      }
+                    ]}
+                  />
+                </ChartContainer>
+              </Grid>
             </Grid>
-            <Grid item md={4}>
-              <ChartContainer title="Median" subtitle="">
-                <GroupedBarChart
-                  horizontal
-                  barWidth={10}
-                  dataUnit="%"
-                  data={[
-                    {
-                      x: '',
-                      data: [{ x: '17', y: 50 }, { x: '25', y: 40 }]
-                    }
-                  ]}
-                />
-              </ChartContainer>
-            </Grid>
-          </Grid>
-        ))}
+          ))}
       </ChartsContainer>
     </div>
   );

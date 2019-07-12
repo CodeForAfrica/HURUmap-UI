@@ -61,14 +61,14 @@ export interface GroupedData {
   };
 }
 
-export type chartType = 'column' | 'grouped_column';
+export type chartType = 'pie' | 'column' | 'grouped_column';
 
 export interface Chart {
   chart: chartType;
   title: string;
   section: string;
   fields: string;
-  table_data: { is_missing?: boolean; }; // (MetaData & Data) | (MetaData & GroupedData);
+  table_data: { is_missing?: boolean; } | Data | GroupedData;
   table_total_data: {
     name: string;
     numerators: {
