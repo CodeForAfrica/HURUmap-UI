@@ -34,7 +34,12 @@ function GroupedBarChart({
 }: Props) {
   const theme = useTheme<Theme>();
   return (
-    <VictoryChart domainPadding={{ x: 20 }} width={width} height={height}>
+    <VictoryChart
+      theme={theme.chart}
+      domainPadding={{ x: 20 }}
+      width={width}
+      height={height}
+    >
       <VictoryGroup
         horizontal={horizontal}
         offset={barWidth + 5}
