@@ -12,9 +12,10 @@ const styles = createStyles({
   content: {
     display: 'flex',
     justifyContent: 'center',
-    height: '100%',
+    alignItems: 'center',
     width: 'available',
-    padding: '0 1.25rem'
+    padding: '0 1.25rem',
+    minHeight: '200px'
   },
   button: {
     border: '0.0625rem solid #d8d8d8',
@@ -72,7 +73,7 @@ function ChartContainer({
         justify="space-between"
         alignItems="center"
       >
-        <Grid item xs={10}>
+        <Grid item xs={9}>
           <Typography className={classes.title} variant="h2">
             {title}
           </Typography>
@@ -80,7 +81,7 @@ function ChartContainer({
             {subtitle}
           </Typography>
         </Grid>
-        <Grid item container xs={2} justify="flex-end">
+        <Grid item container xs={3} justify="flex-end">
           <ButtonBase
             className={classes.button}
             onClick={() => onInfo && onInfo()}

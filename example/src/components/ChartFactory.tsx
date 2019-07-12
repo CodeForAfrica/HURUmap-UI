@@ -38,6 +38,7 @@ export default class ChartFactory {
         return (
           <GroupedBarChart
             height={200}
+            dataUnit="%"
             data={[
               {
                 x: '',
@@ -47,7 +48,7 @@ export default class ChartFactory {
                     console.log(key);
                     return {
                       x: key,
-                      y: data[key].numerators.this!
+                      y: data[key].values.this!
                     };
                   })
               }
