@@ -21,9 +21,7 @@ function ThemedComponent({ children }: Props) {
   const theme = useTheme();
 
   return (
-    <ThemeProvider theme={Object.assign({}, defaultTheme, theme)}>
-      {children}
-    </ThemeProvider>
+    <ThemeProvider theme={theme || defaultTheme}>{children}</ThemeProvider>
   );
 }
 
