@@ -8,7 +8,7 @@ import {
   VictoryScatter,
   VictoryVoronoiContainer
 } from 'victory';
-import withVictoryTheme from './withVictoryTheme';
+import withVictoryTheme from './styles/withVictoryTheme';
 
 interface Props extends VictoryChartProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -6,7 +6,7 @@ import {
   VictoryChart,
   VictoryAxis
 } from 'victory';
-import withVictoryTheme from './withVictoryTheme';
+import withVictoryTheme from './styles/withVictoryTheme';
 
 interface Props extends VictoryPieProps {
   donut?: boolean;
