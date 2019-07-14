@@ -15,7 +15,9 @@ const styles = createStyles({
     alignItems: 'center',
     width: 'available',
     padding: '0 1.25rem',
-    minHeight: '200px'
+    minHeight: '200px',
+    overflowX: 'scroll',
+    overflowY: 'hidden'
   },
   button: {
     border: '0.0625rem solid #d8d8d8',
