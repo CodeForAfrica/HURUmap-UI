@@ -106,20 +106,30 @@ storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('Default', () => {
-    const groups = Array(number('groups', 2)).fill(null);
-    const categories = Array(number('data', 3)).fill(null);
+    const groups = Array(number('groups', 12)).fill(null);
+    const categories = Array(number('data', 2)).fill(null);
+    const horizontal = boolean('horizontal', false);
 
     return (
-      <div>
+      <div
+        style={{
+          width: '100%',
+          height: '300px',
+          display: 'flex',
+          justifyContent: 'center',
+          overflowX: horizontal ? 'hidden' : 'scroll',
+          overflowY: horizontal ? 'scroll' : 'hidden'
+        }}
+      >
         <GroupedBarChart
           width={number('width', 500)}
           height={number('height', 300)}
           dataUnit={text('dataUnit', '%')}
-          horizontal={boolean('horizontal', false)}
+          horizontal={horizontal}
           data={categories.map((_, index) => ({
             x: index,
             data: groups.map((_, groupIndex) => ({
-              x: `Group ${groupIndex}`,
+              x: `Long Group ${groupIndex} Label`,
               y: rand()
             }))
           }))}

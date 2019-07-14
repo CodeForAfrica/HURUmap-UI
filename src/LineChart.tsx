@@ -9,7 +9,7 @@ import {
   VictoryLineProps,
   VictoryAxis
 } from 'victory';
-import withVictoryTheme from './withVictoryTheme';
+import withVictoryTheme from './styles/withVictoryTheme';
 
 interface Props extends VictoryLineProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -2,7 +2,7 @@ import React from 'react';
 import { VictoryCommonProps } from 'victory';
 import { useTheme } from '@material-ui/styles';
 import { Theme } from '@material-ui/core';
-import createVictoryTheme from './styles/createVictoryTheme';
+import createVictoryTheme from './createVictoryTheme';
 
 export default function withVictoryTheme<P>(
   C: React.ComponentType<P & VictoryCommonProps>

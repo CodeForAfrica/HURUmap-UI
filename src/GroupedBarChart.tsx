@@ -3,11 +3,12 @@ import {
   VictoryBar,
   VictoryGroup,
   VictoryAxis,
-  VictoryChart,
-  VictoryBarProps
+  VictoryBarProps,
+  VictoryLabel
 } from 'victory';
 
-import withVictoryTheme from './withVictoryTheme';
+import withVictoryTheme from './styles/withVictoryTheme';
+import Chart from './core/Chart';
 
 interface Props extends VictoryBarProps {
   barWidth?: number;
@@ -37,7 +38,7 @@ function GroupedBarChart({
 }: Props) {
   const barCount = data[0].data.length * data.length;
   return (
-    <VictoryChart
+    <Chart
       horizontal={horizontal}
       theme={theme}
       width={horizontal ? width : (barWidth + groupSpacing) * barCount}
@@ -47,7 +48,6 @@ function GroupedBarChart({
         {data.map(d => (
           <VictoryBar
             barWidth={barWidth}
-            theme={theme}
             data={d.data}
             labels={datum => `${datum.y}${dataUnit}`}
             {...props}
@@ -55,13 +55,18 @@ function GroupedBarChart({
         ))}
       </VictoryGroup>
       <VictoryAxis
+        standalone={false}
         style={{
+          axis: { display: 'none' },
+          ticks: { display: 'none' },
+          grid: { display: 'none' },
           tickLabels: {
             display: 'block'
           }
         }}
+        tickLabelComponent={<VictoryLabel />}
       />
-    </VictoryChart>
+    </Chart>
   );
 }
 
