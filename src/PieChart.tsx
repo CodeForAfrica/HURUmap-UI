@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  BlockProps,
+  PaddingProps,
   Helpers,
   VictoryPie,
   VictoryPieProps,
@@ -25,7 +25,7 @@ const DEFAULT_DONUT_INNER_RADIUS = 75; // in degrees
 const computeRadii = (
   width: number | undefined,
   height: number | undefined,
-  padding: number | BlockProps | undefined,
+  padding: PaddingProps | undefined,
   groupSpacing: number | undefined = 0
 ) => {
   const radius = Helpers.getRadius({ width, height, padding });
