@@ -35,9 +35,8 @@ export default class ChartFactory {
                   data: Object.keys(groupedData[key])
                     .filter(innerKey => innerKey !== 'metadata')
                     .map(innerKey => {
-                      console.log(innerKey);
                       return {
-                        x: `${key} ${innerKey}`,
+                        x: `${innerKey}`,
                         y: groupedData[key][innerKey].values.this!
                       };
                     })

@@ -10,10 +10,7 @@ const styles = createStyles({
     padding: '1.5625rem 1.25rem'
   },
   content: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 'available',
+    width: 'fit-content',
     padding: '0 1.25rem',
     minHeight: '200px',
     overflowX: 'scroll',
@@ -98,9 +95,9 @@ function ChartContainer({
           </ButtonBase>
         </Grid>
       </Grid>
-      <div className={classes.content}>
-        <div>{children}</div>
-      </div>
+      <Grid container justify="center">
+        <div className={classes.content}>{children}</div>
+      </Grid>
     </div>
   );
 }
