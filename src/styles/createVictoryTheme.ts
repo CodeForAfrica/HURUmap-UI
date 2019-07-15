@@ -1,13 +1,41 @@
-import {
-  VictoryTheme,
-  VictoryThemeDefinitionLatest,
-  VictoryThemeDefinition
-} from 'victory';
+import { VictoryTheme, VictoryThemeDefinitionLatest } from 'victory';
+
+import nestedObjectAssign from 'nested-object-assign';
 
 export default function createVictoryTheme(
   chartOptions?: VictoryThemeDefinitionLatest
 ) {
-  const chart = Object.assign({}, VictoryTheme.material, chartOptions);
+  const chart = nestedObjectAssign(
+    {
+      axis: {
+        style: {
+          axisLabel: { display: 'none' },
+          tickLabels: { display: 'none' },
+          ticks: { display: 'none' },
+          grid: { display: 'none' },
+          axis: { display: 'none' }
+        }
+      },
+      group: {
+        colorScale: ['#7F9442', '#DE9F39']
+      },
+      pie: {
+        colorScale: [
+          '#7F9442',
+          '#DE9F39',
+          '#7F9442CC',
+          '#DE9F39CC',
+          '#7F944299',
+          '#DE9F3999',
+          '#7F944266',
+          '#DE9F3966'
+        ]
+      }
+    },
+    VictoryTheme.material,
+    chartOptions
+  );
+
   // Customize chart proportionalArea props off of chart area props
   chart.proportionalArea = Object.assign(
     {},
@@ -18,14 +46,5 @@ export default function createVictoryTheme(
   if (!chart.proportionalArea.colorScale && chart.pie) {
     chart.proportionalArea.colorScale = chart.pie.colorScale;
   }
-  const style = (chart.axis as any).style as VictoryThemeDefinition['axis'];
-  if (style) {
-    style.axisLabel = Object.assign({}, style.axisLabel, { display: 'none' });
-    style.tickLabels = Object.assign({}, style.tickLabels, { display: 'none' });
-    style.ticks = Object.assign({}, style.ticks, { display: 'none' });
-    style.grid = Object.assign({}, style.grid, { display: 'none' });
-    style.axis = Object.assign({}, style.axis, { display: 'none' });
-  }
-
   return chart;
 }
