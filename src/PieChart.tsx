@@ -4,7 +4,6 @@ import {
   Helpers,
   VictoryPie,
   VictoryPieProps,
-  VictoryTooltip,
   VictoryChart
 } from 'victory';
 import withVictoryTheme from './styles/withVictoryTheme';
@@ -104,7 +103,6 @@ function PieChart({
         data={data1}
         endAngle={endAngle1}
         innerRadius={innerRadius}
-        labelComponent={<VictoryTooltip />}
         radius={computedRadii[0]}
         startAngle={startAngle1}
         {...props}
@@ -119,7 +117,6 @@ function PieChart({
             <g transform={`translate(${computedGroupSpacing}, 0)`} />
           }
           innerRadius={innerRadius}
-          labelComponent={<VictoryTooltip />}
           radius={computedRadii[1 % computedRadii.length]}
           startAngle={startAngle2}
           {...props}
