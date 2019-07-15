@@ -1,103 +1,82 @@
 import React from 'react';
 import {
   VictoryBar,
+  VictoryGroup,
+  VictoryAxis,
   VictoryBarProps,
-  VictoryChart,
-  VictoryAxis
+  VictoryLabel,
+  VictoryAxisProps
 } from 'victory';
+
+import nestedObjectAssign from 'nested-object-assign';
 import withVictoryTheme from './styles/withVictoryTheme';
+import Chart from './core/Chart';
 
 interface Props extends VictoryBarProps {
-  tickValues?: (string | number)[];
-  tickFormat?: (string | number)[];
-  dependentTickValues?: (string | number)[];
-  dependentTickFormat?: (string | number)[];
+  barWidth?: number;
+  groupSpacing?: number;
+  barSpacing?: number;
+  dataUnit?: string;
+  data: {
+    groupLabel: string | number;
+    data: {
+      x: string | number;
+      y: number;
+    }[];
+  }[];
+  axisProps?: VictoryAxisProps;
+  dependantAxisProps?: VictoryAxisProps;
 }
 
 function BarChart({
   theme,
   data,
-  tickValues,
-  tickFormat,
-  dependentTickValues,
-  dependentTickFormat,
-  barWidth = 25,
+  dataUnit = '',
+  barWidth = 40,
+  groupSpacing = 30,
+  barSpacing = 5,
   horizontal,
   width,
   height,
+  axisProps,
+  dependantAxisProps,
   ...props
 }: Props) {
-  if (!data) {
-    return null;
-  }
-
-  let data1 = data;
-  let data2;
-  if (data.length > 1 && Array.isArray(data[0])) {
-    [data1, data2] = data; // Assume data[2] is also Array
-  }
+  const barCount = data[0].data.length * data.length;
 
   return (
-    <VictoryChart horizontal={horizontal} theme={theme}>
-      <VictoryBar barWidth={barWidth} {...props} data={data1} x="x" y="y" />
-      {data2 && data2.length > 0 && (
-        <VictoryBar
-          groupComponent={
-            !horizontal ? (
-              <g transform="translate(25, 0)" />
-            ) : (
-              <g transform="translate(0, 25)" />
-            )
-          }
-          barWidth={barWidth}
-          {...props}
-          data={data2}
-        />
-      )}
+    <Chart
+      theme={theme}
+      horizontal={horizontal}
+      width={horizontal ? width : (barWidth + groupSpacing) * barCount}
+      height={!horizontal ? height : (barWidth + groupSpacing) * barCount}
+    >
+      <VictoryGroup offset={barWidth + barSpacing}>
+        {data.map(d => (
+          <VictoryBar
+            data={d.data}
+            barWidth={barWidth}
+            labels={datum => `${datum.y}${dataUnit}`}
+            {...props}
+          />
+        ))}
+      </VictoryGroup>
       <VictoryAxis
-        style={{
-          axis: {
-            display: 'block'
+        tickLabelComponent={<VictoryLabel />}
+        {...nestedObjectAssign(
+          {},
+          {
+            style: {
+              tickLabels: {
+                display: 'block'
+              }
+            }
           },
-          axisLabel: {
-            display: 'block'
-          },
-          ticks: {
-            display: 'block'
-          },
-          tickLabels: {
-            display: 'block'
-          },
-          grid: {
-            display: 'block'
-          }
-        }}
-        tickValues={tickValues}
-        tickFormat={tickFormat}
+          axisProps
+        )}
       />
-      <VictoryAxis
-        dependentAxis
-        style={{
-          axis: {
-            display: 'block'
-          },
-          axisLabel: {
-            display: 'block'
-          },
-          ticks: {
-            display: 'block'
-          },
-          tickLabels: {
-            display: 'block'
-          },
-          grid: {
-            display: 'block'
-          }
-        }}
-        tickValues={dependentTickValues}
-        tickFormat={dependentTickFormat}
-      />
-    </VictoryChart>
+      <VictoryAxis dependentAxis {...dependantAxisProps} />
+    </Chart>
   );
 }
 
