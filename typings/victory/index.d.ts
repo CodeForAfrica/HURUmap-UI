@@ -33,6 +33,9 @@ declare module 'victory' {
     group: {
       colorScale: ColorScalePropType;
     };
+    axis: {
+      style: VictoryThemeDefinition['axis'];
+    };
   }
 
   export interface CircleProps {

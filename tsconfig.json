@@ -16,6 +16,6 @@
     "rootDirs": ["src", "stories"],
     "typeRoots": [ "./typings", "node_modules/@types"]
   },
-  "include": ["src", "stories"],
-  "exclude": ["node_modules", "build", "docs", "typings"]
+  "include": ["src"],
+  "exclude": ["node_modules", "build", "docs", "typings", "stories"]
 }
