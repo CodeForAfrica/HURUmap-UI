@@ -36,6 +36,9 @@ declare module 'victory' {
     group: {
       colorScale: ColorScalePropType;
     };
+    axis: {
+      style: VictoryThemeDefinition['axis'];
+    };
   }
 
   export interface CircleProps {
@@ -74,5 +77,9 @@ declare module 'victory' {
   export interface VictoryPieProps {
     theme?: VictoryThemeDefinitionLatest;
     origin?: { x: number | undefined; y: number | undefined };
+  }
+
+  export interface VictoryChartProps {
+    theme?: VictoryThemeDefinitionLatest | VictoryThemeDefinition;
   }
 }

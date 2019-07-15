@@ -7,14 +7,11 @@ interface Props extends VictoryChartProps {
   children: any;
 }
 
-function Chart({ theme, horizontal, width, height, children }: Props) {
+function Chart({ children, ...props }: Props) {
   return (
     <VictoryChart
-      horizontal={horizontal}
-      theme={theme}
-      width={width}
-      height={height}
       containerComponent={<VictoryContainer responsive={false} />}
+      {...props}
     >
       {children}
     </VictoryChart>

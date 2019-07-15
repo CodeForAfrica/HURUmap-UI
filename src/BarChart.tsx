@@ -8,7 +8,6 @@ import {
   VictoryAxisProps
 } from 'victory';
 
-import nestedObjectAssign from 'nested-object-assign';
 import withVictoryTheme from './styles/withVictoryTheme';
 import Chart from './core/Chart';
 
@@ -16,7 +15,6 @@ interface Props extends VictoryBarProps {
   barWidth?: number;
   groupSpacing?: number;
   barSpacing?: number;
-  dataUnit?: string;
   data: {
     groupLabel: string | number;
     data: {
@@ -31,7 +29,6 @@ interface Props extends VictoryBarProps {
 function BarChart({
   theme,
   data,
-  dataUnit = '',
   barWidth = 40,
   groupSpacing = 30,
   barSpacing = 5,
@@ -42,29 +39,31 @@ function BarChart({
   dependantAxisProps,
   ...props
 }: Props) {
-  const barCount = data[0].data.length * data.length;
+  // This space is the sides of the chart, outside the data
+  // The axis is renderdered in this space
+  const dataMargin = 80;
+  const groupCount = data[0].data.length;
+  const barCount = groupCount * data.length;
+  const calculatedDimmension =
+    (barWidth + barSpacing) * barCount +
+    groupSpacing * (groupCount - 1) +
+    dataMargin;
 
   return (
     <Chart
       theme={theme}
       horizontal={horizontal}
-      width={horizontal ? width : (barWidth + groupSpacing) * barCount}
-      height={!horizontal ? height : (barWidth + groupSpacing) * barCount}
+      width={horizontal ? width : calculatedDimmension}
+      height={!horizontal ? height : calculatedDimmension}
     >
       <VictoryGroup offset={barWidth + barSpacing}>
         {data.map(d => (
-          <VictoryBar
-            data={d.data}
-            barWidth={barWidth}
-            labels={datum => `${datum.y}${dataUnit}`}
-            {...props}
-          />
+          <VictoryBar data={d.data} barWidth={barWidth} {...props} />
         ))}
       </VictoryGroup>
       <VictoryAxis
         tickLabelComponent={<VictoryLabel />}
-        {...nestedObjectAssign(
-          {},
+        {...Object.assign(
           {
             style: {
               tickLabels: {

@@ -24,11 +24,10 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
   .addDecorator(withKnobs)
   .add('Default', () => {
     const horizontal = boolean('horizontal', false);
-    const data = Array(number('data', 7)).fill(null);
+    const data = Array(number('data', 3)).fill(null);
     
     return (<div
       style={{
-        width: '100%',
         height: '300px',
         // display: 'flex',
         // justifyContent: 'center',
@@ -79,7 +78,6 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
     return (
       <div
         style={{
-          width: '100%',
           height: '300px',
           // display: 'flex',
           // justifyContent: 'center',
@@ -90,7 +88,7 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
         <BarChart
           width={number('width', 500)}
           height={number('height', 300)}
-          dataUnit={text('dataUnit', '%')}
+          labels={datum => `${datum.y}${text('dataUnit', '%')}`}
           horizontal={horizontal}
           data={categories.map((_, index) => ({
             groupLabel: index,
