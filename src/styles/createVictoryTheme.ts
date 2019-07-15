@@ -8,6 +8,8 @@ export default function createVictoryTheme(
   chartOptions?: VictoryThemeDefinitionLatest
 ) {
   const chart = Object.assign({}, VictoryTheme.material, chartOptions);
+  // Customize chart pie props
+  chart.pie = Object.assign({}, { donut: false, groupSpacing: 8 }, chart.pie);
   // Customize chart proportionalArea props off of chart area props
   chart.proportionalArea = Object.assign(
     {},

@@ -1,14 +1,16 @@
 import React from 'react';
 import {
+  PaddingProps,
+  Helpers,
   VictoryPie,
   VictoryPieProps,
-  VictoryTooltip,
   VictoryChart
 } from 'victory';
 import withVictoryTheme from './styles/withVictoryTheme';
 
 interface Props extends VictoryPieProps {
   donut?: boolean;
+  groupSpacing?: number;
   /**
    * radii enables comparing pie charts using areas instead of "pie"s.
    * If this is enabled, a single color will be used for the pie chart.
@@ -20,15 +22,26 @@ interface Props extends VictoryPieProps {
 }
 
 const DEFAULT_DONUT_INNER_RADIUS = 75; // in degrees
+const computeRadii = (
+  width: number | undefined,
+  height: number | undefined,
+  padding: PaddingProps | undefined,
+  groupSpacing: number | undefined = 0
+) => {
+  const radius = Helpers.getRadius({ width, height, padding });
+  return [radius - groupSpacing / 2];
+};
 function PieChart({
-  theme,
   colorScale,
   data,
-  donut = false,
-  innerRadius: suggestedInnerRadius = 0,
+  donut,
+  groupSpacing,
+  innerRadius: suggestedInnerRadius,
+  padding,
   radius,
   radii,
   standalone = true,
+  theme,
   height,
   width,
   ...props
@@ -37,10 +50,10 @@ function PieChart({
     return null;
   }
   const { pie: chart } = theme;
-
   if (!chart) {
     return null;
   }
+
   // If colorScale is null, the one from theme will be used.
   const colorScale1 = colorScale;
   let colorScale2 = colorScale;
@@ -48,7 +61,6 @@ function PieChart({
     colorScale2 = (colorScale as string[]).slice(1);
   }
 
-  const computedRadii = radii || (radius ? [radius] : [chart.width / 2 - 2]);
   const startAngle1 = 0;
   let endAngle1 = 360; // Full circle
   const startAngle2 = 0;
@@ -59,11 +71,25 @@ function PieChart({
     endAngle1 = -180; // Half circle, counter-clockwise
     [data1, data2] = data; // Assume data[2] is also Array
   }
-  const innerRadius =
-    donut && suggestedInnerRadius <= 0
-      ? DEFAULT_DONUT_INNER_RADIUS
-      : suggestedInnerRadius;
-
+  let innerRadius = 0;
+  if (donut || chart.donut) {
+    innerRadius =
+      suggestedInnerRadius && suggestedInnerRadius > 0
+        ? suggestedInnerRadius
+        : DEFAULT_DONUT_INNER_RADIUS;
+  }
+  // Only include groupSpacing if in comparison mode
+  const computedGroupSpacing = data2 ? groupSpacing || chart.groupSpacing : 0;
+  const computedRadii =
+    radii ||
+    (radius
+      ? [radius]
+      : computeRadii(
+          width || chart.width,
+          height || chart.height,
+          padding || chart.padding,
+          computedGroupSpacing
+        ));
   return (
     <VictoryChart
       standalone={standalone}
@@ -77,7 +103,6 @@ function PieChart({
         data={data1}
         endAngle={endAngle1}
         innerRadius={innerRadius}
-        labelComponent={<VictoryTooltip />}
         radius={computedRadii[0]}
         startAngle={startAngle1}
         {...props}
@@ -88,9 +113,10 @@ function PieChart({
           colorScale={colorScale2}
           data={data2}
           endAngle={endAngle2}
-          groupComponent={<g transform="translate(4, 0)" />}
+          groupComponent={
+            <g transform={`translate(${computedGroupSpacing}, 0)`} />
+          }
           innerRadius={innerRadius}
-          labelComponent={<VictoryTooltip />}
           radius={computedRadii[1 % computedRadii.length]}
           startAngle={startAngle2}
           {...props}
