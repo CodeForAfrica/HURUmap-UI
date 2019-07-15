@@ -30,6 +30,9 @@ declare module 'victory' {
       style: VictoryStyleInterface;
       width: number;
     };
+    group: {
+      colorScale: ColorScalePropType;
+    };
   }
 
   export interface CircleProps {
@@ -66,6 +69,7 @@ declare module 'victory' {
   export class Rect extends React.Component<RectProps, any> {}
 
   export interface VictoryPieProps {
+    theme?: VictoryThemeDefinitionLatest;
     origin?: { x: number | undefined; y: number | undefined };
   }
 }
