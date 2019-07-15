@@ -10,13 +10,12 @@ import {
 
 import nestedObjectAssign from 'nested-object-assign';
 import withVictoryTheme from './styles/withVictoryTheme';
-import Chart from './core/Chart';
+import HurumapChart from './core/HurumapChart';
 
 interface Props extends VictoryBarProps {
   barWidth?: number;
   groupSpacing?: number;
   barSpacing?: number;
-  dataUnit?: string;
   data: {
     groupLabel: string | number;
     data: {
@@ -31,7 +30,6 @@ interface Props extends VictoryBarProps {
 function BarChart({
   theme,
   data,
-  dataUnit = '',
   barWidth = 40,
   groupSpacing = 30,
   barSpacing = 5,
@@ -42,23 +40,25 @@ function BarChart({
   dependantAxisProps,
   ...props
 }: Props) {
+  // This space is the sides of the chart, outside the data
+  // The axis is renderdered in this space
+  const dataMargin = 80;
   const barCount = data[0].data.length * data.length;
 
   return (
-    <Chart
+    <HurumapChart
       theme={theme}
       horizontal={horizontal}
-      width={horizontal ? width : (barWidth + groupSpacing) * barCount}
-      height={!horizontal ? height : (barWidth + groupSpacing) * barCount}
+      width={
+        horizontal ? width : (barWidth + groupSpacing) * barCount + dataMargin
+      }
+      height={
+        !horizontal ? height : (barWidth + groupSpacing) * barCount + dataMargin
+      }
     >
       <VictoryGroup offset={barWidth + barSpacing}>
         {data.map(d => (
-          <VictoryBar
-            data={d.data}
-            barWidth={barWidth}
-            labels={datum => `${datum.y}${dataUnit}`}
-            {...props}
-          />
+          <VictoryBar data={d.data} barWidth={barWidth} {...props} />
         ))}
       </VictoryGroup>
       <VictoryAxis
@@ -76,7 +76,7 @@ function BarChart({
         )}
       />
       <VictoryAxis dependentAxis {...dependantAxisProps} />
-    </Chart>
+    </HurumapChart>
   );
 }
 
