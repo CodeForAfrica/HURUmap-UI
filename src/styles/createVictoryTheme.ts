@@ -1,57 +1,34 @@
 import { VictoryTheme, VictoryThemeDefinitionLatest } from 'victory';
+import _ from 'lodash';
 
 export default function createVictoryTheme(
   chartOptions?: VictoryThemeDefinitionLatest
 ) {
-  const defaultTheme = (VictoryTheme.material as unknown) as VictoryThemeDefinitionLatest;
-  const defaultAxisStyle = defaultTheme.axis.style;
-  const axisStyle = {
-    axisLabel: Object.assign(
-      {},
-      defaultAxisStyle && defaultAxisStyle.axisLabel,
-      {
-        display: 'none'
+  const defaultTheme = _.merge(
+    {
+      axis: {
+        style: {
+          axisLabel: {
+            display: 'none'
+          },
+          tickLabels: {
+            display: 'none'
+          },
+          ticks: {
+            display: 'none'
+          },
+          grid: {
+            display: 'none'
+          },
+          axis: {
+            display: 'none'
+          }
+        }
       }
-    ),
-    tickLabels: Object.assign(
-      {},
-      defaultAxisStyle && defaultAxisStyle.tickLabels,
-      {
-        display: 'none'
-      }
-    ),
-    ticks: Object.assign({}, defaultAxisStyle && defaultAxisStyle.ticks, {
-      display: 'none'
-    }),
-    grid: Object.assign({}, defaultAxisStyle && defaultAxisStyle.grid, {
-      display: 'none'
-    }),
-    axis: Object.assign({}, defaultAxisStyle && defaultAxisStyle.axis, {
-      display: 'none'
-    })
-  };
-  const chart: any = Object.assign({}, VictoryTheme.material, {
-    axis: {
-      style: axisStyle
     },
-    group: {
-      colorScale: ['#7F9442', '#DE9F39']
-    },
-    pie: {
-      ...VictoryTheme.material.pie,
-      colorScale: [
-        '#7F9442',
-        '#DE9F39',
-        '#7F9442CC',
-        '#DE9F39CC',
-        '#7F944299',
-        '#DE9F3999',
-        '#7F944266',
-        '#DE9F3966'
-      ]
-    },
-    chartOptions
-  });
+    VictoryTheme.material
+  );
+  const chart: any = _.merge(chartOptions, defaultTheme);
   // Customize chart proportionalArea props off of chart area props
   chart.proportionalArea = Object.assign(
     {},

@@ -56,7 +56,9 @@
     "deploy:storybook": "storybook-to-ghpages"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.136",
     "leaflet": "^1.5.1",
+    "lodash": "^4.17.14",
     "victory": "^32.3.1"
   },
   "peerDependencies": {
