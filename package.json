@@ -58,7 +58,6 @@
   },
   "dependencies": {
     "leaflet": "^1.5.1",
-    "nested-object-assign": "^1.0.3",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "victory": "^32.3.1"

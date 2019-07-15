@@ -5,11 +5,7 @@ const FONT_FAMILY_TEXT = '"Montserrat", "sans-serif"';
 
 const Theme = createTheme({
   // Customize charts theme
-  chart: {
-    group: {
-      colorScale: 'blue'
-    }
-  },
+  chart: {},
   palette: {
     primary: { main: '#2b3129', light: '#f1f1ed', dark: '#222822' },
     secondary: {

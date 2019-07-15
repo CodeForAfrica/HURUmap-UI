@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { MapIt, GroupedBarChart } from 'hurumap-ui';
+import { MapIt, BarChart } from 'hurumap-ui';
 import { RouteComponentProps } from '@reach/router';
 
 import bg from './assets/images/background.png';
@@ -80,13 +80,12 @@ function ProfilePage({ geoId, navigate }: Props) {
               </Grid>
               <Grid item md={4}>
                 <ChartContainer title="Median" subtitle="">
-                  <GroupedBarChart
+                  <BarChart
                     horizontal
                     barWidth={10}
-                    dataUnit="%"
                     data={[
                       {
-                        x: '',
+                        groupLabel: '',
                         data: [{ x: '17', y: 50 }, { x: '25', y: 40 }]
                       }
                     ]}

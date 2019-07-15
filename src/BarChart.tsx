@@ -8,7 +8,6 @@ import {
   VictoryAxisProps
 } from 'victory';
 
-import nestedObjectAssign from 'nested-object-assign';
 import withVictoryTheme from './styles/withVictoryTheme';
 import HurumapChart from './core/HurumapChart';
 
@@ -63,8 +62,7 @@ function BarChart({
       </VictoryGroup>
       <VictoryAxis
         tickLabelComponent={<VictoryLabel />}
-        {...nestedObjectAssign(
-          {},
+        {...Object.assign(
           {
             style: {
               tickLabels: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Chart, GroupedData, Data  } from '../lib/hurumap-dto';
-import { GroupedBarChart, PieChart } from 'hurumap-ui';
+import { BarChart, PieChart } from 'hurumap-ui';
 
 export default class ChartFactory {
   static build(chart: Chart) {
@@ -25,14 +25,13 @@ export default class ChartFactory {
         );
       case 'grouped_column':
         return (
-          <GroupedBarChart
+          <BarChart
             height={200}
-            dataUnit="%"
             data={Object.keys(groupedData)
               .filter(key => key !== 'metadata')
               .map(key => {
                 return {
-                  x: key,
+                  groupLabel: key,
                   data: Object.keys(groupedData[key])
                     .filter(innerKey => innerKey !== 'metadata')
                     .map(innerKey => {
@@ -48,12 +47,11 @@ export default class ChartFactory {
         );
       case 'column':
         return (
-          <GroupedBarChart
+          <BarChart
             height={200}
-            dataUnit="%"
             data={[
               {
-                x: '',
+                groupLabel: '',
                 data: Object.keys(data)
                   .filter(key => key !== 'metadata')
                   .map(key => {
