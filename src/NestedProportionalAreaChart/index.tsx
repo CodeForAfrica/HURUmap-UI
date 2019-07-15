@@ -19,7 +19,9 @@ interface Props
 }
 
 function NestedProportionalAreaChart({ theme, data, square = false }: Props) {
-  const { proportionalArea: chart } = theme as VictoryThemeDefinitionLatest;
+  const {
+    proportionalArea: chart
+  } = (theme as unknown) as VictoryThemeDefinitionLatest;
   if (!data || !chart) {
     return null;
   }

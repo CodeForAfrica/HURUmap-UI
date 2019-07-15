@@ -3,7 +3,8 @@ import {
   VictoryPie,
   VictoryPieProps,
   VictoryTooltip,
-  VictoryChart
+  VictoryChart,
+  VictoryThemeDefinition
 } from 'victory';
 import withVictoryTheme from './styles/withVictoryTheme';
 
@@ -67,7 +68,7 @@ function PieChart({
   return (
     <VictoryChart
       standalone={standalone}
-      theme={theme}
+      theme={(theme as unknown) as VictoryThemeDefinition}
       height={height}
       width={width}
     >
