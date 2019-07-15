@@ -6,7 +6,7 @@ import {
   VictoryDatableProps,
   VictoryMultiLabeableProps
 } from 'victory';
-
+import CircleLegend from './CircleLegend';
 import ScaledCircle from './ScaledCircle';
 import ScaledSquare from './ScaledSquare';
 import ThemedComponent from '../ThemedComponent';
@@ -36,7 +36,8 @@ function NestedProportionalAreaChart({ data, square = false }: Props) {
         };
   const style = Object.assign(padding, chart.style.parent, {
     width: '100%',
-    height: '100%'
+    height: '100%',
+    position: 'relative'
   });
 
   const { data: dataStyle } = chart.style;
@@ -46,27 +47,30 @@ function NestedProportionalAreaChart({ data, square = false }: Props) {
       ? [dataStyle.fill, ...chart.colorScale]
       : chart.colorScale;
   return (
-    <svg style={style} viewBox={`0 0 ${chart.width} ${chart.height}`}>
-      {square ? (
-        <ScaledSquare
-          colorScale={colorScale}
-          relativeTo={data[0]}
-          sides={data}
-          size={chart.width}
-          x={0}
-          y={0}
-        />
-      ) : (
-        <ScaledCircle
-          colorScale={colorScale}
-          cx={chart.width / 2}
-          cy={chart.width / 2}
-          radii={data}
-          relativeTo={data[0]}
-          size={chart.width / 2}
-        />
-      )}
-    </svg>
+    <div style={{ position: 'relative' }}>
+      {!square ? <CircleLegend /> : <div />}
+      <svg style={style} viewBox={`0 0 ${chart.width} ${chart.height}`}>
+        {square ? (
+          <ScaledSquare
+            colorScale={colorScale}
+            relativeTo={data[0]}
+            sides={data}
+            size={chart.width}
+            x={0}
+            y={0}
+          />
+        ) : (
+          <ScaledCircle
+            colorScale={colorScale}
+            cx={chart.width / 2}
+            cy={chart.width / 2}
+            radii={data}
+            relativeTo={data[0]}
+            size={chart.width / 2}
+          />
+        )}
+      </svg>
+    </div>
   );
 }
 
