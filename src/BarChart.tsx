@@ -42,18 +42,19 @@ function BarChart({
   // This space is the sides of the chart, outside the data
   // The axis is renderdered in this space
   const dataMargin = 80;
-  const barCount = data[0].data.length * data.length;
+  const groupCount = data[0].data.length;
+  const barCount = groupCount * data.length;
+  const calculatedDimmension =
+    (barWidth + barSpacing) * barCount +
+    groupSpacing * (groupCount - 1) +
+    dataMargin;
 
   return (
     <HurumapChart
       theme={theme}
       horizontal={horizontal}
-      width={
-        horizontal ? width : (barWidth + groupSpacing) * barCount + dataMargin
-      }
-      height={
-        !horizontal ? height : (barWidth + groupSpacing) * barCount + dataMargin
-      }
+      width={horizontal ? width : calculatedDimmension}
+      height={!horizontal ? height : calculatedDimmension}
     >
       <VictoryGroup offset={barWidth + barSpacing}>
         {data.map(d => (
