@@ -167,6 +167,7 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
     <div>
       <PieChart
         donut={boolean('donut', false)}
+        groupSpacing={number('groupSpacing', 8)}
         data={object('data', [
           [
             { x: 'A', y: 1 },

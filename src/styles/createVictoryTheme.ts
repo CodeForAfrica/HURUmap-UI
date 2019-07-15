@@ -29,6 +29,8 @@ export default function createVictoryTheme(
     VictoryTheme.material
   );
   const chart: any = _.merge(chartOptions, defaultTheme);
+  // Customize chart pie props
+  chart.pie = Object.assign({}, { donut: false, groupSpacing: 8 }, chart.pie);
   // Customize chart proportionalArea props off of chart area props
   chart.proportionalArea = Object.assign(
     {},
