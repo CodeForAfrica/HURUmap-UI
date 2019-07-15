@@ -115,7 +115,9 @@ function PieChart({
           colorScale={colorScale2}
           data={data2}
           endAngle={endAngle2}
-          groupComponent={<g transform="translate(4, 0)" />}
+          groupComponent={
+            <g transform={`translate(${computedGroupSpacing}, 0)`} />
+          }
           innerRadius={innerRadius}
           labelComponent={<VictoryTooltip />}
           radius={computedRadii[1 % computedRadii.length]}
