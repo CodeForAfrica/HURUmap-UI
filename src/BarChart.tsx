@@ -9,7 +9,7 @@ import {
 } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
-import HurumapChart from './core/HurumapChart';
+import Chart from './core/Chart';
 
 interface Props extends VictoryBarProps {
   barWidth?: number;
@@ -50,7 +50,7 @@ function BarChart({
     dataMargin;
 
   return (
-    <HurumapChart
+    <Chart
       theme={theme}
       horizontal={horizontal}
       width={horizontal ? width : calculatedDimmension}
@@ -75,7 +75,7 @@ function BarChart({
         )}
       />
       <VictoryAxis dependentAxis {...dependantAxisProps} />
-    </HurumapChart>
+    </Chart>
   );
 }
 

@@ -7,7 +7,7 @@ interface Props extends VictoryChartProps {
   children: any;
 }
 
-function HurumapChart({ children, ...props }: Props) {
+function Chart({ children, ...props }: Props) {
   return (
     <VictoryChart
       containerComponent={<VictoryContainer responsive={false} />}
@@ -18,4 +18,4 @@ function HurumapChart({ children, ...props }: Props) {
   );
 }
 
-export default withVictoryTheme(HurumapChart);
+export default withVictoryTheme(Chart);
