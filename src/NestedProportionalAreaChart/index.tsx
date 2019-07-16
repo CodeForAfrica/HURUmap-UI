@@ -3,13 +3,13 @@ import {
   VictoryCommonProps,
   VictoryDatableProps,
   VictoryMultiLabeableProps,
-  VictoryChart,
   VictoryThemeDefinitionLatest
 } from 'victory';
 
+import withVictoryTheme from '../styles/withVictoryTheme';
+import CustomContainer from '../CustomContainer';
 import ScaledCircle from './ScaledCircle';
 import ScaledSquare from './ScaledSquare';
-import withVictoryTheme from '../styles/withVictoryTheme';
 
 interface Props
   extends VictoryCommonProps,
@@ -18,41 +18,50 @@ interface Props
   square?: boolean;
 }
 
-function NestedProportionalAreaChart({ theme, data, square = false }: Props) {
+function NestedProportionalAreaChart({
+  width,
+  height,
+  theme,
+  data,
+  square = false
+}: Props) {
   const {
     proportionalArea: chart
   } = (theme as unknown) as VictoryThemeDefinitionLatest;
   if (!data || !chart) {
     return null;
   }
-  const { data: dataStyle } = chart.style;
-  // Use chart.data as fill style for background/total chart
-  const colorScale =
-    dataStyle && typeof dataStyle.fill === 'string'
-      ? [dataStyle.fill, ...chart.colorScale]
-      : chart.colorScale;
+  const computedHeight = height || chart.height;
+  const computedWidth = width || chart.width;
+  const minDimension = Math.min(computedHeight, computedWidth);
   return (
-    <VictoryChart theme={theme}>
+    <CustomContainer
+      height={height || chart.height}
+      width={width || chart.height}
+    >
       {square ? (
         <ScaledSquare
-          colorScale={colorScale}
+          colorScale={chart.colorScale}
           relativeTo={data[0]}
           sides={data}
-          size={chart.width}
+          size={minDimension}
           x={0}
           y={0}
         />
       ) : (
         <ScaledCircle
-          colorScale={colorScale}
-          cx={chart.width / 2}
-          cy={chart.width / 2}
+          colorScale={chart.colorScale}
+          cx={minDimension / 2}
+          cy={minDimension / 2}
           radii={data}
           relativeTo={data[0]}
-          size={chart.width / 2}
+          size={minDimension / 2 - 8}
+          theme={(theme as unknown) as VictoryThemeDefinitionLatest}
+          height={height}
+          width={width}
         />
       )}
-    </VictoryChart>
+    </CustomContainer>
   );
 }
 
