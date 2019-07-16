@@ -13,7 +13,8 @@ import {
   BarChart,
   LineChart,
   PieChart,
-  NestedProportionalAreaChart
+  NestedProportionalAreaChart,
+  ProgressChart
 } from '../src';
 import { CenterDecorator } from './common';
 
@@ -25,50 +26,48 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
   .add('Default', () => {
     const horizontal = boolean('horizontal', false);
     const data = Array(number('data', 3)).fill(null);
-    
-    return (<div
-      style={{
-        height: '300px',
-        // display: 'flex',
-        // justifyContent: 'center',
-        overflowX: horizontal ? 'hidden' : 'scroll',
-        overflowY: horizontal ? 'scroll' : 'hidden'
-      }}
-    >
-      <BarChart
-        horizontal={horizontal}
-        width={number('width', 500)}
-        height={number('height', 300)}
-        data={[
-          {
-            groupLabel: "",
-            data: data.map((_, index) => ({
-              x: `${index}-${index}`,
-              y: rand()
-            }))
-          }
-      ]}
-      dependantAxisProps={{
-        style: {
-          axis: {
-            display: 'block'
-          },
-          grid: {
-            display: 'block'
-          },
-          tickLabels: {
-            display: 'block'
-          }
-        },
-        tickValues: object('dependentTickValues', [10, 50, 90]),
-        tickFormat: object('dependentTickFormat', [
-          '10%',
-          '50%',
-          '90%'
-        ])
-      }}
-      />
-    </div>);
+
+    return (
+      <div
+        style={{
+          height: '300px',
+          // display: 'flex',
+          // justifyContent: 'center',
+          overflowX: horizontal ? 'hidden' : 'scroll',
+          overflowY: horizontal ? 'scroll' : 'hidden'
+        }}
+      >
+        <BarChart
+          horizontal={horizontal}
+          width={number('width', 500)}
+          height={number('height', 300)}
+          data={[
+            {
+              groupLabel: '',
+              data: data.map((_, index) => ({
+                x: `${index}-${index}`,
+                y: rand()
+              }))
+            }
+          ]}
+          dependantAxisProps={{
+            style: {
+              axis: {
+                display: 'block'
+              },
+              grid: {
+                display: 'block'
+              },
+              tickLabels: {
+                display: 'block'
+              }
+            },
+            tickValues: object('dependentTickValues', [10, 50, 90]),
+            tickFormat: object('dependentTickFormat', ['10%', '50%', '90%'])
+          }}
+        />
+      </div>
+    );
   })
   .add('Grouped', () => {
     const groups = Array(number('groups', 12)).fill(null);
@@ -199,3 +198,25 @@ storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
       />
     </div>
   ));
+storiesOf('HURUmap UI|Charts/ProgressChart', module)
+  .addDecorator(CenterDecorator)
+  .addDecorator(withKnobs)
+  .add('Default', () => {
+    const data = Array(number('data', 2)).fill(null);
+    return (
+      <div>
+        <ProgressChart
+          data={data.map((_, i) => ({
+            x: i,
+            y: 17
+          }))}
+          legend={object('legend', [
+            {
+              x: 'Tanzania',
+              y: 16
+            }
+          ])}
+        />
+      </div>
+    );
+  });
