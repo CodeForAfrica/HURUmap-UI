@@ -11,17 +11,24 @@ import {
 import withVictoryTheme from './styles/withVictoryTheme';
 import Chart from './core/Chart';
 
+type GroupData = {
+  dataLabel: string | number;
+  data: {
+    x: string | number; // grouped data label
+    y: number;
+  }[];
+}[];
+
+type Data = {
+  x: string | number;
+  y: number;
+}[];
+
 interface Props extends VictoryBarProps {
   barWidth?: number;
   groupSpacing?: number;
   barSpacing?: number;
-  data: {
-    groupLabel: string | number;
-    data: {
-      x: string | number;
-      y: number;
-    }[];
-  }[];
+  data: GroupData | Data;
   axisProps?: VictoryAxisProps;
   dependantAxisProps?: VictoryAxisProps;
 }
@@ -41,8 +48,15 @@ function BarChart({
 }: Props) {
   // This space is the sides of the chart, outside the data
   // The axis is renderdered in this space
-  const dataMargin = 80;
-  const groupCount = data[0].data.length;
+  const dataMargin = 95;
+  const xDomainPadding = 25;
+  let groupCount = 1;
+  let plotData = [data as Data];
+  const isGrouped = Boolean((data as GroupData)[0].data);
+  if (isGrouped) {
+    groupCount = (data as GroupData)[0].data.length;
+    plotData = (data as GroupData).map(d => d.data);
+  }
   const barCount = groupCount * data.length;
   const calculatedDimmension =
     (barWidth + barSpacing) * barCount +
@@ -55,12 +69,19 @@ function BarChart({
       horizontal={horizontal}
       width={horizontal ? width : calculatedDimmension}
       height={!horizontal ? height : calculatedDimmension}
+      domainPadding={{ x: xDomainPadding }}
     >
-      <VictoryGroup offset={barWidth + barSpacing}>
-        {data.map(d => (
-          <VictoryBar data={d.data} barWidth={barWidth} {...props} />
-        ))}
-      </VictoryGroup>
+      {isGrouped ? (
+        <VictoryGroup offset={barWidth + barSpacing}>
+          {plotData.map(d => (
+            <VictoryBar data={d} barWidth={barWidth} {...props} />
+          ))}
+        </VictoryGroup>
+      ) : (
+        plotData.map(d => (
+          <VictoryBar data={d} barWidth={barWidth} {...props} />
+        ))
+      )}
       <VictoryAxis
         tickLabelComponent={<VictoryLabel />}
         {...Object.assign(
