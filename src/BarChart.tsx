@@ -9,7 +9,7 @@ import {
 } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
-import Chart from './core/Chart';
+import Chart, { ChartProps } from './core/Chart';
 
 type Data = {
   x: string | number;
@@ -21,7 +21,7 @@ type GroupData = {
   data: Data;
 }[];
 
-interface Props extends VictoryBarProps {
+interface Props extends VictoryBarProps, ChartProps {
   barWidth?: number;
   groupSpacing?: number;
   barSpacing?: number;
@@ -39,6 +39,7 @@ function BarChart({
   horizontal,
   width,
   height,
+  responsive,
   axisProps,
   dependantAxisProps,
   ...props
@@ -62,6 +63,7 @@ function BarChart({
   return (
     <Chart
       theme={theme}
+      responsive={responsive}
       horizontal={horizontal}
       width={horizontal ? width : calculatedDimmension}
       height={!horizontal ? height : calculatedDimmension}
