@@ -80,7 +80,7 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           labels={datum => `${datum.y}${text('dataUnit', '%')}`}
           horizontal={horizontal}
           data={categories.map((_, index) => ({
-            dataLabel: index,
+            label: index,
             data: groups.map((_, groupIndex) => ({
               x: `Long Group ${groupIndex} Label`,
               y: rand()

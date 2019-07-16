@@ -11,17 +11,14 @@ import {
 import withVictoryTheme from './styles/withVictoryTheme';
 import Chart from './core/Chart';
 
-type GroupData = {
-  dataLabel: string | number;
-  data: {
-    x: string | number; // grouped data label
-    y: number;
-  }[];
-}[];
-
 type Data = {
   x: string | number;
   y: number;
+}[];
+
+type GroupData = {
+  label: string | number;
+  data: Data;
 }[];
 
 interface Props extends VictoryBarProps {
