@@ -1,12 +1,9 @@
 import React from 'react';
-import {
-  PaddingProps,
-  Helpers,
-  VictoryPie,
-  VictoryPieProps,
-  VictoryChart
-} from 'victory';
+
+import { PaddingProps, Helpers, VictoryPie, VictoryPieProps } from 'victory';
+
 import withVictoryTheme from './styles/withVictoryTheme';
+import CustomContainer from './CustomContainer';
 
 interface Props extends VictoryPieProps {
   donut?: boolean;
@@ -91,38 +88,52 @@ function PieChart({
           computedGroupSpacing
         ));
   return (
-    <VictoryChart
+    <CustomContainer
       standalone={standalone}
-      theme={theme}
-      height={height}
-      width={width}
+      height={height || chart.height}
+      width={width || chart.height}
     >
       <VictoryPie
-        standalone={standalone}
+        standalone={false}
+        groupComponent={
+          <g
+            role="presentation"
+            transform={`translate(${-computedGroupSpacing / 2}, 0)`}
+          />
+        }
         colorScale={colorScale1}
         data={data1}
         endAngle={endAngle1}
         innerRadius={innerRadius}
         radius={computedRadii[0]}
         startAngle={startAngle1}
+        theme={theme}
+        height={height}
+        width={width}
         {...props}
       />
       {data2 && data2.length > 0 && (
         <VictoryPie
-          standalone={standalone}
+          standalone={false}
           colorScale={colorScale2}
           data={data2}
           endAngle={endAngle2}
           groupComponent={
-            <g transform={`translate(${computedGroupSpacing}, 0)`} />
+            <g
+              role="presentation"
+              transform={`translate(${computedGroupSpacing / 2}, 0)`}
+            />
           }
           innerRadius={innerRadius}
           radius={computedRadii[1 % computedRadii.length]}
           startAngle={startAngle2}
+          theme={theme}
+          height={height}
+          width={width}
           {...props}
         />
       )}
-    </VictoryChart>
+    </CustomContainer>
   );
 }
 
