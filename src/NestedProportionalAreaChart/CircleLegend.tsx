@@ -33,30 +33,42 @@ const styles = createStyles({
 
 interface Props extends WithStyles<typeof styles> {
   classes: any;
+  leftGroupNumber: number | string;
+  groupText: string;
+  rightGroupNumber: number | string;
+  bottomGroupNumber: number | string;
+  bottomGrouptext: string;
 }
 
-function CircleLegend({ classes }: Props) {
+function CircleLegend({
+  classes,
+  leftGroupNumber,
+  rightGroupNumber,
+  groupText,
+  bottomGroupNumber,
+  bottomGrouptext
+}: Props) {
   return (
     <div>
       <g className={classes.leftGroup}>
         <text>
-          <span style={{ fontSize: '3rem' }}>2.1m</span>
+          <span style={{ fontSize: '3rem' }}>{leftGroupNumber}</span>
           <br />
-          <span>people</span>
+          <span>{groupText}</span>
         </text>
       </g>
       <g className={classes.rightGroup}>
         <text>
-          <span style={{ fontSize: '3rem' }}>2.3m</span>
+          <span style={{ fontSize: '3rem' }}>{rightGroupNumber}</span>
           <br />
-          <span>people</span>
+          <span>{groupText}</span>
         </text>
       </g>
       <g className={classes.bottomGroup}>
         <text>
-          47.9m
+          {bottomGroupNumber}
           <br />
-          Tanzania
+          {bottomGrouptext}
         </text>
       </g>
       <svg

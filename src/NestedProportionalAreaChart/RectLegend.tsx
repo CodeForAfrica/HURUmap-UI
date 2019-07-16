@@ -14,7 +14,6 @@ const styles = createStyles({
     top: 0,
     left: '3rem',
     fontSize: '2.5rem',
-    color: 'grey',
     listStyleType: 'none'
   },
   bottomLegend: {
@@ -28,27 +27,37 @@ const styles = createStyles({
 
 interface Props extends WithStyles<typeof styles> {
   classes: any;
+  firstLegend: number | string;
+  secondLegend: number | string;
+  bottomLegendNumber: number | string;
+  bottomLegendText: number | string;
 }
 
-function RectLegend({ classes }: Props) {
+function RectLegend({
+  classes,
+  firstLegend,
+  secondLegend,
+  bottomLegendNumber,
+  bottomLegendText
+}: Props) {
   return (
     <div>
       <div className={classes.legendRoot}>
         <g className={classes.topLegend}>
           <li>
-            <text style={{ color: '#7f9442' }}>760,000</text>
+            <text style={{ color: '#7f9442' }}>{firstLegend}</text>
           </li>
           <li>
-            <text style={{ color: '#de9f3a' }}>679,000</text>
+            <text style={{ color: '#de9f3a' }}>{secondLegend}</text>
           </li>
         </g>
       </div>
 
       <g className={classes.bottomLegend}>
         <text>
-          47.9m
+          {bottomLegendNumber}
           <br />
-          Tanzania
+          {bottomLegendText}
         </text>
       </g>
     </div>

@@ -49,7 +49,22 @@ function NestedProportionalAreaChart({ data, square = false }: Props) {
       : chart.colorScale;
   return (
     <div style={{ position: 'relative' }}>
-      {!square ? <CircleLegend /> : <RectLegend />}
+      {!square ? (
+        <CircleLegend
+          leftGroupNumber="21 m"
+          groupText="people"
+          rightGroupNumber="22.3m"
+          bottomGroupNumber="47.8"
+          bottomGrouptext="tanzania"
+        />
+      ) : (
+        <RectLegend
+          firstLegend="789,000"
+          secondLegend="450,000"
+          bottomLegendNumber="40.5m"
+          bottomLegendText="Population"
+        />
+      )}
       <svg style={style} viewBox={`0 0 ${chart.width} ${chart.height}`}>
         {square ? (
           <ScaledSquare
