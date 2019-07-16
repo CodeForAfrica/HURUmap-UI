@@ -5,167 +5,102 @@ import {
   array,
   boolean,
   object,
-  text
+  text,
+  number
 } from '@storybook/addon-knobs';
 
 import {
   BarChart,
-  GroupedBarChart,
   LineChart,
   PieChart,
   NestedProportionalAreaChart
 } from '../src';
 import { CenterDecorator } from './common';
 
+const rand = () => Number((Math.random() * 100).toFixed(1));
+
 storiesOf('HURUmap UI|Charts/BarChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
-  .add('Default', () => (
-    <div>
+  .add('Default', () => {
+    const horizontal = boolean('horizontal', false);
+    const data = Array(number('data', 3)).fill(null);
+    
+    return (<div
+      style={{
+        height: '300px',
+        // display: 'flex',
+        // justifyContent: 'center',
+        overflowX: horizontal ? 'hidden' : 'scroll',
+        overflowY: horizontal ? 'scroll' : 'hidden'
+      }}
+    >
       <BarChart
-        horizontal={boolean('horizontal', false)}
-        data={object('data', [
-          { x: 1, y: 5 },
-          { x: 2, y: 17.5 },
-          { x: 3, y: 30 },
-          { x: 4, y: 35 },
-          { x: 5, y: 20 },
-          { x: 4, y: 8 },
-          { x: 6, y: 4 },
-          { x: 7, y: 10 }
-        ])}
-        tickValues={object('tickValues', [1, 2, 3, 4, 5, 6, 7])}
-        tickFormat={object('tickFormat', [
-          '0-9',
-          '10-19',
-          '20-29',
-          '30-39',
-          '40-49',
-          '50-69',
-          '80+'
-        ])}
-        dependentTickValues={object('dependentTickValues', [0, 17.5, 35])}
-        dependentTickFormat={object('dependentTickFormat', [
-          '0%',
-          '17.5%',
-          '35%'
-        ])}
+        horizontal={horizontal}
+        width={number('width', 500)}
+        height={number('height', 300)}
+        data={[
+          {
+            groupLabel: "",
+            data: data.map((_, index) => ({
+              x: `${index}-${index}`,
+              y: rand()
+            }))
+          }
+      ]}
+      dependantAxisProps={{
+        style: {
+          axis: {
+            display: 'block'
+          },
+          grid: {
+            display: 'block'
+          },
+          tickLabels: {
+            display: 'block'
+          }
+        },
+        tickValues: object('dependentTickValues', [10, 50, 90]),
+        tickFormat: object('dependentTickFormat', [
+          '10%',
+          '50%',
+          '90%'
+        ])
+      }}
       />
-    </div>
-  ))
-  .add('Comparison', () => (
-    <div>
-      <BarChart
-        horizontal={boolean('horizontal', false)}
-        data={object('data', [
-          [
-            { x: 1, y: 5 },
-            { x: 2, y: 17.5 },
-            { x: 3, y: 30 },
-            { x: 4, y: 35 },
-            { x: 5, y: 20 },
-            { x: 4, y: 8 },
-            { x: 6, y: 4 },
-            { x: 7, y: 10 }
-          ],
-          [
-            { x: 0, y: 0 },
-            { x: 1, y: 10 },
-            { x: 2, y: 6 },
-            { x: 3, y: 15 },
-            { x: 4, y: 32.5 },
-            { x: 5, y: 20 },
-            { x: 6, y: 15.5 },
-            { x: 7, y: 20 }
-          ]
-        ])}
-        tickValues={object('tickValues', [1, 2, 3, 4, 5, 6, 7])}
-        tickFormat={object('tickFormat', [
-          '0-9',
-          '10-19',
-          '20-29',
-          '30-39',
-          '40-49',
-          '50-69',
-          '80+'
-        ])}
-        dependentTickValues={object('dependentTickValues', [0, 17.5, 35])}
-        dependentTickFormat={object('dependentTickFormat', [
-          '0%',
-          '17.5%',
-          '35%'
-        ])}
-      />
-    </div>
-  ));
+    </div>);
+  })
+  .add('Grouped', () => {
+    const groups = Array(number('groups', 12)).fill(null);
+    const categories = Array(number('data', 2)).fill(null);
+    const horizontal = boolean('horizontal', false);
 
-const rand = () => Number((Math.random() * 100).toFixed(1));
-
-storiesOf('HURUmap UI|Charts/GroupedBarChart', module)
-  .addDecorator(CenterDecorator)
-  .addDecorator(withKnobs)
-  .add('Default', () => (
-    <GroupedBarChart
-      width={text('width', '80%')}
-      height={text('height', '50%')}
-      dataUnit={text('dataUnit', '%')}
-      data={object('data', [
-        {
-          x: 'Slept under any net last night',
-          data: [
-            { x: 'Pregnant Women', y: rand() },
-            { x: 'Children', y: rand() }
-          ]
-        },
-        {
-          x: 'Used ITN last night',
-          data: [
-            { x: 'Pregnant Women', y: rand() },
-            { x: 'Children', y: rand() }
-          ]
-        },
-        {
-          x: 'Used ITN all year ',
-          data: [
-            { x: 'Pregnant Women', y: rand() },
-            { x: 'Children', y: rand() }
-          ]
-        }
-      ])}
-    />
-  ))
-  .add('Horizontal', () => (
-    <GroupedBarChart
-      width={text('width', '50%')}
-      height={text('height', '100%')}
-      horizontal
-      dataUnit={text('dataUnit', '%')}
-      data={object('data', [
-        {
-          x: 'Slept under any net last night',
-          data: [
-            { x: 'Pregnant Women', y: rand() },
-            { x: 'Children', y: rand() }
-          ]
-        },
-        {
-          x: 'Used ITN last night',
-          data: [
-            { x: 'Pregnant Women', y: rand() },
-            { x: 'Children', y: rand() }
-          ]
-        },
-        {
-          x: 'Used ITN all year ',
-          data: [
-            { x: 'Pregnant Women', y: rand() },
-            { x: 'Children', y: rand() }
-          ]
-        }
-      ])}
-    />
-  ));
-
+    return (
+      <div
+        style={{
+          height: '300px',
+          // display: 'flex',
+          // justifyContent: 'center',
+          overflowX: horizontal ? 'hidden' : 'scroll',
+          overflowY: horizontal ? 'scroll' : 'hidden'
+        }}
+      >
+        <BarChart
+          width={number('width', 500)}
+          height={number('height', 300)}
+          labels={datum => `${datum.y}${text('dataUnit', '%')}`}
+          horizontal={horizontal}
+          data={categories.map((_, index) => ({
+            groupLabel: index,
+            data: groups.map((_, groupIndex) => ({
+              x: `Long Group ${groupIndex} Label`,
+              y: rand()
+            }))
+          }))}
+        />
+      </div>
+    );
+  });
 storiesOf('HURUmap UI|Charts/LineChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
@@ -232,6 +167,7 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
     <div>
       <PieChart
         donut={boolean('donut', false)}
+        groupSpacing={number('groupSpacing', 8)}
         data={object('data', [
           [
             { x: 'A', y: 1 },

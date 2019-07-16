@@ -1,12 +1,16 @@
 import React from 'react';
-import { Theme } from '@material-ui/core';
-import { useTheme } from '@material-ui/styles';
-import { VictoryPie, VictoryPieProps, VictoryTooltip } from 'victory';
-
-import ThemedComponent from './ThemedComponent';
+import {
+  PaddingProps,
+  Helpers,
+  VictoryPie,
+  VictoryPieProps,
+  VictoryChart
+} from 'victory';
+import withVictoryTheme from './styles/withVictoryTheme';
 
 interface Props extends VictoryPieProps {
   donut?: boolean;
+  groupSpacing?: number;
   /**
    * radii enables comparing pie charts using areas instead of "pie"s.
    * If this is enabled, a single color will be used for the pie chart.
@@ -18,35 +22,37 @@ interface Props extends VictoryPieProps {
 }
 
 const DEFAULT_DONUT_INNER_RADIUS = 75; // in degrees
+const computeRadii = (
+  width: number | undefined,
+  height: number | undefined,
+  padding: PaddingProps | undefined,
+  groupSpacing: number | undefined = 0
+) => {
+  const radius = Helpers.getRadius({ width, height, padding });
+  return [radius - groupSpacing / 2];
+};
 function PieChart({
   colorScale,
   data,
-  donut = false,
-  innerRadius: suggestedInnerRadius = 0,
+  donut,
+  groupSpacing,
+  innerRadius: suggestedInnerRadius,
+  padding,
   radius,
   radii,
   standalone = true,
+  theme,
+  height,
+  width,
   ...props
 }: Props) {
-  const theme = useTheme<Theme>();
-  const { pie: chart } = theme.chart;
-  if (!data || !chart) {
+  if (!theme || !data) {
     return null;
   }
-
-  const padding =
-    typeof chart.padding === 'number'
-      ? { padding: chart.padding }
-      : {
-          paddingTop: chart.padding.top,
-          paddingRight: chart.padding.right,
-          paddingBottom: chart.padding.bottom,
-          paddingLeft: chart.padding.left
-        };
-  const style = Object.assign(padding, chart.style.parent, {
-    width: '100%',
-    height: '100%'
-  });
+  const { pie: chart } = theme;
+  if (!chart) {
+    return null;
+  }
 
   // If colorScale is null, the one from theme will be used.
   const colorScale1 = colorScale;
@@ -55,7 +61,6 @@ function PieChart({
     colorScale2 = (colorScale as string[]).slice(1);
   }
 
-  const computedRadii = radii || (radius ? [radius] : [chart.width / 2 - 2]);
   const startAngle1 = 0;
   let endAngle1 = 360; // Full circle
   const startAngle2 = 0;
@@ -66,57 +71,59 @@ function PieChart({
     endAngle1 = -180; // Half circle, counter-clockwise
     [data1, data2] = data; // Assume data[2] is also Array
   }
-  const innerRadius =
-    donut && suggestedInnerRadius <= 0
-      ? DEFAULT_DONUT_INNER_RADIUS
-      : suggestedInnerRadius;
-
-  const component = (
-    <React.Fragment>
+  let innerRadius = 0;
+  if (donut || chart.donut) {
+    innerRadius =
+      suggestedInnerRadius && suggestedInnerRadius > 0
+        ? suggestedInnerRadius
+        : DEFAULT_DONUT_INNER_RADIUS;
+  }
+  // Only include groupSpacing if in comparison mode
+  const computedGroupSpacing = data2 ? groupSpacing || chart.groupSpacing : 0;
+  const computedRadii =
+    radii ||
+    (radius
+      ? [radius]
+      : computeRadii(
+          width || chart.width,
+          height || chart.height,
+          padding || chart.padding,
+          computedGroupSpacing
+        ));
+  return (
+    <VictoryChart
+      standalone={standalone}
+      theme={theme}
+      height={height}
+      width={width}
+    >
       <VictoryPie
+        standalone={standalone}
         colorScale={colorScale1}
         data={data1}
         endAngle={endAngle1}
         innerRadius={innerRadius}
-        labelComponent={<VictoryTooltip />}
         radius={computedRadii[0]}
-        standalone={false}
         startAngle={startAngle1}
-        theme={theme.chart}
         {...props}
       />
       {data2 && data2.length > 0 && (
         <VictoryPie
+          standalone={standalone}
           colorScale={colorScale2}
           data={data2}
           endAngle={endAngle2}
-          groupComponent={<g transform="translate(4, 0)" />}
+          groupComponent={
+            <g transform={`translate(${computedGroupSpacing}, 0)`} />
+          }
           innerRadius={innerRadius}
-          labelComponent={<VictoryTooltip />}
           radius={computedRadii[1 % computedRadii.length]}
-          standalone={false}
           startAngle={startAngle2}
-          theme={theme.chart}
           {...props}
         />
       )}
-    </React.Fragment>
-  );
-
-  if (standalone) {
-    return (
-      <svg style={style} viewBox={`0 0 ${chart.width} ${chart.height}`}>
-        {component}
-      </svg>
-    );
-  }
-  return <g>{component}</g>;
-}
-
-export default function({ ...props }: Props) {
-  return (
-    <ThemedComponent>
-      <PieChart {...props} />
-    </ThemedComponent>
+    </VictoryChart>
   );
 }
+
+export default withVictoryTheme(PieChart);

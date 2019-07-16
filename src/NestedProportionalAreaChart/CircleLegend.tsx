@@ -1,7 +1,6 @@
 import React from 'react';
 import { WithStyles } from '@material-ui/core';
 import { createStyles, withStyles } from '@material-ui/styles';
-import ThemedComponent from '../ThemedComponent';
 
 const styles = createStyles({
   leftGroup: {
@@ -98,10 +97,4 @@ function CircleLegend({
   );
 }
 
-export default withStyles(styles)(({ ...props }: Props) => {
-  return (
-    <ThemedComponent>
-      <CircleLegend {...props} />
-    </ThemedComponent>
-  );
-});
+export default withStyles(styles)(CircleLegend);

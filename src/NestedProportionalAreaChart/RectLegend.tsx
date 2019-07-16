@@ -1,7 +1,6 @@
 import React from 'react';
 import { WithStyles } from '@material-ui/core';
 import { createStyles, withStyles } from '@material-ui/styles';
-import ThemedComponent from '../ThemedComponent';
 
 const styles = createStyles({
   legendRoot: {
@@ -64,10 +63,4 @@ function RectLegend({
   );
 }
 
-export default withStyles(styles)(({ ...props }: Props) => {
-  return (
-    <ThemedComponent>
-      <RectLegend {...props} />
-    </ThemedComponent>
-  );
-});
+export default withStyles(styles)(RectLegend);
