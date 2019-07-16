@@ -4,31 +4,40 @@
 declare module 'victory' {
   import * as React from 'react';
 
+  export interface HelpersProps {
+    getRadius: (props: VictoryCommonProps) => number;
+    getPadding: (padding: PaddingProps) => BlockProps;
+  }
+
+  export const Helpers: HelpersProps;
+
   export interface VictoryThemeDefinitionLatest extends VictoryThemeDefinition {
     area?: VictoryThemeDefinition['area'] & {
       height: number;
-      padding:
-        | number
-        | { top: number; bottom: number; left: number; right: number };
+      padding: PaddingProps;
       style: VictoryStyleInterface;
       width: number;
     };
     pie?: VictoryThemeDefinition['pie'] & {
+      donut: boolean;
       colorScale: string[];
+      groupSpacing: number;
       height: number;
-      padding:
-        | number
-        | { top: number; bottom: number; left: number; right: number };
+      padding: PaddingProps;
       width: number;
     };
     proportionalArea?: {
       colorScale: string[];
       height: number;
-      padding:
-        | number
-        | { top: number; bottom: number; left: number; right: number };
+      padding: PaddingProps;
       style: VictoryStyleInterface;
       width: number;
+    };
+    group: {
+      colorScale: ColorScalePropType;
+    };
+    axis: {
+      style: VictoryThemeDefinition['axis'];
     };
   }
 
@@ -66,6 +75,11 @@ declare module 'victory' {
   export class Rect extends React.Component<RectProps, any> {}
 
   export interface VictoryPieProps {
+    theme?: VictoryThemeDefinitionLatest;
     origin?: { x: number | undefined; y: number | undefined };
+  }
+
+  export interface VictoryChartProps {
+    theme?: VictoryThemeDefinitionLatest | VictoryThemeDefinition;
   }
 }

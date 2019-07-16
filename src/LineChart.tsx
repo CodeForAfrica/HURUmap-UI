@@ -1,22 +1,22 @@
 import React from 'react';
 import {
   VictoryLine,
-  VictoryChartProps,
   VictoryChart,
   VictoryGroup,
   VictoryTooltip,
   VictoryScatter,
-  VictoryVoronoiContainer
+  VictoryVoronoiContainer,
+  VictoryLineProps,
+  VictoryAxis
 } from 'victory';
+import withVictoryTheme from './styles/withVictoryTheme';
 
-import ThemedComponent from './ThemedComponent';
-
-interface Props extends VictoryChartProps {
+interface Props extends VictoryLineProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
 }
 
-function LineChart({ data, ...props }: Props) {
+function LineChart({ theme, data }: Props) {
   if (!data) {
     return null;
   }
@@ -26,7 +26,10 @@ function LineChart({ data, ...props }: Props) {
       ? [data[0], data.slice(1)]
       : [data, []];
   return (
-    <VictoryChart containerComponent={<VictoryVoronoiContainer />} {...props}>
+    <VictoryChart
+      containerComponent={<VictoryVoronoiContainer />}
+      theme={theme}
+    >
       <VictoryGroup
         labels={d => `${d.y}`}
         labelComponent={<VictoryTooltip />}
@@ -45,14 +48,28 @@ function LineChart({ data, ...props }: Props) {
           <VictoryScatter />
         </VictoryGroup>
       ))}
+
+      <VictoryAxis
+        style={{
+          axisLabel: { display: 'block' },
+          tickLabels: { display: 'block' },
+          ticks: { display: 'block' },
+          grid: { display: 'block' },
+          axis: { display: 'block' }
+        }}
+      />
+      <VictoryAxis
+        dependentAxis
+        style={{
+          axisLabel: { display: 'block' },
+          tickLabels: { display: 'block' },
+          ticks: { display: 'block' },
+          grid: { display: 'block' },
+          axis: { display: 'block' }
+        }}
+      />
     </VictoryChart>
   );
 }
 
-export default function({ ...props }: Props) {
-  return (
-    <ThemedComponent>
-      <LineChart {...props} />
-    </ThemedComponent>
-  );
-}
+export default withVictoryTheme(LineChart);
