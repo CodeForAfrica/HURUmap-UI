@@ -4,22 +4,22 @@ import { createStyles, withStyles } from '@material-ui/styles';
 
 const styles = createStyles({
   legendRoot: {
-    height: '4rem',
+    height: '6rem',
     width: '5rem'
   },
   topLegend: {
     position: 'absolute',
     zIndex: 1,
     top: 0,
-    left: '3rem',
+    left: '0rem',
     fontSize: '2.5rem',
     listStyleType: 'none'
   },
   bottomLegend: {
     position: 'absolute',
     zIndex: 1,
-    top: '32.5rem',
-    left: '3rem',
+    top: '28rem',
+    left: '0rem',
     fontSize: '1rem'
   }
 });
