@@ -6,27 +6,27 @@ const styles = createStyles({
   leftGroup: {
     position: 'absolute',
     zIndex: 1,
-    top: '14rem',
-    left: '-8rem'
+    top: '9.5rem',
+    left: '-12rem'
   },
   rightGroup: {
     position: 'absolute',
     zIndex: 1,
-    top: '14rem',
-    left: '35rem'
+    top: '9.5rem',
+    left: '30rem'
   },
   bottomGroup: {
     position: 'absolute',
     zIndex: 1,
-    top: '25rem',
-    left: '35rem',
+    top: '20rem',
+    left: '30rem',
     fontSize: '1.5rem'
   },
   lineGroup: {
     position: 'absolute',
     zIndex: 1,
-    top: 0,
-    left: 0
+    top: '-4.5rem',
+    left: '-4.2rem'
   }
 });
 
@@ -85,7 +85,7 @@ function CircleLegend({
           strokeWidth="2"
         />
         <line
-          x1="340"
+          x1="320"
           y1="250"
           x2="500"
           y2="250"
