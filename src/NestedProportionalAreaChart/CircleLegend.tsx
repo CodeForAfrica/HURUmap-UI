@@ -1,47 +1,58 @@
 import React from 'react';
+import { WithStyles } from '@material-ui/core';
+import { createStyles, withStyles } from '@material-ui/styles';
+import ThemedComponent from '../ThemedComponent';
 
-function CircleLegend() {
+const styles = createStyles({
+  leftGroup: {
+    position: 'absolute',
+    zIndex: 1,
+    top: '14rem',
+    left: '-8rem'
+  },
+  rightGroup: {
+    position: 'absolute',
+    zIndex: 1,
+    top: '14rem',
+    left: '35rem'
+  },
+  bottomGroup: {
+    position: 'absolute',
+    zIndex: 1,
+    top: '25rem',
+    left: '35rem',
+    fontSize: '1.5rem'
+  },
+  lineGroup: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 0,
+    left: 0
+  }
+});
+
+interface Props extends WithStyles<typeof styles> {
+  classes: any;
+}
+
+function CircleLegend({ classes }: Props) {
   return (
     <div>
-      <g
-        style={{
-          position: 'absolute',
-          zIndex: 1,
-          top: '14rem',
-          left: '-8rem'
-        }}
-      >
+      <g className={classes.leftGroup}>
         <text>
-          <span style={{ fontSize: '3rem', color: '#7f9442' }}>2.1m</span>
+          <span style={{ fontSize: '3rem' }}>2.1m</span>
           <br />
           <span>people</span>
         </text>
       </g>
-      <g
-        style={{
-          position: 'absolute',
-          zIndex: 1,
-          top: '14rem',
-          left: '35rem'
-        }}
-      >
+      <g className={classes.rightGroup}>
         <text>
-          <span style={{ fontSize: '3rem', color: '#de9f3a' }}>2.3m</span>
+          <span style={{ fontSize: '3rem' }}>2.3m</span>
           <br />
           <span>people</span>
         </text>
       </g>
-
-      <g
-        style={{
-          position: 'absolute',
-          zIndex: 1,
-          top: '25rem',
-          left: '35rem',
-          fontSize: '1.5rem',
-          color: 'grey'
-        }}
-      >
+      <g className={classes.bottomGroup}>
         <text>
           47.9m
           <br />
@@ -52,12 +63,7 @@ function CircleLegend() {
         viewBox="0 0 500 500"
         width="500"
         height="500"
-        style={{
-          position: 'absolute',
-          zIndex: 1,
-          top: 0,
-          left: 0
-        }}
+        className={classes.lineGroup}
       >
         <line
           x1="0"
@@ -80,4 +86,10 @@ function CircleLegend() {
   );
 }
 
-export default CircleLegend;
+export default withStyles(styles)(({ ...props }: Props) => {
+  return (
+    <ThemedComponent>
+      <CircleLegend {...props} />
+    </ThemedComponent>
+  );
+});
