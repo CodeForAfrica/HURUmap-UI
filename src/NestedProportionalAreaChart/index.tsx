@@ -6,6 +6,7 @@ import {
   VictoryDatableProps,
   VictoryMultiLabeableProps
 } from 'victory';
+import RectLegend from './RectLegend';
 import CircleLegend from './CircleLegend';
 import ScaledCircle from './ScaledCircle';
 import ScaledSquare from './ScaledSquare';
@@ -48,7 +49,7 @@ function NestedProportionalAreaChart({ data, square = false }: Props) {
       : chart.colorScale;
   return (
     <div style={{ position: 'relative' }}>
-      {!square ? <CircleLegend /> : <div />}
+      {!square ? <CircleLegend /> : <RectLegend />}
       <svg style={style} viewBox={`0 0 ${chart.width} ${chart.height}`}>
         {square ? (
           <ScaledSquare
