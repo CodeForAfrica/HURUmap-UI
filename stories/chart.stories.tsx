@@ -116,6 +116,20 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
           { x: 6, y: -2 },
           { x: 7, y: 5 }
         ])}
+        parts={{
+          group: {
+            labels: d => `y: ${d.y}`
+          },
+          axis: {
+            style: {
+              axis: { display: 'block' },
+              axisLabel: { display: 'block' },
+              grid: { display: 'block' },
+              tickLabels: { display: 'block' },
+              ticks: { display: 'block' }
+            }
+          }
+        }}
       />
     </div>
   ))
@@ -142,6 +156,17 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
             { x: 7, y: 5 }
           ]
         ])}
+        parts={{
+          axis: {
+            style: {
+              axis: { display: 'block' },
+              axisLabel: { display: 'block' },
+              grid: { display: 'block' },
+              tickLabels: { display: 'block' },
+              ticks: { display: 'block' }
+            }
+          }
+        }}
       />
     </div>
   ));
