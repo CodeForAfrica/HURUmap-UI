@@ -63,7 +63,7 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
   })
   .add('Grouped', () => {
     const groups = Array(number('groups', 12)).fill(null);
-    const categories = Array(number('data', 2)).fill(null);
+    const data = Array(number('data', 2)).fill(null);
     const horizontal = boolean('horizontal', false);
 
     return (
@@ -79,10 +79,10 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           height={number('height', 300)}
           labels={datum => `${datum.y}${text('dataUnit', '%')}`}
           horizontal={horizontal}
-          data={categories.map((_, index) => ({
-            label: index,
-            data: groups.map((_, groupIndex) => ({
-              x: `Long Group ${groupIndex} Label`,
+          data={groups.map((_, groupIndex) => ({
+            label: `Group ${groupIndex} Label`,
+            data: data.map((_, index) => ({
+              x: `Data ${index} Label`,
               y: rand()
             }))
           }))}

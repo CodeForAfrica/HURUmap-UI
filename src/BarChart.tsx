@@ -48,13 +48,27 @@ function BarChart({
   // The axis is renderdered in this space
   const dataMargin = 95;
   let groupCount = 1;
+  let barCount = data.length;
   let plotData = [data as Data];
   const isGrouped = Boolean((data as GroupData)[0].data);
   if (isGrouped) {
-    groupCount = (data as GroupData)[0].data.length;
-    plotData = (data as GroupData).map(d => d.data);
+    const dataFields = (data as GroupData)[0].data.map(d => d.x);
+    groupCount = data.length;
+    barCount = dataFields.length * groupCount;
+
+    // Inverse the data provided
+    // Victory group expects the fields to group as root
+    plotData = dataFields.map(field =>
+      (data as GroupData).map(x => {
+        const d = x.data.find(y => y.x === field);
+        if (!d) {
+          console.error('Inconsistent grouped data provided');
+        }
+        return { x: x.label, y: d ? d.y : 0 };
+      })
+    );
   }
-  const barCount = groupCount * data.length;
+
   const calculatedDimmension =
     (barWidth + barSpacing) * barCount +
     groupSpacing * (groupCount - 1) +
