@@ -202,14 +202,20 @@ storiesOf('HURUmap UI|Charts/ProgressChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('Default', () => {
-    const data = Array(number('data', 2)).fill(null);
     return (
       <div>
         <ProgressChart
-          data={data.map((_, i) => ({
-            x: i,
-            y: 17
-          }))}
+          axisProps={{ tickFormat: () => 17 }}
+          data={object('data', [
+            {
+              x: 'Male 17',
+              y: 51 // Assume Male Percent Population
+            },
+            {
+              x: 'Female 17',
+              y: 49 // Assume Female Percent Population
+            }
+          ])}
           legend={object('legend', [
             {
               x: 'Tanzania',

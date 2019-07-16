@@ -28,6 +28,9 @@ function BarChart({
   dependantAxisProps,
   ...props
 }: Props) {
+  const tickLabelComponent = (
+    <VictoryLabel x={50} dy={-25} textAnchor="start" style={{ fontSize: 25 }} />
+  );
   return (
     <div style={{ position: 'relative' }}>
       <Chart
@@ -36,13 +39,11 @@ function BarChart({
         width={width}
         height={height}
       >
-        <VictoryBar
-          data={data}
-          labels={datum => datum.y}
-          labelComponent={
-            <VictoryLabel x={50} dy={-25} style={{ fontSize: 35 }} />
-          }
-          {...props}
+        <VictoryBar data={data} {...props} />
+        <VictoryAxis
+          style={{ tickLabels: { display: 'block' } }}
+          tickLabelComponent={tickLabelComponent}
+          {...axisProps}
         />
       </Chart>
       <div style={{ position: 'absolute', top: 40 }}>
