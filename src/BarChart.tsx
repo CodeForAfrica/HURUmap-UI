@@ -46,7 +46,6 @@ function BarChart({
   // This space is the sides of the chart, outside the data
   // The axis is renderdered in this space
   const dataMargin = 95;
-  const xDomainPadding = 25;
   let groupCount = 1;
   let plotData = [data as Data];
   const isGrouped = Boolean((data as GroupData)[0].data);
@@ -66,7 +65,7 @@ function BarChart({
       horizontal={horizontal}
       width={horizontal ? width : calculatedDimmension}
       height={!horizontal ? height : calculatedDimmension}
-      domainPadding={{ x: xDomainPadding }}
+      domainPadding={{ x: 25 }}
     >
       {isGrouped ? (
         <VictoryGroup offset={barWidth + barSpacing}>
