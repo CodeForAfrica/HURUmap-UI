@@ -25,62 +25,51 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
   .add('Default', () => {
     const horizontal = boolean('horizontal', false);
     const data = Array(number('data', 3)).fill(null);
-    
-    return (<div
-      style={{
-        height: '300px',
-        // display: 'flex',
-        // justifyContent: 'center',
-        overflowX: horizontal ? 'hidden' : 'scroll',
-        overflowY: horizontal ? 'scroll' : 'hidden'
-      }}
-    >
-      <BarChart
-        horizontal={horizontal}
-        width={number('width', 500)}
-        height={number('height', 300)}
-        data={[
-          {
-            groupLabel: "",
-            data: data.map((_, index) => ({
-              x: `${index}-${index}`,
-              y: rand()
-            }))
-          }
-      ]}
-      dependantAxisProps={{
-        style: {
-          axis: {
-            display: 'block'
-          },
-          grid: {
-            display: 'block'
-          },
-          tickLabels: {
-            display: 'block'
-          }
-        },
-        tickValues: object('dependentTickValues', [10, 50, 90]),
-        tickFormat: object('dependentTickFormat', [
-          '10%',
-          '50%',
-          '90%'
-        ])
-      }}
-      />
-    </div>);
+
+    return (
+      <div
+        style={{
+          height: '300px',
+          overflowX: horizontal ? 'hidden' : 'scroll',
+          overflowY: horizontal ? 'scroll' : 'hidden'
+        }}
+      >
+        <BarChart
+          horizontal={horizontal}
+          width={number('width', 500)}
+          height={number('height', 300)}
+          data={data.map((_, index) => ({
+            x: `${index}-${index}`,
+            y: rand()
+          }))}
+          dependantAxisProps={{
+            style: {
+              axis: {
+                display: 'block'
+              },
+              grid: {
+                display: 'block'
+              },
+              tickLabels: {
+                display: 'block'
+              }
+            },
+            tickValues: object('dependentTickValues', [10, 50, 90]),
+            tickFormat: object('dependentTickFormat', ['10%', '50%', '90%'])
+          }}
+        />
+      </div>
+    );
   })
   .add('Grouped', () => {
     const groups = Array(number('groups', 12)).fill(null);
-    const categories = Array(number('data', 2)).fill(null);
+    const data = Array(number('data', 2)).fill(null);
     const horizontal = boolean('horizontal', false);
 
     return (
       <div
         style={{
           height: '300px',
-          // display: 'flex',
-          // justifyContent: 'center',
           overflowX: horizontal ? 'hidden' : 'scroll',
           overflowY: horizontal ? 'scroll' : 'hidden'
         }}
@@ -90,12 +79,37 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           height={number('height', 300)}
           labels={datum => `${datum.y}${text('dataUnit', '%')}`}
           horizontal={horizontal}
-          data={categories.map((_, index) => ({
-            groupLabel: index,
-            data: groups.map((_, groupIndex) => ({
-              x: `Long Group ${groupIndex} Label`,
+          data={groups.map((_, groupIndex) => ({
+            label: `Group ${groupIndex} Label`,
+            data: data.map((_d, index) => ({
+              x: `Data ${index} Label`,
               y: rand()
             }))
+          }))}
+        />
+      </div>
+    );
+  })
+  .add('Histogram', () => {
+    const bins = Array(number('bins', 3)).fill(null);
+    const horizontal = boolean('horizontal', false);
+
+    return (
+      <div
+        style={{
+          height: '300px',
+          overflowX: horizontal ? 'hidden' : 'scroll',
+          overflowY: horizontal ? 'scroll' : 'hidden'
+        }}
+      >
+        <BarChart
+          width={number('width', 500)}
+          height={number('height', 300)}
+          barSpacing={0}
+          horizontal={horizontal}
+          data={bins.map((_, index) => ({
+            x: `Bin #${index}`,
+            y: rand()
           }))}
         />
       </div>

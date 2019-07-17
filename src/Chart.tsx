@@ -31,9 +31,12 @@ export function toChartAxisProps(
   return { independent: axisProp, dependent: axisProp };
 }
 
-interface Props extends VictoryChartProps {
-  children: any;
+export interface ChartProps {
   responsive?: boolean;
+}
+
+interface Props extends VictoryChartProps, ChartProps {
+  children: any;
 }
 
 function Chart({ children, responsive = true, ...props }: Props) {
