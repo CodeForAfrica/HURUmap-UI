@@ -55,6 +55,7 @@ function BarChart({
       horizontal={horizontal}
       width={horizontal ? width : calculatedDimmension}
       height={!horizontal ? height : calculatedDimmension}
+      responsive={false}
     >
       <VictoryGroup offset={barWidth + barSpacing}>
         {data.map(d => (
