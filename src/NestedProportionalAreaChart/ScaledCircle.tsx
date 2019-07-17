@@ -1,9 +1,8 @@
 import React from 'react';
-import { VictoryPieProps } from 'victory';
 
-import PieChart from '../PieChart';
+import PieChart, { PieChartProps } from '../PieChart';
 
-interface Props extends VictoryPieProps {
+interface Props extends PieChartProps {
   cx?: number;
   cy?: number;
   radii?: number[];

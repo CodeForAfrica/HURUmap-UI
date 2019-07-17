@@ -5,7 +5,7 @@ import { PaddingProps, Helpers, VictoryPie, VictoryPieProps } from 'victory';
 import withVictoryTheme from './styles/withVictoryTheme';
 import CustomContainer from './CustomContainer';
 
-interface Props extends VictoryPieProps {
+export interface PieChartProps extends VictoryPieProps {
   donut?: boolean;
   groupSpacing?: number;
   /**
@@ -42,7 +42,7 @@ function PieChart({
   height,
   width,
   ...props
-}: Props) {
+}: PieChartProps) {
   if (!theme || !data) {
     return null;
   }

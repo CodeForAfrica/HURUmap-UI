@@ -16,6 +16,7 @@ interface Props
     VictoryDatableProps,
     VictoryMultiLabeableProps {
   square?: boolean;
+  groupSpacing?: number;
 }
 
 /**
@@ -25,6 +26,7 @@ interface Props
  * off when scaling)
  */
 function NestedProportionalAreaChart({
+  groupSpacing,
   width,
   height,
   theme,
@@ -39,6 +41,8 @@ function NestedProportionalAreaChart({
   }
   const computedHeight = height || chart.height;
   const computedWidth = width || chart.width;
+  const computedGroupSpacing =
+    data.length > 2 ? groupSpacing || chart.groupSpacing : 0;
   const minDimension = Math.min(computedHeight, computedWidth);
   return (
     <CustomContainer
@@ -59,9 +63,10 @@ function NestedProportionalAreaChart({
           colorScale={chart.colorScale}
           cx={minDimension / 2}
           cy={minDimension / 2}
+          groupSpacing={computedGroupSpacing}
           radii={data}
           relativeTo={data[0]}
-          size={minDimension / 2 - 8}
+          size={minDimension / 2 - computedGroupSpacing}
           theme={(theme as unknown) as VictoryThemeDefinitionLatest}
           height={height}
           width={width}
