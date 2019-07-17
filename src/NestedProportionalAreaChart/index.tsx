@@ -18,6 +18,12 @@ interface Props
   square?: boolean;
 }
 
+/**
+ * Data value represents **area**. We need to find length/radius in order to
+ * draw the shapes. For both squares & circles, √ of the area should give us
+ * the length/radius to use (for circle, the √ of π is a constant that drops
+ * off when scaling)
+ */
 function NestedProportionalAreaChart({
   width,
   height,

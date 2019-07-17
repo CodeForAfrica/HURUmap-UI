@@ -21,7 +21,11 @@ function ScaledCircle({
   size = 0,
   ...props
 }: Props) {
-  const scaledRs = radii.map(r => (relativeTo ? (r * size) / relativeTo : r));
+  const scaledRs = radii.map(r =>
+    relativeTo && r !== relativeTo
+      ? (Math.sqrt(r) * size) / Math.sqrt(relativeTo)
+      : size
+  );
 
   // When we're doing comparison, the background for both half circles
   // should be the total data.
