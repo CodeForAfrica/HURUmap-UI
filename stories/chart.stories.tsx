@@ -128,7 +128,8 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
               tickLabels: { display: 'block' },
               ticks: { display: 'block' }
             }
-          }
+          },
+          scatter: { size: 5 }
         }}
       />
     </div>
@@ -158,14 +159,17 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
         ])}
         parts={{
           axis: {
-            style: {
-              axis: { display: 'block' },
-              axisLabel: { display: 'block' },
-              grid: { display: 'block' },
-              tickLabels: { display: 'block' },
-              ticks: { display: 'block' }
+            independent: {
+              style: {
+                axis: { display: 'block' },
+                axisLabel: { display: 'block' },
+                grid: { display: 'block' },
+                tickLabels: { display: 'block' },
+                ticks: { display: 'block' }
+              }
             }
-          }
+          },
+          scatter: [{ size: 5, symbol: 'circle' }, { size: 5, symbol: 'plus' }]
         }}
       />
     </div>
