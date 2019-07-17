@@ -65,6 +65,7 @@ function NestedProportionalAreaChart({
           theme={(theme as unknown) as VictoryThemeDefinitionLatest}
           height={height}
           width={width}
+          labels={() => ''}
         />
       )}
     </CustomContainer>
