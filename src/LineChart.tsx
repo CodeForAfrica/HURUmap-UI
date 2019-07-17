@@ -1,74 +1,92 @@
 import React from 'react';
-import {
-  VictoryLine,
-  VictoryChart,
-  VictoryGroup,
-  VictoryTooltip,
-  VictoryScatter,
-  VictoryVoronoiContainer,
-  VictoryLineProps,
-  VictoryAxis
-} from 'victory';
-import withVictoryTheme from './styles/withVictoryTheme';
 
-interface Props extends VictoryLineProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any[];
+import {
+  VictoryAxis,
+  VictoryLine,
+  VictoryChartProps,
+  VictoryGroup,
+  VictoryGroupProps,
+  VictoryScatter,
+  VictoryScatterProps,
+  VictoryVoronoiContainer,
+  VictoryVoronoiContainerProps,
+  VictoryLineProps,
+  VictoryTooltip
+} from 'victory';
+
+import withVictoryTheme from './styles/withVictoryTheme';
+import Chart, { toChartAxisProps, ChartAxisPropsType } from './Chart';
+
+export interface LineChartPartsProps {
+  axis?: ChartAxisPropsType;
+  parent?: VictoryChartProps;
+  container?: VictoryVoronoiContainerProps;
+  group?: VictoryGroupProps | VictoryGroupProps[];
+  scatter?: VictoryScatterProps | VictoryScatterProps[];
 }
 
-function LineChart({ theme, data }: Props) {
+export interface LineChartProps extends VictoryLineProps {
+  parts?: LineChartPartsProps;
+}
+
+/**
+ * HURUmap UI Line chart is made up of VictoryChart, VictoryVoronoiContainer,
+ * VictoryGroup, VictoryLine, VictoryScatter and VictoryAxis.
+ *
+ * The props for all these parts/components can be set (if required) using
+ * `parts` prop.
+ *
+ * @example
+ * {
+ *   parts: {
+ *     axis: {
+ *       axisLabel: {display: 'block'}
+ *     }
+ *   }
+ * }
+ */
+function LineChart({ data, parts, theme, ...props }: LineChartProps) {
   if (!data) {
     return null;
   }
 
-  const [mainData, extraData] =
-    data.length > 1 && Array.isArray(data[0])
-      ? [data[0], data.slice(1)]
-      : [data, []];
-  return (
-    <VictoryChart
-      containerComponent={<VictoryVoronoiContainer />}
-      theme={theme}
-    >
-      <VictoryGroup
-        labels={d => `${d.y}`}
-        labelComponent={<VictoryTooltip />}
-        data={mainData}
-      >
-        <VictoryLine />
-        <VictoryScatter />
-      </VictoryGroup>
-      {extraData.map(xd => (
-        <VictoryGroup
-          data={xd}
-          labels={d => `${d.y}`}
-          labelComponent={<VictoryTooltip />}
-        >
-          <VictoryLine />
-          <VictoryScatter />
-        </VictoryGroup>
-      ))}
+  const groupData = data.length > 1 && Array.isArray(data[0]) ? data : [data];
 
-      <VictoryAxis
-        style={{
-          axisLabel: { display: 'block' },
-          tickLabels: { display: 'block' },
-          ticks: { display: 'block' },
-          grid: { display: 'block' },
-          axis: { display: 'block' }
-        }}
-      />
-      <VictoryAxis
-        dependentAxis
-        style={{
-          axisLabel: { display: 'block' },
-          tickLabels: { display: 'block' },
-          ticks: { display: 'block' },
-          grid: { display: 'block' },
-          axis: { display: 'block' }
-        }}
-      />
-    </VictoryChart>
+  const axisProps = (parts && toChartAxisProps(parts.axis)) || {};
+  const chartProps = parts && parts.parent;
+  const containerProps = parts && parts.container;
+  const groupProps =
+    parts && parts.group ? ([] as VictoryGroupProps[]).concat(parts.group) : [];
+  const scatterProps =
+    parts && parts.scatter
+      ? ([] as VictoryScatterProps[]).concat(parts.scatter)
+      : [];
+
+  return (
+    <Chart
+      containerComponent={<VictoryVoronoiContainer {...containerProps} />}
+      theme={theme}
+      {...chartProps}
+    >
+      {/* We only need this outer group for colorScale of charts */}
+      <VictoryGroup>
+        {groupData.map((gd, i) => (
+          <VictoryGroup
+            labels={d => `${d.y}`}
+            labelComponent={<VictoryTooltip />}
+            /* groupProps can override the above props */
+            {...groupProps[i % groupProps.length]}
+            data={gd}
+          >
+            <VictoryLine {...(props as VictoryLineProps)} />
+            <VictoryScatter {...scatterProps[i % scatterProps.length]} />
+          </VictoryGroup>
+        ))}
+      </VictoryGroup>
+
+      <VictoryAxis {...axisProps.independent} />
+      <VictoryAxis dependentAxis {...axisProps.dependent} />
+    </Chart>
   );
 }
 

@@ -9,19 +9,23 @@ import {
 } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
-import Chart from './core/Chart';
+import Chart, { ChartProps } from './Chart';
 
-interface Props extends VictoryBarProps {
+type Data = {
+  x: string | number;
+  y: number;
+}[];
+
+type GroupData = {
+  label: string | number;
+  data: Data;
+}[];
+
+interface Props extends VictoryBarProps, ChartProps {
   barWidth?: number;
   groupSpacing?: number;
   barSpacing?: number;
-  data: {
-    groupLabel: string | number;
-    data: {
-      x: string | number;
-      y: number;
-    }[];
-  }[];
+  data: GroupData | Data;
   axisProps?: VictoryAxisProps;
   dependantAxisProps?: VictoryAxisProps;
 }
@@ -35,15 +39,33 @@ function BarChart({
   horizontal,
   width,
   height,
+  responsive = false,
   axisProps,
   dependantAxisProps,
   ...props
 }: Props) {
   // This space is the sides of the chart, outside the data
-  // The axis is renderdered in this space
-  const dataMargin = 80;
-  const groupCount = data[0].data.length;
-  const barCount = groupCount * data.length;
+  // The axis is rendered in this space
+  const dataMargin = 95;
+  let groupCount = 1;
+  let barCount = data.length;
+  let plotData = [data as Data];
+  const isGrouped = Boolean((data as GroupData)[0].data);
+  if (isGrouped) {
+    const dataFields = (data as GroupData)[0].data.map(d => d.x);
+    groupCount = data.length;
+    barCount = dataFields.length * groupCount;
+
+    // Inverse the data provided
+    // Victory group expects the fields to group as root
+    plotData = dataFields.map(field =>
+      (data as GroupData).map(x => {
+        const d = x.data.find(y => y.x === field);
+        return { x: x.label, y: d ? d.y : 0 };
+      })
+    );
+  }
+
   const calculatedDimmension =
     (barWidth + barSpacing) * barCount +
     groupSpacing * (groupCount - 1) +
@@ -52,15 +74,23 @@ function BarChart({
   return (
     <Chart
       theme={theme}
+      responsive={responsive}
       horizontal={horizontal}
       width={horizontal ? width : calculatedDimmension}
       height={!horizontal ? height : calculatedDimmension}
+      domainPadding={{ x: 25 }}
     >
-      <VictoryGroup offset={barWidth + barSpacing}>
-        {data.map(d => (
-          <VictoryBar data={d.data} barWidth={barWidth} {...props} />
-        ))}
-      </VictoryGroup>
+      {isGrouped ? (
+        <VictoryGroup offset={barWidth + barSpacing}>
+          {plotData.map(d => (
+            <VictoryBar data={d} barWidth={barWidth} {...props} />
+          ))}
+        </VictoryGroup>
+      ) : (
+        plotData.map(d => (
+          <VictoryBar data={d} barWidth={barWidth} {...props} />
+        ))
+      )}
       <VictoryAxis
         tickLabelComponent={<VictoryLabel />}
         {...Object.assign(
