@@ -1,32 +1,6 @@
-import React from 'react';
-import { WithStyles } from '@material-ui/core';
-import { createStyles, withStyles } from '@material-ui/styles';
+import React, { Fragment } from 'react';
 
-const styles = createStyles({
-  partValue: {
-    position: 'absolute',
-    zIndex: 1,
-    top: '9.2rem',
-    left: '-12rem'
-  },
-  totalValue: {
-    position: 'absolute',
-    top: '18rem',
-    left: '25rem',
-    zIndex: 1,
-    fontSize: '1.5rem',
-    width: '100%'
-  },
-  lineGroup: {
-    position: 'absolute',
-    zIndex: 1,
-    top: '-4.5rem',
-    left: '-4.2rem'
-  }
-});
-
-interface Props extends WithStyles<typeof styles> {
-  classes: any;
+interface Props {
   partValue: number | string;
   groupText: string;
   totalValueNumber: number | string;
@@ -34,22 +8,37 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 function CircleLegend({
-  classes,
   partValue,
   groupText,
   totalValueNumber,
   totalValueText
 }: Props) {
   return (
-    <div>
-      <g className={classes.partValue}>
+    <Fragment>
+      <g
+        style={{
+          position: 'absolute',
+          zIndex: 1,
+          top: '9.2rem',
+          left: '-12rem'
+        }}
+      >
         <text>
           <span style={{ fontSize: '3rem' }}>{partValue}</span>
           <br />
           <span>{groupText}</span>
         </text>
       </g>
-      <g className={classes.totalValue}>
+      <g
+        style={{
+          position: 'absolute',
+          top: '18rem',
+          left: '25rem',
+          zIndex: 1,
+          fontSize: '1.5rem',
+          width: '100%'
+        }}
+      >
         <text>
           {totalValueNumber}
           <br />
@@ -60,7 +49,12 @@ function CircleLegend({
         viewBox="0 0 500 500"
         width="500"
         height="500"
-        className={classes.lineGroup}
+        style={{
+          position: 'absolute',
+          zIndex: 1,
+          top: '-4.5rem',
+          left: '-4.2rem'
+        }}
       >
         <line
           x1="0"
@@ -71,8 +65,8 @@ function CircleLegend({
           strokeWidth="2"
         />
       </svg>
-    </div>
+    </Fragment>
   );
 }
 
-export default withStyles(styles)(CircleLegend);
+export default CircleLegend;
