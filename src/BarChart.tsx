@@ -9,7 +9,7 @@ import {
 } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
-import Chart from './core/Chart';
+import Chart from './Chart';
 
 interface Props extends VictoryBarProps {
   barWidth?: number;
