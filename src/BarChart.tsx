@@ -9,7 +9,7 @@ import {
 } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
-import Chart, { ChartProps } from './core/Chart';
+import Chart, { ChartProps } from './Chart';
 
 type Data = {
   x: string | number;
@@ -39,13 +39,13 @@ function BarChart({
   horizontal,
   width,
   height,
-  responsive,
+  responsive = false,
   axisProps,
   dependantAxisProps,
   ...props
 }: Props) {
   // This space is the sides of the chart, outside the data
-  // The axis is renderdered in this space
+  // The axis is rendered in this space
   const dataMargin = 95;
   let groupCount = 1;
   let barCount = data.length;
@@ -61,9 +61,6 @@ function BarChart({
     plotData = dataFields.map(field =>
       (data as GroupData).map(x => {
         const d = x.data.find(y => y.x === field);
-        if (!d) {
-          console.error('Inconsistent grouped data provided');
-        }
         return { x: x.label, y: d ? d.y : 0 };
       })
     );

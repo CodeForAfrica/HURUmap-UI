@@ -81,7 +81,7 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           horizontal={horizontal}
           data={groups.map((_, groupIndex) => ({
             label: `Group ${groupIndex} Label`,
-            data: data.map((_, index) => ({
+            data: data.map((_d, index) => ({
               x: `Data ${index} Label`,
               y: rand()
             }))
@@ -130,6 +130,21 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
           { x: 6, y: -2 },
           { x: 7, y: 5 }
         ])}
+        parts={{
+          group: {
+            labels: d => `y: ${d.y}`
+          },
+          axis: {
+            style: {
+              axis: { display: 'block' },
+              axisLabel: { display: 'block' },
+              grid: { display: 'block' },
+              tickLabels: { display: 'block' },
+              ticks: { display: 'block' }
+            }
+          },
+          scatter: { size: 5 }
+        }}
       />
     </div>
   ))
@@ -156,6 +171,20 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
             { x: 7, y: 5 }
           ]
         ])}
+        parts={{
+          axis: {
+            independent: {
+              style: {
+                axis: { display: 'block' },
+                axisLabel: { display: 'block' },
+                grid: { display: 'block' },
+                tickLabels: { display: 'block' },
+                ticks: { display: 'block' }
+              }
+            }
+          },
+          scatter: [{ size: 5, symbol: 'circle' }, { size: 5, symbol: 'plus' }]
+        }}
       />
     </div>
   ));
