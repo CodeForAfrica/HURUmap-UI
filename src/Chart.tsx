@@ -1,7 +1,7 @@
 import React from 'react';
 import { VictoryChart, VictoryChartProps, VictoryContainer } from 'victory';
 
-import withVictoryTheme from '../styles/withVictoryTheme';
+import withVictoryTheme from './styles/withVictoryTheme';
 
 interface Props extends VictoryChartProps {
   children: any;
