@@ -3,24 +3,19 @@ import { WithStyles } from '@material-ui/core';
 import { createStyles, withStyles } from '@material-ui/styles';
 
 const styles = createStyles({
-  leftGroup: {
+  partValue: {
     position: 'absolute',
     zIndex: 1,
-    top: '9.5rem',
+    top: '9.2rem',
     left: '-12rem'
   },
-  rightGroup: {
+  totalValue: {
     position: 'absolute',
+    top: '18rem',
+    left: '25rem',
     zIndex: 1,
-    top: '9.5rem',
-    left: '30rem'
-  },
-  bottomGroup: {
-    position: 'absolute',
-    zIndex: 1,
-    top: '20rem',
-    left: '30rem',
-    fontSize: '1.5rem'
+    fontSize: '1.5rem',
+    width: '100%'
   },
   lineGroup: {
     position: 'absolute',
@@ -32,42 +27,33 @@ const styles = createStyles({
 
 interface Props extends WithStyles<typeof styles> {
   classes: any;
-  leftGroupNumber: number | string;
+  partValue: number | string;
   groupText: string;
-  rightGroupNumber: number | string;
-  bottomGroupNumber: number | string;
-  bottomGrouptext: string;
+  totalValueNumber: number | string;
+  totalValueText: string;
 }
 
 function CircleLegend({
   classes,
-  leftGroupNumber,
-  rightGroupNumber,
+  partValue,
   groupText,
-  bottomGroupNumber,
-  bottomGrouptext
+  totalValueNumber,
+  totalValueText
 }: Props) {
   return (
     <div>
-      <g className={classes.leftGroup}>
+      <g className={classes.partValue}>
         <text>
-          <span style={{ fontSize: '3rem' }}>{leftGroupNumber}</span>
+          <span style={{ fontSize: '3rem' }}>{partValue}</span>
           <br />
           <span>{groupText}</span>
         </text>
       </g>
-      <g className={classes.rightGroup}>
+      <g className={classes.totalValue}>
         <text>
-          <span style={{ fontSize: '3rem' }}>{rightGroupNumber}</span>
+          {totalValueNumber}
           <br />
-          <span>{groupText}</span>
-        </text>
-      </g>
-      <g className={classes.bottomGroup}>
-        <text>
-          {bottomGroupNumber}
-          <br />
-          {bottomGrouptext}
+          {totalValueText}
         </text>
       </g>
       <svg
@@ -82,14 +68,6 @@ function CircleLegend({
           x2="160"
           y2="250"
           stroke="#7f9442"
-          strokeWidth="2"
-        />
-        <line
-          x1="320"
-          y1="250"
-          x2="500"
-          y2="250"
-          stroke="#de9f3a"
           strokeWidth="2"
         />
       </svg>

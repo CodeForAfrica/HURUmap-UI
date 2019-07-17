@@ -36,18 +36,17 @@ function NestedProportionalAreaChart({ theme, data, square = false }: Props) {
     <div style={{ position: 'relative' }}>
       {!square ? (
         <CircleLegend
-          leftGroupNumber="21 m"
+          partValue="21 m"
           groupText="people"
-          rightGroupNumber="22.3m"
-          bottomGroupNumber="47.8"
-          bottomGrouptext="tanzania"
+          totalValueNumber="47.5m "
+          totalValueText="in Tanzania"
         />
       ) : (
         <RectLegend
           firstLegend="789,000"
           secondLegend="450,000"
-          bottomLegendNumber="40.5m"
-          bottomLegendText="Population"
+          totalLegendNumber="40.5m"
+          totalLegendText="Population"
         />
       )}
       <VictoryChart theme={theme}>

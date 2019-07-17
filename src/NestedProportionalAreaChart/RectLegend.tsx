@@ -15,7 +15,7 @@ const styles = createStyles({
     fontSize: '2.5rem',
     listStyleType: 'none'
   },
-  bottomLegend: {
+  totalLegend: {
     position: 'absolute',
     zIndex: 1,
     top: '28rem',
@@ -28,16 +28,16 @@ interface Props extends WithStyles<typeof styles> {
   classes: any;
   firstLegend: number | string;
   secondLegend: number | string;
-  bottomLegendNumber: number | string;
-  bottomLegendText: number | string;
+  totalLegendNumber: number | string;
+  totalLegendText: number | string;
 }
 
 function RectLegend({
   classes,
   firstLegend,
   secondLegend,
-  bottomLegendNumber,
-  bottomLegendText
+  totalLegendNumber,
+  totalLegendText
 }: Props) {
   return (
     <div>
@@ -54,9 +54,9 @@ function RectLegend({
 
       <g className={classes.bottomLegend}>
         <text>
-          {bottomLegendNumber}
+          {totalLegendNumber}
           <br />
-          {bottomLegendText}
+          {totalLegendText}
         </text>
       </g>
     </div>
