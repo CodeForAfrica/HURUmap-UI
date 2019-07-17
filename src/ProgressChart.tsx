@@ -31,10 +31,12 @@ function BarChart({
   height = 200,
   ...props
 }: Props) {
+  const groupColorScale = ((theme as unknown) as VictoryThemeDefinitionLatest)
+    .group.colorScale;
   const barProps = {
     ...{
       labels: (datum: any) => datum.y,
-      labelComponent: <VictoryLabel x={50} dy={-20} style={{ fontSize: 25 }} />
+      labelComponent: <VictoryLabel x={50} dy={-20} />
     },
     ...props
   };
@@ -68,8 +70,11 @@ function BarChart({
         <VictoryBar
           style={{
             data: {
-              fill: ((theme as unknown) as VictoryThemeDefinitionLatest).group
-                .colorScale[1]
+              fill: groupColorScale[1]
+            },
+            labels: {
+              fontSize: 25,
+              fill: groupColorScale[1]
             }
           }}
           data={[data[1]]}
@@ -80,8 +85,11 @@ function BarChart({
       <VictoryBar
         style={{
           data: {
-            fill: ((theme as unknown) as VictoryThemeDefinitionLatest).group
-              .colorScale[0]
+            fill: groupColorScale[0]
+          },
+          labels: {
+            fontSize: 25,
+            fill: groupColorScale[0]
           }
         }}
         data={[data[0]]}
