@@ -3,7 +3,6 @@ import React from 'react';
 import {
   VictoryAxis,
   VictoryLine,
-  VictoryChart,
   VictoryChartProps,
   VictoryGroup,
   VictoryGroupProps,
@@ -12,21 +11,21 @@ import {
   VictoryVoronoiContainer,
   VictoryVoronoiContainerProps,
   VictoryLineProps,
-  VictoryTooltip,
-  VictoryAxisProps
+  VictoryTooltip
 } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
+import Chart, { toChartAxisProps, ChartAxisPropsType } from './Chart';
 
-interface LineChartPartsProps {
-  axis?: VictoryAxisProps;
+export interface LineChartPartsProps {
+  axis?: ChartAxisPropsType;
   parent?: VictoryChartProps;
   container?: VictoryVoronoiContainerProps;
-  group?: VictoryGroupProps;
-  scatter?: VictoryScatterProps;
+  group?: VictoryGroupProps | VictoryGroupProps[];
+  scatter?: VictoryScatterProps | VictoryScatterProps[];
 }
 
-interface Props extends VictoryLineProps {
+export interface LineChartProps extends VictoryLineProps {
   parts?: LineChartPartsProps;
 }
 
@@ -46,43 +45,48 @@ interface Props extends VictoryLineProps {
  *   }
  * }
  */
-function LineChart({ data, parts, theme, ...props }: Props) {
+function LineChart({ data, parts, theme, ...props }: LineChartProps) {
   if (!data) {
     return null;
   }
 
   const groupData = data.length > 1 && Array.isArray(data[0]) ? data : [data];
 
-  const axisProps = parts && parts.axis;
+  const axisProps = (parts && toChartAxisProps(parts.axis)) || {};
   const chartProps = parts && parts.parent;
   const containerProps = parts && parts.container;
-  const groupProps = parts && parts.group;
-  const scatterProps = parts && parts.scatter;
+  const groupProps =
+    parts && parts.group ? ([] as VictoryGroupProps[]).concat(parts.group) : [];
+  const scatterProps =
+    parts && parts.scatter
+      ? ([] as VictoryScatterProps[]).concat(parts.scatter)
+      : [];
+
   return (
-    <VictoryChart
+    <Chart
       containerComponent={<VictoryVoronoiContainer {...containerProps} />}
       theme={theme}
       {...chartProps}
     >
       {/* We only need this outer group for colorScale of charts */}
       <VictoryGroup>
-        {groupData.map(gd => (
+        {groupData.map((gd, i) => (
           <VictoryGroup
             labels={d => `${d.y}`}
             labelComponent={<VictoryTooltip />}
             /* groupProps can override the above props */
-            {...groupProps}
+            {...groupProps[i % groupProps.length]}
             data={gd}
           >
             <VictoryLine {...(props as VictoryLineProps)} />
-            <VictoryScatter {...scatterProps} />
+            <VictoryScatter {...scatterProps[i % scatterProps.length]} />
           </VictoryGroup>
         ))}
       </VictoryGroup>
 
-      <VictoryAxis {...axisProps} />
-      <VictoryAxis dependentAxis {...axisProps} />
-    </VictoryChart>
+      <VictoryAxis {...axisProps.independent} />
+      <VictoryAxis dependentAxis {...axisProps.dependent} />
+    </Chart>
   );
 }
 
