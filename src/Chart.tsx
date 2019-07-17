@@ -1,16 +1,45 @@
 import React from 'react';
-import { VictoryChart, VictoryChartProps, VictoryContainer } from 'victory';
+
+import {
+  VictoryAxisProps,
+  VictoryChart,
+  VictoryChartProps,
+  VictoryContainer
+} from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
 
-interface Props extends VictoryChartProps {
-  children: any;
+export interface ChartAxisProps {
+  independent?: VictoryAxisProps;
+  dependent?: VictoryAxisProps;
 }
 
-function Chart({ children, ...props }: Props) {
+export type ChartAxisPropsType = VictoryAxisProps | ChartAxisProps;
+
+export function toChartAxisProps(
+  prop: ChartAxisPropsType | undefined
+): ChartAxisProps {
+  if (!prop) {
+    return {};
+  }
+
+  const chartProp = prop as ChartAxisProps;
+  if (chartProp.independent || chartProp.dependent) {
+    return chartProp;
+  }
+  const axisProp = prop as VictoryAxisProps;
+  return { independent: axisProp, dependent: axisProp };
+}
+
+interface Props extends VictoryChartProps {
+  children: any;
+  responsive?: boolean;
+}
+
+function Chart({ children, responsive = true, ...props }: Props) {
   return (
     <VictoryChart
-      containerComponent={<VictoryContainer responsive={false} />}
+      containerComponent={<VictoryContainer responsive={responsive} />}
       {...props}
     >
       {children}
