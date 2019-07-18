@@ -1,9 +1,8 @@
 import React from 'react';
-import { VictoryPieProps } from 'victory';
 
-import PieChart from '../PieChart';
+import PieChart, { PieChartProps } from '../PieChart';
 
-interface Props extends VictoryPieProps {
+interface Props extends PieChartProps {
   cx?: number;
   cy?: number;
   radii?: number[];
@@ -21,7 +20,11 @@ function ScaledCircle({
   size = 0,
   ...props
 }: Props) {
-  const scaledRs = radii.map(r => (relativeTo ? (r * size) / relativeTo : r));
+  const scaledRs = radii.map(r =>
+    relativeTo && r !== relativeTo
+      ? (Math.sqrt(r) * size) / Math.sqrt(relativeTo)
+      : size
+  );
 
   // When we're doing comparison, the background for both half circles
   // should be the total data.
