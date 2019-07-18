@@ -18,6 +18,10 @@ declare module 'victory' {
       style: VictoryStyleInterface;
       width: number;
     };
+    comparisonBar?: {
+      colorScale: ColorScalePropType;
+      reference: VictoryStyleInterface;
+    };
     pie?: VictoryThemeDefinition['pie'] & {
       donut: boolean;
       colorScale: string[];
@@ -31,6 +35,7 @@ declare module 'victory' {
       groupSpacing: number;
       height: number;
       padding: PaddingProps;
+      reference: VictoryStyleInterface;
       style: VictoryStyleInterface;
       width: number;
     };
