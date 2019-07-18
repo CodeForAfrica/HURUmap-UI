@@ -13,7 +13,8 @@ import {
   BarChart,
   LineChart,
   PieChart,
-  NestedProportionalAreaChart
+  NestedProportionalAreaChart,
+  ComparisonBarChart
 } from '../src';
 import { CenterDecorator } from './common';
 
@@ -242,3 +243,28 @@ storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
       />
     </div>
   ));
+storiesOf('HURUmap UI|Charts/ComparisonBarChart', module)
+  .addDecorator(CenterDecorator)
+  .addDecorator(withKnobs)
+  .add('Default', () => {
+    return (
+      <div>
+        <ComparisonBarChart
+          data={object('data', [
+            {
+              x: 'Ilala',
+              y: 17
+            },
+            {
+              x: 'Kinonodi',
+              y: 17
+            }
+          ])}
+          legend={object('legend', {
+            x: 'Dar es Salaam',
+            y: 16
+          })}
+        />
+      </div>
+    );
+  });

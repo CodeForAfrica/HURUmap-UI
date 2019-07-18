@@ -3,56 +3,77 @@ import {
   VictoryCommonProps,
   VictoryDatableProps,
   VictoryMultiLabeableProps,
-  VictoryChart,
   VictoryThemeDefinitionLatest
 } from 'victory';
 
+import withVictoryTheme from '../styles/withVictoryTheme';
+import CustomContainer from '../CustomContainer';
 import ScaledCircle from './ScaledCircle';
 import ScaledSquare from './ScaledSquare';
-import withVictoryTheme from '../styles/withVictoryTheme';
 
 interface Props
   extends VictoryCommonProps,
     VictoryDatableProps,
     VictoryMultiLabeableProps {
   square?: boolean;
+  groupSpacing?: number;
 }
 
-function NestedProportionalAreaChart({ theme, data, square = false }: Props) {
+/**
+ * Data value represents **area**. We need to find length/radius in order to
+ * draw the shapes. For both squares & circles, √ of the area should give us
+ * the length/radius to use (for circle, the √ of π is a constant that drops
+ * off when scaling)
+ */
+function NestedProportionalAreaChart({
+  groupSpacing,
+  width,
+  height,
+  theme,
+  data,
+  square = false
+}: Props) {
   const {
     proportionalArea: chart
   } = (theme as unknown) as VictoryThemeDefinitionLatest;
   if (!data || !chart) {
     return null;
   }
-  const { data: dataStyle } = chart.style;
-  // Use chart.data as fill style for background/total chart
-  const colorScale =
-    dataStyle && typeof dataStyle.fill === 'string'
-      ? [dataStyle.fill, ...chart.colorScale]
-      : chart.colorScale;
+  const computedHeight = height || chart.height;
+  const computedWidth = width || chart.width;
+  const computedGroupSpacing =
+    data.length > 2 ? groupSpacing || chart.groupSpacing : 0;
+  const minDimension = Math.min(computedHeight, computedWidth);
   return (
-    <VictoryChart theme={theme}>
+    <CustomContainer
+      height={height || chart.height}
+      width={width || chart.height}
+    >
       {square ? (
         <ScaledSquare
-          colorScale={colorScale}
+          colorScale={chart.colorScale}
           relativeTo={data[0]}
           sides={data}
-          size={chart.width}
+          size={minDimension}
           x={0}
           y={0}
         />
       ) : (
         <ScaledCircle
-          colorScale={colorScale}
-          cx={chart.width / 2}
-          cy={chart.width / 2}
+          colorScale={chart.colorScale}
+          cx={minDimension / 2}
+          cy={minDimension / 2}
+          groupSpacing={computedGroupSpacing}
           radii={data}
           relativeTo={data[0]}
-          size={chart.width / 2}
+          size={minDimension / 2 - computedGroupSpacing}
+          theme={(theme as unknown) as VictoryThemeDefinitionLatest}
+          height={height}
+          width={width}
+          labels={() => ''}
         />
       )}
-    </VictoryChart>
+    </CustomContainer>
   );
 }
 
