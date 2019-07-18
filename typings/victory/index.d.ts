@@ -28,6 +28,7 @@ declare module 'victory' {
     };
     proportionalArea?: {
       colorScale: string[];
+      groupSpacing: number;
       height: number;
       padding: PaddingProps;
       style: VictoryStyleInterface;

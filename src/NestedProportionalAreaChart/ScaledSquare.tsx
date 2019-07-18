@@ -31,7 +31,10 @@ function ScaledSquare({
       {sides
         .sort((a, b) => b - a)
         .map((side, i) => {
-          const scaledSide = relativeTo ? (side * size) / relativeTo : side;
+          const scaledSide =
+            relativeTo && side !== relativeTo
+              ? (Math.sqrt(side) * size) / Math.sqrt(relativeTo)
+              : size;
           return (
             <Rect
               {...props}
