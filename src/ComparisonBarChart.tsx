@@ -22,7 +22,7 @@ interface Props extends VictoryBarProps {
   legend: DataPoint;
 }
 
-function ProgressChart({
+function ComparisonBarChart({
   theme,
   data,
   legend,
@@ -100,4 +100,4 @@ function ProgressChart({
   );
 }
 
-export default withVictoryTheme(ProgressChart);
+export default withVictoryTheme(ComparisonBarChart);

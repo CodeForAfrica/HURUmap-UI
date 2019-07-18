@@ -6,4 +6,4 @@ export {
   default as NestedProportionalAreaChart
 } from './NestedProportionalAreaChart';
 export { default as createTheme } from './styles/createTheme';
-export { default as ProgressChart } from './ProgressChart';
+export { default as ComparisonBarChart } from './ComparisonBarChart';

@@ -14,7 +14,7 @@ import {
   LineChart,
   PieChart,
   NestedProportionalAreaChart,
-  ProgressChart
+  ComparisonBarChart
 } from '../src';
 import { CenterDecorator } from './common';
 
@@ -243,13 +243,13 @@ storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
       />
     </div>
   ));
-storiesOf('HURUmap UI|Charts/ProgressChart', module)
+storiesOf('HURUmap UI|Charts/ComparisonBarChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('Default', () => {
     return (
       <div>
-        <ProgressChart
+        <ComparisonBarChart
           data={object('data', [
             {
               x: 'Ilala',
