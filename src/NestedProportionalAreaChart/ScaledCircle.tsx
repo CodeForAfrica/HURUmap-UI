@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { VictoryPieProps } from 'victory';
-
 import PieChart from '../PieChart';
 
 interface Props extends VictoryPieProps {
@@ -28,7 +27,7 @@ function ScaledCircle({
   const backgroundData =
     scaledRs.length > 2 ? [[scaledRs[0]], [scaledRs[0]]] : [scaledRs[0]];
   return (
-    <React.Fragment>
+    <Fragment>
       <PieChart
         colorScale={(colorScale as string[]).slice(0, 1)}
         data={backgroundData}
@@ -45,7 +44,7 @@ function ScaledCircle({
         origin={{ x: cx, y: cy }}
         {...props}
       />
-    </React.Fragment>
+    </Fragment>
   );
 }
 
