@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {
   VictoryCommonProps,
   VictoryDatableProps,
@@ -33,14 +33,9 @@ function NestedProportionalAreaChart({ theme, data, square = false }: Props) {
       ? [dataStyle.fill, ...chart.colorScale]
       : chart.colorScale;
   return (
-    <div style={{ position: 'relative' }}>
+    <Fragment>
       {!square ? (
-        <CircleLegend
-          partValue="21 m"
-          groupText="people"
-          totalValueNumber="47.5m "
-          totalValueText="in Tanzania"
-        />
+        <CircleLegend />
       ) : (
         <RectLegend
           firstLegend="789,000"
@@ -70,7 +65,7 @@ function NestedProportionalAreaChart({ theme, data, square = false }: Props) {
           />
         )}
       </VictoryChart>
-    </div>
+    </Fragment>
   );
 }
 

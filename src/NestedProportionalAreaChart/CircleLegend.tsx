@@ -1,70 +1,41 @@
 import React, { Fragment } from 'react';
+import { VictoryLine, VictoryLabel } from 'victory';
 
-interface Props {
-  partValue: number | string;
-  groupText: string;
-  totalValueNumber: number | string;
-  totalValueText: string;
-}
-
-function CircleLegend({
-  partValue,
-  groupText,
-  totalValueNumber,
-  totalValueText
-}: Props) {
+function CircleLegend() {
   return (
     <Fragment>
-      <g
-        style={{
-          position: 'absolute',
-          zIndex: 1,
-          top: '9.2rem',
-          left: '-12rem'
-        }}
-      >
-        <text>
-          <span style={{ fontSize: '3rem' }}>{partValue}</span>
-          <br />
-          <span>{groupText}</span>
-        </text>
-      </g>
-      <g
-        style={{
-          position: 'absolute',
-          top: '18rem',
-          left: '25rem',
-          zIndex: 1,
-          fontSize: '1.5rem',
-          width: '100%'
-        }}
-      >
-        <text>
-          {totalValueNumber}
-          <br />
-          {totalValueText}
-        </text>
-      </g>
-      <svg
-        viewBox="0 0 500 500"
-        width="500"
-        height="500"
-        style={{
-          position: 'absolute',
-          zIndex: 1,
-          top: '-4.5rem',
-          left: '-4.2rem'
-        }}
-      >
-        <line
-          x1="0"
-          y1="250"
-          x2="160"
-          y2="250"
-          stroke="#7f9442"
-          strokeWidth="2"
+      <div style={{ position: 'absolute', zIndex: 1, right: '35rem' }}>
+        <VictoryLine
+          width={350}
+          height={350}
+          y={() => 200}
+          style={{
+            data: { stroke: 'green' }
+          }}
         />
-      </svg>
+        <div style={{ position: 'absolute', top: '10rem', left: '-6rem' }}>
+          <VictoryLabel
+            text="2,300,000"
+            textAnchor="middle"
+            style={{ fontSize: '35', color: 'green' }}
+          />
+          <br />
+          <VictoryLabel
+            text="people"
+            textAnchor="middle"
+            style={{ fontSize: '20' }}
+          />
+        </div>
+        <div style={{ position: 'absolute', left: '35rem', width: '25%' }}>
+          <VictoryLabel
+            text="1300000 in tanzania"
+            textAnchor="middle"
+            x={200}
+            y={200}
+            style={{ fontSize: '20', color: 'grey' }}
+          />
+        </div>
+      </div>
     </Fragment>
   );
 }
