@@ -1,11 +1,15 @@
 import React from 'react';
+
 import { Rect } from 'victory';
+
+import { ReferenceProps } from '../ReferableChart';
 
 interface Props {
   className?: string;
   clipPath?: string;
   colorScale?: string[];
   events?: React.DOMAttributes<any>;
+  reference: ReferenceProps<number>;
   role?: string;
   rx?: number;
   ry?: number;
@@ -15,32 +19,44 @@ interface Props {
   transform?: string;
   x?: number;
   y?: number;
-  relativeTo?: number;
 }
 
 function ScaledSquare({
   colorScale = [],
-  relativeTo,
+  reference,
   sides = [],
   size = 0,
   ...props
 }: Props) {
-  // Nested square must be sorted to ensure they're all visible
+  const {
+    data: [referenceData],
+    style: referenceStyle
+  } = reference;
+  // Nested square must be sorted to ensure they're all visible but we need to
+  // remember original position to ensure right color is used.
   return (
     <g>
+      <Rect
+        {...props}
+        key={referenceData}
+        height={size}
+        style={referenceStyle && referenceStyle.data}
+        width={size}
+      />
       {sides
-        .sort((a, b) => b - a)
-        .map((side, i) => {
+        .map((v, i) => ({ value: v, index: i }))
+        .sort((a, b) => b.value - a.value)
+        .map(side => {
           const scaledSide =
-            relativeTo && side !== relativeTo
-              ? (Math.sqrt(side) * size) / Math.sqrt(relativeTo)
+            referenceData && side.value !== referenceData
+              ? (Math.sqrt(side.value) * size) / Math.sqrt(referenceData)
               : size;
           return (
             <Rect
               {...props}
               key={scaledSide}
               height={scaledSide}
-              style={{ fill: colorScale[i % colorScale.length] }}
+              style={{ fill: colorScale[side.index % colorScale.length] }}
               width={scaledSide}
             />
           );

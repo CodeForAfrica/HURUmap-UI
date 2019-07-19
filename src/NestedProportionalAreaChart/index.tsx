@@ -6,6 +6,7 @@ import {
   VictoryThemeDefinitionLatest
 } from 'victory';
 
+import { toReferenceProps, ReferableChartProps } from '../ReferableChart';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
 import ScaledCircle from './ScaledCircle';
@@ -14,7 +15,8 @@ import ScaledSquare from './ScaledSquare';
 interface Props
   extends VictoryCommonProps,
     VictoryDatableProps,
-    VictoryMultiLabeableProps {
+    VictoryMultiLabeableProps,
+    ReferableChartProps<number> {
   square?: boolean;
   groupSpacing?: number;
 }
@@ -31,6 +33,7 @@ function NestedProportionalAreaChart({
   height,
   theme,
   data,
+  reference: ref,
   square = false
 }: Props) {
   const {
@@ -39,20 +42,39 @@ function NestedProportionalAreaChart({
   if (!data || !chart) {
     return null;
   }
+
+  const reference = Object.assign(
+    {},
+    { style: chart.reference },
+    toReferenceProps(ref)
+  );
   const computedHeight = height || chart.height;
   const computedWidth = width || chart.width;
   const computedGroupSpacing =
-    data.length > 2 ? groupSpacing || chart.groupSpacing : 0;
+    data.length > 1 ? groupSpacing || chart.groupSpacing : 0;
   const minDimension = Math.min(computedHeight, computedWidth);
+
   return (
     <CustomContainer
       height={height || chart.height}
       width={width || chart.height}
     >
+      <defs>
+        <pattern
+          id="gradient-background"
+          patternUnits="userSpaceOnUse"
+          width="5.5"
+          height="5.5"
+          patternTransform="rotate(135)"
+        >
+          <line x1="0" y="0" x2="0" y2="5.5" stroke="#C4C4C4" strokeWidth="1" />
+        </pattern>
+      </defs>
+
       {square ? (
         <ScaledSquare
           colorScale={chart.colorScale}
-          relativeTo={data[0]}
+          reference={reference}
           sides={data}
           size={minDimension}
           x={0}
@@ -61,15 +83,15 @@ function NestedProportionalAreaChart({
       ) : (
         <ScaledCircle
           colorScale={chart.colorScale}
-          cx={minDimension / 2}
-          cy={minDimension / 2}
+          cx={computedWidth / 2}
+          cy={computedHeight / 2}
           groupSpacing={computedGroupSpacing}
+          reference={reference}
           radii={data}
-          relativeTo={data[0]}
           size={minDimension / 2 - computedGroupSpacing}
           theme={(theme as unknown) as VictoryThemeDefinitionLatest}
-          height={height}
-          width={width}
+          height={computedHeight}
+          width={computedWidth}
           labels={() => ''}
         />
       )}

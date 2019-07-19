@@ -28,12 +28,25 @@ export default function createVictoryTheme(
     },
     VictoryTheme.material
   );
-  const chart: any = _.merge(chartOptions, defaultTheme);
+  const chart = _.merge(chartOptions, defaultTheme);
+  const defaultReference = {
+    data: {
+      fill: 'url(#gradient-background)',
+      stroke: 'none',
+      strokeWidth: 0
+    }
+  };
+  // Customize chart comparisonBar props off of chart group props
+  chart.comparisonBar = Object.assign(
+    { reference: defaultReference },
+    chart.group,
+    chart.comparisonBar
+  );
   // Customize chart pie props
   chart.pie = Object.assign({ donut: false, groupSpacing: 8 }, chart.pie);
   // Customize chart proportionalArea props off of chart area props
   chart.proportionalArea = Object.assign(
-    { groupSpacing: 8 },
+    { reference: defaultReference },
     chart.area,
     chart.proportionalArea
   );

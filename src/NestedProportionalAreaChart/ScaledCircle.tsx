@@ -1,6 +1,7 @@
 import React from 'react';
 
 import PieChart, { PieChartProps } from '../PieChart';
+import { ReferenceProps } from '../ReferableChart';
 
 interface Props extends PieChartProps {
   cx?: number;
@@ -8,7 +9,7 @@ interface Props extends PieChartProps {
   radii?: number[];
   size?: number;
   transform?: string;
-  relativeTo?: number;
+  reference: ReferenceProps<number>;
 }
 
 function ScaledCircle({
@@ -16,34 +17,38 @@ function ScaledCircle({
   cx,
   cy,
   radii = [],
-  relativeTo,
+  reference,
   size = 0,
   ...props
 }: Props) {
+  const {
+    data: [referenceData],
+    style: referenceStyle
+  } = reference;
+
   const scaledRs = radii.map(r =>
-    relativeTo && r !== relativeTo
-      ? (Math.sqrt(r) * size) / Math.sqrt(relativeTo)
+    referenceData && r !== referenceData
+      ? (Math.sqrt(r) * size) / Math.sqrt(referenceData)
       : size
   );
 
   // When we're doing comparison, the background for both half circles
   // should be the total data.
-  const backgroundData =
-    scaledRs.length > 2 ? [[scaledRs[0]], [scaledRs[0]]] : [scaledRs[0]];
+  const backgroundData = scaledRs.length > 1 ? [[size], [size]] : [size];
   return (
     <React.Fragment>
       <PieChart
-        colorScale={(colorScale as string[]).slice(0, 1)}
         data={backgroundData}
-        radius={scaledRs[0]}
+        radius={size}
         standalone={false}
         origin={{ x: cx, y: cy }}
         {...props}
+        style={referenceStyle}
       />
       <PieChart
-        colorScale={(colorScale as string[]).slice(1)}
-        data={scaledRs.slice(1).map(v => [v])}
-        radii={scaledRs.slice(1)}
+        colorScale={colorScale}
+        data={scaledRs.map(v => [v])}
+        radii={scaledRs}
         standalone={false}
         origin={{ x: cx, y: cy }}
         {...props}

@@ -8,7 +8,7 @@ import {
 } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
-import Chart from './core/Chart';
+import Chart, { toReferenceProps, ReferableChartProps } from './ReferableChart';
 
 interface DataPoint {
   x: string;
@@ -17,20 +17,23 @@ interface DataPoint {
 type SingleData = [DataPoint];
 type CompareData = [DataPoint, DataPoint];
 
-interface Props extends VictoryBarProps {
+interface Props extends ReferableChartProps<DataPoint>, VictoryBarProps {
   data: SingleData | CompareData;
-  legend: DataPoint;
 }
 
 function ComparisonBarChart({
   theme,
   data,
-  legend,
+  reference: ref,
   horizontal = true,
   width,
   height = 200,
   ...props
 }: Props) {
+  const {
+    data: [referenceData],
+    style: referenceStyle
+  } = toReferenceProps(ref);
   const groupColorScale = ((theme as unknown) as VictoryThemeDefinitionLatest)
     .group.colorScale;
   const barProps = {
@@ -46,22 +49,21 @@ function ComparisonBarChart({
       {/* Legend */}
       <VictoryBar
         barWidth={5}
-        style={{
-          data: {
-            fill: 'grey'
-          },
-          labels: {
-            fill: 'grey'
-          }
-        }}
-        data={[legend]}
+        style={referenceStyle}
+        data={[referenceData]}
         labels={datum => datum.y}
         labelComponent={<VictoryLabel x={50} dy={-15} />}
         {...props}
       />
       <VictoryAxis
-        style={{ tickLabels: { display: 'block', fill: 'grey' } }}
-        tickFormat={x => (x === legend.x ? legend.x : '')}
+        style={{
+          tickLabels: Object.assign(
+            {},
+            { display: 'block' },
+            referenceStyle && referenceStyle.labels
+          )
+        }}
+        tickFormat={x => (x === referenceData.x ? referenceData.x : '')}
         tickLabelComponent={<VictoryLabel x={50} dy={20} textAnchor="start" />}
       />
       {/* Legend */}

@@ -239,10 +239,22 @@ storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
     <div>
       <NestedProportionalAreaChart
         square={boolean('square', false)}
-        data={array('data', [100, 45])}
+        data={array('data', [18])}
+        reference={array('reference', [100])}
+      />
+    </div>
+  ))
+  .add('Comparison', () => (
+    <div>
+      <NestedProportionalAreaChart
+        square={boolean('square', false)}
+        data={array('data', [8, 18])}
+        reference={array('reference', [100])}
+        groupSpacing={number('groupSpacing', 8)}
       />
     </div>
   ));
+
 storiesOf('HURUmap UI|Charts/ComparisonBarChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
@@ -256,14 +268,11 @@ storiesOf('HURUmap UI|Charts/ComparisonBarChart', module)
               y: 17
             },
             {
-              x: 'Kinonodi',
+              x: 'Kinondoni',
               y: 17
             }
           ])}
-          legend={object('legend', {
-            x: 'Dar es Salaam',
-            y: 16
-          })}
+          reference={object('reference', [{ x: 'Dar es Salaam', y: 16 }])}
         />
       </div>
     );
