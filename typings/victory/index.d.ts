@@ -18,6 +18,14 @@ declare module 'victory' {
       style: VictoryStyleInterface;
       width: number;
     };
+    bullet?: {
+      colorScale: string[];
+      height: number;
+      padding: PaddingProps;
+      reference: VictoryStyleInterface;
+      style: VictoryStyleInterface;
+      width: number;
+    };
     comparisonBar?: {
       colorScale: ColorScalePropType;
       reference: VictoryStyleInterface;
