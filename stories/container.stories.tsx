@@ -4,24 +4,14 @@ import {
   withKnobs,
   array,
   boolean,
-  object,
   text,
   number
 } from '@storybook/addon-knobs';
 
-import {
-  BarChart,
-  LineChart,
-  PieChart,
-  NestedProportionalAreaChart,
-  ComparisonBarChart,
-  ChartContainer
-} from '../src';
+import { NestedProportionalAreaChart, ChartContainer } from '../src';
 import { CenterDecorator } from './common';
 import { Grid } from '@material-ui/core';
 import { GridSize } from '@material-ui/core/Grid';
-
-const rand = () => Number((Math.random() * 100).toFixed(1));
 
 storiesOf('HURUmap UI|ChartContainer', module)
   .addDecorator(CenterDecorator)
