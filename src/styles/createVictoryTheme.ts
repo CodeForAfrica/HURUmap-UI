@@ -38,10 +38,10 @@ export default function createVictoryTheme(
   };
   const fillReference = {
     data: {
-      fill: 'gray'
+      fill: '#d8d8d8'
     },
     labels: {
-      fill: 'gray',
+      fill: '#9b9b9b',
       fontWeight: 'bold',
       fontSize: 12
     }

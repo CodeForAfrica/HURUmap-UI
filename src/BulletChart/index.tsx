@@ -38,7 +38,7 @@ function BulletChart({ data, height, reference: ref, theme, width }: Props) {
           <BulletBar
             data={d}
             height={computedHeight}
-            target={99}
+            target={52}
             reference={reference}
             style={{ fill: chart.colorScale[i % chart.colorScale.length] }}
             width={computedWidth}

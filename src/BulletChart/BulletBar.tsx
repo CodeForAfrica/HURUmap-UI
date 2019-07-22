@@ -31,16 +31,6 @@ function BulletBar({
   const computedTarget = target ? (width * target) / reference.data[0] : 0;
   return (
     <React.Fragment>
-      {/* Comparative measure */}
-      {computedTarget && (
-        <Rect
-          x={computedTarget}
-          y={width}
-          width={barWidth}
-          height={barWidth}
-          style={{ fill: 'green' }}
-        />
-      )}
       {/* Qualitative measure */}
       {reference.labels && (
         <VictoryLabel
@@ -78,6 +68,16 @@ function BulletBar({
         height={barWidth}
         style={style}
       />
+      {/* Comparative measure */}
+      {computedTarget && (
+        <Rect
+          x={computedTarget}
+          y={y - barWidth}
+          width={barWidth}
+          height={barWidth}
+          style={{ fill: 'black' }}
+        />
+      )}
     </React.Fragment>
   );
 }
