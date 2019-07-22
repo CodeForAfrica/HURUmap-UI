@@ -47,13 +47,17 @@ const useStyles = makeStyles({
 interface Props extends GridProps {
   title: string;
   subtitle: string;
-  // default: false
-  // Set `true` if your chart is vertical
-  // On overflow maxChartWidth, it will scroll x direction
+  /**
+   * default: false
+   * Set `true` if your chart is vertical
+   * On overflow maxChartWidth, it will scroll x direction
+   */
   scrollX?: boolean;
-  // default: false
-  // Set `true` if your chart is horizontal
-  // On overflow maxChartHeight, it will scroll y direction
+  /**
+   * default: false
+   * Set `true` if your chart is horizontal
+   * On overflow maxChartHeight, it will scroll y direction
+   */
   scrollY?: boolean;
   maxChartWidth?: string | number;
   maxChartHeight?: string | number;
