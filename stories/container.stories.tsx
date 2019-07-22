@@ -17,9 +17,6 @@ storiesOf('HURUmap UI|ChartContainer', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('Default', () => {
-    const horizontal = boolean('horizontal', false);
-    const data = Array(number('data', 3)).fill(null);
-
     return (
       <Grid
         container
