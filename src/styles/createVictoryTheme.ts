@@ -34,6 +34,11 @@ export default function createVictoryTheme(
       fill: 'url(#gradient-background)',
       stroke: 'none',
       strokeWidth: 0
+    },
+    labels: {
+      fill: 'gray',
+      fontWeight: 'bold',
+      fontSize: 24
     }
   };
   // Customize chart comparisonBar props off of chart group props
