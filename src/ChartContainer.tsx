@@ -3,6 +3,9 @@ import { Typography, ButtonBase, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { GridProps } from '@material-ui/core/Grid';
 
+import infoIcon from './assets/info.png';
+import shareIcon from './assets/share.png';
+
 const useStyles = makeStyles({
   root: {
     width: 'available',
@@ -101,13 +104,13 @@ function ChartContainer({
             className={classes.button}
             onClick={() => onClickInfo && onClickInfo()}
           >
-            Info
+            <img alt="Info" src={infoIcon} />
           </ButtonBase>
           <ButtonBase
             className={classes.button}
             onClick={() => onClickShare && onClickShare()}
           >
-            Share
+            <img alt="Share" src={shareIcon} />
           </ButtonBase>
         </Grid>
       </Grid>
