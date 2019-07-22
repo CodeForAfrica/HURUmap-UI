@@ -36,6 +36,22 @@ export default function createVictoryTheme(
       strokeWidth: 0
     }
   };
+  const fillReference = {
+    data: {
+      fill: 'gray'
+    },
+    labels: {
+      fill: 'gray',
+      fontWeight: 'bold',
+      fontSize: 12
+    }
+  };
+  // Customize chart bullet props off of chart group props
+  chart.bullet = Object.assign(
+    { reference: fillReference },
+    chart.group,
+    chart.bullet
+  );
   // Customize chart comparisonBar props off of chart group props
   chart.comparisonBar = Object.assign(
     { reference: defaultReference },
