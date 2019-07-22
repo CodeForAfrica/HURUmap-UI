@@ -11,6 +11,7 @@ import {
 
 import {
   BarChart,
+  BulletChart,
   LineChart,
   PieChart,
   NestedProportionalAreaChart,
@@ -116,6 +117,21 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
       </div>
     );
   });
+
+storiesOf('HURUmap UI|Charts/Bullet Chart', module)
+  .addDecorator(CenterDecorator)
+  .addDecorator(withKnobs)
+  .add('Default', () => (
+    <div>
+      <BulletChart
+        width={number('width', 350)}
+        height={number('height', 350)}
+        data={object('data', [49])}
+        reference={object('reference', { data: [100], labels: ['51% Female'] })}
+      />
+    </div>
+  ));
+
 storiesOf('HURUmap UI|Charts/LineChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
