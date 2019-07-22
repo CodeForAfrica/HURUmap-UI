@@ -1,21 +1,10 @@
 module.exports = ({ config }) => {
   config.module.rules.push({
     test: /\.(ts|tsx)$/,
-    use: [
-      {
-        loader: require.resolve('awesome-typescript-loader'),
-      }
-    ],
-  });
-  
-  config.module.rules.push({
-    test: /\.(png|jpe?g|gif)$/,
-    use: [
-      {
-        loader: 'file-loader',
-        options: {},
-      }
-    ],
+    loader: require.resolve('babel-loader'),
+    options: {
+      presets: [['react-app', { flow: false, typescript: true }]],
+    },
   });
   config.resolve.extensions.push('.ts', '.tsx');
   return config;
