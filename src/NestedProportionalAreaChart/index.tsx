@@ -80,7 +80,11 @@ function NestedProportionalAreaChart({
   return (
     <Fragment>
       <svg
-        style={{ position: 'absolute', zIndex: 1, display: 'flex' }}
+        style={{
+          position: 'absolute',
+          zIndex: 1,
+          left: '1rem'
+        }}
         height="500"
         width="500"
       >
