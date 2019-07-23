@@ -125,9 +125,14 @@ storiesOf('HURUmap UI|Charts/Bullet Chart', module)
     <div>
       <BulletChart
         width={number('width', 350)}
-        height={number('height', 150)}
-        data={object('data', [49])}
-        reference={object('reference', [51])}
+        height={number('height', 100)}
+        data={object('data', [
+          { x: 49, label: 'Male' },
+          { x: 51, label: 'Female' }
+        ])}
+        total={100}
+        labels={d => `${d.x}% ${d.label}`}
+        reference={object('reference', [{ x: 51, label: '' }])}
       />
     </div>
   ))
@@ -135,10 +140,15 @@ storiesOf('HURUmap UI|Charts/Bullet Chart', module)
     <div>
       <BulletChart
         width={number('width', 350)}
-        height={number('height', 150)}
+        height={number('height', 100)}
         offset={object('offset', { x: 25, y: 50 })}
-        data={object('data', [[49], [51]])}
-        reference={object('reference', [51])}
+        data={object('data', [
+          [{ x: 12.7, label: 'Living in urban areas' }],
+          [{ x: 9.3, label: 'Living in urban areas' }]
+        ])}
+        total={100}
+        labels={d => `${d.x}% ${d.label}`}
+        reference={object('reference', [{ x: 51 }])}
       />
     </div>
   ));
