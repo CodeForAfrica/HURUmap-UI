@@ -22,8 +22,10 @@ declare module 'victory' {
       width: number;
     };
     bullet?: {
+      barWidth: number;
       colorScale: string[];
       height: number;
+      offset: number | { x: number; y: number };
       padding: PaddingProps;
       reference: VictoryStyleInterface;
       style: VictoryStyleInterface;

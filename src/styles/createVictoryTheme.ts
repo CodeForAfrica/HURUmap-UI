@@ -42,6 +42,8 @@ export default function createVictoryTheme(
   // Customize chart bullet props off of chart group props
   chart.bullet = Object.assign(
     {
+      barWidth: 5,
+      offset: { x: 20, y: 50 },
       style: {
         data: {
           fill: '#d8d8d8'
