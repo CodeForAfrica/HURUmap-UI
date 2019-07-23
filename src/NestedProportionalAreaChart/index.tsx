@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {
   VictoryCommonProps,
   VictoryDatableProps,
@@ -62,6 +62,7 @@ function NestedProportionalAreaChart({
 
   const chartHeight = computedHeight - (data.length * 36 + 48 + 20);
   const minDimension = Math.min(chartHeight, computedWidth);
+
   const dataLabelStyles = (index: number): React.CSSProperties => ({
     fontSize: 36,
     fontWeight: 'bold',
@@ -77,92 +78,121 @@ function NestedProportionalAreaChart({
   const size = getWindowSize();
 
   return (
-    <CustomContainer height={computedHeight} width={computedWidth}>
-      <defs>
-        <pattern
-          id="gradient-background"
-          patternUnits="userSpaceOnUse"
-          width="5.5"
-          height="5.5"
-          patternTransform="rotate(135)"
-        >
-          <line x1="0" y="0" x2="0" y2="5.5" stroke="#C4C4C4" strokeWidth="1" />
-        </pattern>
-      </defs>
+    <Fragment>
+      <svg
+        style={{ position: 'absolute', zIndex: 1, display: 'flex' }}
+        height="500"
+        width="500"
+      >
+        <g>
+          {data.map((d, i) => (
+            <VictoryLabel
+              capHeight={0}
+              lineHeight={0}
+              dy={175}
+              x={0}
+              y={0}
+              dx={0}
+              text={data[i]}
+              style={dataLabelStyles(i)}
+            />
+          ))}
+        </g>
+      </svg>
+      <CustomContainer height={computedHeight} width={computedWidth}>
+        <defs>
+          <pattern
+            id="gradient-background"
+            patternUnits="userSpaceOnUse"
+            width="5.5"
+            height="5.5"
+            patternTransform="rotate(135)"
+          >
+            <line
+              x1="0"
+              y="0"
+              x2="0"
+              y2="5.5"
+              stroke="#C4C4C4"
+              strokeWidth="1"
+            />
+          </pattern>
+        </defs>
 
-      {(() => {
-        if (typeof size.width !== 'undefined' && size.width >= 600) {
-          return <g />;
-        }
-        return (
-          <g>
-            {data.map((d, i) => (
+        {(() => {
+          if (typeof size.width !== 'undefined' && size.width >= 600) {
+            return <g />;
+          }
+          return (
+            <g>
+              {data.map((d, i) => (
+                <VictoryLabel
+                  capHeight={0}
+                  lineHeight={0}
+                  x={(computedWidth - minDimension) / 2}
+                  dx={0}
+                  y={36}
+                  text={data[i]}
+                  style={dataLabelStyles(i)}
+                  dy={i * 36}
+                />
+              ))}
+            </g>
+          );
+        })()}
+
+        {square ? (
+          <ScaledSquare
+            colorScale={chart.colorScale}
+            reference={reference}
+            sides={data}
+            size={minDimension}
+            x={(computedWidth - minDimension) / 2}
+            y={data.length * 36 + 10}
+          />
+        ) : (
+          <ScaledCircle
+            colorScale={chart.colorScale}
+            cx={computedWidth / 2}
+            cy={data.length * 36 + 10 + chartHeight / 2}
+            groupSpacing={computedGroupSpacing}
+            reference={reference}
+            radii={data}
+            size={minDimension / 2 - computedGroupSpacing}
+            theme={(theme as unknown) as VictoryThemeDefinitionLatest}
+            height={chartHeight}
+            width={computedWidth}
+            labels={() => ''}
+          />
+        )}
+
+        {(() => {
+          if (typeof size.width !== 'undefined' && size.width >= 600) {
+            return <g />;
+          }
+          return (
+            <g>
               <VictoryLabel
                 capHeight={0}
                 lineHeight={0}
                 x={(computedWidth - minDimension) / 2}
-                dx={0}
-                y={36}
-                text={data[i]}
-                style={dataLabelStyles(i)}
-                dy={i * 36}
+                y={computedHeight - 24}
+                text={reference.data[0]}
+                style={referenceLabelStyles(0)}
               />
-            ))}
-          </g>
-        );
-      })()}
-
-      {square ? (
-        <ScaledSquare
-          colorScale={chart.colorScale}
-          reference={reference}
-          sides={data}
-          size={minDimension}
-          x={(computedWidth - minDimension) / 2}
-          y={data.length * 36 + 10}
-        />
-      ) : (
-        <ScaledCircle
-          colorScale={chart.colorScale}
-          cx={computedWidth / 2}
-          cy={data.length * 36 + 10 + chartHeight / 2}
-          groupSpacing={computedGroupSpacing}
-          reference={reference}
-          radii={data}
-          size={minDimension / 2 - computedGroupSpacing}
-          theme={(theme as unknown) as VictoryThemeDefinitionLatest}
-          height={chartHeight}
-          width={computedWidth}
-          labels={() => ''}
-        />
-      )}
-
-      {(() => {
-        if (typeof size.width !== 'undefined' && size.width >= 600) {
-          return <g />;
-        }
-        return (
-          <g>
-            <VictoryLabel
-              capHeight={0}
-              lineHeight={0}
-              x={(computedWidth - minDimension) / 2}
-              y={computedHeight - 24}
-              text={reference.data[0]}
-              style={referenceLabelStyles(0)}
-            />
-            <VictoryLabel
-              capHeight={0}
-              lineHeight={0}
-              x={(computedWidth - minDimension) / 2}
-              y={computedHeight}
-              text="Tanzania"
-              style={referenceLabelStyles(1)}
-            />
-          </g>
-        );
-      })()}
-    </CustomContainer>
+              <VictoryLabel
+                capHeight={0}
+                lineHeight={0}
+                x={(computedWidth - minDimension) / 2}
+                y={computedHeight}
+                text="Tanzania"
+                style={referenceLabelStyles(1)}
+              />
+            </g>
+          );
+        })()}
+      </CustomContainer>
+    </Fragment>
   );
 }
 
