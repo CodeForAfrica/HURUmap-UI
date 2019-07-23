@@ -88,7 +88,7 @@ function NestedProportionalAreaChart({
                 style={{
                   position: 'absolute',
                   zIndex: 1,
-                  marginLeft: '5rem',
+                  marginLeft: '8rem',
                   left: 0
                 }}
                 height="500"
