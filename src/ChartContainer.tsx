@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, ButtonBase, Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, CSSProperties } from '@material-ui/styles';
 import { GridProps } from '@material-ui/core/Grid';
 
 import infoIcon from './assets/info.png';
@@ -24,41 +24,25 @@ const useStyles = makeStyles({
       borderRight: 'none'
     }
   },
-  title: {
-    fontSize: '24px',
-    fontWeight: 'bold',
-    fontStyle: 'normal',
-    fontStretch: 'normal',
-    lineHeight: 'normal',
-    letterSpacing: '0.86px',
-    color: '#2c2c2a'
-  },
-  subtitle: {
-    fontSize: '12px',
-    opacity: 0.4,
-    fontWeight: 'normal',
-    fontStyle: 'normal',
-    fontStretch: 'normal',
-    lineHeight: 'normal',
-    color: '#2c2c2a'
-  }
+  title: {},
+  subtitle: {}
 });
 
 interface Props extends GridProps {
   title: string;
   subtitle: string;
   /**
-   * default: false
-   * Set `true` if your chart is vertical
+   * default: `hidden`
+   * Set `scroll/auto` if your chart is vertical
    * On overflow maxChartWidth, it will scroll x direction
    */
-  scrollX?: boolean;
+  overflowX?: CSSProperties['overflowX'];
   /**
-   * default: false
-   * Set `true` if your chart is horizontal
+   * default: `hidden`
+   * Set `scroll/auto` if your chart is horizontal
    * On overflow maxChartHeight, it will scroll y direction
    */
-  scrollY?: boolean;
+  overflowY?: CSSProperties['overflowY'];
   maxChartWidth?: string | number;
   maxChartHeight?: string | number;
   onClickInfo?: () => {};
@@ -71,8 +55,8 @@ function ChartContainer({
   children,
   onClickInfo,
   onClickShare,
-  scrollX,
-  scrollY,
+  overflowX = 'hidden',
+  overflowY = 'hidden',
   maxChartWidth,
   maxChartHeight,
   className,
@@ -122,8 +106,8 @@ function ChartContainer({
         <div
           className={classes.content}
           style={{
-            overflowX: scrollX ? 'scroll' : 'hidden',
-            overflowY: scrollY ? 'scroll' : 'hidden',
+            overflowX,
+            overflowY,
             maxHeight: maxChartHeight,
             maxWidth: maxChartWidth
           }}
