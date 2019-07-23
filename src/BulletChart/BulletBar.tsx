@@ -6,7 +6,7 @@ import { ReferenceProps } from '../ReferableChart';
 
 interface Props<T> {
   barWidth?: number;
-  // Feature measure & qualitative measure
+  // Feature measure & qualitative measure i.e. [Fm, <Qm>]
   data: number[];
   height: number;
   // Comparative measure
@@ -26,8 +26,8 @@ function BulletBar({
   x,
   y
 }: Props<number>) {
-  // Assume numbers are percentage & no total provided & both data[0] and
-  // reference are <= 100
+  // Assume numbers are percentages when there is no total provided &
+  // both data[0] and reference are <= 100
   let total = 100;
   if (data.length > 1) {
     [, total] = data; // second element is total
