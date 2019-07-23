@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import {
+  VictoryLine,
   VictoryCommonProps,
   VictoryDatableProps,
   VictoryLabel,
@@ -102,6 +103,7 @@ function NestedProportionalAreaChart({
             />
           ))}
         </g>
+        <VictoryLine />
       </svg>
       <CustomContainer height={computedHeight} width={computedWidth}>
         <defs>
