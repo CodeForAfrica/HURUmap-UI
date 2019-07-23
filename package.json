@@ -25,7 +25,6 @@
     "@types/victory": "^31.0.20",
     "@typescript-eslint/eslint-plugin": "^1.11.0",
     "@typescript-eslint/parser": "^1.11.0",
-    "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.6",
     "cpx": "^1.5.0",
     "eslint": "^6.0.1",
