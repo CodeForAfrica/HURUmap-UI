@@ -6,6 +6,9 @@ export default function createVictoryTheme(
 ) {
   const defaultTheme = _.merge(
     {
+      breakpoints: {
+        mobile: 600
+      },
       axis: {
         style: {
           axisLabel: {

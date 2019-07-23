@@ -12,6 +12,9 @@ declare module 'victory' {
   export const Helpers: HelpersProps;
 
   export interface VictoryThemeDefinitionLatest extends VictoryThemeDefinition {
+    breakpoints: {
+      mobile: number;
+    };
     area?: VictoryThemeDefinition['area'] & {
       height: number;
       padding: PaddingProps;
