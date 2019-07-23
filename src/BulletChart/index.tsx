@@ -73,16 +73,13 @@ function BulletChart({
   }
 
   const computedBarWidth = barWidth || chart.barWidth;
-  const dataPoints = data.length < 2 ? data.length : 2;
-  const computedData = Array.isArray(data[0])
-    ? data.slice(0, dataPoints)
-    : [data];
+  const computedData = Array.isArray(data[0]) ? data.slice(0, 2) : [data];
   const computedHeight = height || chart.height;
   const computedOffset = toOffset(offset, chart);
   const computedStyle = Object.assign({}, chart.style);
   const computedWidth = width || chart.width;
   const isMobile = computedWidth < mobileBreakpoint;
-  const isDirectionColumn = isMobile || dataPoints < 2;
+  const isDirectionColumn = isMobile || computedData.length < 2;
   const reference = Object.assign(
     {},
     { style: chart.reference },
