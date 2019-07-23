@@ -127,6 +127,34 @@ function NestedProportionalAreaChart({
                   }}
                 />
               </g>
+
+              <g
+                style={{
+                  position: 'absolute',
+                  zIndex: 1,
+                  right: 0,
+                  top: '20rem',
+                  marginRight: '5rem'
+                }}
+              >
+                <VictoryLabel
+                  capHeight={0}
+                  lineHeight={0}
+                  x={(computedWidth - minDimension) / 2}
+                  y={computedHeight - 24}
+                  text={reference.data[0]}
+                  style={referenceLabelStyles(0)}
+                />
+                <br />
+                <VictoryLabel
+                  capHeight={0}
+                  lineHeight={0}
+                  x={(computedWidth - minDimension) / 2}
+                  y={computedHeight}
+                  text="Tanzania"
+                  style={referenceLabelStyles(1)}
+                />
+              </g>
             </div>
           );
         }
