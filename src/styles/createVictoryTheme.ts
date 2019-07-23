@@ -36,19 +36,18 @@ export default function createVictoryTheme(
       strokeWidth: 0
     }
   };
-  const fillReference = {
-    data: {
-      fill: '#d8d8d8'
-    },
-    labels: {
-      fill: '#9b9b9b',
-      fontWeight: 'bold',
-      fontSize: 12
-    }
-  };
   // Customize chart bullet props off of chart group props
   chart.bullet = Object.assign(
-    { reference: fillReference },
+    {
+      style: {
+        data: {
+          fill: '#d8d8d8'
+        },
+        labels: {
+          fill: '#9b9b9b'
+        }
+      }
+    },
     chart.group,
     chart.bullet
   );
