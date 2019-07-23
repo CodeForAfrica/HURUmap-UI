@@ -125,7 +125,7 @@ storiesOf('HURUmap UI|Charts/Bullet Chart', module)
     <div>
       <BulletChart
         width={number('width', 350)}
-        height={number('height', 350)}
+        height={number('height', 150)}
         data={object('data', [49])}
         reference={object('reference', [51])}
       />
@@ -135,7 +135,8 @@ storiesOf('HURUmap UI|Charts/Bullet Chart', module)
     <div>
       <BulletChart
         width={number('width', 350)}
-        height={number('height', 350)}
+        height={number('height', 150)}
+        offset={object('offset', { x: 25, y: 50 })}
         data={object('data', [[49], [51]])}
         reference={object('reference', [51])}
       />
