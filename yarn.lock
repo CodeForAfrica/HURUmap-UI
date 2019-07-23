@@ -1688,6 +1688,11 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-sizes@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react-sizes/-/react-sizes-2.0.0.tgz#28dab82c402527cfdaf4ad933f844276412bbaf6"
+  integrity sha512-XS3lv09Hxmy6AMnnzoUoZcuPAinhVjYPa5dUwfKz5HnEKbeT4dv06xYtM/BKUVsFQmjnkSmegLcfBYK0cOc1aw==
+
 "@types/react-transition-group@^2.0.16":
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-2.9.2.tgz#c48cf2a11977c8b4ff539a1c91d259eaa627028d"
@@ -8536,6 +8541,14 @@ react-select@^2.2.0:
     raf "^3.4.0"
     react-input-autosize "^2.2.1"
     react-transition-group "^2.2.1"
+
+react-sizes@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-sizes/-/react-sizes-2.0.0.tgz#c2100daf3bf74077fb410f09204340c1af5c1d4f"
+  integrity sha512-YNGPQGJTxNMD4wdFRmVmqlLZlwhETVW06H7dVbOjj+OV1ckz/gkH3/5MfRuSO8t99nMOmi+Uj14jkvG+zlP57w==
+  dependencies:
+    lodash.throttle "^4.1.1"
+    prop-types "^15.6.0"
 
 react-syntax-highlighter@^8.0.1:
   version "8.1.0"

@@ -6,6 +6,7 @@ import {
   VictoryMultiLabeableProps,
   VictoryThemeDefinitionLatest
 } from 'victory';
+import getWindowSize from './getWindowSize';
 
 import { toReferenceProps, ReferableChartProps } from '../ReferableChart';
 import withVictoryTheme from '../styles/withVictoryTheme';
@@ -66,10 +67,14 @@ function NestedProportionalAreaChart({
     fontWeight: 'bold',
     fill: chart.colorScale[index % chart.colorScale.length]
   });
+
   const referenceLabelStyles = (index: number): React.CSSProperties =>
     Object.assign({}, reference.style.labels, {
       fontWeight: index === 0 ? 'bold' : 'normal'
     }) as React.CSSProperties;
+
+  // Check window display:
+  const size = getWindowSize();
 
   return (
     <CustomContainer height={computedHeight} width={computedWidth}>
@@ -85,20 +90,28 @@ function NestedProportionalAreaChart({
         </pattern>
       </defs>
 
-      <g>
-        {data.map((d, i) => (
-          <VictoryLabel
-            capHeight={0}
-            lineHeight={0}
-            x={(computedWidth - minDimension) / 2}
-            dx={0}
-            y={36}
-            text={data[i]}
-            style={dataLabelStyles(i)}
-            dy={i * 36}
-          />
-        ))}
-      </g>
+      {(() => {
+        if (typeof size.width !== 'undefined' && size.width >= 600) {
+          return <g />;
+        }
+        return (
+          <g>
+            {data.map((d, i) => (
+              <VictoryLabel
+                capHeight={0}
+                lineHeight={0}
+                x={(computedWidth - minDimension) / 2}
+                dx={0}
+                y={36}
+                text={data[i]}
+                style={dataLabelStyles(i)}
+                dy={i * 36}
+              />
+            ))}
+          </g>
+        );
+      })()}
+
       {square ? (
         <ScaledSquare
           colorScale={chart.colorScale}
@@ -123,22 +136,32 @@ function NestedProportionalAreaChart({
           labels={() => ''}
         />
       )}
-      <VictoryLabel
-        capHeight={0}
-        lineHeight={0}
-        x={(computedWidth - minDimension) / 2}
-        y={computedHeight - 24}
-        text={reference.data[0]}
-        style={referenceLabelStyles(0)}
-      />
-      <VictoryLabel
-        capHeight={0}
-        lineHeight={0}
-        x={(computedWidth - minDimension) / 2}
-        y={computedHeight}
-        text="Tanzania"
-        style={referenceLabelStyles(1)}
-      />
+
+      {(() => {
+        if (typeof size.width !== 'undefined' && size.width >= 600) {
+          return <g />;
+        }
+        return (
+          <g>
+            <VictoryLabel
+              capHeight={0}
+              lineHeight={0}
+              x={(computedWidth - minDimension) / 2}
+              y={computedHeight - 24}
+              text={reference.data[0]}
+              style={referenceLabelStyles(0)}
+            />
+            <VictoryLabel
+              capHeight={0}
+              lineHeight={0}
+              x={(computedWidth - minDimension) / 2}
+              y={computedHeight}
+              text="Tanzania"
+              style={referenceLabelStyles(1)}
+            />
+          </g>
+        );
+      })()}
     </CustomContainer>
   );
 }
