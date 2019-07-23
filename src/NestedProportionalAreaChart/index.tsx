@@ -81,7 +81,7 @@ function NestedProportionalAreaChart({
   return (
     <Fragment>
       {(() => {
-        if (typeof size.width !== 'undefined' && size.width >= 600) {
+        if (typeof size.width !== 'undefined' && size.width >= 960) {
           return (
             <div>
               <svg
@@ -182,7 +182,7 @@ function NestedProportionalAreaChart({
         </defs>
 
         {(() => {
-          if (typeof size.width !== 'undefined' && size.width >= 600) {
+          if (typeof size.width !== 'undefined' && size.width >= 960) {
             return <g />;
           }
           return (
@@ -229,7 +229,7 @@ function NestedProportionalAreaChart({
         )}
 
         {(() => {
-          if (typeof size.width !== 'undefined' && size.width >= 600) {
+          if (typeof size.width !== 'undefined' && size.width >= 960) {
             return <g />;
           }
           return (
