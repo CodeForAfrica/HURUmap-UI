@@ -127,7 +127,17 @@ storiesOf('HURUmap UI|Charts/Bullet Chart', module)
         width={number('width', 350)}
         height={number('height', 350)}
         data={object('data', [49])}
-        reference={object('reference', { data: [100], labels: ['51% Female'] })}
+        reference={object('reference', [51])}
+      />
+    </div>
+  ))
+  .add('Comparison', () => (
+    <div>
+      <BulletChart
+        width={number('width', 350)}
+        height={number('height', 350)}
+        data={object('data', [[49], [51]])}
+        reference={object('reference', [51])}
       />
     </div>
   ));
