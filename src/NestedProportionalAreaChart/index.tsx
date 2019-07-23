@@ -80,31 +80,58 @@ function NestedProportionalAreaChart({
 
   return (
     <Fragment>
-      <svg
-        style={{
-          position: 'absolute',
-          zIndex: 1,
-          left: '1rem'
-        }}
-        height="500"
-        width="500"
-      >
-        <g>
-          {data.map((d, i) => (
-            <VictoryLabel
-              capHeight={0}
-              lineHeight={0}
-              dy={175}
-              x={0}
-              y={0}
-              dx={0}
-              text={data[i]}
-              style={dataLabelStyles(i)}
-            />
-          ))}
-        </g>
-        <VictoryLine />
-      </svg>
+      {(() => {
+        if (typeof size.width !== 'undefined' && size.width >= 600) {
+          return (
+            <div>
+              <svg
+                style={{
+                  position: 'absolute',
+                  zIndex: 1,
+                  marginLeft: '5rem',
+                  left: 0
+                }}
+                height="500"
+                width="500"
+              >
+                <g>
+                  {data.map((d, i) => (
+                    <VictoryLabel
+                      capHeight={0}
+                      lineHeight={0}
+                      dy={175}
+                      x={0}
+                      y={0}
+                      dx={0}
+                      text={data[i]}
+                      style={dataLabelStyles(i)}
+                    />
+                  ))}
+                </g>
+              </svg>
+
+              <g
+                style={{
+                  position: 'absolute',
+                  zIndex: 1,
+                  top: '6rem'
+                }}
+              >
+                <VictoryLine
+                  width={300}
+                  height={300}
+                  y={() => 175}
+                  style={{
+                    data: { stroke: '#7f9442' }
+                  }}
+                />
+              </g>
+            </div>
+          );
+        }
+        return <g />;
+      })()}
+
       <CustomContainer height={computedHeight} width={computedWidth}>
         <defs>
           <pattern
