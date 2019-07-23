@@ -13,7 +13,6 @@ interface Props<T> {
   barWidth: number;
   // Feature measure
   data: T[];
-  height: number;
   labels: { (data: T): string };
   // Comparative measure
   reference: ReferenceProps<T>;

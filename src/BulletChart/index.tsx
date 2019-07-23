@@ -94,7 +94,6 @@ function BulletChart({
           <BulletBar
             barWidth={computedBarWidth}
             data={d}
-            height={computedHeight}
             labels={labels || (() => '')}
             reference={reference}
             style={Object.assign({}, computedStyle, {
