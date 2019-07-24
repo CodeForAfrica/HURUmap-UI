@@ -63,6 +63,7 @@ function NestedProportionalAreaChart({
 
   const chartHeight = computedHeight - (data.length * 36 + 48 + 20);
   const minDimension = Math.min(chartHeight, computedWidth);
+  const desktop = typeof computedWidth !== 'undefined' && computedWidth >= 600;
 
   const dataLabelStyles = (index: number): React.CSSProperties => ({
     fontSize: 36,
@@ -78,87 +79,82 @@ function NestedProportionalAreaChart({
 
   return (
     <Fragment>
-      {/* Get the victoryLine and labels on the charts as an overlay */}
-      {!square
-        ? (() => {
-            if (typeof computedWidth !== 'undefined' && computedWidth >= 600) {
-              return (
-                <div>
-                  <svg
-                    style={{
-                      position: 'absolute',
-                      zIndex: 1
-                    }}
-                    height={chartHeight}
-                    width={computedWidth}
-                  >
-                    <g>
-                      {data.map((d, i) => (
-                        <VictoryLabel
-                          capHeight={0}
-                          lineHeight={0}
-                          x={computedWidth / 2}
-                          y={data.length * 36 + 10 + chartHeight / 2}
-                          dx={-computedWidth / 2}
-                          dy={-i * 36}
-                          text={data[i]}
-                          style={dataLabelStyles(i)}
-                        />
-                      ))}
-                    </g>
-                  </svg>
+      {!square && desktop ? (
+        <div>
+          <svg
+            style={{
+              position: 'absolute',
+              zIndex: 1
+            }}
+            height={chartHeight}
+            width={computedWidth}
+          >
+            <g>
+              {data.map((d, i) => (
+                <VictoryLabel
+                  capHeight={0}
+                  lineHeight={0}
+                  x={computedWidth / 2}
+                  y={data.length * 36 + 10 + chartHeight / 2}
+                  dx={-computedWidth / 2}
+                  dy={-i * 36}
+                  text={data[i]}
+                  style={dataLabelStyles(i)}
+                />
+              ))}
+            </g>
+          </svg>
 
-                  <g
-                    style={{
-                      position: 'absolute',
-                      zIndex: 1,
-                      top: '1.5rem',
-                      margin: '5rem'
-                    }}
-                  >
-                    <VictoryLine
-                      width={computedWidth / 2.2}
-                      y={() => data.length * 36 + 10 + chartHeight / 2}
-                      style={{
-                        data: { stroke: 'rgb(244, 81, 30)' }
-                      }}
-                    />
-                  </g>
+          <g
+            style={{
+              position: 'absolute',
+              zIndex: 1,
+              top: '1.5rem',
+              margin: '5rem'
+            }}
+          >
+            <VictoryLine
+              width={computedWidth / 2.2 - computedGroupSpacing}
+              y={() => data.length * 36 + 10 + chartHeight / 2}
+              style={{
+                data: { stroke: 'rgb(244, 81, 30)' }
+              }}
+            />
+          </g>
 
-                  <g
-                    style={{
-                      position: 'absolute',
-                      zIndex: 1,
-                      top: 'calc(100% - 40%)'
-                    }}
-                    height={chartHeight}
-                    width={computedWidth}
-                  >
-                    <VictoryLabel
-                      capHeight={0}
-                      lineHeight={0}
-                      x={(computedWidth - minDimension) / 2}
-                      y={computedHeight - 24}
-                      text={reference.data[0]}
-                      style={referenceLabelStyles(0)}
-                    />
-                    <br />
-                    <VictoryLabel
-                      capHeight={0}
-                      lineHeight={0}
-                      x={(computedWidth - minDimension) / 4}
-                      y={computedHeight}
-                      text="Tanzania"
-                      style={referenceLabelStyles(1)}
-                    />
-                  </g>
-                </div>
-              );
-            }
-            return <g />;
-          })()
-        : null}
-      {/* Main csvg component */}
+          <g
+            style={{
+              position: 'absolute',
+              zIndex: 1,
+              top: 'calc(100% - 40%)'
+            }}
+            height={chartHeight}
+            width={computedWidth}
+          >
+            <VictoryLabel
+              capHeight={0}
+              lineHeight={0}
+              x={(computedWidth - minDimension) / 2}
+              y={computedHeight - 24}
+              text={reference.data[0]}
+              style={referenceLabelStyles(0)}
+            />
+            <br />
+            <VictoryLabel
+              capHeight={0}
+              lineHeight={0}
+              x={(computedWidth - minDimension) / 4}
+              y={computedHeight}
+              text="Tanzania"
+              style={referenceLabelStyles(1)}
+            />
+          </g>
+        </div>
+      ) : (
+        <g />
+      )}
+
+      {/* Main container component */}
       <CustomContainer height={computedHeight} width={computedWidth}>
         <defs>
           <pattern
@@ -179,7 +175,51 @@ function NestedProportionalAreaChart({
           </pattern>
         </defs>
 
-        {/* Returns the legend values of square charts */}
+        {/* Return mobile victory label =>part value */}
+        {!square && !desktop ? (
+          <g>
+            {data.map((d, i) => (
+              <VictoryLabel
+                capHeight={0}
+                lineHeight={0}
+                x={(computedWidth - minDimension) / 2}
+                dx={0}
+                y={36}
+                text={data[i]}
+                style={dataLabelStyles(i)}
+                dy={i * 36}
+              />
+            ))}
+          </g>
+        ) : (
+          <g />
+        )}
+
+        {/* Victory labels for total value data styles => mobile) */}
+        {!desktop ? (
+          <g>
+            <VictoryLabel
+              capHeight={0}
+              lineHeight={0}
+              x={(computedWidth - minDimension) / 2}
+              y={computedHeight - 24}
+              text={reference.data[0]}
+              style={referenceLabelStyles(0)}
+            />
+            <VictoryLabel
+              capHeight={0}
+              lineHeight={0}
+              x={(computedWidth - minDimension) / 2}
+              y={computedHeight}
+              text="Tanzania"
+              style={referenceLabelStyles(1)}
+            />
+          </g>
+        ) : (
+          <g />
+        )}
+
+        {/* Part value for square =>mobile */}
         {square ? (
           <g>
             {data.map((d, i) => (
@@ -190,35 +230,14 @@ function NestedProportionalAreaChart({
                 dx={0}
                 y={36}
                 text={data[i]}
-                style={dataLabelStyles(i)} //the red value for squares
+                style={dataLabelStyles(i)}
                 dy={i * 36}
               />
             ))}
           </g>
-        ) : null}
-
-        {/* returns red value for default circle on mobile */}
-        {(() => {
-          if (typeof computedWidth !== 'undefined' && computedWidth >= 600) {
-            return <g />;
-          }
-          return (
-            <g>
-              {data.map((d, i) => (
-                <VictoryLabel
-                  capHeight={0}
-                  lineHeight={0}
-                  x={(computedWidth - minDimension) / 2}
-                  dx={0}
-                  y={36}
-                  text={data[i]}
-                  style={dataLabelStyles(i)}
-                  dy={i * 36}
-                />
-              ))}
-            </g>
-          );
-        })()}
+        ) : (
+          <g />
+        )}
 
         {square ? (
           <ScaledSquare
@@ -245,7 +264,7 @@ function NestedProportionalAreaChart({
           />
         )}
 
-        {/* Return value of square charts legends (reference styles) */}
+        {/* Total value of square legend  with reference styles */}
         {square ? (
           <g>
             <VictoryLabel
@@ -265,34 +284,9 @@ function NestedProportionalAreaChart({
               style={referenceLabelStyles(1)}
             />
           </g>
-        ) : null}
-
-        {/* Handle values for victory labels circle(data styles) */}
-        {(() => {
-          if (typeof computedWidth !== 'undefined' && computedWidth >= 600) {
-            return <g />;
-          }
-          return (
-            <g>
-              <VictoryLabel
-                capHeight={0}
-                lineHeight={0}
-                x={(computedWidth - minDimension) / 2}
-                y={computedHeight - 24}
-                text={reference.data[0]}
-                style={referenceLabelStyles(0)}
-              />
-              <VictoryLabel
-                capHeight={0}
-                lineHeight={0}
-                x={(computedWidth - minDimension) / 2}
-                y={computedHeight}
-                text="Tanzania"
-                style={referenceLabelStyles(1)}
-              />
-            </g>
-          );
-        })()}
+        ) : (
+          <g />
+        )}
       </CustomContainer>
     </Fragment>
   );
