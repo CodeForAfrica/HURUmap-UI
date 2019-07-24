@@ -52,7 +52,7 @@ function NestedProportionalAreaChart({
   );
   const computedHeight = height || chart.height;
   const computedWidth = width || chart.width;
-  console.log(computedWidth);
+
   const computedGroupSpacing =
     data.length > 1 ? groupSpacing || chart.groupSpacing : 0;
 
@@ -100,7 +100,7 @@ function NestedProportionalAreaChart({
                           x={computedWidth / 2}
                           y={data.length * 36 + 10 + chartHeight / 2}
                           dx={-computedWidth / 2}
-                          dy={-i * 24}
+                          dy={-i * 36}
                           text={data[i]}
                           style={dataLabelStyles(i)}
                         />
@@ -112,12 +112,12 @@ function NestedProportionalAreaChart({
                     style={{
                       position: 'absolute',
                       zIndex: 1,
-                      top: '2rem',
-                      margin: '4rem'
+                      top: '1.5rem',
+                      margin: '5rem'
                     }}
                   >
                     <VictoryLine
-                      width={computedWidth / 2}
+                      width={computedWidth / 2.2}
                       y={() => data.length * 36 + 10 + chartHeight / 2}
                       style={{
                         data: { stroke: 'rgb(244, 81, 30)' }
@@ -190,13 +190,14 @@ function NestedProportionalAreaChart({
                 dx={0}
                 y={36}
                 text={data[i]}
-                style={dataLabelStyles(i)}
+                style={dataLabelStyles(i)} //the red value for squares
                 dy={i * 36}
               />
             ))}
           </g>
         ) : null}
 
+        {/* returns red value for default circle on mobile */}
         {(() => {
           if (typeof computedWidth !== 'undefined' && computedWidth >= 600) {
             return <g />;
