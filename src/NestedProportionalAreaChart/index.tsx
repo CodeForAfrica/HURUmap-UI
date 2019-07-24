@@ -114,7 +114,6 @@ function NestedProportionalAreaChart({
                       zIndex: 1,
                       top: '2rem',
                       margin: '4rem'
-                      // marginLeft: '-6.5rem'
                     }}
                   >
                     <VictoryLine
@@ -130,10 +129,10 @@ function NestedProportionalAreaChart({
                     style={{
                       position: 'absolute',
                       zIndex: 1,
-                      right: 0,
-                      top: '20rem',
-                      marginRight: '15rem'
+                      top: 'calc(100% - 40%)'
                     }}
+                    height={chartHeight}
+                    width={computedWidth}
                   >
                     <VictoryLabel
                       capHeight={0}
