@@ -1,12 +1,12 @@
 import React from 'react';
 import { Typography, ButtonBase, Grid } from '@material-ui/core';
-import { makeStyles, CSSProperties } from '@material-ui/styles';
+import { CSSProperties, withStyles, WithStyles } from '@material-ui/styles';
 import { GridProps } from '@material-ui/core/Grid';
 
 import infoIcon from './assets/info.png';
 import shareIcon from './assets/share.png';
 
-const useStyles = makeStyles({
+const styles = {
   root: {
     width: 'available',
     height: 'auto',
@@ -26,9 +26,10 @@ const useStyles = makeStyles({
   },
   title: {},
   subtitle: {}
-});
+};
 
-interface Props extends GridProps {
+interface Props extends GridProps, WithStyles<typeof styles> {
+  classes: GridProps['classes'] & WithStyles<typeof styles>['classes'];
   title: string;
   subtitle: string;
   /**
@@ -50,6 +51,7 @@ interface Props extends GridProps {
 }
 
 function ChartContainer({
+  classes,
   title,
   subtitle,
   children,
@@ -62,9 +64,13 @@ function ChartContainer({
   className,
   ...props
 }: Props) {
-  const classes = useStyles();
   return (
-    <Grid container className={`${classes.root} ${className}`} {...props}>
+    <Grid
+      container
+      className={`${classes.root} ${className}`}
+      classes={classes}
+      {...props}
+    >
       <Grid
         container
         wrap="nowrap"
@@ -73,10 +79,10 @@ function ChartContainer({
         justify="space-between"
       >
         <Grid item xs={8}>
-          <Typography className={classes.title} variant="h2">
+          <Typography className={classes.title} variant="h5">
             {title}
           </Typography>
-          <Typography className={classes.subtitle} variant="h3">
+          <Typography className={classes.subtitle} variant="h6">
             {subtitle}
           </Typography>
         </Grid>
@@ -119,4 +125,4 @@ function ChartContainer({
   );
 }
 
-export default ChartContainer;
+export default withStyles(styles)(ChartContainer);
