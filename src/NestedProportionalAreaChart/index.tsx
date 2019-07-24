@@ -72,10 +72,10 @@ function NestedProportionalAreaChart({
 
   const referenceLabelStyles = (index: number): React.CSSProperties =>
     Object.assign({}, reference.style.labels, {
-      fontWeight: index === 0 ? 'bold' : 'normal'
+      fontWeight: index === 0 ? 'bold' : 'normal',
+      color: 'grey'
     }) as React.CSSProperties;
 
-  // Check window display:
   // const size = getWindowSize();
 
   return (
@@ -91,7 +91,6 @@ function NestedProportionalAreaChart({
                       position: 'absolute',
                       zIndex: 1,
                       marginLeft: '-12rem'
-                      // left: 0
                     }}
                     height={chartHeight}
                     width={computedWidth}
@@ -102,7 +101,7 @@ function NestedProportionalAreaChart({
                           capHeight={0}
                           lineHeight={0}
                           dy={chartHeight / 2 - 24}
-                          x={0} //center => position of label(center(x), -y -x)
+                          x={0}
                           dx={0}
                           y={0}
                           text={data[i]}
@@ -151,7 +150,7 @@ function NestedProportionalAreaChart({
                     <VictoryLabel
                       capHeight={0}
                       lineHeight={0}
-                      x={(computedWidth - minDimension) / 2}
+                      x={(computedWidth - minDimension) / 4}
                       y={computedHeight}
                       text="Tanzania"
                       style={referenceLabelStyles(1)}
@@ -250,7 +249,6 @@ function NestedProportionalAreaChart({
         )}
 
         {/* Return value of square charts legends (reference styles) */}
-
         {square ? (
           <g>
             <VictoryLabel
