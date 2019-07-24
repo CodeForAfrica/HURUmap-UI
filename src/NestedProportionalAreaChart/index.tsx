@@ -7,7 +7,7 @@ import {
   VictoryMultiLabeableProps,
   VictoryThemeDefinitionLatest
 } from 'victory';
-// import getWindowSize from './getWindowSize';
+
 import { toReferenceProps, ReferableChartProps } from '../ReferableChart';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
@@ -76,8 +76,6 @@ function NestedProportionalAreaChart({
       color: 'grey'
     }) as React.CSSProperties;
 
-  // const size = getWindowSize();
-
   return (
     <Fragment>
       {/* Get the victoryLine and labels on the charts as an overlay */}
@@ -89,8 +87,7 @@ function NestedProportionalAreaChart({
                   <svg
                     style={{
                       position: 'absolute',
-                      zIndex: 1,
-                      marginLeft: '-12rem'
+                      zIndex: 1
                     }}
                     height={chartHeight}
                     width={computedWidth}
@@ -100,10 +97,10 @@ function NestedProportionalAreaChart({
                         <VictoryLabel
                           capHeight={0}
                           lineHeight={0}
-                          dy={chartHeight / 2 - 24}
-                          x={0}
-                          dx={0}
-                          y={0}
+                          x={computedWidth / 2}
+                          y={data.length * 36 + 10 + chartHeight / 2}
+                          dx={-computedWidth / 2}
+                          dy={-i * 24}
                           text={data[i]}
                           style={dataLabelStyles(i)}
                         />
@@ -115,14 +112,14 @@ function NestedProportionalAreaChart({
                     style={{
                       position: 'absolute',
                       zIndex: 1,
-                      top: '6.5rem',
-                      marginLeft: '-6.5rem'
+                      top: '2rem',
+                      margin: '4rem'
+                      // marginLeft: '-6.5rem'
                     }}
                   >
                     <VictoryLine
-                      height={300}
-                      width={300}
-                      y={() => computedWidth / 2 - 24}
+                      width={computedWidth / 2}
+                      y={() => data.length * 36 + 10 + chartHeight / 2}
                       style={{
                         data: { stroke: 'rgb(244, 81, 30)' }
                       }}
