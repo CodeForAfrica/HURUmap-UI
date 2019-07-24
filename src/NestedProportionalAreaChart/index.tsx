@@ -126,7 +126,9 @@ function NestedProportionalAreaChart({
             style={{
               position: 'absolute',
               zIndex: 1,
-              top: 'calc(100% - 40%)'
+              right: 0,
+              top: '25rem',
+              marginRight: '15rem'
             }}
             height={chartHeight}
             width={computedWidth}
