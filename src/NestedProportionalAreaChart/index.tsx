@@ -90,21 +90,21 @@ function NestedProportionalAreaChart({
                     style={{
                       position: 'absolute',
                       zIndex: 1,
-                      marginLeft: '10rem',
-                      left: 0
+                      marginLeft: '-12rem'
+                      // left: 0
                     }}
-                    height="500"
-                    width="500"
+                    height={chartHeight}
+                    width={computedWidth}
                   >
                     <g>
                       {data.map((d, i) => (
                         <VictoryLabel
                           capHeight={0}
                           lineHeight={0}
-                          dy={175}
-                          x={0}
-                          y={0}
+                          dy={chartHeight / 2 - 24}
+                          x={0} //center => position of label(center(x), -y -x)
                           dx={0}
+                          y={0}
                           text={data[i]}
                           style={dataLabelStyles(i)}
                         />
@@ -116,14 +116,14 @@ function NestedProportionalAreaChart({
                     style={{
                       position: 'absolute',
                       zIndex: 1,
-                      top: '6rem',
-                      marginLeft: '-7rem'
+                      top: '6.5rem',
+                      marginLeft: '-6.5rem'
                     }}
                   >
                     <VictoryLine
-                      width={300}
                       height={300}
-                      y={() => 175}
+                      width={300}
+                      y={() => computedWidth / 2 - 24}
                       style={{
                         data: { stroke: 'rgb(244, 81, 30)' }
                       }}
@@ -163,7 +163,7 @@ function NestedProportionalAreaChart({
             return <g />;
           })()
         : null}
-
+      {/* Main csvg component */}
       <CustomContainer height={computedHeight} width={computedWidth}>
         <defs>
           <pattern
@@ -249,7 +249,7 @@ function NestedProportionalAreaChart({
           />
         )}
 
-        {/* Return value od square charts legends (reference styles) */}
+        {/* Return value of square charts legends (reference styles) */}
 
         {square ? (
           <g>
