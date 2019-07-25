@@ -89,20 +89,35 @@ function NestedProportionalAreaChart({
             height={chartHeight}
             width={computedWidth}
           >
-            <g>
-              {data.map((d, i) => (
-                <VictoryLabel
-                  capHeight={0}
-                  lineHeight={0}
-                  x={computedWidth / 2}
-                  y={data.length * 36 + 10 + chartHeight / 2}
-                  dx={-computedWidth / 2}
-                  dy={-i * 36}
-                  text={data[i]}
-                  style={dataLabelStyles(i)}
-                />
-              ))}
-            </g>
+            {data.map((d, i) =>
+              i === 1 ? (
+                <g>
+                  <VictoryLabel
+                    capHeight={0}
+                    lineHeight={0}
+                    x={computedWidth / 2}
+                    y={data.length * 36 + 10 + chartHeight / 2 - 30} // for the second value this one changes
+                    dx={computedWidth / 2 - 150} //for the second value this one changes
+                    dy={-i * 24}
+                    text={data[i]}
+                    style={dataLabelStyles(i)}
+                  />
+                </g>
+              ) : (
+                <g>
+                  <VictoryLabel
+                    capHeight={0}
+                    lineHeight={0}
+                    x={computedWidth / 2}
+                    y={data.length * 36 + 10 + chartHeight / 2} //this one changes
+                    dx={-computedWidth / 2} //this one changes
+                    dy={-i * 36}
+                    text={data[i]}
+                    style={dataLabelStyles(i)}
+                  />
+                </g>
+              )
+            )}
           </svg>
 
           <g
@@ -121,7 +136,6 @@ function NestedProportionalAreaChart({
               }}
             />
           </g>
-
           <g
             style={{
               position: 'absolute',
