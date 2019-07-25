@@ -120,22 +120,48 @@ function NestedProportionalAreaChart({
             )}
           </svg>
 
-          <g
-            style={{
-              position: 'absolute',
-              zIndex: 1,
-              top: '1.5rem',
-              margin: '5rem'
-            }}
-          >
-            <VictoryLine
-              width={computedWidth / 2.2 - computedGroupSpacing}
-              y={() => data.length * 36 + 10 + chartHeight / 2}
-              style={{
-                data: { stroke: 'rgb(244, 81, 30)' }
-              }}
-            />
-          </g>
+          {/* Map lines default */}
+
+          {desktop &&
+            data.map((d, i) =>
+              i === 1 ? (
+                <g
+                  style={{
+                    position: 'absolute',
+                    zIndex: 1,
+                    top: '7rem',
+                    marginLeft: '18rem'
+                  }}
+                >
+                  <VictoryLine
+                    x={computedWidth / 2}
+                    width={computedWidth / 2.5 - computedGroupSpacing} // map only one value
+                    y={() => data.length * 36 - 10 - chartHeight / 2}
+                    style={{
+                      data: { stroke: 'rgb(255, 245, 157)' }
+                    }}
+                  />
+                </g>
+              ) : (
+                <g
+                  style={{
+                    position: 'absolute',
+                    zIndex: 1,
+                    top: '1.5rem',
+                    margin: '5rem'
+                  }}
+                >
+                  <VictoryLine
+                    width={computedWidth / 2.2 - computedGroupSpacing} // map only one value
+                    y={() => data.length * 36 + 10 + chartHeight / 2}
+                    style={{
+                      data: { stroke: 'rgb(244, 81, 30)' }
+                    }}
+                  />
+                </g>
+              )
+            )}
+
           <g
             style={{
               position: 'absolute',
