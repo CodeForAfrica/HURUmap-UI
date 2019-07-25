@@ -98,7 +98,7 @@ function NestedProportionalAreaChart({
                     x={computedWidth / 2}
                     y={data.length * 36 + 10 + chartHeight / 2 - 30} // for the second value this one changes
                     dx={computedWidth / 2 - 150} //for the second value this one changes
-                    dy={-i * 24}
+                    dy={i * 36}
                     text={data[i]}
                     style={dataLabelStyles(i)}
                   />
@@ -142,7 +142,7 @@ function NestedProportionalAreaChart({
               zIndex: 1,
               right: 0,
               top: '25rem',
-              marginRight: '15rem'
+              marginRight: 'calc(100% - 82%)'
             }}
             height={chartHeight}
             width={computedWidth}
