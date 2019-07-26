@@ -1,13 +1,14 @@
 import React from 'react';
 
+import HorizontalLegend from './HorizontalLegend';
 import PieChart, { PieChartProps } from '../PieChart';
 import { ReferenceProps } from '../ReferableChart';
 
 interface Props extends PieChartProps {
-  cx?: number;
-  cy?: number;
+  cx: number;
+  cy: number;
   radii?: number[];
-  size?: number;
+  size: number;
   transform?: string;
   reference: ReferenceProps<number>;
 }
@@ -52,6 +53,15 @@ function ScaledCircle({
         standalone={false}
         origin={{ x: cx, y: cy }}
         {...props}
+      />
+      <HorizontalLegend
+        data={radii}
+        radii={scaledRs}
+        colorScale={colorScale}
+        size={size}
+        reference={reference}
+        cx={cx}
+        cy={cy}
       />
     </React.Fragment>
   );
