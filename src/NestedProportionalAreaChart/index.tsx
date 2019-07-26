@@ -1,9 +1,7 @@
 import React, { Fragment } from 'react';
 import {
-  VictoryLine,
   VictoryCommonProps,
   VictoryDatableProps,
-  VictoryLabel,
   VictoryMultiLabeableProps,
   VictoryThemeDefinitionLatest
 } from 'victory';
@@ -23,6 +21,27 @@ interface Props
   groupSpacing?: number;
 }
 
+const DESKTOP_WIDTH = 650;
+const DESKTOP_HEIGHT = 270;
+
+function scaleDimension({
+  height: h,
+  width: w
+}: {
+  height: number;
+  width: number;
+}) {
+  // Scale from DESKTOP_WIDTH to w first
+  let height = (DESKTOP_HEIGHT * w) / DESKTOP_WIDTH;
+  let width = w;
+  if (height > h) {
+    // Scale from height to h
+    width = (w * h) / height;
+    height = h;
+  }
+  return { height, width };
+}
+
 /**
  * Data value represents **area**. We need to find length/radius in order to
  * draw the shapes. For both squares & circles, √ of the area should give us
@@ -31,8 +50,8 @@ interface Props
  */
 function NestedProportionalAreaChart({
   groupSpacing,
-  width,
-  height,
+  width: w,
+  height: h,
   theme,
   data,
   reference: ref,
@@ -50,9 +69,12 @@ function NestedProportionalAreaChart({
     { style: chart.reference },
     toReferenceProps(ref)
   );
-  const computedHeight = height || chart.height;
-  const computedWidth = width || chart.width;
-
+  const height = h || chart.height;
+  const width = w || chart.width;
+  const { height: computedHeight, width: computedWidth } = scaleDimension({
+    height,
+    width
+  });
   const computedGroupSpacing =
     data.length > 1 ? groupSpacing || chart.groupSpacing : 0;
 
@@ -63,8 +85,9 @@ function NestedProportionalAreaChart({
 
   const chartHeight = computedHeight - (data.length * 36 + 48 + 20);
   const minDimension = Math.min(chartHeight, computedWidth);
-  const desktop = typeof computedWidth !== 'undefined' && computedWidth >= 600;
+  // const desktop = typeof computedWidth !== 'undefined' && computedWidth >= 600;
 
+  /*
   const dataLabelStyles = (index: number): React.CSSProperties => ({
     fontSize: 36,
     fontWeight: 'bold',
@@ -76,128 +99,12 @@ function NestedProportionalAreaChart({
       fontWeight: index === 0 ? 'bold' : 'normal',
       color: 'grey'
     }) as React.CSSProperties;
+  */
 
   return (
     <Fragment>
-      {!square && desktop ? (
-        <div>
-          <svg
-            style={{
-              position: 'absolute',
-              zIndex: 1
-            }}
-            height={chartHeight}
-            width={computedWidth}
-          >
-            {data.map((d, i) =>
-              i === 1 ? (
-                <g>
-                  <VictoryLabel
-                    capHeight={0}
-                    lineHeight={0}
-                    x={computedWidth / 2}
-                    y={data.length * 36 + 10 + chartHeight / 2 - 30} // for the second value this one changes
-                    dx={computedWidth / 2 - 150} //for the second value this one changes
-                    dy={i * 36}
-                    text={data[i]}
-                    style={dataLabelStyles(i)}
-                  />
-                </g>
-              ) : (
-                <g>
-                  <VictoryLabel
-                    capHeight={0}
-                    lineHeight={0}
-                    x={computedWidth / 2}
-                    y={data.length * 36 + 10 + chartHeight / 2} //this one changes
-                    dx={-computedWidth / 2} //this one changes
-                    dy={-i * 36}
-                    text={data[i]}
-                    style={dataLabelStyles(i)}
-                  />
-                </g>
-              )
-            )}
-          </svg>
-
-          {/* Map lines default */}
-
-          {desktop &&
-            data.map((d, i) =>
-              i === 1 ? (
-                <g
-                  style={{
-                    position: 'absolute',
-                    zIndex: 1,
-                    top: '7rem',
-                    marginLeft: '18rem'
-                  }}
-                >
-                  <VictoryLine
-                    x={computedWidth / 2}
-                    width={computedWidth / 2.5 - computedGroupSpacing} // map only one value
-                    y={() => data.length * 36 - 10 - chartHeight / 2}
-                    style={{
-                      data: { stroke: 'rgb(255, 245, 157)' }
-                    }}
-                  />
-                </g>
-              ) : (
-                <g
-                  style={{
-                    position: 'absolute',
-                    zIndex: 1,
-                    top: '1.5rem',
-                    margin: '5rem'
-                  }}
-                >
-                  <VictoryLine
-                    width={computedWidth / 2.2 - computedGroupSpacing} // map only one value
-                    y={() => data.length * 36 + 10 + chartHeight / 2}
-                    style={{
-                      data: { stroke: 'rgb(244, 81, 30)' }
-                    }}
-                  />
-                </g>
-              )
-            )}
-
-          <g
-            style={{
-              position: 'absolute',
-              zIndex: 1,
-              right: 0,
-              top: '25rem',
-              marginRight: 'calc(100% - 82%)'
-            }}
-            height={chartHeight}
-            width={computedWidth}
-          >
-            <VictoryLabel
-              capHeight={0}
-              lineHeight={0}
-              x={(computedWidth - minDimension) / 2}
-              y={computedHeight - 24}
-              text={reference.data[0]}
-              style={referenceLabelStyles(0)}
-            />
-            <br />
-            <VictoryLabel
-              capHeight={0}
-              lineHeight={0}
-              x={(computedWidth - minDimension) / 4}
-              y={computedHeight}
-              text="Tanzania"
-              style={referenceLabelStyles(1)}
-            />
-          </g>
-        </div>
-      ) : (
-        <g />
-      )}
-
       {/* Main container component */}
-      <CustomContainer height={computedHeight} width={computedWidth}>
+      <CustomContainer height={height} width={width}>
         <defs>
           <pattern
             id="gradient-background"
@@ -216,119 +123,32 @@ function NestedProportionalAreaChart({
             />
           </pattern>
         </defs>
-
-        {/* Return mobile victory label =>part value */}
-        {!square && !desktop ? (
-          <g>
-            {data.map((d, i) => (
-              <VictoryLabel
-                capHeight={0}
-                lineHeight={0}
-                x={(computedWidth - minDimension) / 2}
-                dx={0}
-                y={36}
-                text={data[i]}
-                style={dataLabelStyles(i)}
-                dy={i * 36}
-              />
-            ))}
-          </g>
-        ) : (
-          <g />
-        )}
-
-        {/* Victory labels for total value data styles => mobile) */}
-        {!desktop ? (
-          <g>
-            <VictoryLabel
-              capHeight={0}
-              lineHeight={0}
+        <g transform={`scale(${computedWidth / DESKTOP_WIDTH})`}>
+          {square ? (
+            <ScaledSquare
+              colorScale={chart.colorScale}
+              reference={reference}
+              sides={data}
+              size={minDimension}
               x={(computedWidth - minDimension) / 2}
-              y={computedHeight - 24}
-              text={reference.data[0]}
-              style={referenceLabelStyles(0)}
+              y={data.length * 36 + 10}
             />
-            <VictoryLabel
-              capHeight={0}
-              lineHeight={0}
-              x={(computedWidth - minDimension) / 2}
-              y={computedHeight}
-              text="Tanzania"
-              style={referenceLabelStyles(1)}
+          ) : (
+            <ScaledCircle
+              colorScale={chart.colorScale}
+              cx={DESKTOP_WIDTH / 2}
+              cy={DESKTOP_HEIGHT / 2}
+              groupSpacing={computedGroupSpacing}
+              reference={reference}
+              radii={data}
+              size={(DESKTOP_HEIGHT - computedGroupSpacing) / 2}
+              theme={(theme as unknown) as VictoryThemeDefinitionLatest}
+              height={DESKTOP_HEIGHT}
+              width={DESKTOP_WIDTH}
+              labels={() => ''}
             />
-          </g>
-        ) : (
-          <g />
-        )}
-
-        {/* Part value for square =>mobile */}
-        {square ? (
-          <g>
-            {data.map((d, i) => (
-              <VictoryLabel
-                capHeight={0}
-                lineHeight={0}
-                x={(computedWidth - minDimension) / 2}
-                dx={0}
-                y={36}
-                text={data[i]}
-                style={dataLabelStyles(i)}
-                dy={i * 36}
-              />
-            ))}
-          </g>
-        ) : (
-          <g />
-        )}
-
-        {square ? (
-          <ScaledSquare
-            colorScale={chart.colorScale}
-            reference={reference}
-            sides={data}
-            size={minDimension}
-            x={(computedWidth - minDimension) / 2}
-            y={data.length * 36 + 10}
-          />
-        ) : (
-          <ScaledCircle
-            colorScale={chart.colorScale}
-            cx={computedWidth / 2}
-            cy={data.length * 36 + 10 + chartHeight / 2}
-            groupSpacing={computedGroupSpacing}
-            reference={reference}
-            radii={data}
-            size={minDimension / 2 - computedGroupSpacing}
-            theme={(theme as unknown) as VictoryThemeDefinitionLatest}
-            height={chartHeight}
-            width={computedWidth}
-            labels={() => ''}
-          />
-        )}
-
-        {/* Total value of square legend  with reference styles */}
-        {square ? (
-          <g>
-            <VictoryLabel
-              capHeight={0}
-              lineHeight={0}
-              x={(computedWidth - minDimension) / 2}
-              y={computedHeight - 24}
-              text={reference.data[0]}
-              style={referenceLabelStyles(0)}
-            />
-            <VictoryLabel
-              capHeight={0}
-              lineHeight={0}
-              x={(computedWidth - minDimension) / 2}
-              y={computedHeight}
-              text="Tanzania"
-              style={referenceLabelStyles(1)}
-            />
-          </g>
-        ) : (
-          <g />
-        )}
+          )}
+        </g>
       </CustomContainer>
     </Fragment>
   );
