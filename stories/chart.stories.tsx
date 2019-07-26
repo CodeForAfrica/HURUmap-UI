@@ -240,7 +240,7 @@ storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
       <NestedProportionalAreaChart
         square={boolean('square', false)}
         height={number('height', 350)}
-        width={number('width', 350)}
+        width={number('width', 650)}
         data={array('data', [39626])}
         reference={array('reference', [947303])}
       />
@@ -251,7 +251,7 @@ storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
       <NestedProportionalAreaChart
         square={boolean('square', false)}
         height={number('height', 350)}
-        width={number('width', 350)}
+        width={number('width', 650)}
         data={array('data', [76151, 39626])}
         reference={array('reference', [947303])}
         groupSpacing={number('groupSpacing', 8)}
