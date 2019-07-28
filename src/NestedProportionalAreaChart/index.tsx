@@ -1,45 +1,21 @@
 import React, { Fragment } from 'react';
-import {
-  VictoryCommonProps,
-  VictoryDatableProps,
-  VictoryMultiLabeableProps,
-  VictoryThemeDefinitionLatest
-} from 'victory';
+import { VictoryPieProps, VictoryThemeDefinitionLatest } from 'victory';
 
+import {
+  scaleDesktopDimensions,
+  scaleMobileDimensions,
+  ScaledAreaData
+} from './ScaledArea';
 import { toReferenceProps, ReferableChartProps } from '../ReferableChart';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
 import ScaledCircle from './ScaledCircle';
 import ScaledSquare from './ScaledSquare';
 
-interface Props
-  extends VictoryCommonProps,
-    VictoryDatableProps,
-    VictoryMultiLabeableProps,
-    ReferableChartProps<number> {
-  square?: boolean;
+interface Props<T> extends VictoryPieProps, ReferableChartProps<T> {
+  data: T[];
   groupSpacing?: number;
-}
-
-const DESKTOP_WIDTH = 650;
-const DESKTOP_HEIGHT = 270;
-
-function scaleDimension({
-  height: h,
-  width: w
-}: {
-  height: number;
-  width: number;
-}) {
-  // Scale from DESKTOP_WIDTH to w first
-  let height = (DESKTOP_HEIGHT * w) / DESKTOP_WIDTH;
-  let width = w;
-  if (height > h) {
-    // Scale from height to h
-    width = (w * h) / height;
-    height = h;
-  }
-  return { height, width };
+  square?: boolean;
 }
 
 /**
@@ -49,17 +25,17 @@ function scaleDimension({
  * off when scaling)
  */
 function NestedProportionalAreaChart({
-  groupSpacing,
-  width: w,
-  height: h,
-  theme,
   data,
+  groupSpacing: gS,
+  height: h,
   reference: ref,
-  square = false
-}: Props) {
-  const {
-    proportionalArea: chart
-  } = (theme as unknown) as VictoryThemeDefinitionLatest;
+  square = false,
+  style,
+  theme: t,
+  width: w
+}: Props<ScaledAreaData>) {
+  const theme = (t as unknown) as VictoryThemeDefinitionLatest;
+  const { proportionalArea: chart } = theme;
   if (!data || !chart) {
     return null;
   }
@@ -71,35 +47,17 @@ function NestedProportionalAreaChart({
   );
   const height = h || chart.height;
   const width = w || chart.width;
-  const { height: computedHeight, width: computedWidth } = scaleDimension({
-    height,
-    width
-  });
-  const computedGroupSpacing =
-    data.length > 1 ? groupSpacing || chart.groupSpacing : 0;
+  const isHandset = width < theme.breakpoints.sm;
+  const scale =
+    isHandset || square
+      ? scaleMobileDimensions(height, width)
+      : scaleDesktopDimensions(height, width);
+  const groupSpacing = data.length > 1 ? gS || chart.groupSpacing : 0;
 
   // For starters, lets assume each data label has 36px height,
   // reference label has 48 px, and there is 10px between labels
   // and charts
   // ------------------------------------
-
-  const chartHeight = computedHeight - (data.length * 36 + 48 + 20);
-  const minDimension = Math.min(chartHeight, computedWidth);
-  // const desktop = typeof computedWidth !== 'undefined' && computedWidth >= 600;
-
-  /*
-  const dataLabelStyles = (index: number): React.CSSProperties => ({
-    fontSize: 36,
-    fontWeight: 'bold',
-    fill: chart.colorScale[index % chart.colorScale.length]
-  });
-
-  const referenceLabelStyles = (index: number): React.CSSProperties =>
-    Object.assign({}, reference.style.labels, {
-      fontWeight: index === 0 ? 'bold' : 'normal',
-      color: 'grey'
-    }) as React.CSSProperties;
-  */
 
   return (
     <Fragment>
@@ -123,29 +81,24 @@ function NestedProportionalAreaChart({
             />
           </pattern>
         </defs>
-        <g transform={`scale(${computedWidth / DESKTOP_WIDTH})`}>
+
+        <g transform={`scale(${scale})`}>
           {square ? (
             <ScaledSquare
               colorScale={chart.colorScale}
               reference={reference}
-              sides={data}
-              size={minDimension}
-              x={(computedWidth - minDimension) / 2}
-              y={data.length * 36 + 10}
+              data={data}
             />
           ) : (
             <ScaledCircle
               colorScale={chart.colorScale}
-              cx={DESKTOP_WIDTH / 2}
-              cy={DESKTOP_HEIGHT / 2}
-              groupSpacing={computedGroupSpacing}
+              data={data}
+              groupSpacing={groupSpacing}
+              labels={() => ''} // Don't show PieChart labels
+              mobile={isHandset}
               reference={reference}
-              radii={data}
-              size={(DESKTOP_HEIGHT - computedGroupSpacing) / 2}
-              theme={(theme as unknown) as VictoryThemeDefinitionLatest}
-              height={DESKTOP_HEIGHT}
-              width={DESKTOP_WIDTH}
-              labels={() => ''}
+              style={style}
+              theme={theme}
             />
           )}
         </g>
