@@ -2,7 +2,6 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import {
   withKnobs,
-  array,
   boolean,
   object,
   text,
@@ -276,8 +275,10 @@ storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
     <div>
       <NestedProportionalAreaChart
         square={boolean('square', false)}
-        data={array('data', [18])}
-        reference={array('reference', [100])}
+        height={number('height', 350)}
+        width={number('width', 350)}
+        data={object('data', [{ x: 39626, label: 'People' }])}
+        reference={object('reference', [{ x: 947303, label: 'Tanzania' }])}
       />
     </div>
   ))
@@ -285,8 +286,13 @@ storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
     <div>
       <NestedProportionalAreaChart
         square={boolean('square', false)}
-        data={array('data', [8, 18])}
-        reference={array('reference', [100])}
+        height={number('height', 350)}
+        width={number('width', 650)}
+        data={object('data', [
+          { x: 76151, label: 'People' },
+          { x: 39626, label: 'People' }
+        ])}
+        reference={object('reference', [{ x: 947303, label: 'Tanzania' }])}
         groupSpacing={number('groupSpacing', 8)}
       />
     </div>

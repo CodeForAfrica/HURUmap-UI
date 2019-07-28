@@ -13,7 +13,7 @@ declare module 'victory' {
 
   export interface VictoryThemeDefinitionLatest extends VictoryThemeDefinition {
     breakpoints: {
-      mobile: number;
+      sm: number;
     };
     area?: VictoryThemeDefinition['area'] & {
       height: number;
