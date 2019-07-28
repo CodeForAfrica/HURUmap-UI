@@ -7,7 +7,9 @@ export default function createVictoryTheme(
   const defaultTheme = _.merge(
     {
       breakpoints: {
-        mobile: 600
+        // Handsets: https://material.io/design/layout/responsive-layout-grid.html#breakpoints
+        // Lets use Material UI language here
+        sm: 600
       },
       axis: {
         style: {
@@ -39,9 +41,8 @@ export default function createVictoryTheme(
       strokeWidth: 0
     },
     labels: {
-      fill: 'gray',
-      fontWeight: 'bold',
-      fontSize: 24
+      fill: '#9b9b9b',
+      fontSize: 18
     }
   };
   // Customize chart bullet props off of chart group props
