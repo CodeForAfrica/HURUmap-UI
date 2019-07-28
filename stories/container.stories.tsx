@@ -8,11 +8,12 @@ import {
   select
 } from '@storybook/addon-knobs';
 
-import { ChartContainer, BarChart } from '../src';
-import { CenterDecorator } from './common';
 import { Grid } from '@material-ui/core';
 import { GridSize } from '@material-ui/core/Grid';
 import { CSSProperties } from '@material-ui/styles';
+
+import { ChartContainer, BarChart } from '../src';
+import { CenterDecorator } from './common';
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
 
@@ -59,8 +60,8 @@ storiesOf('HURUmap UI|ChartContainer', module)
           }
           maxChartHeight={text('maxChartHeight', '300px')}
           maxChartWidth={text('maxChartWidth', '100%')}
-          title={'Lorem ipsum dolor sit amet.'}
-          subtitle={'Praesent at dignissim est. Integer porta consectetur ante, ut congue erat.'}
+          title="Lorem ipsum dolor sit amet."
+          subtitle="Praesent at dignissim est. Integer porta consectetur ante, ut congue erat."
         >
           <BarChart
             horizontal={boolean('horizontal', false)}
