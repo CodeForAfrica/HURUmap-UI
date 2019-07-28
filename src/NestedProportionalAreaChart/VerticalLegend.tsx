@@ -1,73 +1,71 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 import { VictoryLabel } from 'victory';
 
+import {
+  dataLabelsStyle,
+  referenceDataStyle,
+  referenceLabelsStyle,
+  ScaledAreaProps,
+  MOBILE_HEIGHT
+} from './ScaledArea';
 import withVictoryTheme from '../styles/withVictoryTheme';
-import { ReferenceProps } from '../ReferableChart';
 
-interface Props {
-  data: number[];
-  colorScale: string[];
-  height: number;
-  reference: ReferenceProps<number>;
-  width: number;
-}
-
-function VerticalLegend({ colorScale, data, height, reference, width }: Props) {
+/**
+ *
+ */
+function VerticalLegend({
+  colorScale,
+  data,
+  reference,
+  style
+}: ScaledAreaProps) {
   // For starters, lets assume each data label has 36px height,
   // reference label has 48 px, and there is 10px between labels
   // and charts
-  // ------------------------------------
-
-  const chartHeight = height - (data.length * 36 + 48 + 20);
-  const minDimension = Math.min(chartHeight, width);
-
-  const dataLabelStyles = (index: number): React.CSSProperties => ({
-    fontSize: 36,
-    fontWeight: 'bold',
-    fill: colorScale[index % colorScale.length]
-  });
-
-  const referenceLabelStyles = (index: number): React.CSSProperties =>
-    Object.assign({}, (reference.style && reference.style.labels) || {}, {
-      fontWeight: index === 0 ? 'bold' : 'normal',
-      color: 'grey'
-    }) as React.CSSProperties;
+  // i) Data values are drawn at the top above the figure i.e. from 100px,
+  // ---------------------------------------------------------------------
+  const {
+    data: [referenceData]
+  } = reference;
+  const x = 0;
 
   return (
-    <Fragment>
+    <React.Fragment>
       {/* Data values at the top of the chart */}
       {data.map((d, i) => (
         <VictoryLabel
           capHeight={0}
           lineHeight={0}
-          x={(width - minDimension) / 2}
+          x={x}
           dx={0}
-          y={36}
-          text={data[i]}
-          style={dataLabelStyles(i)}
-          dy={i * 36}
+          y={90} // 100 - 10
+          text={data[i].x}
+          style={dataLabelsStyle(i, colorScale, style)}
+          dy={-i * 36}
         />
       ))}
 
-      {/* Reference value at the bottom */}
+      {/* Reference value at the bottom of chart */}
       <VictoryLabel
         capHeight={0}
         lineHeight={0}
-        x={(width - minDimension) / 2}
-        y={height - 24}
-        text={reference.data[0]}
-        style={referenceLabelStyles(0)}
+        x={x}
+        y={MOBILE_HEIGHT - 20}
+        text={referenceData.x}
+        style={referenceDataStyle(reference)}
       />
-      <VictoryLabel
-        capHeight={0}
-        lineHeight={0}
-        x={(width - minDimension) / 2}
-        y={height}
-        text="Tanzania"
-        style={referenceLabelStyles(1)}
-      />
-    </Fragment>
+      {referenceData.label && (
+        <VictoryLabel
+          capHeight={0}
+          lineHeight={0}
+          x={x}
+          y={MOBILE_HEIGHT}
+          text={referenceData.label}
+          style={referenceLabelsStyle(reference)}
+        />
+      )}
+    </React.Fragment>
   );
 }
 
