@@ -1,61 +1,52 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
-import { VictoryLabel, ColorScalePropType } from 'victory';
+import { VictoryLabel } from 'victory';
 
 import withVictoryTheme from '../styles/withVictoryTheme';
-import { ReferenceProps } from '../ReferableChart';
+import {
+  dataLabelsStyle,
+  referenceDataStyle,
+  referenceLabelsStyle,
+  ScaledAreaProps
+} from './ScaledArea';
 
-interface Props {
-  data: number[];
-  radii: number[];
-  colorScale: ColorScalePropType;
-  size: number;
-  reference: ReferenceProps<number>;
+interface Props extends ScaledAreaProps {
   cx: number;
   cy: number;
+  radii: number[];
 }
 
+/**
+ *
+ */
 function HorizontalLegend({
   colorScale,
+  cx,
+  cy,
   data,
   radii,
   reference,
-  cx,
-  cy
+  style
 }: Props) {
-  // For starters, lets assume:
-  // i) Each data value has 36px height and 130px width
-  // ii) Padding between data value and label is 10px, and
-  // iii) Data label 20px.
-  // Hence:
-  // i) Data value vertical `center` is aligned with center of circle
-  //
-  // Also:
-  // i) Reference label has 48 px, aligned to the right of the charts
+  // From the designs:
+  // i) Data value has 36px height and 130px width i.e. 190px from center
+  // of reference circle, vertically centered with the circle,
+  // ii) Data label has height of 20px, 10px below data value,
+  // iii) Reference label has 48 px, aligned to the right of the charts
   // ----------------------------------------------------------------
-
-  // const chartHeight = height - (data.length * 36 + 48 + 2dd0);
-  // const minDimension = Math.min(chartHeight, width);
-
-  const dataLabelStyles = (index: number): React.CSSProperties => ({
-    fontSize: 36,
-    fontWeight: 'bold',
-    fill: colorScale[index % colorScale.length]
-  });
-
-  const referenceLabelStyles = (index: number): React.CSSProperties =>
-    Object.assign({}, (reference.style && reference.style.labels) || {}, {
-      fontWeight: index === 0 ? 'bold' : 'normal',
-      color: 'grey'
-    }) as React.CSSProperties;
+  const {
+    data: [referenceData]
+  } = reference;
 
   return (
-    <Fragment>
+    <React.Fragment>
       {radii.map((r, i) => (
-        <Fragment>
+        <React.Fragment>
           <line
+            // -1 => left; 1 => right
             x1={cx - (i < 1 ? 1 : -1) * 190}
             y1={cy}
+            // 5px padding between circle and line
             x2={cx - (i < 1 ? 1 : -1) * (r + 5)}
             y2={cy}
             style={{
@@ -67,47 +58,49 @@ function HorizontalLegend({
             textAnchor={i === 0 ? 'end' : 'start'}
             capHeight={0}
             lineHeight={0}
-            x={cx - (i < 1 ? 1 : -1) * 200}
+            x={cx - (i < 1 ? 1 : -1) * 200} // 190 + 10px padding
             dx={0}
             y={cy}
-            dy={18}
-            text={data[i]}
-            style={dataLabelStyles(i)}
+            dy={18} // 36 / 2 since we want data value vertical centered
+            text={data[i].x}
+            style={dataLabelsStyle(i, colorScale, style)}
           />
-        </Fragment>
+          {data[i].label && (
+            <VictoryLabel
+              textAnchor={i === 0 ? 'end' : 'start'}
+              capHeight={0}
+              lineHeight={0}
+              x={cx - (i < 1 ? 1 : -1) * 200} // 190 + 10
+              dx={0}
+              y={cy + 18} // 36 / 2 is the bottom half of data value
+              // 10px top padding from data value + label has height of 20px
+              dy={10 + 20}
+              style={style && (style.labels as React.CSSProperties)}
+              text={data[i].label}
+            />
+          )}
+        </React.Fragment>
       ))}
-
-      {/* {data.map((d, i) => (
-        <VictoryLabel
-          capHeight={0}
-          lineHeight={0}
-          x={(width - minDimension) / 2}
-          dx={0}
-          y={36}
-          text={data[i]}
-          style={dataLabelStyles(i)}
-          dy={i * 36}
-        />
-      ))}
-      */}
 
       <VictoryLabel
         capHeight={0}
         lineHeight={0}
         x={cx + 200}
         y={2 * cy - 24}
-        text={reference.data[0]}
-        style={referenceLabelStyles(0)}
+        text={referenceData.x}
+        style={referenceDataStyle(reference)}
       />
-      <VictoryLabel
-        capHeight={0}
-        lineHeight={0}
-        x={cx + 200}
-        y={2 * cy}
-        text="Tanzania"
-        style={referenceLabelStyles(1)}
-      />
-    </Fragment>
+      {referenceData.label && (
+        <VictoryLabel
+          capHeight={0}
+          lineHeight={0}
+          x={cx + 200}
+          y={2 * cy}
+          text={referenceData.label}
+          style={referenceLabelsStyle(reference)}
+        />
+      )}
+    </React.Fragment>
   );
 }
 
