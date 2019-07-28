@@ -4,6 +4,7 @@ import Chart, { ChartProps } from './Chart';
 
 export interface ReferenceProps<T> {
   data: T[];
+  labels?: string[];
   style?: VictoryStyleInterface;
 }
 

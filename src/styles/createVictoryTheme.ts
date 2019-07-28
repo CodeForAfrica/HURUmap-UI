@@ -6,6 +6,9 @@ export default function createVictoryTheme(
 ) {
   const defaultTheme = _.merge(
     {
+      breakpoints: {
+        mobile: 600
+      },
       axis: {
         style: {
           axisLabel: {
@@ -41,6 +44,23 @@ export default function createVictoryTheme(
       fontSize: 24
     }
   };
+  // Customize chart bullet props off of chart group props
+  chart.bullet = Object.assign(
+    {
+      barWidth: 5,
+      offset: { x: 20, y: 50 },
+      style: {
+        data: {
+          fill: '#d8d8d8'
+        },
+        labels: {
+          fill: '#9b9b9b'
+        }
+      }
+    },
+    chart.group,
+    chart.bullet
+  );
   // Customize chart comparisonBar props off of chart group props
   chart.comparisonBar = Object.assign(
     { reference: defaultReference },

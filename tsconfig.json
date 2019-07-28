@@ -14,7 +14,8 @@
     "jsx": "react",
     "declaration": true,
     "rootDirs": ["src", "stories"],
-    "typeRoots": [ "./typings", "node_modules/@types"]
+    "typeRoots": [ "./typings", "node_modules/@types"],
+    "removeComments": false
   },
   "include": ["src"],
   "exclude": ["node_modules", "build", "docs", "typings", "stories"]
