@@ -51,7 +51,7 @@ function VerticalLegend({
         capHeight={0}
         lineHeight={0}
         x={x}
-        y={MOBILE_HEIGHT - 20}
+        y={MOBILE_HEIGHT - 25}
         text={referenceData.x}
         style={referenceDataStyle(reference)}
       />
@@ -60,7 +60,7 @@ function VerticalLegend({
           capHeight={0}
           lineHeight={0}
           x={x}
-          y={MOBILE_HEIGHT}
+          y={MOBILE_HEIGHT - 5} // Leave space at bottom for letters like 'y'
           text={referenceData.label}
           style={referenceLabelsStyle(reference)}
         />
