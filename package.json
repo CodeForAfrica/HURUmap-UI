@@ -63,10 +63,6 @@
     "@types/react-sizes": "^2.0.0",
     "leaflet": "^1.5.1",
     "lodash": "^4.17.14",
-    "react-sizes": "^2.0.0",
-
-    "leaflet": "^1.5.1",
-
     "victory": "^32.3.1"
   },
   "peerDependencies": {
