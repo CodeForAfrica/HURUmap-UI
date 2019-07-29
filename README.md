@@ -1,6 +1,8 @@
-# HURUmap UI [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+# HURUmap UI
 
-This library package React components that are used visualize HURUmap data.
+![npm](https://img.shields.io/npm/v/@codeforafrica/hurumap-ui) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+This library package React components that are used to visualize HURUmap data.
 
 HURUmap is an interactive web platform that allows citizens and journalists to explore, visualise, and download census data. This gives them the power to give context to stories that was otherwise hard to spot. Accessible at <https://hurumap.org>
 
