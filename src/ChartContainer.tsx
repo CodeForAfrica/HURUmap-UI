@@ -46,8 +46,8 @@ interface Props extends GridProps, WithStyles<typeof styles> {
   overflowY?: CSSProperties['overflowY'];
   maxChartWidth?: string | number;
   maxChartHeight?: string | number;
-  onClickInfo?: () => {};
-  onClickShare?: () => {};
+  onClickInfo?: () => void;
+  onClickShare?: () => void;
 }
 
 function ChartContainer({
