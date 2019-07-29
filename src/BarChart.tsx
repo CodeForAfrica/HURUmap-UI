@@ -84,7 +84,7 @@ function BarChart({
           .reverse();
         let word = words.pop();
         let line: any = [];
-        let lineNumber = 0;
+        let lineNumber = 1;
         const lineHeight = 14;
         const style = t.attr('style');
         const x = text.attr('x');
