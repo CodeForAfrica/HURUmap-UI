@@ -9,3 +9,5 @@ export {
 export { default as createTheme } from './styles/createTheme';
 export { default as ComparisonBarChart } from './ComparisonBarChart';
 export { default as ChartContainer } from './ChartContainer';
+export { default as EmbedDialog } from './EmbedDialog';
+export { default as InfoDialog } from './InfoDialog';
