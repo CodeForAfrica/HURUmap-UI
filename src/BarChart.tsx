@@ -7,9 +7,9 @@ import {
   VictoryAxisProps
 } from 'victory';
 
-import * as d3 from 'd3';
 import withVictoryTheme from './styles/withVictoryTheme';
 import Chart, { ChartProps } from './Chart';
+import wrapSVGText from './utils/wrapSVGText';
 
 type Data = {
   x: string | number;
@@ -72,55 +72,7 @@ function BarChart({
     dataMargin;
 
   useEffect(() => {
-    d3.selectAll('tspan').call(tspans => {
-      tspans.each(function() {
-        const t = d3.select(this);
-        const text = t.select(function() {
-          return this && (this as any).parentNode;
-        });
-        const words = text
-          .text()
-          .split(/\s+/)
-          .reverse();
-        let word = words.pop();
-        let line: any = [];
-        let lineNumber = 1;
-        const lineHeight = 14;
-        const style = t.attr('style');
-        const x = text.attr('x');
-        const dy = t.attr('dy');
-        const dx = t.attr('dx');
-        let tspan = text
-          .text(null)
-          .append('tspan')
-          .attr('text-anchor', 'middle')
-          .attr('style', style)
-          .attr('x', x)
-          .attr('dy', dy)
-          .attr('dx', dx);
-        while (word) {
-          line.push(word);
-          tspan.text(line.join(' '));
-          const node = tspan.node();
-          if (node && node.getComputedTextLength() > barWidth * groupCount) {
-            line.pop();
-            tspan.text(line.join(' '));
-            line = [word];
-            tspan = text
-              .append('tspan')
-              .attr('text-anchor', 'middle')
-              .attr('style', style)
-              .attr('x', x)
-              .attr('dy', lineNumber * lineHeight + (parseFloat(dy) || 0))
-              .attr('dx', dx)
-              .text(word);
-
-            lineNumber += 1;
-          }
-          word = words.pop();
-        }
-      });
-    });
+    wrapSVGText(barWidth * groupCount);
   }, [barWidth, groupCount]);
 
   return (

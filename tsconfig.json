@@ -15,7 +15,8 @@
     "declaration": true,
     "rootDirs": ["src", "stories"],
     "typeRoots": [ "./typings", "node_modules/@types"],
-    "removeComments": false
+    "removeComments": false,
+    "downlevelIteration": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "build", "docs", "typings", "stories"]
