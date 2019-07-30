@@ -66,7 +66,7 @@ function BulletChart({
   const theme = (t as unknown) as VictoryThemeDefinitionLatest;
   const {
     bullet: chart,
-    breakpoints: { mobile: mobileBreakpoint }
+    breakpoints: { sm: mobileBreakpoint }
   } = theme;
   if (!data || !chart) {
     return null;
