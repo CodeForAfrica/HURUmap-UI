@@ -4,11 +4,11 @@ import {
   VictoryGroup,
   VictoryAxis,
   VictoryBarProps,
-  VictoryLabel,
   VictoryAxisProps
 } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
+import WrapLabel from './WrapLabel';
 import Chart, { ChartProps } from './Chart';
 
 type Data = {
@@ -74,11 +74,15 @@ function BarChart({
   return (
     <Chart
       theme={theme}
+      padding={
+        horizontal ? { left: barWidth + 5, bottom: 50, right: 50 } : undefined
+      }
       responsive={responsive}
       horizontal={horizontal}
       width={horizontal ? width : calculatedDimmension}
       height={!horizontal ? height : calculatedDimmension}
-      domainPadding={{ x: 25 }}
+      // The bar chart would always overflow by half the width plus some pixels
+      domainPadding={{ x: barWidth / 2 + 5 }}
     >
       {isGrouped ? (
         <VictoryGroup offset={barWidth + barSpacing}>
@@ -92,7 +96,7 @@ function BarChart({
         ))
       )}
       <VictoryAxis
-        tickLabelComponent={<VictoryLabel />}
+        tickLabelComponent={<WrapLabel width={barWidth * groupCount} />}
         {...Object.assign(
           {
             style: {

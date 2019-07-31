@@ -31,16 +31,18 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
       <div
         style={{
           height: '300px',
-          overflowX: horizontal ? 'hidden' : 'scroll',
-          overflowY: horizontal ? 'scroll' : 'hidden'
+          overflowX: horizontal ? 'hidden' : 'auto',
+          overflowY: horizontal ? 'auto' : 'hidden'
         }}
       >
         <BarChart
           horizontal={horizontal}
+          barWidth={number('barWidth', 100)}
+          barSpacing={number('barSpacing', 20)}
           width={number('width', 500)}
           height={number('height', 300)}
           data={data.map((_, index) => ({
-            x: `${index}-${index}`,
+            x: `${index}-${index} Employment Status`,
             y: rand()
           }))}
           dependantAxisProps={{
@@ -71,8 +73,8 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
       <div
         style={{
           height: '300px',
-          overflowX: horizontal ? 'hidden' : 'scroll',
-          overflowY: horizontal ? 'scroll' : 'hidden'
+          overflowX: horizontal ? 'hidden' : 'auto',
+          overflowY: horizontal ? 'auto' : 'hidden'
         }}
       >
         <BarChart
@@ -99,8 +101,8 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
       <div
         style={{
           height: '300px',
-          overflowX: horizontal ? 'hidden' : 'scroll',
-          overflowY: horizontal ? 'scroll' : 'hidden'
+          overflowX: horizontal ? 'hidden' : 'auto',
+          overflowY: horizontal ? 'auto' : 'hidden'
         }}
       >
         <BarChart
