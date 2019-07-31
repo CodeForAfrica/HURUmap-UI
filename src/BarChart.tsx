@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   VictoryBar,
   VictoryGroup,
@@ -8,8 +8,8 @@ import {
 } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
+import WrapLabel from './WrapLabel';
 import Chart, { ChartProps } from './Chart';
-import wrapSVGText from './utils/wrapSVGText';
 
 type Data = {
   x: string | number;
@@ -71,18 +71,18 @@ function BarChart({
     groupSpacing * (groupCount - 1) +
     dataMargin;
 
-  useEffect(() => {
-    wrapSVGText(barWidth * groupCount);
-  }, [barWidth, groupCount]);
-
   return (
     <Chart
       theme={theme}
+      padding={
+        horizontal ? { left: barWidth + 5, bottom: 50, right: 50 } : undefined
+      }
       responsive={responsive}
       horizontal={horizontal}
       width={horizontal ? width : calculatedDimmension}
       height={!horizontal ? height : calculatedDimmension}
-      domainPadding={{ x: 25 }}
+      // The bar chart would always overflow by half the width plus some pixels
+      domainPadding={{ x: barWidth / 2 + 5 }}
     >
       {isGrouped ? (
         <VictoryGroup offset={barWidth + barSpacing}>
@@ -96,6 +96,7 @@ function BarChart({
         ))
       )}
       <VictoryAxis
+        tickLabelComponent={<WrapLabel width={barWidth * groupCount} />}
         {...Object.assign(
           {
             style: {

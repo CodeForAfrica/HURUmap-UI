@@ -37,10 +37,12 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
       >
         <BarChart
           horizontal={horizontal}
+          barWidth={number('barWidth', 100)}
+          barSpacing={number('barSpacing', 20)}
           width={number('width', 500)}
           height={number('height', 300)}
           data={data.map((_, index) => ({
-            x: `${index}-${index} abc def ghijk rst`,
+            x: `${index}-${index} Employment Status`,
             y: rand()
           }))}
           dependantAxisProps={{
