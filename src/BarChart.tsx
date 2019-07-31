@@ -4,7 +4,6 @@ import {
   VictoryGroup,
   VictoryAxis,
   VictoryBarProps,
-  VictoryLabel,
   VictoryChartProps,
   VictoryGroupProps,
   VictoryTooltip
@@ -13,9 +12,10 @@ import {
 import withVictoryTheme from './styles/withVictoryTheme';
 import Chart, {
   toChartAxisProps,
-  ChartProps,
-  ChartAxisPropsType
+  ChartAxisPropsType,
+  ChartProps
 } from './Chart';
+import WrapLabel from './WrapLabel';
 
 type Data = {
   x: string | number;
@@ -81,7 +81,7 @@ function BarChart({
   const groupProps =
     parts && parts.group ? ([] as VictoryGroupProps[]).concat(parts.group) : [];
 
-  const calculatedDimmension =
+  const calculatedDimension =
     (barWidth + barSpacing) * barCount +
     groupSpacing * (groupCount - 1) +
     dataMargin;
@@ -89,11 +89,15 @@ function BarChart({
   return (
     <Chart
       theme={theme}
+      padding={
+        horizontal ? { left: barWidth + 5, bottom: 50, right: 50 } : undefined
+      }
       responsive={responsive}
       horizontal={horizontal}
-      width={horizontal ? width : calculatedDimmension}
-      height={!horizontal ? height : calculatedDimmension}
-      domainPadding={{ x: 25 }}
+      width={horizontal ? width : calculatedDimension}
+      height={!horizontal ? height : calculatedDimension}
+      // The bar chart would always overflow by half the width plus some pixels
+      domainPadding={{ x: barWidth / 2 + 5 }}
       {...chartProps}
     >
       {isGrouped ? (
@@ -117,7 +121,7 @@ function BarChart({
         ))
       )}
       <VictoryAxis
-        tickLabelComponent={<VictoryLabel />}
+        tickLabelComponent={<WrapLabel width={barWidth * groupCount} />}
         {...Object.assign(
           {
             style: {
