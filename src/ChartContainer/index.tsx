@@ -1,10 +1,12 @@
 import React from 'react';
-import { Typography, ButtonBase, Grid } from '@material-ui/core';
-import { CSSProperties, withStyles, WithStyles } from '@material-ui/styles';
-import { GridProps } from '@material-ui/core/Grid';
 
-import infoIcon from './assets/info.png';
-import shareIcon from './assets/share.png';
+import { withStyles, CSSProperties, WithStyles } from '@material-ui/styles';
+import { ButtonBase, Typography } from '@material-ui/core';
+import Grid, { GridProps } from '@material-ui/core/Grid';
+import { PopperProps } from '@material-ui/core/Popper';
+
+import infoIcon from '../assets/info.png';
+import shareIcon from '../assets/share.png';
 
 const styles = {
   root: {
@@ -46,8 +48,8 @@ interface Props extends GridProps, WithStyles<typeof styles> {
   overflowY?: CSSProperties['overflowY'];
   maxChartWidth?: string | number;
   maxChartHeight?: string | number;
-  onClickInfo?: () => {};
-  onClickShare?: () => {};
+  onClickInfo?: (anchorEl: PopperProps['anchorEl']) => void;
+  onClickShare?: (anchorEl: PopperProps['anchorEl']) => void;
 }
 
 function ChartContainer({
@@ -64,6 +66,22 @@ function ChartContainer({
   className,
   ...props
 }: Props) {
+  const infoRef = React.useRef<HTMLButtonElement>(null);
+  const shareRef = React.useRef<HTMLButtonElement>(null);
+  const getReferenceObject = (
+    ref: React.RefObject<HTMLButtonElement>
+  ): PopperProps['anchorEl'] => {
+    const { current } = ref;
+    if (current) {
+      return {
+        clientHeight: current.clientHeight,
+        clientWidth: current.clientWidth,
+        getBoundingClientRect: () => current.getBoundingClientRect()
+      };
+    }
+    return null;
+  };
+
   return (
     <Grid
       container
@@ -96,13 +114,19 @@ function ChartContainer({
         >
           <ButtonBase
             className={classes.button}
-            onClick={() => onClickInfo && onClickInfo()}
+            onClick={() =>
+              onClickInfo && onClickInfo(getReferenceObject(infoRef))
+            }
+            ref={infoRef}
           >
             <img alt="Info" src={infoIcon} />
           </ButtonBase>
           <ButtonBase
             className={classes.button}
-            onClick={() => onClickShare && onClickShare()}
+            onClick={() =>
+              onClickShare && onClickShare(getReferenceObject(shareRef))
+            }
+            ref={shareRef}
           >
             <img alt="Share" src={shareIcon} />
           </ButtonBase>
