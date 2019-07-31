@@ -2,7 +2,7 @@ import React, { useEffect, useRef, SVGAttributes } from 'react';
 
 import { VictoryLabelProps } from 'victory';
 
-import wrapSVGText from './utils/wrapSVGText';
+import wrapSVGText from './wrapSVGText';
 
 interface Props extends VictoryLabelProps {
   width: number;
