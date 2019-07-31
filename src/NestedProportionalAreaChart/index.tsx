@@ -95,6 +95,7 @@ function NestedProportionalAreaChart({
               data={data}
               groupSpacing={groupSpacing}
               labels={() => ''} // Don't show PieChart labels
+              labelComponent={undefined} // Don't show PieChart labels
               mobile={isHandset}
               reference={reference}
               style={style}
