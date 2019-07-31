@@ -39,24 +39,32 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           horizontal={horizontal}
           width={number('width', 500)}
           height={number('height', 300)}
-          data={data.map((_, index) => ({
-            x: `${index}-${index}`,
-            y: rand()
-          }))}
-          dependantAxisProps={{
-            style: {
-              axis: {
-                display: 'block'
-              },
-              grid: {
-                display: 'block'
-              },
-              tickLabels: {
-                display: 'block'
+          data={data.map((_, index) => {
+            const y = rand();
+            return { label: `${y}`, x: `${index}-${index}`, y };
+          })}
+          parts={{
+            axis: {
+              dependent: {
+                style: {
+                  axis: {
+                    display: 'block'
+                  },
+                  grid: {
+                    display: 'block'
+                  },
+                  tickLabels: {
+                    display: 'block'
+                  },
+                  tickValues: object('dependentTickValues', [10, 50, 90]),
+                  tickFormat: object('dependentTickFormat', [
+                    '10%',
+                    '50%',
+                    '90%'
+                  ])
+                }
               }
-            },
-            tickValues: object('dependentTickValues', [10, 50, 90]),
-            tickFormat: object('dependentTickFormat', ['10%', '50%', '90%'])
+            }
           }}
         />
       </div>
@@ -108,10 +116,10 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           height={number('height', 300)}
           barSpacing={0}
           horizontal={horizontal}
-          data={bins.map((_, index) => ({
-            x: `Bin #${index}`,
-            y: rand()
-          }))}
+          data={bins.map((_, index) => {
+            const y = rand();
+            return { label: `${y}`, x: `Bin #${index}`, y };
+          })}
         />
       </div>
     );
@@ -240,6 +248,9 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
           { x: 'D', y: 1 },
           { x: 'E', y: 2 }
         ])}
+        width={number('width', 500)}
+        height={number('height', 500)}
+        padding={number('padding', 75)}
       />
     </div>
   ))
@@ -264,6 +275,9 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
             { x: 'E', y: 5 }
           ]
         ])}
+        width={number('width', 500)}
+        height={number('height', 500)}
+        padding={number('padding', 75)}
       />
     </div>
   ));
