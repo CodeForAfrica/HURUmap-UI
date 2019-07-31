@@ -93,7 +93,6 @@ function PieChart({
           padding || chart.padding,
           computedGroupSpacing
         ));
-  console.log('PIE', computedRadii);
   return (
     <CustomContainer
       standalone={standalone}
