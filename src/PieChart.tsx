@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { PaddingProps, Helpers, VictoryPie, VictoryPieProps } from 'victory';
+import {
+  PaddingProps,
+  Helpers,
+  VictoryPie,
+  VictoryPieProps,
+  VictoryTooltip
+} from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
 import CustomContainer from './CustomContainer';
@@ -87,6 +93,7 @@ function PieChart({
           padding || chart.padding,
           computedGroupSpacing
         ));
+  console.log('PIE', computedRadii);
   return (
     <CustomContainer
       standalone={standalone}
@@ -110,6 +117,7 @@ function PieChart({
         theme={theme}
         height={height}
         width={width}
+        labelComponent={<VictoryTooltip />}
         {...props}
       />
       {data2 && data2.length > 0 && (
@@ -130,6 +138,7 @@ function PieChart({
           theme={theme}
           height={height}
           width={width}
+          labelComponent={<VictoryTooltip />}
           {...props}
         />
       )}
