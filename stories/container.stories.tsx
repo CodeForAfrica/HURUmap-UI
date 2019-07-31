@@ -8,11 +8,11 @@ import {
   select
 } from '@storybook/addon-knobs';
 
-import { Grid } from '@material-ui/core';
-import { GridSize } from '@material-ui/core/Grid';
 import { CSSProperties } from '@material-ui/styles';
+import Grid, { GridSize } from '@material-ui/core/Grid';
+import { PopperProps } from '@material-ui/core/Popper';
 
-import { BarChart, ChartContainer, EmbedDialog, InfoDialog } from '../src';
+import { BarChart, ChartContainer, EmbedPopup, InfoPopup } from '../src';
 import { CenterDecorator } from './common';
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
@@ -22,28 +22,32 @@ storiesOf('HURUmap UI|ChartContainer', module)
   .addDecorator(withKnobs)
   .add('Default', () =>
     React.createElement(() => {
-      const [openInfo, setOpenInfo] = React.useState(false);
-      const [openEmbed, setOpenEmbed] = React.useState(false);
+      const [infoAnchorEl, setInfoAnchorEl] = React.useState<
+        PopperProps['anchorEl']
+      >(null);
+      const [shareAnchorEl, setShareAnchorEl] = React.useState<
+        PopperProps['anchorEl']
+      >(null);
 
-      function handleClickInfo() {
-        setOpenInfo(true);
+      function handleClickInfo(anchorEl: PopperProps['anchorEl']) {
+        setShareAnchorEl(null);
+        setInfoAnchorEl(anchorEl);
       }
 
-      function handleClickShare() {
-        setOpenEmbed(true);
+      function handleClickShare(anchorEl: PopperProps['anchorEl']) {
+        setInfoAnchorEl(null);
+        setShareAnchorEl(anchorEl);
       }
 
       function handleCloseInfo() {
-        setOpenInfo(false);
+        setInfoAnchorEl(null);
       }
 
-      function handleCloseEmbed() {
-        setOpenEmbed(false);
+      function handleCloseShare() {
+        setShareAnchorEl(null);
       }
 
-      function handleExploreData() {
-        handleCloseInfo();
-      }
+      function handleExploreData() {}
 
       return (
         <Grid
@@ -116,14 +120,14 @@ storiesOf('HURUmap UI|ChartContainer', module)
               }}
             />
           </ChartContainer>
-          <EmbedDialog
-            onClose={handleCloseEmbed}
-            open={openEmbed}
+          <EmbedPopup
+            anchorEl={shareAnchorEl}
+            onClose={handleCloseShare}
+            open={shareAnchorEl !== null}
             title="Embed code for this chart"
             subtitle="Copy the code below, then paste into your own CMS or HTML. Embedded charts are responsive to your page width, and have been tested in Firefox, Safari, Chrome, and Edge."
           >
-            {`
-<iframe
+            {`<iframe
   id="cr-embed-region-11-literacy_and_numeracy_tests-english_test_dist"
   className="census-reporter-embed"
   src="https://tanzania.hurumap.org/embed/iframe.html?geoID=region-11&geoVersion=2009&chartDataID=literacy_and_numeracy_tests-english_test_dist&dataYear=2015&chartType=pie&chartHeight=200&chartQualifier=&chartRelease=Uwezo+Annual+Assessment+Report+2015&chartSourceTitle=&chartSourceLink=&chartTitle=Percentage+of+children+aged+6-16+passing+English+literacy+tests&chartSubtitle=&initialSort=-value&statType=percentage"
@@ -132,16 +136,18 @@ storiesOf('HURUmap UI|ChartContainer', module)
   height="300"
   style="margin: 1em; max-width: 300px;"
 />
-<script src="https://tanzania.hurumap.org/static/js/embed.chart.make.js" />
-            `}
-          </EmbedDialog>
-          <InfoDialog
+<script src="https://tanzania.hurumap.org/static/js/embed.chart.make.js" />`}
+          </EmbedPopup>
+          <InfoPopup
+            anchorEl={infoAnchorEl}
             onClose={handleCloseInfo}
             onExploreData={handleExploreData}
-            open={openInfo}
+            open={infoAnchorEl !== null}
             sourceLink="https://codeforafrica.org"
             sourceTitle="Code for Africa"
-          />
+          >
+            Explore Data
+          </InfoPopup>
         </Grid>
       );
     })
