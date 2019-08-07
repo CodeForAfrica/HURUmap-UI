@@ -33,7 +33,7 @@ export default function createVictoryTheme(
     },
     VictoryTheme.material
   );
-  const chart = _.merge(chartOptions, defaultTheme);
+  const chart = _.merge(defaultTheme, chartOptions);
   const defaultReference = {
     data: {
       fill: 'url(#gradient-background)',
