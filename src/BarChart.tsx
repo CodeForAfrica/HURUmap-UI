@@ -6,7 +6,9 @@ import {
   VictoryBarProps,
   VictoryChartProps,
   VictoryGroupProps,
-  VictoryTooltip
+  VictoryThemeDefinitionLatest,
+  VictoryTooltip,
+  VictoryTooltipProps
 } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
@@ -31,6 +33,7 @@ export interface BarChartPartsProps {
   axis?: ChartAxisPropsType;
   parent?: VictoryChartProps;
   group?: VictoryGroupProps | VictoryGroupProps[];
+  tooltip?: VictoryTooltipProps;
 }
 
 interface Props extends VictoryBarProps, ChartProps {
@@ -42,7 +45,7 @@ interface Props extends VictoryBarProps, ChartProps {
 }
 
 function BarChart({
-  theme,
+  theme: t,
   data,
   barWidth = 40,
   groupSpacing = 30,
@@ -54,6 +57,11 @@ function BarChart({
   parts,
   ...props
 }: Props) {
+  const theme = (t as unknown) as VictoryThemeDefinitionLatest;
+  const { group: chart } = theme;
+  if (!data || !chart) {
+    return null;
+  }
   // This space is the sides of the chart, outside the data
   // The axis is rendered in this space
   const dataMargin = 95;
@@ -71,7 +79,7 @@ function BarChart({
     plotData = dataFields.map(field =>
       (data as GroupData).map(x => {
         const d = x.data.find(y => y.x === field);
-        return { x: x.label, y: d ? d.y : 0 };
+        return { x: x.label, y: d ? d.y : 0, index: d ? d.x : 0 };
       })
     );
   }
@@ -80,6 +88,8 @@ function BarChart({
   const chartProps = parts && parts.parent;
   const groupProps =
     parts && parts.group ? ([] as VictoryGroupProps[]).concat(parts.group) : [];
+  const tooltipProps = (parts && parts.tooltip) || { style: {} };
+  const colourScale = chart.colorScale;
 
   const calculatedDimension =
     (barWidth + barSpacing) * barCount +
@@ -101,13 +111,21 @@ function BarChart({
       {...chartProps}
     >
       {isGrouped ? (
-        <VictoryGroup
-          offset={barWidth + barSpacing}
-          labelComponent={<VictoryTooltip />}
-          {...groupProps}
-        >
-          {plotData.map(d => (
-            <VictoryBar data={d} barWidth={barWidth} {...props} />
+        <VictoryGroup offset={barWidth + barSpacing} {...groupProps}>
+          {plotData.map((d, i) => (
+            <VictoryBar
+              data={d}
+              barWidth={barWidth}
+              {...props}
+              labelComponent={
+                <VictoryTooltip
+                  {...tooltipProps}
+                  style={Object.assign({}, tooltipProps.style, {
+                    fill: colourScale[i]
+                  })}
+                />
+              }
+            />
           ))}
         </VictoryGroup>
       ) : (
@@ -115,7 +133,7 @@ function BarChart({
           <VictoryBar
             data={d}
             barWidth={barWidth}
-            labelComponent={<VictoryTooltip />}
+            labelComponent={<VictoryTooltip {...tooltipProps} />}
             {...props}
           />
         ))

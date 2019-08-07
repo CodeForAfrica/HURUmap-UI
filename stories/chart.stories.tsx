@@ -92,15 +92,26 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
         <BarChart
           width={number('width', 500)}
           height={number('height', 300)}
-          labels={datum => `${datum.y}${text('dataUnit', '%')}`}
+          labels={datum =>
+            `Group ${datum.index} Tick\n${datum.x} ${datum.y}${text(
+              'dataUnit',
+              '%'
+            )}`
+          }
           horizontal={horizontal}
           data={groups.map((_, groupIndex) => ({
-            label: `Group ${groupIndex} Label`,
+            label: `Group ${groupIndex} Geo`,
             data: data.map((_d, index) => ({
-              x: `Data ${index} Label`,
+              x: index,
               y: rand()
             }))
           }))}
+          parts={{
+            axis: {
+              tickFormat: (tick, index) => `Group ${index} Tick`
+            },
+            tooltip: { style: { textAnchor: 'start' } }
+          }}
         />
       </div>
     );
