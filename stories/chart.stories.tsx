@@ -93,7 +93,7 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           width={number('width', 500)}
           height={number('height', 300)}
           labels={datum =>
-            `Group ${datum.index} Tick\n${datum.x} ${datum.y}${text(
+            `Group ${datum.tick} Tick\n${datum.x} ${datum.y}${text(
               'dataUnit',
               '%'
             )}`

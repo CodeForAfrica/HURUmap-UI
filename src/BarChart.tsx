@@ -79,7 +79,7 @@ function BarChart({
     plotData = dataFields.map(field =>
       (data as GroupData).map(x => {
         const d = x.data.find(y => y.x === field);
-        return { x: x.label, y: d ? d.y : 0, index: d ? d.x : 0 };
+        return { x: x.label, y: d ? d.y : 0, tick: d ? d.x : 0 };
       })
     );
   }
