@@ -215,22 +215,22 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
       <LineChart
         data={object('data', [
           [
-            { x: 1, y: 3 },
-            { x: 2, y: 1 },
-            { x: 3, y: 2 },
-            { x: 4, y: -2 },
-            { x: 5, y: -1 },
-            { x: 6, y: 2 },
-            { x: 7, y: 3 }
+            { x: 1, y: 3, geo: 'Dar es Salaam' },
+            { x: 2, y: 1, geo: 'Dar es Salaam' },
+            { x: 3, y: 2, geo: 'Dar es Salaam' },
+            { x: 4, y: -2, geo: 'Dar es Salaam' },
+            { x: 5, y: -1, geo: 'Dar es Salaam' },
+            { x: 6, y: 2, geo: 'Dar es Salaam' },
+            { x: 7, y: 3, geo: 'Dar es Salaam' }
           ],
           [
-            { x: 1, y: -3 },
-            { x: 2, y: 5 },
-            { x: 3, y: 3 },
-            { x: 4, y: 0 },
-            { x: 5, y: -2 },
-            { x: 6, y: -2 },
-            { x: 7, y: 5 }
+            { x: 1, y: -3, geo: 'Kagera' },
+            { x: 2, y: 5, geo: 'Kagera' },
+            { x: 3, y: 3, geo: 'Kagera' },
+            { x: 4, y: 0, geo: 'Kagera' },
+            { x: 5, y: -2, geo: 'Kagera' },
+            { x: 6, y: -2, geo: 'Kagera' },
+            { x: 7, y: 5, geo: 'Kagera' }
           ]
         ])}
         parts={{
@@ -245,7 +245,13 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
               }
             }
           },
-          scatter: [{ size: 5, symbol: 'circle' }, { size: 5, symbol: 'plus' }]
+          group: {
+            // Line chart combines line and scatter hence best to define
+            // labels at group level
+            labels: datum => `${datum.x}\n${datum.geo} ${datum.y}`
+          },
+          scatter: [{ size: 5, symbol: 'circle' }, { size: 5, symbol: 'plus' }],
+          tooltip: { style: { textAnchor: 'start' } }
         }}
       />
     </div>

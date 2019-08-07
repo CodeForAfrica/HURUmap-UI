@@ -58,8 +58,8 @@ function BarChart({
   ...props
 }: Props) {
   const theme = (t as unknown) as VictoryThemeDefinitionLatest;
-  const { group: chart } = theme;
-  if (!data || !chart) {
+  const { group: groupChart } = theme;
+  if (!data || !groupChart) {
     return null;
   }
   // This space is the sides of the chart, outside the data
@@ -89,7 +89,7 @@ function BarChart({
   const groupProps =
     parts && parts.group ? ([] as VictoryGroupProps[]).concat(parts.group) : [];
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
-  const colourScale = chart.colorScale;
+  const { colorScale } = groupChart;
 
   const calculatedDimension =
     (barWidth + barSpacing) * barCount +
@@ -121,7 +121,7 @@ function BarChart({
                 <VictoryTooltip
                   {...tooltipProps}
                   style={Object.assign({}, tooltipProps.style, {
-                    fill: colourScale[i]
+                    fill: colorScale[i]
                   })}
                 />
               }
