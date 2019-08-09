@@ -1,13 +1,27 @@
 import React from 'react';
 
-import { PaddingProps, Helpers, VictoryPie, VictoryPieProps } from 'victory';
+import {
+  Helpers,
+  PaddingProps,
+  VictoryPie,
+  VictoryPieProps,
+  VictoryThemeDefinitionLatest,
+  VictoryTooltip,
+  VictoryTooltipProps
+} from 'victory';
 
-import withVictoryTheme from './styles/withVictoryTheme';
-import CustomContainer from './CustomContainer';
+import withVictoryTheme from '../styles/withVictoryTheme';
+import CustomContainer from '../CustomContainer';
+import PieLabel from './PieLabel';
+
+export interface PieChartPartsProps {
+  tooltip?: VictoryTooltipProps;
+}
 
 export interface PieChartProps extends VictoryPieProps {
   donut?: boolean;
   groupSpacing?: number;
+  parts?: PieChartPartsProps;
   /**
    * radii enables comparing pie charts using areas instead of "pie"s.
    * If this is enabled, a single color will be used for the pie chart.
@@ -35,28 +49,28 @@ function PieChart({
   groupSpacing,
   innerRadius: suggestedInnerRadius,
   padding,
+  parts,
   radius,
   radii,
   standalone = true,
-  theme,
+  theme: t,
   height,
   width,
   ...props
 }: PieChartProps) {
-  if (!theme || !data) {
-    return null;
-  }
+  const theme = (t as unknown) as VictoryThemeDefinitionLatest;
   const { pie: chart } = theme;
-  if (!chart) {
+  if (!data || !chart) {
     return null;
   }
 
   // If colorScale is null, the one from theme will be used.
-  const colorScale1 = colorScale;
-  let colorScale2 = colorScale;
+  const colorScale1 = colorScale || chart.colorScale;
+  let colorScale2 = colorScale1;
   if (radii && colorScale && colorScale.length > 1) {
     colorScale2 = (colorScale as string[]).slice(1);
   }
+  const tooltipProps = (parts && parts.tooltip) || { style: {} };
 
   const startAngle1 = 0;
   let endAngle1 = 360; // Full circle
@@ -87,6 +101,7 @@ function PieChart({
           padding || chart.padding,
           computedGroupSpacing
         ));
+
   return (
     <CustomContainer
       standalone={standalone}
@@ -110,6 +125,12 @@ function PieChart({
         theme={theme}
         height={height}
         width={width}
+        labelComponent={
+          <VictoryTooltip
+            {...tooltipProps}
+            labelComponent={<PieLabel colorScale={colorScale1} />}
+          />
+        }
         {...props}
       />
       {data2 && data2.length > 0 && (
@@ -130,6 +151,12 @@ function PieChart({
           theme={theme}
           height={height}
           width={width}
+          labelComponent={
+            <VictoryTooltip
+              {...tooltipProps}
+              labelComponent={<PieLabel colorScale={colorScale2} />}
+            />
+          }
           {...props}
         />
       )}

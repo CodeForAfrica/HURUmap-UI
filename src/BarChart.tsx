@@ -4,12 +4,20 @@ import {
   VictoryGroup,
   VictoryAxis,
   VictoryBarProps,
-  VictoryAxisProps
+  VictoryChartProps,
+  VictoryGroupProps,
+  VictoryThemeDefinitionLatest,
+  VictoryTooltip,
+  VictoryTooltipProps
 } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
+import Chart, {
+  toChartAxisProps,
+  ChartAxisPropsType,
+  ChartProps
+} from './Chart';
 import WrapLabel from './WrapLabel';
-import Chart, { ChartProps } from './Chart';
 
 type Data = {
   x: string | number;
@@ -21,17 +29,23 @@ type GroupData = {
   data: Data;
 }[];
 
+export interface BarChartPartsProps {
+  axis?: ChartAxisPropsType;
+  parent?: VictoryChartProps;
+  group?: VictoryGroupProps | VictoryGroupProps[];
+  tooltip?: VictoryTooltipProps;
+}
+
 interface Props extends VictoryBarProps, ChartProps {
   barWidth?: number;
   groupSpacing?: number;
   barSpacing?: number;
   data: GroupData | Data;
-  axisProps?: VictoryAxisProps;
-  dependantAxisProps?: VictoryAxisProps;
+  parts?: BarChartPartsProps;
 }
 
 function BarChart({
-  theme,
+  theme: t,
   data,
   barWidth = 40,
   groupSpacing = 30,
@@ -40,10 +54,14 @@ function BarChart({
   width,
   height,
   responsive = false,
-  axisProps,
-  dependantAxisProps,
+  parts,
   ...props
 }: Props) {
+  const theme = (t as unknown) as VictoryThemeDefinitionLatest;
+  const { group: groupChart } = theme;
+  if (!data || !groupChart) {
+    return null;
+  }
   // This space is the sides of the chart, outside the data
   // The axis is rendered in this space
   const dataMargin = 95;
@@ -61,12 +79,19 @@ function BarChart({
     plotData = dataFields.map(field =>
       (data as GroupData).map(x => {
         const d = x.data.find(y => y.x === field);
-        return { x: x.label, y: d ? d.y : 0 };
+        return { x: x.label, y: d ? d.y : 0, tick: d ? d.x : 0 };
       })
     );
   }
 
-  const calculatedDimmension =
+  const axisProps = (parts && toChartAxisProps(parts.axis)) || {};
+  const chartProps = parts && parts.parent;
+  const groupProps =
+    parts && parts.group ? ([] as VictoryGroupProps[]).concat(parts.group) : [];
+  const tooltipProps = (parts && parts.tooltip) || { style: {} };
+  const { colorScale } = groupChart;
+
+  const calculatedDimension =
     (barWidth + barSpacing) * barCount +
     groupSpacing * (groupCount - 1) +
     dataMargin;
@@ -79,20 +104,38 @@ function BarChart({
       }
       responsive={responsive}
       horizontal={horizontal}
-      width={horizontal ? width : calculatedDimmension}
-      height={!horizontal ? height : calculatedDimmension}
+      width={horizontal ? width : calculatedDimension}
+      height={!horizontal ? height : calculatedDimension}
       // The bar chart would always overflow by half the width plus some pixels
       domainPadding={{ x: barWidth / 2 + 5 }}
+      {...chartProps}
     >
       {isGrouped ? (
-        <VictoryGroup offset={barWidth + barSpacing}>
-          {plotData.map(d => (
-            <VictoryBar data={d} barWidth={barWidth} {...props} />
+        <VictoryGroup offset={barWidth + barSpacing} {...groupProps}>
+          {plotData.map((d, i) => (
+            <VictoryBar
+              data={d}
+              barWidth={barWidth}
+              {...props}
+              labelComponent={
+                <VictoryTooltip
+                  {...tooltipProps}
+                  style={Object.assign({}, tooltipProps.style, {
+                    fill: colorScale[i]
+                  })}
+                />
+              }
+            />
           ))}
         </VictoryGroup>
       ) : (
         plotData.map(d => (
-          <VictoryBar data={d} barWidth={barWidth} {...props} />
+          <VictoryBar
+            data={d}
+            barWidth={barWidth}
+            labelComponent={<VictoryTooltip {...tooltipProps} />}
+            {...props}
+          />
         ))
       )}
       <VictoryAxis
@@ -105,10 +148,10 @@ function BarChart({
               }
             }
           },
-          axisProps
+          axisProps.independent
         )}
       />
-      <VictoryAxis dependentAxis {...dependantAxisProps} />
+      <VictoryAxis dependentAxis {...axisProps.dependent} />
     </Chart>
   );
 }

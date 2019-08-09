@@ -11,7 +11,9 @@ import {
   VictoryVoronoiContainer,
   VictoryVoronoiContainerProps,
   VictoryLineProps,
-  VictoryTooltip
+  VictoryThemeDefinitionLatest,
+  VictoryTooltip,
+  VictoryTooltipProps
 } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
@@ -23,6 +25,7 @@ export interface LineChartPartsProps {
   container?: VictoryVoronoiContainerProps;
   group?: VictoryGroupProps | VictoryGroupProps[];
   scatter?: VictoryScatterProps | VictoryScatterProps[];
+  tooltip?: VictoryTooltipProps;
 }
 
 export interface LineChartProps extends VictoryLineProps {
@@ -45,8 +48,10 @@ export interface LineChartProps extends VictoryLineProps {
  *   }
  * }
  */
-function LineChart({ data, parts, theme, ...props }: LineChartProps) {
-  if (!data) {
+function LineChart({ data, parts, theme: t, ...props }: LineChartProps) {
+  const theme = (t as unknown) as VictoryThemeDefinitionLatest;
+  const { group: groupChart } = theme;
+  if (!data || !groupChart) {
     return null;
   }
 
@@ -61,6 +66,8 @@ function LineChart({ data, parts, theme, ...props }: LineChartProps) {
     parts && parts.scatter
       ? ([] as VictoryScatterProps[]).concat(parts.scatter)
       : [];
+  const tooltipProps = (parts && parts.tooltip) || { style: {} };
+  const { colorScale } = groupChart;
 
   return (
     <Chart
@@ -72,8 +79,14 @@ function LineChart({ data, parts, theme, ...props }: LineChartProps) {
       <VictoryGroup>
         {groupData.map((gd, i) => (
           <VictoryGroup
-            labels={d => `${d.y}`}
-            labelComponent={<VictoryTooltip />}
+            labelComponent={
+              <VictoryTooltip
+                {...tooltipProps}
+                style={Object.assign({}, tooltipProps.style, {
+                  fill: colorScale[i]
+                })}
+              />
+            }
             /* groupProps can override the above props */
             {...groupProps[i % groupProps.length]}
             data={gd}

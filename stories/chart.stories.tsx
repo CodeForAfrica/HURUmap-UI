@@ -41,24 +41,36 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           barSpacing={number('barSpacing', 20)}
           width={number('width', 500)}
           height={number('height', 300)}
-          data={data.map((_, index) => ({
-            x: `${index}-${index} Employment Status`,
-            y: rand()
-          }))}
-          dependantAxisProps={{
-            style: {
-              axis: {
-                display: 'block'
-              },
-              grid: {
-                display: 'block'
-              },
-              tickLabels: {
-                display: 'block'
+          data={data.map((_, index) => {
+            const y = rand();
+            return {
+              label: `${index}-${index} Employment Status`,
+              x: `${index}-${index} Employment Status`,
+              y
+            };
+          })}
+          parts={{
+            axis: {
+              dependent: {
+                style: {
+                  axis: {
+                    display: 'block'
+                  },
+                  grid: {
+                    display: 'block'
+                  },
+                  tickLabels: {
+                    display: 'block'
+                  },
+                  tickValues: object('dependentTickValues', [10, 50, 90]),
+                  tickFormat: object('dependentTickFormat', [
+                    '10%',
+                    '50%',
+                    '90%'
+                  ])
+                }
               }
-            },
-            tickValues: object('dependentTickValues', [10, 50, 90]),
-            tickFormat: object('dependentTickFormat', ['10%', '50%', '90%'])
+            }
           }}
         />
       </div>
@@ -80,15 +92,26 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
         <BarChart
           width={number('width', 500)}
           height={number('height', 300)}
-          labels={datum => `${datum.y}${text('dataUnit', '%')}`}
+          labels={datum =>
+            `Group ${datum.tick} Tick\n${datum.x} ${datum.y}${text(
+              'dataUnit',
+              '%'
+            )}`
+          }
           horizontal={horizontal}
           data={groups.map((_, groupIndex) => ({
-            label: `Group ${groupIndex} Label`,
+            label: `Group ${groupIndex} Geo`,
             data: data.map((_d, index) => ({
-              x: `Data ${index} Label`,
+              x: index,
               y: rand()
             }))
           }))}
+          parts={{
+            axis: {
+              tickFormat: (tick, index) => `Group ${index} Tick`
+            },
+            tooltip: { style: { textAnchor: 'start' } }
+          }}
         />
       </div>
     );
@@ -110,10 +133,10 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           height={number('height', 300)}
           barSpacing={0}
           horizontal={horizontal}
-          data={bins.map((_, index) => ({
-            x: `Bin #${index}`,
-            y: rand()
-          }))}
+          data={bins.map((_, index) => {
+            const y = rand();
+            return { label: `${y}`, x: `Bin #${index}`, y };
+          })}
         />
       </div>
     );
@@ -192,22 +215,22 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
       <LineChart
         data={object('data', [
           [
-            { x: 1, y: 3 },
-            { x: 2, y: 1 },
-            { x: 3, y: 2 },
-            { x: 4, y: -2 },
-            { x: 5, y: -1 },
-            { x: 6, y: 2 },
-            { x: 7, y: 3 }
+            { x: 1, y: 3, geo: 'Dar es Salaam' },
+            { x: 2, y: 1, geo: 'Dar es Salaam' },
+            { x: 3, y: 2, geo: 'Dar es Salaam' },
+            { x: 4, y: -2, geo: 'Dar es Salaam' },
+            { x: 5, y: -1, geo: 'Dar es Salaam' },
+            { x: 6, y: 2, geo: 'Dar es Salaam' },
+            { x: 7, y: 3, geo: 'Dar es Salaam' }
           ],
           [
-            { x: 1, y: -3 },
-            { x: 2, y: 5 },
-            { x: 3, y: 3 },
-            { x: 4, y: 0 },
-            { x: 5, y: -2 },
-            { x: 6, y: -2 },
-            { x: 7, y: 5 }
+            { x: 1, y: -3, geo: 'Kagera' },
+            { x: 2, y: 5, geo: 'Kagera' },
+            { x: 3, y: 3, geo: 'Kagera' },
+            { x: 4, y: 0, geo: 'Kagera' },
+            { x: 5, y: -2, geo: 'Kagera' },
+            { x: 6, y: -2, geo: 'Kagera' },
+            { x: 7, y: 5, geo: 'Kagera' }
           ]
         ])}
         parts={{
@@ -222,7 +245,13 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
               }
             }
           },
-          scatter: [{ size: 5, symbol: 'circle' }, { size: 5, symbol: 'plus' }]
+          group: {
+            // Line chart combines line and scatter hence best to define
+            // labels at group level
+            labels: datum => `${datum.x}\n${datum.geo} ${datum.y}`
+          },
+          scatter: [{ size: 5, symbol: 'circle' }, { size: 5, symbol: 'plus' }],
+          tooltip: { style: { textAnchor: 'start' } }
         }}
       />
     </div>
@@ -242,6 +271,9 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
           { x: 'D', y: 1 },
           { x: 'E', y: 2 }
         ])}
+        width={number('width', 500)}
+        height={number('height', 500)}
+        padding={number('padding', 75)}
       />
     </div>
   ))
@@ -252,20 +284,26 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
         groupSpacing={number('groupSpacing', 8)}
         data={object('data', [
           [
-            { x: 'A', y: 1 },
-            { x: 'B', y: 2 },
-            { x: 'C', y: 3 },
-            { x: 'D', y: 1 },
-            { x: 'E', y: 2 }
+            { x: 'A', y: 1, label: ['A\n \nDar es Salaam 1'] },
+            { x: 'B', y: 2, label: ['B\n \nDar es Salaam 2'] },
+            { x: 'C', y: 3, label: ['C\n \nDar es Salaam 3'] },
+            { x: 'D', y: 1, label: ['D\n \nDar es Salaam 1'] },
+            { x: 'E', y: 2, label: ['E\n \nDar es Salaam 2'] }
           ],
           [
-            { x: 'A', y: 2 },
-            { x: 'B', y: 1 },
-            { x: 'C', y: 1 },
-            { x: 'D', y: 1 },
-            { x: 'E', y: 5 }
+            { x: 'A', y: 2, label: ['A\n \nKagera 2'] },
+            { x: 'B', y: 1, label: ['B\n \nKagera 1'] },
+            { x: 'C', y: 1, label: ['C\n \nKagera 1'] },
+            { x: 'D', y: 1, label: ['D\n \nKagera 1'] },
+            { x: 'E', y: 5, label: ['E\n \nKagera 5'] }
           ]
         ])}
+        width={number('width', 500)}
+        height={number('height', 500)}
+        padding={number('padding', 100)}
+        parts={{
+          tooltip: { style: { textAnchor: 'start' } }
+        }}
       />
     </div>
   ));
