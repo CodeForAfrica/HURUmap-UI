@@ -284,23 +284,26 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
         groupSpacing={number('groupSpacing', 8)}
         data={object('data', [
           [
-            { x: 'A', y: 1 },
-            { x: 'B', y: 2 },
-            { x: 'C', y: 3 },
-            { x: 'D', y: 1 },
-            { x: 'E', y: 2 }
+            { x: 'A', y: 1, label: ['A\n \nDar es Salaam 1'] },
+            { x: 'B', y: 2, label: ['B\n \nDar es Salaam 2'] },
+            { x: 'C', y: 3, label: ['C\n \nDar es Salaam 3'] },
+            { x: 'D', y: 1, label: ['D\n \nDar es Salaam 1'] },
+            { x: 'E', y: 2, label: ['E\n \nDar es Salaam 2'] }
           ],
           [
-            { x: 'A', y: 2 },
-            { x: 'B', y: 1 },
-            { x: 'C', y: 1 },
-            { x: 'D', y: 1 },
-            { x: 'E', y: 5 }
+            { x: 'A', y: 2, label: ['A\n \nKagera 2'] },
+            { x: 'B', y: 1, label: ['B\n \nKagera 1'] },
+            { x: 'C', y: 1, label: ['C\n \nKagera 1'] },
+            { x: 'D', y: 1, label: ['D\n \nKagera 1'] },
+            { x: 'E', y: 5, label: ['E\n \nKagera 5'] }
           ]
         ])}
         width={number('width', 500)}
         height={number('height', 500)}
-        padding={number('padding', 75)}
+        padding={number('padding', 100)}
+        parts={{
+          tooltip: { style: { textAnchor: 'start' } }
+        }}
       />
     </div>
   ));

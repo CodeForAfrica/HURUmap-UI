@@ -1,8 +1,8 @@
 import React from 'react';
 
 import {
-  PaddingProps,
   Helpers,
+  PaddingProps,
   VictoryPie,
   VictoryPieProps,
   VictoryThemeDefinitionLatest,
@@ -10,8 +10,9 @@ import {
   VictoryTooltipProps
 } from 'victory';
 
-import withVictoryTheme from './styles/withVictoryTheme';
-import CustomContainer from './CustomContainer';
+import withVictoryTheme from '../styles/withVictoryTheme';
+import CustomContainer from '../CustomContainer';
+import PieLabel from './PieLabel';
 
 export interface PieChartPartsProps {
   tooltip?: VictoryTooltipProps;
@@ -64,8 +65,8 @@ function PieChart({
   }
 
   // If colorScale is null, the one from theme will be used.
-  const colorScale1 = colorScale;
-  let colorScale2 = colorScale;
+  const colorScale1 = colorScale || chart.colorScale;
+  let colorScale2 = colorScale1;
   if (radii && colorScale && colorScale.length > 1) {
     colorScale2 = (colorScale as string[]).slice(1);
   }
@@ -124,7 +125,12 @@ function PieChart({
         theme={theme}
         height={height}
         width={width}
-        labelComponent={<VictoryTooltip {...tooltipProps} />}
+        labelComponent={
+          <VictoryTooltip
+            {...tooltipProps}
+            labelComponent={<PieLabel colorScale={colorScale1} />}
+          />
+        }
         {...props}
       />
       {data2 && data2.length > 0 && (
@@ -145,7 +151,12 @@ function PieChart({
           theme={theme}
           height={height}
           width={width}
-          labelComponent={<VictoryTooltip {...tooltipProps} />}
+          labelComponent={
+            <VictoryTooltip
+              {...tooltipProps}
+              labelComponent={<PieLabel colorScale={colorScale2} />}
+            />
+          }
           {...props}
         />
       )}
