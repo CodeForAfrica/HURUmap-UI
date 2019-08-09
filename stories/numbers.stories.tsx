@@ -15,6 +15,8 @@ storiesOf('HURUmap UI|ChartContainer/NumberVisuals', module)
         statisticDeviation={text('Statistic Deviation', '±0.1% ')}
         optionalStatisticDeviation={text('Optional Statistic Deviation', '(194, 667, 872 ±241, 381.6)')}
         description={text('description', 'Median household income')}
+        miniDescription={text('miniDescription', 'about 90 percent of the amount in United States: $32,397')}
+        optionalMiniDescription={text('optionalMiniDescription', '±0.24%')}
       />
     );
   });

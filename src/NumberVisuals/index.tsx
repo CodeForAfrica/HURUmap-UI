@@ -28,6 +28,8 @@ interface Props extends WithStyles<typeof styles> {
   statisticDeviation?: number | string;
   optionalStatisticDeviation?: number | string;
   description?: number | string;
+  minidescription?: number | string;
+  optionalMiniDescription?: number | string;
 }
 
 function NumberVisuals({
@@ -36,7 +38,9 @@ function NumberVisuals({
   statistic,
   statisticDeviation,
   optionalStatisticDeviation,
-  description
+  description,
+  miniDescription,
+  optionalMiniDescription
 }: Props) {
   const [onHover, setOnHover] = useState(false);
   const toggleHover = () => setOnHover(!onHover);
@@ -60,6 +64,14 @@ function NumberVisuals({
         {optionalStatisticDeviation}
       </span>
       <Typography variant="h5">{description}</Typography>
+      <br />
+      <Typography variant="h3">
+        {miniDescription}
+        <span className={!onHover ? classes.hidden : classes.h3}>
+          {' '}
+          {optionalMiniDescription}
+        </span>
+      </Typography>
     </div>
   );
 }
