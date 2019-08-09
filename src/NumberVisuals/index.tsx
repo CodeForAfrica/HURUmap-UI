@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 
 import { withStyles, createStyles, WithStyles } from '@material-ui/styles';
-import { Typography } from '@material-ui/core';
+import { Typography, Theme } from '@material-ui/core';
 
-const styles = () =>
+const styles = ({ breakpoints }: Theme) =>
   createStyles({
     root: {
-      width: '25%'
+      width: '100%',
+      height: 'auto',
+      margin: '1rem',
+      [breakpoints.up('md')]: {
+        width: '25%'
+      }
     },
     hidden: {
       display: 'none'
@@ -29,11 +34,11 @@ interface Props extends WithStyles<typeof styles> {
   subtitle?: string | number;
   statistic?: number | string;
   statisticDeviation?: number | string;
-  optionalStatisticDeviation?: number | string;
+  secondaryDeviation?: number | string;
   description?: number | string;
-  miniMesurement?: number | string;
-  minidescription?: number | string;
-  optionalMiniDescription?: number | string;
+  parentComparison?: number | string;
+  parentDescription?: number | string;
+  parentDeviation?: number | string;
 }
 
 function NumberVisuals({
@@ -41,11 +46,11 @@ function NumberVisuals({
   subtitle,
   statistic,
   statisticDeviation,
-  optionalStatisticDeviation,
+  secondaryDeviation,
   description,
-  miniMeasurement,
-  miniDescription,
-  optionalMiniDescription
+  parentComparison,
+  parentDescription,
+  parentDeviation
 }: Props) {
   const [onHover, setOnHover] = useState(false);
   const toggleHover = () => setOnHover(!onHover);
@@ -66,15 +71,21 @@ function NumberVisuals({
       </Typography>
       <span className={!onHover ? classes.hidden : classes.h3}>
         {' '}
-        {optionalStatisticDeviation}
+        {secondaryDeviation}
       </span>
       <Typography variant="h5">{description}</Typography>
       <br />
       <Typography variant="h3">
-        <span className={classes.miniMeasurement}>{miniMeasurement}</span>
-        {miniDescription}
+        <span className={classes.miniMeasurement}>
+          {` `}
+          {parentComparison}
+        </span>
+        <span className={classes.miniMeasurement}>
+          {` `}
+          {parentDescription}
+        </span>
         <span className={!onHover ? classes.hidden : classes.h3}>
-          {optionalMiniDescription}
+          {parentDeviation}
         </span>
       </Typography>
     </div>
