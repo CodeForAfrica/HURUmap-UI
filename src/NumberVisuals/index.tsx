@@ -18,6 +18,9 @@ const styles = () =>
       fontStyle: 'normal',
       lineHeight: 'normal',
       color: '#2c2c2a'
+    },
+    miniMeasurement: {
+      fontWeight: 'bold'
     }
   });
 
@@ -28,6 +31,7 @@ interface Props extends WithStyles<typeof styles> {
   statisticDeviation?: number | string;
   optionalStatisticDeviation?: number | string;
   description?: number | string;
+  miniMesurement?: number | string;
   minidescription?: number | string;
   optionalMiniDescription?: number | string;
 }
@@ -39,6 +43,7 @@ function NumberVisuals({
   statisticDeviation,
   optionalStatisticDeviation,
   description,
+  miniMeasurement,
   miniDescription,
   optionalMiniDescription
 }: Props) {
@@ -66,9 +71,9 @@ function NumberVisuals({
       <Typography variant="h5">{description}</Typography>
       <br />
       <Typography variant="h3">
+        <span className={classes.miniMeasurement}>{miniMeasurement}</span>
         {miniDescription}
         <span className={!onHover ? classes.hidden : classes.h3}>
-          {' '}
           {optionalMiniDescription}
         </span>
       </Typography>

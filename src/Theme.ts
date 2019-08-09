@@ -20,7 +20,7 @@ export default createTheme({
     },
     h3: {
       fontSize: '12px',
-      // opacity: 0.4,
+      opacity: 0.4,
       fontWeight: 'normal',
       fontStyle: 'normal',
       lineHeight: 'normal',
