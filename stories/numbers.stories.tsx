@@ -10,7 +10,6 @@ storiesOf('HURUmap UI|ChartContainer/NumberVisuals', module)
   .add('Default', () => {
     return (
       <NumberVisuals
-        width={number('width', 25)}
         subtitle={text('Subtitle', 'Income')}
         statistic={text('Statistic', '$60,336')}
         statisticDeviation={text('Statistic Deviation', '±0.1% ')}

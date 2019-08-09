@@ -2,29 +2,25 @@ import createTheme from './styles/createTheme';
 
 export default createTheme({
   typography: {
-    h1: {
-      fontSize: '2.5rem',
-      fontWeight: 'bold',
-      fontStyle: 'normal',
-      lineHeight: 'normal',
-      letterSpacing: '0.86px',
-      color: '#2c2c2a'
-    },
-    h2: {
-      fontSize: '24px',
-      fontWeight: 'bold',
-      fontStyle: 'normal',
-      lineHeight: 'normal',
-      letterSpacing: '0.86px',
-      color: '#2c2c2a'
-    },
     h3: {
-      fontSize: '12px',
-      opacity: 0.4,
-      fontWeight: 'normal',
+      fontSize: '2.2em',
+      lineHeight: 1,
+      fontWeight: 700
+    },
+    h4: {
+      fontSize: '1.2em',
+      fontWeight: 400,
+      lineHeight: 1.3
+    },
+    h5: {
+      fontSize: '1em',
       fontStyle: 'normal',
-      lineHeight: 'normal',
-      color: '#2c2c2a'
+      fontWeight: 400
+    },
+    h6: {
+      fontSize: '0.9em',
+      lineHeight: 1.3,
+      color: '#777'
     }
   }
 });

@@ -16,16 +16,40 @@ const styles = ({ breakpoints }: Theme) =>
     hidden: {
       display: 'none'
     },
-    h3: {
-      fontSize: '14px',
-      opacity: 0.4,
-      fontWeight: 'normal',
-      fontStyle: 'normal',
-      lineHeight: 'normal',
-      color: '#2c2c2a'
+    mainStatistic: {
+      display: ' block',
+      marginTop: '1em',
+      marginBottom: '0.5em'
     },
-    miniMeasurement: {
+    h3: {
+      display: 'block',
+      fontSize: '2.2em',
+      lineHeight: 1,
+      margin: '0 0 .1825em',
+      fontWeight: 700
+    },
+    h3Deviation: {
+      fontSize: '0.6em',
+      color: '#777',
+      fontWeight: 400,
+      display: 'inlineBlock'
+    },
+    description: {
+      marginBottom: '0.6em'
+    },
+    h5: {
+      fontSize: '1.2em',
+      color: '#777',
+      fontWeight: 400
+    },
+    comparison: {
       fontWeight: 'bold'
+    },
+    parentDescription: {
+      fontWeight: 'normal'
+    },
+    parent: {
+      color: '#777'
     }
   });
 
@@ -56,35 +80,54 @@ function NumberVisuals({
   const toggleHover = () => setOnHover(!onHover);
   return (
     <div className={classes.root}>
-      <Typography variant="h6">{subtitle}</Typography>
-      <Typography
-        variant="h1"
-        onMouseEnter={toggleHover}
-        onMouseLeave={toggleHover}
-      >
-        {' '}
-        {statistic}
-        <span className={!onHover ? classes.hidden : classes.h3}>
+      <Typography variant="h5">{subtitle}</Typography>
+      <div className={classes.mainStatistic}>
+        <Typography
+          variant="h3"
+          onMouseEnter={toggleHover}
+          onMouseLeave={toggleHover}
+        >
+          {` `}
+          {statistic}
+          <span className={!onHover ? classes.hidden : classes.h3Deviation}>
+            {' '}
+            {statisticDeviation}
+          </span>
+        </Typography>
+        <Typography className={!onHover ? classes.hidden : classes.h5}>
           {' '}
-          {statisticDeviation}
-        </span>
+          {secondaryDeviation}
+        </Typography>
+      </div>
+      <Typography variant="h4" className={classes.description}>
+        {description}
       </Typography>
-      <span className={!onHover ? classes.hidden : classes.h3}>
-        {' '}
-        {secondaryDeviation}
-      </span>
-      <Typography variant="h5">{description}</Typography>
-      <br />
-      <Typography variant="h3">
-        <span className={classes.miniMeasurement}>
+      <Typography variant="h6" className={classes.parent}>
+        <span className={classes.comparison}>
           {` `}
           {parentComparison}
         </span>
-        <span className={classes.miniMeasurement}>
+        <span className={classes.parentDescription}>
           {` `}
           {parentDescription}
         </span>
-        <span className={!onHover ? classes.hidden : classes.h3}>
+        <span className={!onHover ? classes.hidden : classes.h5}>
+          {` `}
+          {parentDeviation}
+        </span>
+      </Typography>
+
+      <Typography variant="h6" className={classes.parent}>
+        <span className={classes.comparison}>
+          {` `}
+          {parentComparison}
+        </span>
+        <span className={classes.parentDescription}>
+          {` `}
+          {parentDescription}
+        </span>
+        <span className={!onHover ? classes.hidden : classes.h5}>
+          {` `}
           {parentDeviation}
         </span>
       </Typography>
