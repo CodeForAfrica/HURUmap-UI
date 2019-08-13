@@ -110,12 +110,13 @@ function MapIt({
     },
     [url]
   );
-  async function fetchMapitArea() {
+
+  const fetchMapitArea = useCallback(async () => {
     const areaRes = await fetch(
       `${url}/code/${codeType}/${geoLevel}-${geoCode}?generation=${generation}`
     );
     return areaRes.json();
-  }
+  }, [url, codeType, geoLevel, geoCode, generation]);
 
   const loadGeometryForLevel = useCallback((): Promise<any> => {
     // geo_level do not always match to mapit area type
@@ -212,6 +213,7 @@ function MapIt({
   const load = useCallback(() => {
     const map = mapRef.current;
     if (!map) {
+      // eslint-disable-next-line no-console
       console.error('Map not loaded!');
       return;
     }
