@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, text, number, boolean } from '@storybook/addon-knobs';
+import { withKnobs, text, object } from '@storybook/addon-knobs';
 import { CenterDecorator } from './common';
 import { NumberVisuals } from '../src';
 
@@ -15,13 +15,19 @@ storiesOf('HURUmap UI/NumberVisuals', module)
         statisticDeviation={text('Statistic Deviation', '±0.1% ')}
         secondaryDeviation={text('Secondary Deviation', '(194, 667, 872 ±241, 381.6)')}
         description={text('Description', 'Median household income')}
-        parentComparison={text('Parent Comparison', 'about 90 percent')}
-        parentDescription={text('Parent Description', 'of the amount in United States: $32,397')}
-        parentDeviation={text('Parent Deviation', '±0.24%')}
-        optionalBol={boolean('optionalBol', false)}
-        optionalParentComparison={text('Optional Parent Comparison', 'about 60 percent')}
-        optionalParentDescription={text('Optional Parent Description', 'of the amount in United States: $32,397')}
-        optionalParentDeviation={text('Optional Parent Deviation', '±0.14%')}
+        comparisonData={object('Comparison Data', [
+          {
+            parentComparison: 'about 90 percent',
+            parentDescription: 'of the amount in United States: $32,397',
+            parentDeviation: '±0.24%',
+          },
+          {
+            parentComparison: 'about 60 percent',
+            parentDescription: 'of the amount in United States: $32,397',
+            parentDeviation: '±0.13%',
+          }
+        ])}
+
       />
     );
   });

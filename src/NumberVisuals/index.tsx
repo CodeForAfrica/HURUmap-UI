@@ -67,6 +67,12 @@ const styles = ({ breakpoints }: Theme) =>
     }
   });
 
+type comparisonData = {
+  parentComparison?: number | string;
+  parentDescription?: number | string;
+  parentDeviation?: number | string;
+}[];
+
 interface Props extends WithStyles<typeof styles> {
   classes: any;
   subtitle?: string | number;
@@ -74,13 +80,7 @@ interface Props extends WithStyles<typeof styles> {
   statisticDeviation?: number | string;
   secondaryDeviation?: number | string;
   description?: number | string;
-  parentComparison?: number | string;
-  parentDescription?: number | string;
-  parentDeviation?: number | string;
-  optionalParentDeviation?: number | string;
-  optionalParentComparison?: number | string;
-  optionalParentDescription?: number | string;
-  optionalBol: boolean;
+  comparisonData: comparisonData;
 }
 
 function NumberVisuals({
@@ -90,13 +90,7 @@ function NumberVisuals({
   statisticDeviation,
   secondaryDeviation,
   description,
-  parentComparison,
-  parentDescription,
-  parentDeviation,
-  optionalParentComparison,
-  optionalParentDescription,
-  optionalParentDeviation,
-  optionalBol = true
+  comparisonData
 }: Props) {
   const [onHover, setOnHover] = useState(false);
   const toggleHover = () => setOnHover(!onHover);
@@ -126,28 +120,7 @@ function NumberVisuals({
       </Typography>
 
       <List className={classes.list}>
-        <ListItem className={classes.listParent}>
-          <ListItemText
-            className={classes.listItemText}
-            primary={
-              <Typography variant="h6">
-                <span className={classes.comparison}>
-                  {` `}
-                  {parentComparison}
-                </span>
-                <span className={classes.parentDescription}>
-                  {` `}
-                  {parentDescription}
-                </span>
-                <span className={!onHover ? classes.hidden : classes.h5}>
-                  {` `}
-                  {parentDeviation}
-                </span>
-              </Typography>
-            }
-          />
-        </ListItem>
-        {optionalBol && (
+        {comparisonData.map(d => (
           <ListItem className={classes.listParent}>
             <ListItemText
               className={classes.listItemText}
@@ -155,21 +128,21 @@ function NumberVisuals({
                 <Typography variant="h6">
                   <span className={classes.comparison}>
                     {` `}
-                    {optionalParentComparison}
+                    {d.parentComparison}
                   </span>
                   <span className={classes.parentDescription}>
                     {` `}
-                    {optionalParentDescription}
+                    {d.parentDescription}
                   </span>
                   <span className={!onHover ? classes.hidden : classes.h5}>
                     {` `}
-                    {optionalParentDeviation}
+                    {d.parentDeviation}
                   </span>
                 </Typography>
               }
             />
           </ListItem>
-        )}
+        ))}
       </List>
     </div>
   );
