@@ -35,7 +35,7 @@ const styles = ({ breakpoints }: Theme) =>
       fontWeight: 700
     },
     h3Deviation: {
-      fontSize: '0.6em',
+      fontSize: '0.5em',
       color: '#777',
       fontWeight: 400,
       display: 'inlineBlock'
@@ -44,10 +44,11 @@ const styles = ({ breakpoints }: Theme) =>
       marginBottom: '0.6em'
     },
     h5: {
-      fontSize: '1.2em',
+      fontSize: '1em',
       color: '#777',
       fontWeight: 400
     },
+
     comparison: {
       fontWeight: 'bold'
     },
@@ -60,6 +61,9 @@ const styles = ({ breakpoints }: Theme) =>
     listParent: {
       paddingLeft: 0,
       paddingRight: 0
+    },
+    list: {
+      padding: 0
     }
   });
 
@@ -119,38 +123,49 @@ function NumberVisuals({
         {description}
       </Typography>
 
-      <List>
+      <List className={classes.list}>
         <ListItem className={classes.listParent}>
-          <ListItemText className={classes.parent}>
-            <span className={classes.comparison}>
-              {` `}
-              {parentComparison}
-            </span>
-            <span className={classes.parentDescription}>
-              {` `}
-              {parentDescription}
-            </span>
-            <span className={!onHover ? classes.hidden : classes.h5}>
-              {` `}
-              {parentDeviation}
-            </span>
-          </ListItemText>
+          <ListItemText
+            className={classes.parent}
+            primary={
+              <Typography variant="h6">
+                <span className={classes.comparison}>
+                  {` `}
+                  {parentComparison}
+                </span>
+                <span className={classes.parentDescription}>
+                  {` `}
+                  {parentDescription}
+                </span>
+                <span className={!onHover ? classes.hidden : classes.h5}>
+                  {` `}
+                  {parentDeviation}
+                </span>
+              </Typography>
+            }
+          />
         </ListItem>
+
         <ListItem className={classes.listParent}>
-          <ListItemText className={classes.parent}>
-            <span className={classes.comparison}>
-              {` `}
-              {OptionalparentComparison}
-            </span>
-            <span className={classes.parentDescription}>
-              {` `}
-              {OptionalparentDescription}
-            </span>
-            <span className={!onHover ? classes.hidden : classes.h5}>
-              {` `}
-              {OptionalparentDeviation}
-            </span>
-          </ListItemText>
+          <ListItemText
+            className={classes.parent}
+            primary={
+              <Typography variant="h6">
+                <span className={classes.comparison}>
+                  {` `}
+                  {OptionalparentComparison}
+                </span>
+                <span className={classes.parentDescription}>
+                  {` `}
+                  {OptionalparentDescription}
+                </span>
+                <span className={!onHover ? classes.hidden : classes.h5}>
+                  {` `}
+                  {OptionalparentDeviation}
+                </span>
+              </Typography>
+            }
+          />
         </ListItem>
       </List>
     </div>
