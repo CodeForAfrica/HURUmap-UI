@@ -18,10 +18,10 @@ storiesOf('HURUmap UI/NumberVisuals', module)
         parentComparison={text('Parent Comparison', 'about 90 percent')}
         parentDescription={text('Parent Description', 'of the amount in United States: $32,397')}
         parentDeviation={text('Parent Deviation', '±0.24%')}
-        OptionalparentComparison={text('OptionalparentComparison', 'about 60 percent')}
-        OptionalparentDescription={text('OptionalparentDescription', 'of the amount in United States: $32,397')}
-        OptionalparentDeviation={text('OptionalparentDeviation', '±0.14%')}
-
+        optionalBol={boolean('optionalBol', false)}
+        optionalParentComparison={text('Optional Parent Comparison', 'about 60 percent')}
+        optionalParentDescription={text('Optional Parent Description', 'of the amount in United States: $32,397')}
+        optionalParentDeviation={text('Optional Parent Deviation', '±0.14%')}
       />
     );
   });

@@ -55,7 +55,7 @@ const styles = ({ breakpoints }: Theme) =>
     parentDescription: {
       fontWeight: 'normal'
     },
-    parent: {
+    listItemText: {
       color: '#777'
     },
     listParent: {
@@ -77,9 +77,10 @@ interface Props extends WithStyles<typeof styles> {
   parentComparison?: number | string;
   parentDescription?: number | string;
   parentDeviation?: number | string;
-  OptionalparentDeviation?: number | string;
-  OptionalparentComparison?: number | string;
-  OptionalparentDescription?: number | string;
+  optionalParentDeviation?: number | string;
+  optionalParentComparison?: number | string;
+  optionalParentDescription?: number | string;
+  optionalBol: boolean;
 }
 
 function NumberVisuals({
@@ -92,9 +93,10 @@ function NumberVisuals({
   parentComparison,
   parentDescription,
   parentDeviation,
-  OptionalparentComparison,
-  OptionalparentDescription,
-  OptionalparentDeviation
+  optionalParentComparison,
+  optionalParentDescription,
+  optionalParentDeviation,
+  optionalBol = true
 }: Props) {
   const [onHover, setOnHover] = useState(false);
   const toggleHover = () => setOnHover(!onHover);
@@ -126,7 +128,7 @@ function NumberVisuals({
       <List className={classes.list}>
         <ListItem className={classes.listParent}>
           <ListItemText
-            className={classes.parent}
+            className={classes.listItemText}
             primary={
               <Typography variant="h6">
                 <span className={classes.comparison}>
@@ -145,28 +147,29 @@ function NumberVisuals({
             }
           />
         </ListItem>
-
-        <ListItem className={classes.listParent}>
-          <ListItemText
-            className={classes.parent}
-            primary={
-              <Typography variant="h6">
-                <span className={classes.comparison}>
-                  {` `}
-                  {OptionalparentComparison}
-                </span>
-                <span className={classes.parentDescription}>
-                  {` `}
-                  {OptionalparentDescription}
-                </span>
-                <span className={!onHover ? classes.hidden : classes.h5}>
-                  {` `}
-                  {OptionalparentDeviation}
-                </span>
-              </Typography>
-            }
-          />
-        </ListItem>
+        {optionalBol && (
+          <ListItem className={classes.listParent}>
+            <ListItemText
+              className={classes.listItemText}
+              primary={
+                <Typography variant="h6">
+                  <span className={classes.comparison}>
+                    {` `}
+                    {optionalParentComparison}
+                  </span>
+                  <span className={classes.parentDescription}>
+                    {` `}
+                    {optionalParentDescription}
+                  </span>
+                  <span className={!onHover ? classes.hidden : classes.h5}>
+                    {` `}
+                    {optionalParentDeviation}
+                  </span>
+                </Typography>
+              }
+            />
+          </ListItem>
+        )}
       </List>
     </div>
   );
