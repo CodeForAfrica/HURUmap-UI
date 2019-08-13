@@ -1,10 +1,11 @@
 import { withStyles } from '@material-ui/core';
 import { createStyles, WithStyles } from '@material-ui/core/styles';
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 
 import leaflet, { MapOptions, PathOptions, TileLayer } from 'leaflet';
 
 import 'leaflet/dist/leaflet.css';
+import useDeepRef from './useDeepRef';
 
 const styles = createStyles({
   root: {
@@ -78,6 +79,23 @@ function MapIt({
 }: MapItProps) {
   const mapId = id || 'mapit';
   const mapRef = useRef<leaflet.Map | null>(null);
+  const [featuresToDraw, setFeaturesToDraw] = useState<any>([]);
+  const tileLayerMemoized = useDeepRef(
+    tileLayer ||
+      leaflet.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+        {
+          attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+        }
+      )
+  );
+  const filterCountriesMemoized = useDeepRef(filterCountries);
+  const leafletPropsMemoized = useDeepRef(leafletProps);
+  const geoLayerStyles = useDeepRef({
+    focus: geoLayerFocusStyle,
+    blur: geoLayerBlurStyle,
+    hover: geoLayerHoverStyle
+  });
 
   // The `extra` parameter is an object with properties that are not returned in a geojson call
   // The geojson only returns the name in the properties which is not sufficient
@@ -146,13 +164,13 @@ function MapIt({
         return areasRes.json().then((data: { [key: string]: any }) => {
           let areaData = data;
           if (
-            filterCountries.length > 0 &&
+            filterCountriesMemoized.length > 0 &&
             !drawProfile &&
             geoLevel === 'continent'
           ) {
             areaData = Object.entries(data)
               .filter(area => {
-                return filterCountries.includes(area[1].country);
+                return filterCountriesMemoized.includes(area[1].country);
               })
               .reduce((accum: { [key: string]: any }, [k, v]) => {
                 return Object.assign({}, accum, { [k]: v });
@@ -164,59 +182,10 @@ function MapIt({
         });
       });
     },
-    [url, filterCountries, drawProfile, geoLevel, fetchGeoJson]
+    [url, filterCountriesMemoized, drawProfile, geoLevel, fetchGeoJson]
   );
 
-  const drawFeatures = useCallback(
-    (map: leaflet.Map, features: any) => {
-      return leaflet
-        .geoJSON(features, {
-          onEachFeature: (feature, layer: any) => {
-            if (
-              drawProfile &&
-              `${geoLevel}-${geoCode}` ===
-                feature.properties.codes[codeType || 'AFR']
-            ) {
-              layer.setStyle(geoLayerFocusStyle);
-              map.fitBounds(layer.getBounds());
-            } else {
-              layer.bindTooltip(feature.properties.name, { direction: 'auto' });
-              layer.on('mouseover', () => {
-                layer.setStyle(geoLayerHoverStyle);
-              });
-              layer.on('mouseout', () => {
-                layer.setStyle(geoLayerBlurStyle);
-              });
-              layer.on('click', () => {
-                if (onClickGeoLayer) {
-                  onClickGeoLayer(feature.properties);
-                }
-              });
-              layer.setStyle(geoLayerBlurStyle);
-            }
-          }
-        })
-        .addTo(map);
-    },
-    [
-      drawProfile,
-      geoLevel,
-      geoCode,
-      codeType,
-      geoLayerFocusStyle,
-      geoLayerBlurStyle,
-      geoLayerHoverStyle,
-      onClickGeoLayer
-    ]
-  );
-
-  const load = useCallback(() => {
-    const map = mapRef.current;
-    if (!map) {
-      // eslint-disable-next-line no-console
-      console.error('Map not loaded!');
-      return;
-    }
+  useEffect(() => {
     // if we are not on a profile page, then we are on homepage or country page
     // where no specific geography is focused, only child levels of the root geography are drawn
     // For normal hurumap apps, the root geo is country, so we draw all it's child level
@@ -224,24 +193,23 @@ function MapIt({
     // but not all child levels are supposed to be drawn (i.e mapit has ethiopia as child of continent but we don't have dominion ethiopia)
     // so in this case we will filter using loadCountrries
     if (drawProfile) {
-      loadGeometryForLevel()
-        .then(features => {
-          drawFeatures(map, features);
-        })
-        .then(() => {
-          if (drawChildren) {
-            fetchMapitArea().then(area => {
-              loadGeometryForChildLevel(area.id).then(childrenFeatures => {
-                drawFeatures(map, childrenFeatures);
-              });
+      loadGeometryForLevel().then(features => {
+        // drawFeatures(map, features);
+        if (drawChildren) {
+          fetchMapitArea().then(area => {
+            loadGeometryForChildLevel(area.id).then(childrenFeatures => {
+              // drawFeatures(map, childrenFeatures);
+              setFeaturesToDraw([...features, ...childrenFeatures]);
             });
-          }
-        });
+          });
+        }
+      });
     } else {
       fetchMapitArea().then(area => {
         return loadGeometryForChildLevel(area.id).then(childrenFeatures => {
-          const layer = drawFeatures(map, childrenFeatures);
-          map.fitBounds(layer.getBounds());
+          setFeaturesToDraw(childrenFeatures);
+          // const layer = drawFeatures(map, childrenFeatures);
+          // map.fitBounds(layer.getBounds());
         });
       });
     }
@@ -250,8 +218,7 @@ function MapIt({
     loadGeometryForLevel,
     drawChildren,
     fetchMapitArea,
-    loadGeometryForChildLevel,
-    drawFeatures
+    loadGeometryForChildLevel
   ]);
 
   useEffect(() => {
@@ -269,7 +236,7 @@ function MapIt({
       zoomControl: false,
       center: [0, 0],
       zoom: 3,
-      ...leafletProps
+      ...leafletPropsMemoized
     });
 
     const map = mapRef.current;
@@ -282,21 +249,50 @@ function MapIt({
       );
     }
 
-    if (tileLayer) {
-      tileLayer.addTo(map);
-    } else {
-      leaflet
-        .tileLayer(
-          'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
-          {
-            attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
-          }
-        )
-        .addTo(map);
-    }
+    tileLayerMemoized.addTo(map);
 
-    load();
-  }, [mapId, leafletProps, tileLayer, load]);
+    leaflet
+      .geoJSON(featuresToDraw, {
+        onEachFeature: (feature, layer: any) => {
+          if (
+            drawProfile &&
+            `${geoLevel}-${geoCode}` ===
+              feature.properties.codes[codeType || 'AFR']
+          ) {
+            layer.setStyle(geoLayerStyles.focus);
+            map.fitBounds(layer.getBounds());
+          } else {
+            layer.bindTooltip(feature.properties.name, { direction: 'auto' });
+            layer.on('mouseover', () => {
+              layer.setStyle(geoLayerStyles.hover);
+            });
+            layer.on('mouseout', () => {
+              layer.setStyle(geoLayerStyles.blur);
+            });
+            layer.on('click', () => {
+              if (onClickGeoLayer) {
+                onClickGeoLayer(feature.properties);
+              }
+            });
+            layer.setStyle(geoLayerStyles.blur);
+          }
+        }
+      })
+      .addTo(map);
+  }, [
+    mapId,
+    tileLayerMemoized,
+    leafletPropsMemoized,
+    featuresToDraw,
+    drawProfile,
+    geoLevel,
+    geoCode,
+    codeType,
+    geoLayerStyles.focus,
+    geoLayerStyles.blur,
+    geoLayerStyles.hover,
+    onClickGeoLayer
+  ]);
 
   return <div id={mapId} className={classes.root} />;
 }
