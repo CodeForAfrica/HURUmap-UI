@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 
 import { withStyles, createStyles, WithStyles } from '@material-ui/styles';
-import { Typography, Theme } from '@material-ui/core';
+import {
+  Typography,
+  Theme,
+  List,
+  ListItem,
+  ListItemText
+} from '@material-ui/core';
 
 const styles = ({ breakpoints }: Theme) =>
   createStyles({
@@ -50,6 +56,10 @@ const styles = ({ breakpoints }: Theme) =>
     },
     parent: {
       color: '#777'
+    },
+    listParent: {
+      paddingLeft: 0,
+      paddingRight: 0
     }
   });
 
@@ -63,6 +73,9 @@ interface Props extends WithStyles<typeof styles> {
   parentComparison?: number | string;
   parentDescription?: number | string;
   parentDeviation?: number | string;
+  OptionalparentDeviation?: number | string;
+  OptionalparentComparison?: number | string;
+  OptionalparentDescription?: number | string;
 }
 
 function NumberVisuals({
@@ -74,7 +87,10 @@ function NumberVisuals({
   description,
   parentComparison,
   parentDescription,
-  parentDeviation
+  parentDeviation,
+  OptionalparentComparison,
+  OptionalparentDescription,
+  OptionalparentDeviation
 }: Props) {
   const [onHover, setOnHover] = useState(false);
   const toggleHover = () => setOnHover(!onHover);
@@ -102,35 +118,41 @@ function NumberVisuals({
       <Typography variant="h4" className={classes.description}>
         {description}
       </Typography>
-      <Typography variant="h6" className={classes.parent}>
-        <span className={classes.comparison}>
-          {` `}
-          {parentComparison}
-        </span>
-        <span className={classes.parentDescription}>
-          {` `}
-          {parentDescription}
-        </span>
-        <span className={!onHover ? classes.hidden : classes.h5}>
-          {` `}
-          {parentDeviation}
-        </span>
-      </Typography>
 
-      <Typography variant="h6" className={classes.parent}>
-        <span className={classes.comparison}>
-          {` `}
-          {parentComparison}
-        </span>
-        <span className={classes.parentDescription}>
-          {` `}
-          {parentDescription}
-        </span>
-        <span className={!onHover ? classes.hidden : classes.h5}>
-          {` `}
-          {parentDeviation}
-        </span>
-      </Typography>
+      <List>
+        <ListItem className={classes.listParent}>
+          <ListItemText className={classes.parent}>
+            <span className={classes.comparison}>
+              {` `}
+              {parentComparison}
+            </span>
+            <span className={classes.parentDescription}>
+              {` `}
+              {parentDescription}
+            </span>
+            <span className={!onHover ? classes.hidden : classes.h5}>
+              {` `}
+              {parentDeviation}
+            </span>
+          </ListItemText>
+        </ListItem>
+        <ListItem className={classes.listParent}>
+          <ListItemText className={classes.parent}>
+            <span className={classes.comparison}>
+              {` `}
+              {OptionalparentComparison}
+            </span>
+            <span className={classes.parentDescription}>
+              {` `}
+              {OptionalparentDescription}
+            </span>
+            <span className={!onHover ? classes.hidden : classes.h5}>
+              {` `}
+              {OptionalparentDeviation}
+            </span>
+          </ListItemText>
+        </ListItem>
+      </List>
     </div>
   );
 }
