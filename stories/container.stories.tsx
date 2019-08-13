@@ -56,7 +56,7 @@ storiesOf('HURUmap UI|ChartContainer', module)
           alignItems="center"
           style={{ background: 'whitesmoke', height: '100%' }}
         >
-          <ChartContainer
+          <Grid
             item
             xs={
               select(
@@ -72,54 +72,57 @@ storiesOf('HURUmap UI|ChartContainer', module)
                 6
               ) as GridSize
             }
-            overflowX={
-              select(
-                'overflowX',
-                ['auto', 'clip', 'hidden', 'scroll', 'visible'],
-                'auto'
-              ) as CSSProperties['overflowX']
-            }
-            overflowY={
-              select(
-                'overflowY',
-                ['auto', 'clip', 'hidden', 'scroll', 'visible'],
-                'hidden'
-              ) as CSSProperties['overflowX']
-            }
-            onClickInfo={handleClickInfo}
-            onClickShare={handleClickShare}
-            maxChartHeight={text('maxChartHeight', '300px')}
-            maxChartWidth={text('maxChartWidth', '100%')}
-            title="Lorem ipsum dolor sit amet."
-            subtitle="Praesent at dignissim est. Integer porta consectetur ante, ut congue erat."
           >
-            <BarChart
-              horizontal={boolean('horizontal', false)}
-              width={500}
-              height={300}
-              data={Array(number('data', 100))
-                .fill(null)
-                .map((_, index) => ({
-                  x: `${index}-${index}`,
-                  y: rand()
-                }))}
-              dependantAxisProps={{
-                style: {
-                  axis: {
-                    display: 'block'
+            <ChartContainer
+              overflowX={
+                select(
+                  'overflowX',
+                  ['auto', 'clip', 'hidden', 'scroll', 'visible'],
+                  'auto'
+                ) as CSSProperties['overflowX']
+              }
+              overflowY={
+                select(
+                  'overflowY',
+                  ['auto', 'clip', 'hidden', 'scroll', 'visible'],
+                  'hidden'
+                ) as CSSProperties['overflowX']
+              }
+              onClickInfo={handleClickInfo}
+              onClickShare={handleClickShare}
+              maxChartHeight={text('maxChartHeight', '300px')}
+              maxChartWidth={text('maxChartWidth', '100%')}
+              title="Lorem ipsum dolor sit amet."
+              subtitle="Praesent at dignissim est. Integer porta consectetur ante, ut congue erat."
+            >
+              <BarChart
+                horizontal={boolean('horizontal', false)}
+                width={500}
+                height={300}
+                data={Array(number('data', 100))
+                  .fill(null)
+                  .map((_, index) => ({
+                    x: `${index}-${index}`,
+                    y: rand()
+                  }))}
+                dependantAxisProps={{
+                  style: {
+                    axis: {
+                      display: 'block'
+                    },
+                    grid: {
+                      display: 'block'
+                    },
+                    tickLabels: {
+                      display: 'block'
+                    }
                   },
-                  grid: {
-                    display: 'block'
-                  },
-                  tickLabels: {
-                    display: 'block'
-                  }
-                },
-                tickValues: [10, 50, 90],
-                tickFormat: ['10%', '50%', '90%']
-              }}
-            />
-          </ChartContainer>
+                  tickValues: [10, 50, 90],
+                  tickFormat: ['10%', '50%', '90%']
+                }}
+              />
+            </ChartContainer>
+          </Grid>
           <EmbedPopup
             anchorEl={shareAnchorEl}
             onClose={handleCloseShare}

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { withStyles, CSSProperties, WithStyles } from '@material-ui/styles';
 import { ButtonBase, Typography } from '@material-ui/core';
-import Grid, { GridProps } from '@material-ui/core/Grid';
+import Grid from '@material-ui/core/Grid';
 import { PopperProps } from '@material-ui/core/Popper';
 
 import infoIcon from '../assets/info.png';
@@ -30,8 +30,9 @@ const styles = {
   subtitle: {}
 };
 
-interface Props extends GridProps, WithStyles<typeof styles> {
-  classes: GridProps['classes'] & WithStyles<typeof styles>['classes'];
+interface Props extends WithStyles<typeof styles> {
+  classes: WithStyles<typeof styles>['classes'];
+  children: any;
   title: string;
   subtitle: string;
   /**
@@ -62,9 +63,7 @@ function ChartContainer({
   overflowX = 'hidden',
   overflowY = 'hidden',
   maxChartWidth,
-  maxChartHeight,
-  className,
-  ...props
+  maxChartHeight
 }: Props) {
   const infoRef = React.useRef<HTMLButtonElement>(null);
   const shareRef = React.useRef<HTMLButtonElement>(null);
@@ -83,12 +82,7 @@ function ChartContainer({
   };
 
   return (
-    <Grid
-      container
-      className={`${classes.root} ${className}`}
-      classes={classes}
-      {...props}
-    >
+    <Grid container className={classes.root}>
       <Grid
         container
         wrap="nowrap"
