@@ -105,20 +105,24 @@ storiesOf('HURUmap UI|ChartContainer', module)
                     x: `${index}-${index}`,
                     y: rand()
                   }))}
-                dependantAxisProps={{
-                  style: {
-                    axis: {
-                      display: 'block'
-                    },
-                    grid: {
-                      display: 'block'
-                    },
-                    tickLabels: {
-                      display: 'block'
+                parts={{
+                  axis: {
+                    dependent: {
+                      style: {
+                        axis: {
+                          display: 'block'
+                        },
+                        grid: {
+                          display: 'block'
+                        },
+                        tickLabels: {
+                          display: 'block'
+                        }
+                      },
+                      tickValues: [10, 50, 90],
+                      tickFormat: ['10%', '50%', '90%']
                     }
-                  },
-                  tickValues: [10, 50, 90],
-                  tickFormat: ['10%', '50%', '90%']
+                  }
                 }}
               />
             </ChartContainer>
