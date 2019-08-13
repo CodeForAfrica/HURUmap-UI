@@ -4,7 +4,7 @@ import { withKnobs, text, number } from '@storybook/addon-knobs';
 import { CenterDecorator } from './common';
 import { NumberVisuals } from '../src';
 
-storiesOf('HURUmap UI|ChartContainer/NumberVisuals', module)
+storiesOf('HURUmap UI/NumberVisuals', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('Default', () => {
