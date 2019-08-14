@@ -1,6 +1,6 @@
 {
   "name": "@codeforafrica/hurumap-ui",
-  "version": "0.1.0-rc.7",
+  "version": "0.1.0-rc.8",
   "description": "HURUmap charts, map and other components.",
   "repository": "https://github.com/CodeForAfrica/HURUmap-UI.git",
   "author": "Code for Africa <hello@codeforafrica.org> (https://codeforafrica.org)",
@@ -61,6 +61,8 @@
     "@material-ui/styles": "^4.3.0",
     "@material-ui/types": "^4.1.1",
     "@types/react-sizes": "^2.0.0",
+    "dequal": "^1.0.0",
+    "geojson": "^0.5.0",
     "leaflet": "^1.5.1",
     "lodash": "^4.17.14",
     "victory": "^32.3.1"
