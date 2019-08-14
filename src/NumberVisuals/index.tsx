@@ -23,47 +23,40 @@ const styles = ({ breakpoints }: Theme) =>
       display: 'none'
     },
     mainStatistic: {
-      display: ' block',
-      marginTop: '1em',
-      marginBottom: '0.5em'
+      marginTop: '1em'
     },
     h3: {
-      display: 'block',
-      fontSize: '2.2em',
-      lineHeight: 1,
-      margin: '0 0 .1825em',
-      fontWeight: 700
+      fontSize: '2.5em'
     },
     h3Deviation: {
-      fontSize: '0.5em',
+      fontSize: '0.35em',
       color: '#777',
-      fontWeight: 400,
       display: 'inlineBlock'
-    },
-    description: {
-      marginBottom: '0.6em'
     },
     h5: {
       fontSize: '1em',
-      color: '#777',
-      fontWeight: 400
+      color: '#777'
     },
-
+    h6: {
+      fontSize: '1.25em'
+    },
+    description: {
+      fontSize: '1.5em'
+    },
     comparison: {
       fontWeight: 'bold'
     },
-    parentDescription: {
-      fontWeight: 'normal'
-    },
-    listItemText: {
-      color: '#777'
+    list: {
+      padding: 0
     },
     listParent: {
       paddingLeft: 0,
       paddingRight: 0
     },
-    list: {
-      padding: 0
+    listTypography: {
+      fontSize: '0.9em',
+      lineHeight: 1.3,
+      color: '#777'
     }
   });
 
@@ -96,10 +89,10 @@ function NumberVisuals({
   const toggleHover = () => setOnHover(!onHover);
   return (
     <div className={classes.root}>
-      <Typography variant="h5">{subtitle}</Typography>
+      <Typography className={classes.h6}>{subtitle}</Typography>
       <div className={classes.mainStatistic}>
         <Typography
-          variant="h3"
+          className={classes.h3}
           onMouseEnter={toggleHover}
           onMouseLeave={toggleHover}
         >
@@ -115,22 +108,19 @@ function NumberVisuals({
           {secondaryDeviation}
         </Typography>
       </div>
-      <Typography variant="h4" className={classes.description}>
-        {description}
-      </Typography>
+      <Typography className={classes.description}>{description}</Typography>
 
       <List className={classes.list}>
         {comparisonData.map(d => (
           <ListItem className={classes.listParent}>
             <ListItemText
-              className={classes.listItemText}
               primary={
-                <Typography variant="h6">
+                <Typography className={classes.listTypography}>
                   <span className={classes.comparison}>
                     {` `}
                     {d.parentComparison}
                   </span>
-                  <span className={classes.parentDescription}>
+                  <span>
                     {` `}
                     {d.parentDescription}
                   </span>
