@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, Fragment, useState, useRef } from 'react';
 import { storiesOf } from '@storybook/react';
 import {
   withKnobs,
@@ -11,6 +11,7 @@ import {
 import { action } from '@storybook/addon-actions';
 
 import { TileLayer } from 'leaflet';
+import { Grid } from '@material-ui/core';
 import { MapIt } from '../src';
 import { CenterDecorator } from './common';
 
@@ -46,35 +47,61 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
       onClickGeoLayer={action('onClickGeoLayer')}
     />
   ))
-  .add('CountryRoot', () => (
-    <MapIt
-      url={text('url', 'https://mapit.hurumap.org')}
-      drawChildren={boolean('drawChildren', true)}
-      filterCountries={array('filterCountries', [])}
-      drawProfile={boolean('drawProfile', false)}
-      codeType={text('codeType', 'KEN')}
-      geoLevel={text('geoLevel', 'country')}
-      geoCode={text('geoCode', 'KE')}
-      zoom={number('zoom', 3)}
-      center={array('center', [8.7832, 34.5085]) as [number, number]}
-      tileLayer={
+  .add('CountryRoot', () =>
+    React.createElement(() => {
+      const [count, setCount] = useState(0);
+      /**
+       * If tileLayer keeps changing it will trigger rerender
+       */
+      const tileLayer = useRef<TileLayer>(
         new TileLayer(
           text(
             'tileLayer',
             'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
           )
         )
-      }
-      geoLayerBlurStyle={object('geoLayerBlurStyle', {
-        color: '#00d',
-        fillColor: '#ccc',
-        weight: 1.0,
-        opacity: 0.3,
-        fillOpacity: 0.3
-      })}
-      onClickGeoLayer={action('onClickGeoLayer')}
-    />
-  ))
+      );
+      /**
+       * If onClickLayer keeps changing it will trigger rerender
+       */
+      const onClickLayer = useCallback(action('onClickGeoLayer'), []);
+      return (
+        <Fragment>
+          <Grid container direction="column" style={{ width: 200 }}>
+            <p>
+              Clicking this button,
+              <strong>
+                <em>the map should not glitch</em>
+              </strong>
+            </p>
+            <button onClick={() => setCount(count + 1)}>
+              Click Count: {count}
+            </button>
+          </Grid>
+          <MapIt
+            url={text('url', 'https://mapit.hurumap.org')}
+            drawChildren={boolean('drawChildren', true)}
+            filterCountries={array('filterCountries', [])}
+            drawProfile={boolean('drawProfile', false)}
+            codeType={text('codeType', 'KEN')}
+            geoLevel={text('geoLevel', 'country')}
+            geoCode={text('geoCode', 'KE')}
+            zoom={number('zoom', 3)}
+            center={array('center', [8.7832, 34.5085]) as [number, number]}
+            tileLayer={tileLayer.current}
+            geoLayerBlurStyle={object('geoLayerBlurStyle', {
+              color: '#00d',
+              fillColor: '#ccc',
+              weight: 1.0,
+              opacity: 0.3,
+              fillOpacity: 0.3
+            })}
+            onClickGeoLayer={onClickLayer}
+          />
+        </Fragment>
+      );
+    })
+  )
   .add('DefaultProfile', () => (
     <MapIt
       url={text('url', 'https://mapit.hurumap.org')}

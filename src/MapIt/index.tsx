@@ -1,10 +1,12 @@
 import { withStyles } from '@material-ui/core';
 import { createStyles, WithStyles } from '@material-ui/core/styles';
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 
 import leaflet, { MapOptions, PathOptions, TileLayer } from 'leaflet';
 
 import 'leaflet/dist/leaflet.css';
+import { FeatureCollection } from 'geojson';
+import useDeepRef from './useDeepRef';
 
 const styles = createStyles({
   root: {
@@ -78,6 +80,15 @@ function MapIt({
 }: MapItProps) {
   const mapId = id || 'mapit';
   const mapRef = useRef<leaflet.Map | null>(null);
+  const [featuresToDraw, setFeaturesToDraw] = useState<FeatureCollection>();
+  const filterCountriesMemoized = useDeepRef(filterCountries);
+  console.log(leafletProps);
+  const leafletPropsMemoized = useDeepRef(leafletProps);
+  const geoLayerStyles = useDeepRef({
+    focus: geoLayerFocusStyle,
+    blur: geoLayerBlurStyle,
+    hover: geoLayerHoverStyle
+  });
 
   // The `extra` parameter is an object with properties that are not returned in a geojson call
   // The geojson only returns the name in the properties which is not sufficient
@@ -87,24 +98,27 @@ function MapIt({
   // But also to have sufficient data to use like the `id` if we want to retrieve
   // more data using an api call
   const fetchGeoJson = useCallback(
-    (areaKeys: string, areas: Area[]): any => {
+    (areaKeys: string, areas: Area[]): Promise<FeatureCollection> => {
       return fetch(`${url}/areas/${areaKeys}.geojson`).then(geoRes => {
         if (!geoRes.ok) return Promise.reject();
         return geoRes.json().then(({ features }) => {
-          return features
-            ? features.map((feature: { properties: { name: string } }) => {
-                const areaInfo = areas.find(
-                  area => area.name === feature.properties.name
-                );
-                return {
-                  ...feature,
-                  properties: {
-                    ...feature.properties,
-                    ...areaInfo
-                  }
-                };
-              })
-            : [];
+          return {
+            type: 'FeatureCollection',
+            features: features
+              ? features.map((feature: { properties: { name: string } }) => {
+                  const areaInfo = areas.find(
+                    area => area.name === feature.properties.name
+                  );
+                  return {
+                    ...feature,
+                    properties: {
+                      ...feature.properties,
+                      ...areaInfo
+                    }
+                  };
+                })
+              : []
+          };
         });
       });
     },
@@ -118,7 +132,7 @@ function MapIt({
     return areaRes.json();
   }, [url, codeType, geoLevel, geoCode, generation]);
 
-  const loadGeometryForLevel = useCallback((): Promise<any> => {
+  const loadGeometryForLevel = useCallback((): Promise<FeatureCollection> => {
     // geo_level do not always match to mapit area type
     // AFR geo_level are level1_TZ_001 while mapit area type are specific ie PROVINCE, REGION, COUNTY
     // Using the geoid (geoLevel-geoCode) we will first request mapit api to give us=> mapit type of a specific geo
@@ -139,20 +153,20 @@ function MapIt({
   }, [fetchMapitArea, fetchGeoJson, generation, url]);
 
   const loadGeometryForChildLevel = useCallback(
-    (areaId: string): Promise<any> => {
+    (areaId: string): Promise<FeatureCollection> => {
       return fetch(`${url}/area/${areaId}/children`).then(areasRes => {
         if (!areasRes.ok) return Promise.reject();
 
         return areasRes.json().then((data: { [key: string]: any }) => {
           let areaData = data;
           if (
-            filterCountries.length > 0 &&
+            filterCountriesMemoized.length > 0 &&
             !drawProfile &&
             geoLevel === 'continent'
           ) {
             areaData = Object.entries(data)
               .filter(area => {
-                return filterCountries.includes(area[1].country);
+                return filterCountriesMemoized.includes(area[1].country);
               })
               .reduce((accum: { [key: string]: any }, [k, v]) => {
                 return Object.assign({}, accum, { [k]: v });
@@ -164,59 +178,13 @@ function MapIt({
         });
       });
     },
-    [url, filterCountries, drawProfile, geoLevel, fetchGeoJson]
+    [url, filterCountriesMemoized, drawProfile, geoLevel, fetchGeoJson]
   );
 
-  const drawFeatures = useCallback(
-    (map: leaflet.Map, features: any) => {
-      return leaflet
-        .geoJSON(features, {
-          onEachFeature: (feature, layer: any) => {
-            if (
-              drawProfile &&
-              `${geoLevel}-${geoCode}` ===
-                feature.properties.codes[codeType || 'AFR']
-            ) {
-              layer.setStyle(geoLayerFocusStyle);
-              map.fitBounds(layer.getBounds());
-            } else {
-              layer.bindTooltip(feature.properties.name, { direction: 'auto' });
-              layer.on('mouseover', () => {
-                layer.setStyle(geoLayerHoverStyle);
-              });
-              layer.on('mouseout', () => {
-                layer.setStyle(geoLayerBlurStyle);
-              });
-              layer.on('click', () => {
-                if (onClickGeoLayer) {
-                  onClickGeoLayer(feature.properties);
-                }
-              });
-              layer.setStyle(geoLayerBlurStyle);
-            }
-          }
-        })
-        .addTo(map);
-    },
-    [
-      drawProfile,
-      geoLevel,
-      geoCode,
-      codeType,
-      geoLayerFocusStyle,
-      geoLayerBlurStyle,
-      geoLayerHoverStyle,
-      onClickGeoLayer
-    ]
-  );
-
-  const load = useCallback(() => {
-    const map = mapRef.current;
-    if (!map) {
-      // eslint-disable-next-line no-console
-      console.error('Map not loaded!');
-      return;
-    }
+  /**
+   * Data loading hook
+   */
+  useEffect(() => {
     // if we are not on a profile page, then we are on homepage or country page
     // where no specific geography is focused, only child levels of the root geography are drawn
     // For normal hurumap apps, the root geo is country, so we draw all it's child level
@@ -224,55 +192,67 @@ function MapIt({
     // but not all child levels are supposed to be drawn (i.e mapit has ethiopia as child of continent but we don't have dominion ethiopia)
     // so in this case we will filter using loadCountrries
     if (drawProfile) {
-      loadGeometryForLevel()
-        .then(features => {
-          drawFeatures(map, features);
-        })
-        .then(() => {
-          if (drawChildren) {
-            fetchMapitArea().then(area => {
-              loadGeometryForChildLevel(area.id).then(childrenFeatures => {
-                drawFeatures(map, childrenFeatures);
-              });
-            });
-          }
-        });
+      loadGeometryForLevel().then(featureCollection => {
+        if (drawChildren) {
+          fetchMapitArea().then(area => {
+            loadGeometryForChildLevel(area.id).then(
+              childrenFeatureCollection => {
+                setFeaturesToDraw({
+                  type: 'FeatureCollection',
+                  features: [
+                    ...featureCollection.features,
+                    ...childrenFeatureCollection.features
+                  ]
+                });
+              }
+            );
+          });
+        } else {
+          setFeaturesToDraw(featureCollection);
+        }
+      });
     } else {
       fetchMapitArea().then(area => {
-        return loadGeometryForChildLevel(area.id).then(childrenFeatures => {
-          const layer = drawFeatures(map, childrenFeatures);
-          map.fitBounds(layer.getBounds());
-        });
+        return loadGeometryForChildLevel(area.id).then(
+          childrenFeatureCollection => {
+            setFeaturesToDraw(childrenFeatureCollection);
+          }
+        );
       });
     }
   }, [
+    drawChildren,
     drawProfile,
     loadGeometryForLevel,
-    drawChildren,
     fetchMapitArea,
-    loadGeometryForChildLevel,
-    drawFeatures
+    loadGeometryForChildLevel
   ]);
 
+  /**
+   * Rendering hook
+   */
   useEffect(() => {
-    if (mapRef.current) {
-      mapRef.current.remove();
+    if (!mapRef.current) {
+      mapRef.current = leaflet.map(mapId, {
+        boxZoom: false,
+        doubleClickZoom: false,
+        dragging: true,
+        keyboard: false,
+        scrollWheelZoom: false,
+        touchZoom: false,
+        zoomControl: false,
+        center: [0, 0],
+        zoom: 3,
+        ...leafletPropsMemoized
+      });
     }
 
-    mapRef.current = leaflet.map(mapId, {
-      boxZoom: false,
-      doubleClickZoom: false,
-      dragging: true,
-      keyboard: false,
-      scrollWheelZoom: false,
-      touchZoom: false,
-      zoomControl: false,
-      center: [0, 0],
-      zoom: 3,
-      ...leafletProps
-    });
-
     const map = mapRef.current;
+
+    // Clear layers
+    map.eachLayer(layer => {
+      map.removeLayer(layer);
+    });
 
     if (map.dragging) {
       map.addControl(
@@ -295,8 +275,50 @@ function MapIt({
         .addTo(map);
     }
 
-    load();
-  }, [mapId, leafletProps, tileLayer, load]);
+    const geoJsonLayer = leaflet
+      .geoJSON(featuresToDraw, {
+        onEachFeature: (feature, layer: any) => {
+          if (
+            drawProfile &&
+            `${geoLevel}-${geoCode}` ===
+              feature.properties.codes[codeType || 'AFR']
+          ) {
+            layer.setStyle(geoLayerStyles.focus);
+            map.fitBounds(layer.getBounds());
+          } else {
+            layer.bindTooltip(feature.properties.name, { direction: 'auto' });
+            layer.on('mouseover', () => {
+              layer.setStyle(geoLayerStyles.hover);
+            });
+            layer.on('mouseout', () => {
+              layer.setStyle(geoLayerStyles.blur);
+            });
+            layer.on('click', () => {
+              if (onClickGeoLayer) {
+                onClickGeoLayer(feature.properties);
+              }
+            });
+            layer.setStyle(geoLayerStyles.blur);
+          }
+        }
+      })
+      .addTo(map);
+
+    if (!drawProfile && geoJsonLayer.getBounds().isValid()) {
+      map.fitBounds(geoJsonLayer.getBounds());
+    }
+  }, [
+    mapId,
+    tileLayer,
+    featuresToDraw,
+    drawProfile,
+    geoLevel,
+    geoCode,
+    codeType,
+    geoLayerStyles,
+    onClickGeoLayer,
+    leafletPropsMemoized
+  ]);
 
   return <div id={mapId} className={classes.root} />;
 }
