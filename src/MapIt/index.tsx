@@ -245,6 +245,14 @@ function MapIt({
         zoom: 3,
         ...leafletPropsMemoized
       });
+
+      if (mapRef.current.dragging) {
+        mapRef.current.addControl(
+          new leaflet.Control.Zoom({
+            position: 'bottomright'
+          })
+        );
+      }
     }
 
     const map = mapRef.current;
@@ -253,14 +261,6 @@ function MapIt({
     map.eachLayer(layer => {
       map.removeLayer(layer);
     });
-
-    if (map.dragging) {
-      map.addControl(
-        new leaflet.Control.Zoom({
-          position: 'bottomright'
-        })
-      );
-    }
 
     if (tileLayer) {
       tileLayer.addTo(map);
