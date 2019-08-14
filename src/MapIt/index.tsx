@@ -31,6 +31,7 @@ interface Area {
 interface MapItProps extends WithStyles<typeof styles>, MapOptions {
   id?: string;
   url?: string;
+  tolerance?: number;
   drawChildren?: boolean;
   drawProfile?: boolean;
   geoLevel?: string;
@@ -49,6 +50,7 @@ function MapIt({
   id,
   classes,
   url = 'https://mapit.hurumap.org',
+  tolerance = 0.001,
   generation = '1',
   drawChildren,
   drawProfile,
@@ -98,7 +100,9 @@ function MapIt({
   // more data using an api call
   const fetchGeoJson = useCallback(
     (areaKeys: string, areas: Area[]): Promise<FeatureCollection> => {
-      return fetch(`${url}/areas/${areaKeys}.geojson`).then(geoRes => {
+      return fetch(
+        `${url}/areas/${areaKeys}.geojson?simplify_tolerance=${tolerance}`
+      ).then(geoRes => {
         if (!geoRes.ok) return Promise.reject();
         return geoRes.json().then(({ features }) => {
           return {
@@ -121,7 +125,7 @@ function MapIt({
         });
       });
     },
-    [url]
+    [url, tolerance]
   );
 
   const fetchMapitArea = useCallback(async () => {

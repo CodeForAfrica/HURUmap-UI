@@ -20,6 +20,7 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
   .addDecorator(withKnobs)
   .add('ContinentRoot', () => (
     <MapIt
+      tolerance={number('tolerance', 0.01)}
       url={text('url', 'https://mapit.hurumap.org')}
       drawChildren={boolean('drawChildren', true)}
       filterCountries={array('filterCountries', ['KE', 'TZ', 'ZA'])}
@@ -80,6 +81,7 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
             </button>
           </Grid>
           <MapIt
+            tolerance={number('tolerance', 0.001)}
             url={text('url', 'https://mapit.hurumap.org')}
             drawChildren={boolean('drawChildren', true)}
             filterCountries={array('filterCountries', [])}
@@ -105,6 +107,7 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
   )
   .add('DefaultProfile', () => (
     <MapIt
+      tolerance={number('tolerance', 0.001)}
       url={text('url', 'https://mapit.hurumap.org')}
       drawChildren={boolean('drawChildren', false)}
       filterCountries={array('filterCountries', [])}
@@ -134,6 +137,7 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
   ))
   .add('ProfileChildren', () => (
     <MapIt
+      tolerance={number('tolerance', 0.001)}
       url={text('url', 'https://mapit.hurumap.org')}
       drawChildren={boolean('drawChildren', true)}
       filterCountries={array('filterCountries', [])}
