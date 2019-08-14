@@ -82,7 +82,6 @@ function MapIt({
   const mapRef = useRef<leaflet.Map | null>(null);
   const [featuresToDraw, setFeaturesToDraw] = useState<FeatureCollection>();
   const filterCountriesMemoized = useDeepRef(filterCountries);
-  console.log(leafletProps);
   const leafletPropsMemoized = useDeepRef(leafletProps);
   const geoLayerStyles = useDeepRef({
     focus: geoLayerFocusStyle,
