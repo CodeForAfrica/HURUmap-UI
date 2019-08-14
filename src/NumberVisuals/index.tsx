@@ -25,19 +25,19 @@ const styles = ({ breakpoints }: Theme) =>
     mainStatistic: {
       marginTop: '1em'
     },
-    h3: {
+    statistic: {
       fontSize: '2.5em'
     },
-    h3Deviation: {
-      fontSize: '0.35em',
+    statisticDeviation: {
+      fontSize: '0.4em',
       color: '#777',
       display: 'inlineBlock'
     },
-    h5: {
+    secondaryDeviation: {
       fontSize: '1em',
       color: '#777'
     },
-    h6: {
+    subtitle: {
       fontSize: '1.25em'
     },
     description: {
@@ -89,21 +89,25 @@ function NumberVisuals({
   const toggleHover = () => setOnHover(!onHover);
   return (
     <div className={classes.root}>
-      <Typography className={classes.h6}>{subtitle}</Typography>
+      <Typography className={classes.subtitle}>{subtitle}</Typography>
       <div className={classes.mainStatistic}>
         <Typography
-          className={classes.h3}
+          className={classes.statistic}
           onMouseEnter={toggleHover}
           onMouseLeave={toggleHover}
         >
           {` `}
           {statistic}
-          <span className={!onHover ? classes.hidden : classes.h3Deviation}>
+          <span
+            className={!onHover ? classes.hidden : classes.statisticDeviation}
+          >
             {' '}
             {statisticDeviation}
           </span>
         </Typography>
-        <Typography className={!onHover ? classes.hidden : classes.h5}>
+        <Typography
+          className={!onHover ? classes.hidden : classes.secondaryDeviation}
+        >
           {' '}
           {secondaryDeviation}
         </Typography>
@@ -124,7 +128,11 @@ function NumberVisuals({
                     {` `}
                     {d.parentDescription}
                   </span>
-                  <span className={!onHover ? classes.hidden : classes.h5}>
+                  <span
+                    className={
+                      !onHover ? classes.hidden : classes.secondaryDeviation
+                    }
+                  >
                     {` `}
                     {d.parentDeviation}
                   </span>
