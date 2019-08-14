@@ -185,6 +185,9 @@ function MapIt({
     [url, filterCountriesMemoized, drawProfile, geoLevel, fetchGeoJson]
   );
 
+  /**
+   * Data loading hook
+   */
   useEffect(() => {
     // if we are not on a profile page, then we are on homepage or country page
     // where no specific geography is focused, only child levels of the root geography are drawn
@@ -194,11 +197,9 @@ function MapIt({
     // so in this case we will filter using loadCountrries
     if (drawProfile) {
       loadGeometryForLevel().then(features => {
-        // drawFeatures(map, features);
         if (drawChildren) {
           fetchMapitArea().then(area => {
             loadGeometryForChildLevel(area.id).then(childrenFeatures => {
-              // drawFeatures(map, childrenFeatures);
               setFeaturesToDraw([...features, ...childrenFeatures]);
             });
           });
@@ -208,8 +209,6 @@ function MapIt({
       fetchMapitArea().then(area => {
         return loadGeometryForChildLevel(area.id).then(childrenFeatures => {
           setFeaturesToDraw(childrenFeatures);
-          // const layer = drawFeatures(map, childrenFeatures);
-          // map.fitBounds(layer.getBounds());
         });
       });
     }
@@ -221,6 +220,9 @@ function MapIt({
     loadGeometryForChildLevel
   ]);
 
+  /**
+   * Rendering hook
+   */
   useEffect(() => {
     if (mapRef.current) {
       mapRef.current.remove();
@@ -251,7 +253,7 @@ function MapIt({
 
     tileLayerMemoized.addTo(map);
 
-    leaflet
+    const geoJsonLayer = leaflet
       .geoJSON(featuresToDraw, {
         onEachFeature: (feature, layer: any) => {
           if (
@@ -279,6 +281,10 @@ function MapIt({
         }
       })
       .addTo(map);
+
+    if (!drawProfile) {
+      map.fitBounds(geoJsonLayer.getBounds());
+    }
   }, [
     mapId,
     tileLayerMemoized,
