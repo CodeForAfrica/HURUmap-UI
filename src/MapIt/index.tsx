@@ -294,9 +294,7 @@ function MapIt({
     geoLevel,
     geoCode,
     codeType,
-    geoLayerStyles.focus,
-    geoLayerStyles.blur,
-    geoLayerStyles.hover,
+    geoLayerStyles,
     onClickGeoLayer
   ]);
 
