@@ -74,8 +74,9 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
                 <em>the map should not glitch</em>
               </strong>
             </p>
-            <button onClick={() => setCount(count + 1)}>
-              Click Count: {count}
+            <button type="button" onClick={() => setCount(count + 1)}>
+              Click Count:
+              {count}
             </button>
           </Grid>
           <MapIt
