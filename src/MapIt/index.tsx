@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useCallback, useState } from 'react';
 import leaflet, { MapOptions, PathOptions, TileLayer } from 'leaflet';
 
 import 'leaflet/dist/leaflet.css';
+import { FeatureCollection } from 'geojson';
 import useDeepRef from './useDeepRef';
 
 const styles = createStyles({
@@ -79,17 +80,9 @@ function MapIt({
 }: MapItProps) {
   const mapId = id || 'mapit';
   const mapRef = useRef<leaflet.Map | null>(null);
-  const [featuresToDraw, setFeaturesToDraw] = useState<any>([]);
-  const tileLayerMemoized = useDeepRef(
-    tileLayer ||
-      leaflet.tileLayer(
-        'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
-        {
-          attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
-        }
-      )
-  );
+  const [featuresToDraw, setFeaturesToDraw] = useState<FeatureCollection>();
   const filterCountriesMemoized = useDeepRef(filterCountries);
+  console.log(leafletProps);
   const leafletPropsMemoized = useDeepRef(leafletProps);
   const geoLayerStyles = useDeepRef({
     focus: geoLayerFocusStyle,
@@ -105,24 +98,27 @@ function MapIt({
   // But also to have sufficient data to use like the `id` if we want to retrieve
   // more data using an api call
   const fetchGeoJson = useCallback(
-    (areaKeys: string, areas: Area[]): any => {
+    (areaKeys: string, areas: Area[]): Promise<FeatureCollection> => {
       return fetch(`${url}/areas/${areaKeys}.geojson`).then(geoRes => {
         if (!geoRes.ok) return Promise.reject();
         return geoRes.json().then(({ features }) => {
-          return features
-            ? features.map((feature: { properties: { name: string } }) => {
-                const areaInfo = areas.find(
-                  area => area.name === feature.properties.name
-                );
-                return {
-                  ...feature,
-                  properties: {
-                    ...feature.properties,
-                    ...areaInfo
-                  }
-                };
-              })
-            : [];
+          return {
+            type: 'FeatureCollection',
+            features: features
+              ? features.map((feature: { properties: { name: string } }) => {
+                  const areaInfo = areas.find(
+                    area => area.name === feature.properties.name
+                  );
+                  return {
+                    ...feature,
+                    properties: {
+                      ...feature.properties,
+                      ...areaInfo
+                    }
+                  };
+                })
+              : []
+          };
         });
       });
     },
@@ -136,7 +132,7 @@ function MapIt({
     return areaRes.json();
   }, [url, codeType, geoLevel, geoCode, generation]);
 
-  const loadGeometryForLevel = useCallback((): Promise<any> => {
+  const loadGeometryForLevel = useCallback((): Promise<FeatureCollection> => {
     // geo_level do not always match to mapit area type
     // AFR geo_level are level1_TZ_001 while mapit area type are specific ie PROVINCE, REGION, COUNTY
     // Using the geoid (geoLevel-geoCode) we will first request mapit api to give us=> mapit type of a specific geo
@@ -157,7 +153,7 @@ function MapIt({
   }, [fetchMapitArea, fetchGeoJson, generation, url]);
 
   const loadGeometryForChildLevel = useCallback(
-    (areaId: string): Promise<any> => {
+    (areaId: string): Promise<FeatureCollection> => {
       return fetch(`${url}/area/${areaId}/children`).then(areasRes => {
         if (!areasRes.ok) return Promise.reject();
 
@@ -196,26 +192,38 @@ function MapIt({
     // but not all child levels are supposed to be drawn (i.e mapit has ethiopia as child of continent but we don't have dominion ethiopia)
     // so in this case we will filter using loadCountrries
     if (drawProfile) {
-      loadGeometryForLevel().then(features => {
+      loadGeometryForLevel().then(featureCollection => {
         if (drawChildren) {
           fetchMapitArea().then(area => {
-            loadGeometryForChildLevel(area.id).then(childrenFeatures => {
-              setFeaturesToDraw([...features, ...childrenFeatures]);
-            });
+            loadGeometryForChildLevel(area.id).then(
+              childrenFeatureCollection => {
+                setFeaturesToDraw({
+                  type: 'FeatureCollection',
+                  features: [
+                    ...featureCollection.features,
+                    ...childrenFeatureCollection.features
+                  ]
+                });
+              }
+            );
           });
+        } else {
+          setFeaturesToDraw(featureCollection);
         }
       });
     } else {
       fetchMapitArea().then(area => {
-        return loadGeometryForChildLevel(area.id).then(childrenFeatures => {
-          setFeaturesToDraw(childrenFeatures);
-        });
+        return loadGeometryForChildLevel(area.id).then(
+          childrenFeatureCollection => {
+            setFeaturesToDraw(childrenFeatureCollection);
+          }
+        );
       });
     }
   }, [
+    drawChildren,
     drawProfile,
     loadGeometryForLevel,
-    drawChildren,
     fetchMapitArea,
     loadGeometryForChildLevel
   ]);
@@ -224,24 +232,27 @@ function MapIt({
    * Rendering hook
    */
   useEffect(() => {
-    if (mapRef.current) {
-      mapRef.current.remove();
+    if (!mapRef.current) {
+      mapRef.current = leaflet.map(mapId, {
+        boxZoom: false,
+        doubleClickZoom: false,
+        dragging: true,
+        keyboard: false,
+        scrollWheelZoom: false,
+        touchZoom: false,
+        zoomControl: false,
+        center: [0, 0],
+        zoom: 3,
+        ...leafletPropsMemoized
+      });
     }
 
-    mapRef.current = leaflet.map(mapId, {
-      boxZoom: false,
-      doubleClickZoom: false,
-      dragging: true,
-      keyboard: false,
-      scrollWheelZoom: false,
-      touchZoom: false,
-      zoomControl: false,
-      center: [0, 0],
-      zoom: 3,
-      ...leafletPropsMemoized
-    });
-
     const map = mapRef.current;
+
+    // Clear layers
+    map.eachLayer(layer => {
+      map.removeLayer(layer);
+    });
 
     if (map.dragging) {
       map.addControl(
@@ -251,7 +262,18 @@ function MapIt({
       );
     }
 
-    tileLayerMemoized.addTo(map);
+    if (tileLayer) {
+      tileLayer.addTo(map);
+    } else {
+      leaflet
+        .tileLayer(
+          'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+          {
+            attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+          }
+        )
+        .addTo(map);
+    }
 
     const geoJsonLayer = leaflet
       .geoJSON(featuresToDraw, {
@@ -282,20 +304,20 @@ function MapIt({
       })
       .addTo(map);
 
-    if (!drawProfile) {
+    if (!drawProfile && geoJsonLayer.getBounds().isValid()) {
       map.fitBounds(geoJsonLayer.getBounds());
     }
   }, [
     mapId,
-    tileLayerMemoized,
-    leafletPropsMemoized,
+    tileLayer,
     featuresToDraw,
     drawProfile,
     geoLevel,
     geoCode,
     codeType,
     geoLayerStyles,
-    onClickGeoLayer
+    onClickGeoLayer,
+    leafletPropsMemoized
   ]);
 
   return <div id={mapId} className={classes.root} />;
