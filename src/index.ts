@@ -3,6 +3,7 @@ export { default as BarChart } from './BarChart';
 export { default as BulletChart } from './BulletChart';
 export { default as LineChart } from './LineChart';
 export { default as PieChart } from './PieChart';
+export { default as NumberVisuals } from './NumberVisuals';
 export {
   default as NestedProportionalAreaChart
 } from './NestedProportionalAreaChart';
