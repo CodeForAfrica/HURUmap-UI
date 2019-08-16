@@ -39,7 +39,11 @@ function CustomContainer({
     role: 'img',
     viewBox: responsive ? `0 0 ${width} ${height}` : undefined
   });
-  const svgStyle = Object.assign({ pointerEvents: 'all' }, dimensions);
+  // Overflow visible will allow tooltips to not be cut off
+  const svgStyle = Object.assign(
+    { pointerEvents: 'all', overflow: 'visible' },
+    dimensions
+  );
 
   return (
     <div style={Object.assign({}, style, divStyle)}>
