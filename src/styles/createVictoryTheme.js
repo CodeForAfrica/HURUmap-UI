@@ -1,9 +1,8 @@
-import { VictoryTheme, VictoryThemeDefinitionLatest } from 'victory';
 import _ from 'lodash';
 
-export default function createVictoryTheme(
-  chartOptions?: VictoryThemeDefinitionLatest
-) {
+import { VictoryTheme } from 'victory';
+
+export default function createVictoryTheme(chartOptions) {
   const defaultTheme = _.merge(
     {
       breakpoints: {

@@ -5,7 +5,7 @@ import { VictoryChart, VictoryContainer } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
 
-const toChartAxisProps = prop => {
+export const toChartAxisProps = prop => {
   if (!prop) {
     return {};
   }
@@ -15,15 +15,6 @@ const toChartAxisProps = prop => {
   }
   return { independent: prop, dependent: prop };
 };
-
-toChartAxisProps.propTypes = {
-  prop: PropTypes.shape({
-    independent: PropTypes.shape({}),
-    dependent: PropTypes.shape({})
-  })
-};
-
-export { toChartAxisProps };
 
 function Chart({ children, responsive = true, ...props }) {
   return (
