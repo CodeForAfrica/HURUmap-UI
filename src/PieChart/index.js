@@ -1,44 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import {
-  Helpers,
-  PaddingProps,
-  VictoryPie,
-  VictoryPieProps,
-  VictoryThemeDefinitionLatest,
-  VictoryTooltip,
-  VictoryTooltipProps
-} from 'victory';
+import { Helpers, VictoryPie, VictoryTooltip } from 'victory';
 
 import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
 import PieLabel from './PieLabel';
 
-export interface PieChartPartsProps {
-  tooltip?: VictoryTooltipProps;
-}
-
-export interface PieChartProps extends VictoryPieProps {
-  donut?: boolean;
-  groupSpacing?: number;
-  parts?: PieChartPartsProps;
-  /**
-   * radii enables comparing pie charts using areas instead of "pie"s.
-   * If this is enabled, a single color will be used for the pie chart.
-   *
-   * The color will be selected (sequentially) from the supplied colorScale
-   * (if any).
-   */
-  radii?: number[];
-}
-
 const DEFAULT_DONUT_INNER_RADIUS = 75; // in degrees
-const computeRadii = (
-  width: number | undefined,
-  height: number | undefined,
-  padding: PaddingProps | undefined,
-  groupSpacing: number | undefined = 0
-) => {
+const computeRadii = (width, height, padding, groupSpacing = 0) => {
   const radius = Helpers.getRadius({ width, height, padding });
   return [radius - groupSpacing / 2];
 };
@@ -53,12 +23,11 @@ function PieChart({
   radius,
   radii,
   standalone = true,
-  theme: t,
+  theme,
   height,
   width,
   ...props
-}: PieChartProps) {
-  const theme = (t as unknown) as VictoryThemeDefinitionLatest;
+}) {
   const { pie: chart } = theme;
   if (!data || !chart) {
     return null;
@@ -68,7 +37,7 @@ function PieChart({
   const colorScale1 = colorScale || chart.colorScale;
   let colorScale2 = colorScale1;
   if (radii && colorScale && colorScale.length > 1) {
-    colorScale2 = (colorScale as string[]).slice(1);
+    colorScale2 = colorScale.slice(1);
   }
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
 
@@ -163,5 +132,59 @@ function PieChart({
     </CustomContainer>
   );
 }
+
+PieChart.propTypes = {
+  colorScale: PropTypes.oneOf(
+    PropTypes.string,
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+      })
+    )
+  ),
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+    })
+  ),
+  donut: PropTypes.bool,
+  groupSpacing: PropTypes.number,
+  height: PropTypes.number,
+  innerRadius: PropTypes.number,
+  padding: PropTypes.oneOf(PropTypes.number, PropTypes.shape({})),
+  parts: PropTypes.shape({
+    tooltip: PropTypes.shape({})
+  }),
+  radius: PropTypes.number,
+  /**
+   * radii enables comparing pie charts using areas instead of "pie"s.
+   * If this is enabled, a single color will be used for the pie chart.
+   *
+   * The color will be selected (sequentially) from the supplied colorScale
+   * (if any).
+   */
+  radii: PropTypes.arrayOf(PropTypes.number),
+  standalone: PropTypes.bool,
+  theme: PropTypes.shape({
+    pie: PropTypes.shape({})
+  }),
+  width: PropTypes.number
+};
+
+PieChart.defaultProps = {
+  colorScale: undefined,
+  data: undefined,
+  donut: undefined,
+  groupSpacing: undefined,
+  height: undefined,
+  innerRadius: undefined,
+  padding: undefined,
+  parts: undefined,
+  radius: undefined,
+  radii: undefined,
+  standalone: undefined,
+  theme: undefined,
+  width: undefined
+};
 
 export default withVictoryTheme(PieChart);

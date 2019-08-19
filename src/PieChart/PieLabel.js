@@ -1,22 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import { ColorScalePropType, VictoryLabel, VictoryLabelProps } from 'victory';
+import { VictoryLabel } from 'victory';
 
 import withVictoryTheme from '../styles/withVictoryTheme';
-
-export interface PieLabelProps extends VictoryLabelProps {
-  colorScale?: ColorScalePropType;
-  // TODO(kilemensi): Seems like datum has _x variable that tracks the
-  //                  data index (but it starts from 1).
-  datum?: { _x: number };
-}
 
 function PieLabel({
   colorScale = [],
   datum = { _x: 1 },
   style: originalStyle,
   ...props
-}: PieLabelProps) {
+}) {
   const style = Array.isArray(colorScale)
     ? Object.assign({}, originalStyle, {
         // eslint-disable-next-line no-underscore-dangle
@@ -26,5 +20,19 @@ function PieLabel({
 
   return <VictoryLabel style={style} {...props} />;
 }
+
+PieLabel.propTypes = {
+  colorScale: PropTypes.arrayOf(PropTypes.shape({})),
+  // TODO(kilemensi): Seems like datum has _x variable that tracks the
+  //                  data index (but it starts from 1).
+  datum: PropTypes.shape({ _x: PropTypes.number }),
+  style: PropTypes.shape({})
+};
+
+PieLabel.defaultProps = {
+  colorScale: undefined,
+  datum: undefined,
+  style: undefined
+};
 
 export default withVictoryTheme(PieLabel);
