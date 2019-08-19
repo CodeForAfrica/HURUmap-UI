@@ -1,52 +1,37 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import { withStyles, createStyles, WithStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import {
   ClickAwayListener,
   Fade,
   Paper,
-  Theme,
   Typography,
   DialogTitle,
   DialogContent,
-  DialogContentText
+  DialogContentText,
+  Popper
 } from '@material-ui/core';
-import Popper, { PopperProps } from '@material-ui/core/Popper';
 
-const styles = ({ breakpoints }: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-      marginTop: '1rem',
-      [breakpoints.up('md')]: {
-        width: '22rem'
-      }
-    },
-    paper: {},
-    code: {
-      borderRadius: '0.25rem',
-      border: '1px solid gray',
-      overflow: 'auto'
+const useStyles = makeStyles(({ breakpoints }) => ({
+  root: {
+    width: '100%',
+    marginTop: '1rem',
+    [breakpoints.up('md')]: {
+      width: '22rem'
     }
-  });
+  },
+  paper: {},
+  code: {
+    borderRadius: '0.25rem',
+    border: '1px solid gray',
+    overflow: 'auto'
+  }
+}));
 
-interface Props extends WithStyles<typeof styles>, PopperProps {
-  children: string;
-  onClose: (event: React.MouseEvent<Document>) => void;
-  open: boolean;
-  subtitle?: string;
-  title?: string;
-}
+function EmbedPopup({ children, onClose, open, subtitle, title, ...props }) {
+  const classes = useStyles();
 
-function EmbedPopup({
-  children,
-  classes,
-  onClose,
-  open,
-  subtitle,
-  title,
-  ...props
-}: Props) {
   return (
     <Popper open={open} className={classes.root} transition {...props}>
       {({ TransitionProps }) => (
@@ -70,4 +55,20 @@ function EmbedPopup({
   );
 }
 
-export default withStyles(styles)(EmbedPopup);
+EmbedPopup.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired,
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  subtitle: PropTypes.string,
+  title: PropTypes.string
+};
+
+EmbedPopup.defaultProps = {
+  subtitle: undefined,
+  title: undefined
+};
+
+export default EmbedPopup;

@@ -1,14 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import { withStyles, CSSProperties, WithStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import { ButtonBase, Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import { PopperProps } from '@material-ui/core/Popper';
 
 import infoIcon from '../assets/info.png';
 import shareIcon from '../assets/share.png';
 
-const styles = {
+const useStyles = makeStyles({
   root: {
     width: 'available',
     height: 'auto',
@@ -28,48 +28,23 @@ const styles = {
   },
   title: {},
   subtitle: {}
-};
-
-interface Props extends WithStyles<typeof styles> {
-  classes: WithStyles<typeof styles>['classes'];
-  children: any;
-  title: string;
-  subtitle: string;
-  /**
-   * default: `hidden`
-   * Set `scroll/auto` if your chart is vertical
-   * On overflow maxChartWidth, it will scroll x direction
-   */
-  overflowX?: CSSProperties['overflowX'];
-  /**
-   * default: `hidden`
-   * Set `scroll/auto` if your chart is horizontal
-   * On overflow maxChartHeight, it will scroll y direction
-   */
-  overflowY?: CSSProperties['overflowY'];
-  maxChartWidth?: string | number;
-  maxChartHeight?: string | number;
-  onClickInfo?: (anchorEl: PopperProps['anchorEl']) => void;
-  onClickShare?: (anchorEl: PopperProps['anchorEl']) => void;
-}
+});
 
 function ChartContainer({
-  classes,
   title,
   subtitle,
   children,
   onClickInfo,
   onClickShare,
-  overflowX = 'hidden',
-  overflowY = 'hidden',
+  overflowX,
+  overflowY,
   maxChartWidth,
   maxChartHeight
-}: Props) {
-  const infoRef = React.useRef<HTMLButtonElement>(null);
-  const shareRef = React.useRef<HTMLButtonElement>(null);
-  const getReferenceObject = (
-    ref: React.RefObject<HTMLButtonElement>
-  ): PopperProps['anchorEl'] => {
+}) {
+  const classes = useStyles();
+  const infoRef = React.useRef(null);
+  const shareRef = React.useRef(null);
+  const getReferenceObject = ref => {
     const { current } = ref;
     if (current) {
       return {
@@ -143,4 +118,28 @@ function ChartContainer({
   );
 }
 
-export default withStyles(styles)(ChartContainer);
+ChartContainer.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired,
+  maxChartHeight: PropTypes.oneOf(PropTypes.number, PropTypes.string),
+  maxChartWidth: PropTypes.oneOf(PropTypes.number, PropTypes.string),
+  onClickInfo: PropTypes.func,
+  onClickShare: PropTypes.func,
+  overflowX: PropTypes.oneOf('hidden', 'auto', 'scroll'),
+  overflowY: PropTypes.oneOf('hidden', 'auto', 'scroll'),
+  subtitle: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
+};
+
+ChartContainer.defaultProps = {
+  maxChartHeight: undefined,
+  maxChartWidth: undefined,
+  onClickInfo: undefined,
+  onClickShare: undefined,
+  overflowX: 'hidden',
+  overflowY: 'hidden'
+};
+
+export default ChartContainer;
