@@ -3,12 +3,10 @@ import { storiesOf } from '@storybook/react';
 import {
   withKnobs,
   boolean,
-  text,
   number,
   select
 } from '@storybook/addon-knobs';
 
-import { CSSProperties } from '@material-ui/styles';
 import Grid, { GridSize } from '@material-ui/core/Grid';
 import { PopperProps } from '@material-ui/core/Popper';
 
@@ -74,24 +72,8 @@ storiesOf('HURUmap UI|ChartContainer', module)
             }
           >
             <ChartContainer
-              overflowX={
-                select(
-                  'overflowX',
-                  ['auto', 'clip', 'hidden', 'scroll', 'visible'],
-                  'auto'
-                ) as CSSProperties['overflowX']
-              }
-              overflowY={
-                select(
-                  'overflowY',
-                  ['auto', 'clip', 'hidden', 'scroll', 'visible'],
-                  'hidden'
-                ) as CSSProperties['overflowX']
-              }
               onClickInfo={handleClickInfo}
               onClickShare={handleClickShare}
-              maxChartHeight={text('maxChartHeight', '300px')}
-              maxChartWidth={text('maxChartWidth', '100%')}
               title="Lorem ipsum dolor sit amet."
               subtitle="Praesent at dignissim est. Integer porta consectetur ante, ut congue erat."
             >

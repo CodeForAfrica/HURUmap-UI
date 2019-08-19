@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { withStyles, CSSProperties, WithStyles } from '@material-ui/styles';
+import { withStyles, WithStyles } from '@material-ui/styles';
 import { ButtonBase, Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { PopperProps } from '@material-ui/core/Popper';
@@ -35,20 +35,6 @@ interface Props extends WithStyles<typeof styles> {
   children: any;
   title: string;
   subtitle: string;
-  /**
-   * default: `hidden`
-   * Set `scroll/auto` if your chart is vertical
-   * On overflow maxChartWidth, it will scroll x direction
-   */
-  overflowX?: CSSProperties['overflowX'];
-  /**
-   * default: `hidden`
-   * Set `scroll/auto` if your chart is horizontal
-   * On overflow maxChartHeight, it will scroll y direction
-   */
-  overflowY?: CSSProperties['overflowY'];
-  maxChartWidth?: string | number;
-  maxChartHeight?: string | number;
   onClickInfo?: (anchorEl: PopperProps['anchorEl']) => void;
   onClickShare?: (anchorEl: PopperProps['anchorEl']) => void;
 }
@@ -59,11 +45,7 @@ function ChartContainer({
   subtitle,
   children,
   onClickInfo,
-  onClickShare,
-  overflowX = 'hidden',
-  overflowY = 'hidden',
-  maxChartWidth,
-  maxChartHeight
+  onClickShare
 }: Props) {
   const infoRef = React.useRef<HTMLButtonElement>(null);
   const shareRef = React.useRef<HTMLButtonElement>(null);
@@ -127,17 +109,7 @@ function ChartContainer({
         </Grid>
       </Grid>
       <Grid container justify="center">
-        <div
-          className={classes.content}
-          style={{
-            overflowX,
-            overflowY,
-            maxHeight: maxChartHeight,
-            maxWidth: maxChartWidth
-          }}
-        >
-          {children}
-        </div>
+        <div className={classes.content}>{children}</div>
       </Grid>
     </Grid>
   );

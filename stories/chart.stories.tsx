@@ -31,8 +31,6 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
       <div
         style={{
           height: '300px',
-          overflowX: horizontal ? 'hidden' : 'auto',
-          overflowY: horizontal ? 'auto' : 'hidden'
         }}
       >
         <BarChart
@@ -84,14 +82,14 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
     return (
       <div
         style={{
-          height: '300px',
-          overflowX: horizontal ? 'hidden' : 'auto',
-          overflowY: horizontal ? 'auto' : 'hidden'
+          height: '300px'
         }}
       >
         <BarChart
-          width={number('width', 500)}
-          height={number('height', 300)}
+          barWidth={number('barWidth', undefined)}
+          barSpacing={number('barSpacing', undefined)}
+          width={number('width', undefined)}
+          height={number('height', undefined)}
           labels={datum =>
             `Group ${datum.tick} Tick\n${datum.x} ${datum.y}${text(
               'dataUnit',
@@ -123,9 +121,7 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
     return (
       <div
         style={{
-          height: '300px',
-          overflowX: horizontal ? 'hidden' : 'auto',
-          overflowY: horizontal ? 'auto' : 'hidden'
+          height: '300px'
         }}
       >
         <BarChart

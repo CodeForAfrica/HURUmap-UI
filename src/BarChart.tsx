@@ -47,8 +47,8 @@ interface Props extends VictoryBarProps, ChartProps {
 function BarChart({
   theme: t,
   data,
-  barWidth = 40,
-  groupSpacing = 30,
+  barWidth: suggestedBarWidth = 40,
+  groupSpacing: suggestedGroupSpacing = 30,
   barSpacing = 5,
   horizontal,
   width,
@@ -92,9 +92,13 @@ function BarChart({
   const { colorScale } = groupChart;
 
   const calculatedDimension =
-    (barWidth + barSpacing) * barCount +
-    groupSpacing * (groupCount - 1) +
+    (suggestedBarWidth + barSpacing) * barCount +
+    suggestedGroupSpacing * (groupCount - 1) +
     dataMargin;
+
+  const barWidth = width
+    ? suggestedBarWidth * (width / calculatedDimension)
+    : suggestedBarWidth;
 
   return (
     <Chart
@@ -104,10 +108,11 @@ function BarChart({
       }
       responsive={responsive}
       horizontal={horizontal}
-      width={horizontal ? width : calculatedDimension}
-      height={!horizontal ? height : calculatedDimension}
-      // The bar chart would always overflow by half the width plus some pixels
-      domainPadding={{ x: barWidth / 2 + 5 }}
+      width={width || calculatedDimension}
+      height={height || (horizontal ? calculatedDimension : undefined)}
+      domainPadding={
+        barSpacing === 0 ? { x: suggestedBarWidth - 5 } : undefined
+      }
       {...chartProps}
     >
       {isGrouped ? (
