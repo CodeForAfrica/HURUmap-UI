@@ -1,22 +1,12 @@
 import React, { Fragment } from 'react';
-import { VictoryPieProps, VictoryThemeDefinitionLatest } from 'victory';
+import PropTypes from 'prop-types';
 
-import {
-  scaleDesktopDimensions,
-  scaleMobileDimensions,
-  ScaledAreaData
-} from './ScaledArea';
-import { toReferenceProps, ReferableChartProps } from '../ReferableChart';
+import { scaleDesktopDimensions, scaleMobileDimensions } from './ScaledArea';
+import { toReferenceProps } from '../ReferableChart';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
 import ScaledCircle from './ScaledCircle';
 import ScaledSquare from './ScaledSquare';
-
-interface Props<T> extends VictoryPieProps, ReferableChartProps<T> {
-  data: T[];
-  groupSpacing?: number;
-  square?: boolean;
-}
 
 /**
  * Data value represents **area**. We need to find length/radius in order to
@@ -31,10 +21,9 @@ function NestedProportionalAreaChart({
   reference: ref,
   square = false,
   style,
-  theme: t,
+  theme,
   width: w
-}: Props<ScaledAreaData>) {
-  const theme = (t as unknown) as VictoryThemeDefinitionLatest;
+}) {
   const { proportionalArea: chart } = theme;
   if (!data || !chart) {
     return null;
@@ -107,5 +96,37 @@ function NestedProportionalAreaChart({
     </Fragment>
   );
 }
+
+NestedProportionalAreaChart.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.shape({})),
+  groupSpacing: PropTypes.number,
+  height: PropTypes.number,
+  reference: PropTypes.shape({
+    data: PropTypes.arrayOf(PropTypes.shape({})),
+    style: PropTypes.arrayOf(PropTypes.shape({}))
+  }),
+  square: PropTypes.bool,
+  style: PropTypes.shape({
+    labels: PropTypes.shape({})
+  }),
+  theme: PropTypes.shape({
+    proportionalArea: PropTypes.shape({}),
+    breakpoints: PropTypes.shape({
+      sm: PropTypes.number
+    })
+  }),
+  width: PropTypes.number
+};
+
+NestedProportionalAreaChart.defaultProps = {
+  data: undefined,
+  groupSpacing: undefined,
+  height: undefined,
+  reference: undefined,
+  square: false,
+  style: undefined,
+  theme: undefined,
+  width: undefined
+};
 
 export default withVictoryTheme(NestedProportionalAreaChart);

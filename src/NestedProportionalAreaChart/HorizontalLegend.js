@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { VictoryLabel } from 'victory';
 
@@ -6,15 +7,8 @@ import withVictoryTheme from '../styles/withVictoryTheme';
 import {
   dataLabelsStyle,
   referenceDataStyle,
-  referenceLabelsStyle,
-  ScaledAreaProps
+  referenceLabelsStyle
 } from './ScaledArea';
-
-interface Props extends ScaledAreaProps {
-  cx: number;
-  cy: number;
-  radii: number[];
-}
 
 /**
  *
@@ -27,7 +21,7 @@ function HorizontalLegend({
   radii,
   reference,
   style
-}: Props) {
+}) {
   // From the designs:
   // i) Data value has 36px height and 130px width i.e. 190px from center
   // of reference circle, vertically centered with the circle,
@@ -75,7 +69,7 @@ function HorizontalLegend({
               y={cy + 18} // 36 / 2 is the bottom half of data value
               // 10px top padding from data value + label has height of 20px
               dy={10 + 20}
-              style={style && (style.labels as React.CSSProperties)}
+              style={style && style.labels}
               text={data[i].label}
             />
           )}
@@ -103,5 +97,39 @@ function HorizontalLegend({
     </React.Fragment>
   );
 }
+
+HorizontalLegend.propTypes = {
+  colorScale: PropTypes.oneOf(
+    PropTypes.string,
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+      })
+    )
+  ),
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      x: PropTypes.oneOf(PropTypes.number, PropTypes.string),
+      label: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+    })
+  ),
+  cx: PropTypes.number.isRequired,
+  cy: PropTypes.number.isRequired,
+  radii: PropTypes.arrayOf(PropTypes.number),
+  reference: PropTypes.shape({
+    data: PropTypes.arrayOf(PropTypes.shape({}))
+  }),
+  style: PropTypes.shape({
+    labels: PropTypes.shape({})
+  })
+};
+
+HorizontalLegend.defaultProps = {
+  colorScale: undefined,
+  data: undefined,
+  radii: undefined,
+  reference: undefined,
+  style: undefined
+};
 
 export default withVictoryTheme(HorizontalLegend);

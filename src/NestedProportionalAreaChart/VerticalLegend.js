@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { VictoryLabel } from 'victory';
 
@@ -6,7 +7,6 @@ import {
   dataLabelsStyle,
   referenceDataStyle,
   referenceLabelsStyle,
-  ScaledAreaProps,
   MOBILE_HEIGHT
 } from './ScaledArea';
 import withVictoryTheme from '../styles/withVictoryTheme';
@@ -14,12 +14,7 @@ import withVictoryTheme from '../styles/withVictoryTheme';
 /**
  *
  */
-function VerticalLegend({
-  colorScale,
-  data,
-  reference,
-  style
-}: ScaledAreaProps) {
+function VerticalLegend({ colorScale, data, reference, style }) {
   // For starters, lets assume each data label has 36px height,
   // reference label has 48 px, and there is 10px between labels
   // and charts
@@ -68,5 +63,35 @@ function VerticalLegend({
     </React.Fragment>
   );
 }
+
+VerticalLegend.propTypes = {
+  colorScale: PropTypes.oneOf(
+    PropTypes.string,
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+      })
+    )
+  ),
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      x: PropTypes.oneOf(PropTypes.number, PropTypes.string),
+      label: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+    })
+  ),
+  reference: PropTypes.shape({
+    data: PropTypes.arrayOf(PropTypes.shape({}))
+  }),
+  style: PropTypes.shape({
+    labels: PropTypes.shape({})
+  })
+};
+
+VerticalLegend.defaultProps = {
+  colorScale: undefined,
+  data: undefined,
+  reference: undefined,
+  style: undefined
+};
 
 export default withVictoryTheme(VerticalLegend);

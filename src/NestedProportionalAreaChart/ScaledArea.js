@@ -1,6 +1,3 @@
-import { ColorScalePropType, VictoryStyleInterface } from 'victory';
-import { ReferenceProps } from '../ReferableChart';
-
 // CHARTS
 // -------
 
@@ -16,18 +13,7 @@ export const DESKTOP_WIDTH = 650;
 export const MOBILE_HEIGHT = 386;
 export const MOBILE_WIDTH = 226;
 
-/**
- * data.
- */
-export interface ScaledAreaData {
-  x: number;
-  label?: string;
-}
-
-const scaleDimensions = (
-  from: { height: number; width: number },
-  to: { height: number; width: number }
-) => {
+const scaleDimensions = (from, to) => {
   const { height: fH, width: fW } = from;
   const { height: tH, width: tW } = to;
   // Scale from fH to tW first
@@ -40,25 +26,18 @@ const scaleDimensions = (
   return width / fW;
 };
 
-export function scaleDesktopDimensions(height: number, width: number) {
+export function scaleDesktopDimensions(height, width) {
   return scaleDimensions(
     { height: DESKTOP_HEIGHT, width: DESKTOP_WIDTH },
     { height, width }
   );
 }
 
-export function scaleMobileDimensions(height: number, width: number) {
+export function scaleMobileDimensions(height, width) {
   return scaleDimensions(
     { height: MOBILE_HEIGHT, width: MOBILE_WIDTH },
     { height, width }
   );
-}
-
-export interface ScaledAreaProps {
-  colorScale: ColorScalePropType;
-  data: ScaledAreaData[];
-  reference: ReferenceProps<ScaledAreaData>;
-  style?: VictoryStyleInterface;
 }
 
 // LEGENDS
@@ -66,15 +45,11 @@ export interface ScaledAreaProps {
 
 /**
  * Style for data points
- * @param index .
- * @param colorScale .
- * @param style .
+ * @param index number.
+ * @param colorScale string | string[].
+ * @param style object.
  */
-export const dataLabelsStyle = (
-  index: number,
-  colorScale: ColorScalePropType,
-  style?: VictoryStyleInterface
-): React.CSSProperties =>
+export const dataLabelsStyle = (index, colorScale, style) =>
   Object.assign(
     {
       fontSize: 36,
@@ -84,15 +59,13 @@ export const dataLabelsStyle = (
     {
       fill: colorScale[index % colorScale.length]
     }
-  ) as React.CSSProperties;
+  );
 
 /**
  * Style for reference data point.
  * @param reference .
  */
-export const referenceDataStyle = (
-  reference: ReferenceProps<ScaledAreaData>
-) => {
+export const referenceDataStyle = reference => {
   const { style: referenceStyle } = reference;
 
   return Object.assign(
@@ -101,15 +74,13 @@ export const referenceDataStyle = (
     },
     // Since data has gradient fill style, lets use labels style
     (referenceStyle && referenceStyle.labels) || {}
-  ) as React.CSSProperties;
+  );
 };
 
 /**
  * Style for reference data label.
  */
-export const referenceLabelsStyle = (
-  reference: ReferenceProps<ScaledAreaData>
-) => {
+export const referenceLabelsStyle = reference => {
   const { style: referenceStyle } = reference;
-  return referenceStyle && (referenceStyle.labels as React.CSSProperties);
+  return referenceStyle && referenceStyle.labels;
 };

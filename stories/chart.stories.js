@@ -13,7 +13,7 @@ import {
   BulletChart,
   LineChart,
   PieChart,
-  // NestedProportionalAreaChart,
+  NestedProportionalAreaChart,
   ComparisonBarChart
 } from '../src';
 import { CenterDecorator } from './common';
@@ -308,7 +308,6 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
     </div>
   ));
 
-/*
 storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
@@ -338,7 +337,6 @@ storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
       />
     </div>
   ));
-*/
 
 storiesOf('HURUmap UI|Charts/ComparisonBarChart', module)
   .addDecorator(CenterDecorator)

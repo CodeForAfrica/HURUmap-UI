@@ -1,25 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   DESKTOP_HEIGHT,
   DESKTOP_WIDTH,
   MOBILE_HEIGHT,
-  MOBILE_WIDTH,
-  ScaledAreaProps
+  MOBILE_WIDTH
 } from './ScaledArea';
 import HorizontalLegend from './HorizontalLegend';
-import PieChart, { PieChartProps } from '../PieChart';
+import PieChart from '../PieChart';
 import VerticalLegend from './VerticalLegend';
-
-type P = Pick<
-  PieChartProps,
-  Exclude<keyof PieChartProps, 'colorScale' | 'data' | 'style'>
->;
-
-interface Props extends P, ScaledAreaProps {
-  groupSpacing: number;
-  mobile?: boolean;
-}
 
 /**
  *
@@ -28,11 +18,11 @@ function ScaledCircle({
   colorScale = [],
   data,
   groupSpacing,
-  mobile = false,
+  mobile,
   reference,
   style,
   ...props
-}: Props) {
+}) {
   const cx = mobile ? MOBILE_WIDTH / 2 : DESKTOP_WIDTH / 2;
   const cy = mobile ? 100 + MOBILE_WIDTH / 2 : DESKTOP_HEIGHT / 2;
   const height = mobile ? MOBILE_HEIGHT : DESKTOP_HEIGHT;
@@ -94,5 +84,39 @@ function ScaledCircle({
     </React.Fragment>
   );
 }
+
+ScaledCircle.propTypes = {
+  colorScale: PropTypes.oneOf(
+    PropTypes.string,
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+      })
+    )
+  ),
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      x: PropTypes.oneOf(PropTypes.number, PropTypes.string),
+      label: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+    })
+  ),
+  groupSpacing: PropTypes.number.isRequired,
+  mobile: PropTypes.bool,
+  reference: PropTypes.shape({
+    data: PropTypes.arrayOf(PropTypes.shape({})),
+    style: PropTypes.arrayOf(PropTypes.shape({}))
+  }),
+  style: PropTypes.shape({
+    labels: PropTypes.shape({})
+  })
+};
+
+ScaledCircle.defaultProps = {
+  colorScale: undefined,
+  data: undefined,
+  mobile: false,
+  reference: undefined,
+  style: undefined
+};
 
 export default ScaledCircle;

@@ -1,33 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Rect } from 'victory';
 
-import { ScaledAreaProps, MOBILE_WIDTH } from './ScaledArea';
+import { MOBILE_WIDTH } from './ScaledArea';
 import VerticalLegend from './VerticalLegend';
-
-interface Props extends ScaledAreaProps {
-  className?: string;
-  clipPath?: string;
-  events?: React.DOMAttributes<React.ElementType>;
-  role?: string;
-  rx?: number;
-  ry?: number;
-  shapeRendering?: string;
-  transform?: string;
-  x?: number;
-  y?: number;
-}
 
 /**
  *
  */
-function ScaledSquare({
-  colorScale = [],
-  data,
-  reference,
-  style,
-  ...props
-}: Props) {
+function ScaledSquare({ colorScale = [], data, reference, style, ...props }) {
   const size = MOBILE_WIDTH;
   const x = 0;
   const y = 100; // Chart starts 100px from top i.e. below labels
@@ -79,4 +61,34 @@ function ScaledSquare({
   );
 }
 
+ScaledSquare.propTypes = {
+  colorScale: PropTypes.oneOf(
+    PropTypes.string,
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+      })
+    )
+  ),
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      x: PropTypes.oneOf(PropTypes.number, PropTypes.string),
+      label: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+    })
+  ),
+  reference: PropTypes.shape({
+    data: PropTypes.arrayOf(PropTypes.shape({})),
+    style: PropTypes.arrayOf(PropTypes.shape({}))
+  }),
+  style: PropTypes.shape({
+    labels: PropTypes.shape({})
+  })
+};
+
+ScaledSquare.defaultProps = {
+  colorScale: undefined,
+  data: undefined,
+  reference: undefined,
+  style: undefined
+};
 export default ScaledSquare;
