@@ -1,51 +1,14 @@
 import React from 'react';
-import {
-  VictoryBar,
-  VictoryGroup,
-  VictoryAxis,
-  VictoryBarProps,
-  VictoryChartProps,
-  VictoryGroupProps,
-  VictoryThemeDefinitionLatest,
-  VictoryTooltip,
-  VictoryTooltipProps
-} from 'victory';
+import PropTypes from 'prop-types';
+
+import { VictoryBar, VictoryGroup, VictoryAxis, VictoryTooltip } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
-import Chart, {
-  toChartAxisProps,
-  ChartAxisPropsType,
-  ChartProps
-} from './Chart';
+import Chart, { toChartAxisProps } from './Chart';
 import WrapLabel from './WrapLabel';
 
-type Data = {
-  x: string | number;
-  y: number;
-}[];
-
-type GroupData = {
-  label: string | number;
-  data: Data;
-}[];
-
-export interface BarChartPartsProps {
-  axis?: ChartAxisPropsType;
-  parent?: VictoryChartProps;
-  group?: VictoryGroupProps | VictoryGroupProps[];
-  tooltip?: VictoryTooltipProps;
-}
-
-interface Props extends VictoryBarProps, ChartProps {
-  barWidth?: number;
-  groupSpacing?: number;
-  barSpacing?: number;
-  data: GroupData | Data;
-  parts?: BarChartPartsProps;
-}
-
 function BarChart({
-  theme: t,
+  theme,
   data,
   barWidth = 40,
   groupSpacing = 30,
@@ -56,8 +19,7 @@ function BarChart({
   responsive = false,
   parts,
   ...props
-}: Props) {
-  const theme = (t as unknown) as VictoryThemeDefinitionLatest;
+}) {
   const { group: groupChart } = theme;
   if (!data || !groupChart) {
     return null;
@@ -67,17 +29,17 @@ function BarChart({
   const dataMargin = 95;
   let groupCount = 1;
   let barCount = data.length;
-  let plotData = [data as Data];
-  const isGrouped = Boolean((data as GroupData)[0].data);
+  let plotData = [data];
+  const isGrouped = Boolean(data[0].data);
   if (isGrouped) {
-    const dataFields = (data as GroupData)[0].data.map(d => d.x);
+    const dataFields = data[0].data.map(d => d.x);
     groupCount = data.length;
     barCount = dataFields.length * groupCount;
 
     // Inverse the data provided
     // Victory group expects the fields to group as root
     plotData = dataFields.map(field =>
-      (data as GroupData).map(x => {
+      data.map(x => {
         const d = x.data.find(y => y.x === field);
         return { x: x.label, y: d ? d.y : 0, tick: d ? d.x : 0 };
       })
@@ -86,8 +48,7 @@ function BarChart({
 
   const axisProps = (parts && toChartAxisProps(parts.axis)) || {};
   const chartProps = parts && parts.parent;
-  const groupProps =
-    parts && parts.group ? ([] as VictoryGroupProps[]).concat(parts.group) : [];
+  const groupProps = parts && parts.group ? [].concat(parts.group) : [];
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
   const { colorScale } = groupChart;
 
@@ -156,4 +117,42 @@ function BarChart({
   );
 }
 
+BarChart.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.oneOf(
+      PropTypes.shape({
+        x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+      }),
+      PropTypes.shape({ data: PropTypes.shape({}) })
+    )
+  ).isRequired,
+  barSpacing: PropTypes.number,
+  barWidth: PropTypes.number,
+  groupSpacing: PropTypes.number,
+  height: PropTypes.number,
+  horizontal: PropTypes.bool,
+  parts: PropTypes.shape({
+    axis: PropTypes.shape({}),
+    group: PropTypes.shape({}),
+    parent: PropTypes.shape({}),
+    tooltip: PropTypes.shape({})
+  }),
+  responsive: PropTypes.bool,
+  theme: PropTypes.shape({
+    group: PropTypes.shape({})
+  }),
+  width: PropTypes.number
+};
+
+BarChart.defaultProps = {
+  barSpacing: undefined,
+  barWidth: undefined,
+  groupSpacing: undefined,
+  height: undefined,
+  horizontal: undefined,
+  parts: undefined,
+  responsive: undefined,
+  theme: undefined,
+  width: undefined
+};
 export default withVictoryTheme(BarChart);
