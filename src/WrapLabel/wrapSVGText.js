@@ -1,7 +1,7 @@
-export default (textElement: SVGTextElement, text: string, width: number) => {
+export default (textElement, text, width) => {
   const words = text.split(/\s+/).reverse();
   let word = words.pop();
-  let line: any = [];
+  let line = [];
   const lineHeight = 14;
   const x = textElement.getAttribute('x');
   const textAnchor = textElement.getAttribute('text-anchor');
