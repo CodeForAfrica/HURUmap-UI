@@ -80,7 +80,12 @@ VerticalLegend.propTypes = {
     })
   ),
   reference: PropTypes.shape({
-    data: PropTypes.arrayOf(PropTypes.shape({}))
+    data: PropTypes.arrayOf(
+      PropTypes.shape({
+        x: PropTypes.oneOf(PropTypes.number, PropTypes.string),
+        label: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+      })
+    )
   }),
   style: PropTypes.shape({
     labels: PropTypes.shape({})
