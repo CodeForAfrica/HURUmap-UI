@@ -17,7 +17,7 @@ function loadStories() {
   req.keys().forEach(req);
   // Here we can require as many stories as we need.
   // By default this project is setup to detect and pickup any story file
-  // with the name ending in .stories.tsx
+  // with the name ending in .stories.js
 }
 
 configure(loadStories, module);
