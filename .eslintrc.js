@@ -21,7 +21,7 @@ module.exports = {
       'error',
       { devDependencies: ['.storybook/**', 'stories/**'] }
     ],
-    'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
+    'react/jsx-filename-extension': [1, { extensions: ['.js'] }],
     'react/jsx-wrap-multilines': [1, {
       "declaration": "parens",
       "assignment": "parens",

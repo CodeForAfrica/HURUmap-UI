@@ -1,54 +1,21 @@
-import { withStyles } from '@material-ui/core';
-import { createStyles, WithStyles } from '@material-ui/core/styles';
 import React, { useEffect, useRef, useCallback, useState } from 'react';
+import PropTypes from 'prop-types';
 
-import leaflet, { MapOptions, PathOptions, TileLayer } from 'leaflet';
+import leaflet from 'leaflet';
+import { makeStyles } from '@material-ui/core';
 
 import 'leaflet/dist/leaflet.css';
-import { FeatureCollection } from 'geojson';
 import useDeepRef from './useDeepRef';
 
-const styles = createStyles({
+const useStyles = makeStyles({
   root: {
     height: '100%',
     width: '100%'
   }
 });
 
-interface Area {
-  id: string;
-  name: string;
-  generation_high: number;
-  generation_low: number;
-  all_names: {};
-  codes: { [key: string]: string };
-  country: string;
-  country_name: string;
-  type_name: string;
-  type: string;
-}
-
-interface MapItProps extends WithStyles<typeof styles>, MapOptions {
-  id?: string;
-  url?: string;
-  tolerance?: number;
-  drawChildren?: boolean;
-  drawProfile?: boolean;
-  geoLevel?: string;
-  geoCode?: string;
-  codeType?: string;
-  filterCountries?: string[];
-  generation?: string;
-  tileLayer?: TileLayer;
-  geoLayerFocusStyle?: PathOptions;
-  geoLayerBlurStyle?: PathOptions;
-  geoLayerHoverStyle?: {};
-  onClickGeoLayer?: (area: Area) => void;
-}
-
 function MapIt({
   id,
-  classes,
   url = 'https://mapit.hurumap.org',
   tolerance = 0.001,
   generation = '1',
@@ -79,10 +46,10 @@ function MapIt({
   },
   onClickGeoLayer,
   ...leafletProps
-}: MapItProps) {
+}) {
   const mapId = id || 'mapit';
-  const mapRef = useRef<leaflet.Map | null>(null);
-  const [featuresToDraw, setFeaturesToDraw] = useState<FeatureCollection>();
+  const mapRef = useRef(null);
+  const [featuresToDraw, setFeaturesToDraw] = useState();
   const filterCountriesMemoized = useDeepRef(filterCountries);
   const leafletPropsMemoized = useDeepRef(leafletProps);
   const geoLayerStyles = useDeepRef({
@@ -99,7 +66,7 @@ function MapIt({
   // But also to have sufficient data to use like the `id` if we want to retrieve
   // more data using an api call
   const fetchGeoJson = useCallback(
-    (areaKeys: string, areas: Area[]): Promise<FeatureCollection> => {
+    (areaKeys, areas) => {
       return fetch(
         `${url}/areas/${areaKeys}.geojson?simplify_tolerance=${tolerance}`
       ).then(geoRes => {
@@ -108,7 +75,7 @@ function MapIt({
           return {
             type: 'FeatureCollection',
             features: features
-              ? features.map((feature: { properties: { name: string } }) => {
+              ? features.map(feature => {
                   const areaInfo = areas.find(
                     area => area.name === feature.properties.name
                   );
@@ -135,7 +102,7 @@ function MapIt({
     return areaRes.json();
   }, [url, codeType, geoLevel, geoCode, generation]);
 
-  const loadGeometryForLevel = useCallback((): Promise<FeatureCollection> => {
+  const loadGeometryForLevel = useCallback(() => {
     // geo_level do not always match to mapit area type
     // AFR geo_level are level1_TZ_001 while mapit area type are specific ie PROVINCE, REGION, COUNTY
     // Using the geoid (geoLevel-geoCode) we will first request mapit api to give us=> mapit type of a specific geo
@@ -146,7 +113,7 @@ function MapIt({
       ).then(areaRes => {
         if (!areaRes.ok) return Promise.reject();
 
-        return areaRes.json().then((data: { [key: string]: any }) => {
+        return areaRes.json().then(data => {
           const areaKeys = Object.keys(data).join();
 
           return fetchGeoJson(areaKeys, Object.values(data));
@@ -156,11 +123,11 @@ function MapIt({
   }, [fetchMapitArea, fetchGeoJson, generation, url]);
 
   const loadGeometryForChildLevel = useCallback(
-    (areaId: string): Promise<FeatureCollection> => {
+    areaId => {
       return fetch(`${url}/area/${areaId}/children`).then(areasRes => {
         if (!areasRes.ok) return Promise.reject();
 
-        return areasRes.json().then((data: { [key: string]: any }) => {
+        return areasRes.json().then(data => {
           let areaData = data;
           if (
             filterCountriesMemoized.length > 0 &&
@@ -171,7 +138,7 @@ function MapIt({
               .filter(area => {
                 return filterCountriesMemoized.includes(area[1].country);
               })
-              .reduce((accum: { [key: string]: any }, [k, v]) => {
+              .reduce((accum, [k, v]) => {
                 return Object.assign({}, accum, { [k]: v });
               }, {});
           }
@@ -322,8 +289,45 @@ function MapIt({
     onClickGeoLayer,
     leafletPropsMemoized
   ]);
+  const classes = useStyles();
 
   return <div id={mapId} className={classes.root} />;
 }
 
-export default withStyles(styles)(MapIt);
+MapIt.propTypes = {
+  id: PropTypes.string,
+  url: PropTypes.string,
+  tolerance: PropTypes.number,
+  drawChildren: PropTypes.bool,
+  drawProfile: PropTypes.bool,
+  geoLevel: PropTypes.string,
+  geoCode: PropTypes.string,
+  codeType: PropTypes.string,
+  filterCountries: PropTypes.arrayOf(PropTypes.string),
+  generation: PropTypes.string,
+  tileLayer: PropTypes.shape({ addTo: PropTypes.func }),
+  geoLayerFocusStyle: PropTypes.shape({}),
+  geoLayerBlurStyle: PropTypes.shape({}),
+  geoLayerHoverStyle: PropTypes.shape({}),
+  onClickGeoLayer: PropTypes.func
+};
+
+MapIt.defaultProps = {
+  id: undefined,
+  url: undefined,
+  tolerance: undefined,
+  drawChildren: undefined,
+  drawProfile: undefined,
+  geoLevel: undefined,
+  geoCode: undefined,
+  codeType: undefined,
+  filterCountries: undefined,
+  generation: undefined,
+  tileLayer: undefined,
+  geoLayerFocusStyle: undefined,
+  geoLayerBlurStyle: undefined,
+  geoLayerHoverStyle: undefined,
+  onClickGeoLayer: undefined
+};
+
+export default MapIt;
