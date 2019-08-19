@@ -1,25 +1,10 @@
 import React from 'react';
-import {
-  VictoryBar,
-  VictoryBarProps,
-  VictoryLabel,
-  VictoryAxis,
-  VictoryThemeDefinitionLatest
-} from 'victory';
+import PropTypes from 'prop-types';
+
+import { VictoryBar, VictoryLabel, VictoryAxis } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
-import Chart, { toReferenceProps, ReferableChartProps } from './ReferableChart';
-
-interface DataPoint {
-  x: string;
-  y: number;
-}
-type SingleData = [DataPoint];
-type CompareData = [DataPoint, DataPoint];
-
-interface Props extends ReferableChartProps<DataPoint>, VictoryBarProps {
-  data: SingleData | CompareData;
-}
+import Chart, { toReferenceProps } from './ReferableChart';
 
 function ComparisonBarChart({
   theme,
@@ -29,16 +14,15 @@ function ComparisonBarChart({
   width,
   height = 200,
   ...props
-}: Props) {
+}) {
   const {
     data: [referenceData],
     style: referenceStyle
   } = toReferenceProps(ref);
-  const groupColorScale = ((theme as unknown) as VictoryThemeDefinitionLatest)
-    .group.colorScale;
+  const groupColorScale = theme.group.colorScale;
   const barProps = {
     ...{
-      labels: (datum: any) => datum.y,
+      labels: datum => datum.y,
       labelComponent: <VictoryLabel x={50} dy={-20} />
     },
     ...props
@@ -101,5 +85,31 @@ function ComparisonBarChart({
     </Chart>
   );
 }
+
+ComparisonBarChart.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({ x: PropTypes.string, y: PropTypes.number })
+  ).isRequired,
+  height: PropTypes.number,
+  horizontal: PropTypes.bool,
+  reference: PropTypes.shape({}),
+  theme: PropTypes.shape({
+    group: PropTypes.shape({
+      colorScale: PropTypes.oneOf(
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.shape({}))
+      )
+    })
+  }),
+  width: PropTypes.number
+};
+
+ComparisonBarChart.defaultProps = {
+  height: undefined,
+  horizontal: undefined,
+  reference: undefined,
+  theme: undefined,
+  width: undefined
+};
 
 export default withVictoryTheme(ComparisonBarChart);
