@@ -8,9 +8,7 @@ import {
   select
 } from '@storybook/addon-knobs';
 
-import { CSSProperties } from '@material-ui/styles';
-import Grid, { GridSize } from '@material-ui/core/Grid';
-import { PopperProps } from '@material-ui/core/Popper';
+import Grid from '@material-ui/core/Grid';
 
 import { BarChart, ChartContainer, EmbedPopup, InfoPopup } from '../src';
 import { CenterDecorator } from './common';
@@ -22,19 +20,15 @@ storiesOf('HURUmap UI|ChartContainer', module)
   .addDecorator(withKnobs)
   .add('Default', () =>
     React.createElement(() => {
-      const [infoAnchorEl, setInfoAnchorEl] = React.useState<
-        PopperProps['anchorEl']
-      >(null);
-      const [shareAnchorEl, setShareAnchorEl] = React.useState<
-        PopperProps['anchorEl']
-      >(null);
+      const [infoAnchorEl, setInfoAnchorEl] = React.useState(null);
+      const [shareAnchorEl, setShareAnchorEl] = React.useState(null);
 
-      function handleClickInfo(anchorEl: PopperProps['anchorEl']) {
+      function handleClickInfo(anchorEl) {
         setShareAnchorEl(null);
         setInfoAnchorEl(anchorEl);
       }
 
-      function handleClickShare(anchorEl: PopperProps['anchorEl']) {
+      function handleClickShare(anchorEl) {
         setInfoAnchorEl(null);
         setShareAnchorEl(anchorEl);
       }
@@ -58,36 +52,28 @@ storiesOf('HURUmap UI|ChartContainer', module)
         >
           <Grid
             item
-            xs={
-              select(
-                'xs',
-                ['auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-                12
-              ) as GridSize
-            }
-            md={
-              select(
-                'md',
-                ['auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-                6
-              ) as GridSize
-            }
+            xs={select(
+              'xs',
+              ['auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+              12
+            )}
+            md={select(
+              'md',
+              ['auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+              6
+            )}
           >
             <ChartContainer
-              overflowX={
-                select(
-                  'overflowX',
-                  ['auto', 'clip', 'hidden', 'scroll', 'visible'],
-                  'auto'
-                ) as CSSProperties['overflowX']
-              }
-              overflowY={
-                select(
-                  'overflowY',
-                  ['auto', 'clip', 'hidden', 'scroll', 'visible'],
-                  'hidden'
-                ) as CSSProperties['overflowX']
-              }
+              overflowX={select(
+                'overflowX',
+                ['auto', 'clip', 'hidden', 'scroll', 'visible'],
+                'auto'
+              )}
+              overflowY={select(
+                'overflowY',
+                ['auto', 'clip', 'hidden', 'scroll', 'visible'],
+                'hidden'
+              )}
               onClickInfo={handleClickInfo}
               onClickShare={handleClickShare}
               maxChartHeight={text('maxChartHeight', '300px')}

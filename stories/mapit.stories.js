@@ -29,7 +29,7 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
       geoLevel={text('geoLevel', 'continent')}
       geoCode={text('geoCode', 'AFR')}
       zoom={number('zoom', 3)}
-      center={array('center', [8.7832, 34.5085]) as [number, number]}
+      center={array('center', [8.7832, 34.5085])}
       tileLayer={
         new TileLayer(
           text(
@@ -54,7 +54,7 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
       /**
        * If tileLayer keeps changing it will trigger rerender
        */
-      const tileLayer = useRef<TileLayer>(
+      const tileLayer = useRef(
         new TileLayer(
           text(
             'tileLayer',
@@ -90,7 +90,7 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
             geoLevel={text('geoLevel', 'country')}
             geoCode={text('geoCode', 'KE')}
             zoom={number('zoom', 3)}
-            center={array('center', [8.7832, 34.5085]) as [number, number]}
+            center={array('center', [8.7832, 34.5085])}
             tileLayer={tileLayer.current}
             geoLayerBlurStyle={object('geoLayerBlurStyle', {
               color: '#00d',
@@ -116,7 +116,7 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
       geoLevel={text('geoLevel', 'level1')}
       geoCode={text('geoCode', 'KE_1_008')}
       zoom={number('zoom', 3)}
-      center={array('center', [8.7832, 34.5085]) as [number, number]}
+      center={array('center', [8.7832, 34.5085])}
       tileLayer={
         new TileLayer(
           text(
@@ -146,7 +146,7 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
       geoLevel={text('geoLevel', 'district')}
       geoCode={text('geoCode', '85')}
       zoom={number('zoom', 6)}
-      center={array('center', [-6.1523563, 35.6754813]) as [number, number]}
+      center={array('center', [-6.1523563, 35.6754813])}
       tileLayer={
         new TileLayer(
           text(
