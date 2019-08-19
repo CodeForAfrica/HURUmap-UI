@@ -7,7 +7,7 @@ import {
   VictoryGroup,
   VictoryScatter,
   VictoryVoronoiContainer,
-  VictoryTooltip,
+  VictoryTooltip
 } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
@@ -40,10 +40,8 @@ function LineChart({ data, parts, theme, ...props }) {
   const axisProps = (parts && toChartAxisProps(parts.axis)) || {};
   const chartProps = parts && parts.parent;
   const containerProps = parts && parts.container;
-  const groupProps =
-    parts && parts.group ? [].concat(parts.group) : [];
-  const scatterProps =
-    parts && parts.scatter ? [].concat(parts.scatter) : [];
+  const groupProps = parts && parts.group ? [].concat(parts.group) : [];
+  const scatterProps = parts && parts.scatter ? [].concat(parts.scatter) : [];
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
   const { colorScale } = groupChart;
 
@@ -84,7 +82,7 @@ function LineChart({ data, parts, theme, ...props }) {
 LineChart.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
-        x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+      x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
     })
   ),
   parts: PropTypes.shape({
@@ -97,13 +95,13 @@ LineChart.propTypes = {
   }),
   theme: PropTypes.shape({
     group: PropTypes.shape({})
-  }),
+  })
 };
 
 LineChart.defaultProps = {
   data: undefined,
   parts: undefined,
-  theme: undefined,
+  theme: undefined
 };
 
 export default withVictoryTheme(LineChart);

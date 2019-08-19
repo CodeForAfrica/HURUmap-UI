@@ -247,7 +247,7 @@ function MapIt({
 
     const geoJsonLayer = leaflet
       .geoJSON(featuresToDraw, {
-        onEachFeature: (feature, layer: any) => {
+        onEachFeature: (feature, layer) => {
           if (
             drawProfile &&
             `${geoLevel}-${geoCode}` ===

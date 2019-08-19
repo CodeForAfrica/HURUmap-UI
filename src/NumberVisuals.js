@@ -130,7 +130,7 @@ NumberVisuals.propTypes = {
   statisticDeviation: PropTypes.oneOf(PropTypes.number, PropTypes.string),
   secondaryDeviation: PropTypes.oneOf(PropTypes.number, PropTypes.string),
   description: PropTypes.oneOf(PropTypes.number, PropTypes.string),
-  comparisonData: PropTypes.shape({})
+  comparisonData: PropTypes.arrayOf(PropTypes.shape({}))
 };
 
 NumberVisuals.defaultProps = {
