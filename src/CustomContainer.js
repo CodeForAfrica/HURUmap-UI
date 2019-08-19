@@ -1,13 +1,5 @@
 import React from 'react';
-
-export interface CustomContainerProps {
-  standalone?: boolean;
-  height?: number;
-  responsive?: boolean;
-  style?: React.CSSProperties;
-  width?: number;
-  children?: any;
-}
+import PropTypes from 'prop-types';
 
 /**
  * Simple custom container similar to VictoryContainer that should be used with
@@ -17,11 +9,11 @@ export interface CustomContainerProps {
 function CustomContainer({
   children,
   height,
-  responsive = true,
-  standalone = true,
+  responsive,
+  standalone,
   style,
   width
-}: CustomContainerProps) {
+}) {
   if (!standalone) {
     return children;
   }
@@ -53,5 +45,25 @@ function CustomContainer({
     </div>
   );
 }
+
+CustomContainer.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired,
+  height: PropTypes.number,
+  responsive: PropTypes.bool,
+  standalone: PropTypes.bool,
+  style: PropTypes.shape({}),
+  width: PropTypes.number
+};
+
+CustomContainer.defaultProps = {
+  height: undefined,
+  responsive: true,
+  standalone: true,
+  style: undefined,
+  width: undefined
+};
 
 export default CustomContainer;
