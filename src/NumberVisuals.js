@@ -1,90 +1,68 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-import { withStyles, createStyles, WithStyles } from '@material-ui/styles';
-import {
-  Typography,
-  Theme,
-  List,
-  ListItem,
-  ListItemText
-} from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { Typography, List, ListItem, ListItemText } from '@material-ui/core';
 
-const styles = ({ breakpoints }: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-      height: 'auto',
-      margin: '1rem',
-      [breakpoints.up('md')]: {
-        width: '25%'
-      }
-    },
-    hidden: {
-      display: 'none'
-    },
-    mainStatistic: {
-      marginTop: '1em'
-    },
-    statistic: {
-      fontSize: '2.5em'
-    },
-    statisticDeviation: {
-      fontSize: '0.4em',
-      color: '#777',
-      display: 'inlineBlock'
-    },
-    secondaryDeviation: {
-      fontSize: '1em',
-      color: '#777'
-    },
-    subtitle: {
-      fontSize: '1.25em'
-    },
-    description: {
-      fontSize: '1.5em'
-    },
-    comparison: {
-      fontWeight: 'bold'
-    },
-    list: {
-      padding: 0
-    },
-    listParent: {
-      paddingLeft: 0,
-      paddingRight: 0
-    },
-    listTypography: {
-      fontSize: '0.9em',
-      lineHeight: 1.3,
-      color: '#777'
+const useStyles = makeStyles(({ breakpoints }) => ({
+  root: {
+    width: '100%',
+    height: 'auto',
+    margin: '1rem',
+    [breakpoints.up('md')]: {
+      width: '25%'
     }
-  });
-
-type comparisonData = {
-  parentComparison?: number | string;
-  parentDescription?: number | string;
-  parentDeviation?: number | string;
-}[];
-
-interface Props extends WithStyles<typeof styles> {
-  classes: any;
-  subtitle?: string | number;
-  statistic?: number | string;
-  statisticDeviation?: number | string;
-  secondaryDeviation?: number | string;
-  description?: number | string;
-  comparisonData: comparisonData;
-}
+  },
+  hidden: {
+    display: 'none'
+  },
+  mainStatistic: {
+    marginTop: '1em'
+  },
+  statistic: {
+    fontSize: '2.5em'
+  },
+  statisticDeviation: {
+    fontSize: '0.4em',
+    color: '#777',
+    display: 'inlineBlock'
+  },
+  secondaryDeviation: {
+    fontSize: '1em',
+    color: '#777'
+  },
+  subtitle: {
+    fontSize: '1.25em'
+  },
+  description: {
+    fontSize: '1.5em'
+  },
+  comparison: {
+    fontWeight: 'bold'
+  },
+  list: {
+    padding: 0
+  },
+  listParent: {
+    paddingLeft: 0,
+    paddingRight: 0
+  },
+  listTypography: {
+    fontSize: '0.9em',
+    lineHeight: 1.3,
+    color: '#777'
+  }
+}));
 
 function NumberVisuals({
-  classes,
   subtitle,
   statistic,
   statisticDeviation,
   secondaryDeviation,
   description,
   comparisonData
-}: Props) {
+}) {
+  const classes = useStyles();
   const [onHover, setOnHover] = useState(false);
   const toggleHover = () => setOnHover(!onHover);
   return (
@@ -146,4 +124,22 @@ function NumberVisuals({
   );
 }
 
-export default withStyles(styles)(NumberVisuals);
+NumberVisuals.propTypes = {
+  subtitle: PropTypes.oneOf(PropTypes.number, PropTypes.string),
+  statistic: PropTypes.oneOf(PropTypes.number, PropTypes.string),
+  statisticDeviation: PropTypes.oneOf(PropTypes.number, PropTypes.string),
+  secondaryDeviation: PropTypes.oneOf(PropTypes.number, PropTypes.string),
+  description: PropTypes.oneOf(PropTypes.number, PropTypes.string),
+  comparisonData: PropTypes.shape({})
+};
+
+NumberVisuals.defaultProps = {
+  subtitle: undefined,
+  statistic: undefined,
+  statisticDeviation: undefined,
+  secondaryDeviation: undefined,
+  description: undefined,
+  comparisonData: undefined
+};
+
+export default NumberVisuals;
