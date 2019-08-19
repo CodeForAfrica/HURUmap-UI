@@ -44,12 +44,12 @@
     "build:lib": "yarn copy-svg-to-lib && yarn copy-png-to-lib",
     "copy-svg-to-lib": "cpx \"./src/**/*.svg\" ./dist",
     "copy-png-to-lib": "cpx \"./src/**/*.png\" ./dist",
+    "deploy": "yarn deploy:storybook",
     "deploy:storybook": "storybook-to-ghpages"
   },
   "dependencies": {
     "@material-ui/core": "^4.3.2",
     "@material-ui/styles": "^4.3.0",
-    "@material-ui/types": "^4.1.1",
     "dequal": "^1.0.0",
     "geojson": "^0.5.0",
     "leaflet": "^1.5.1",
@@ -60,7 +60,6 @@
   "peerDependencies": {
     "@material-ui/core": "^4.3.2",
     "@material-ui/styles": "^4.3.0",
-    "@material-ui/types": "^4.1.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
