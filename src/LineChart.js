@@ -1,36 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   VictoryAxis,
   VictoryLine,
-  VictoryChartProps,
   VictoryGroup,
-  VictoryGroupProps,
   VictoryScatter,
-  VictoryScatterProps,
   VictoryVoronoiContainer,
-  VictoryVoronoiContainerProps,
-  VictoryLineProps,
-  VictoryThemeDefinitionLatest,
   VictoryTooltip,
-  VictoryTooltipProps
 } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
-import Chart, { toChartAxisProps, ChartAxisPropsType } from './Chart';
-
-export interface LineChartPartsProps {
-  axis?: ChartAxisPropsType;
-  parent?: VictoryChartProps;
-  container?: VictoryVoronoiContainerProps;
-  group?: VictoryGroupProps | VictoryGroupProps[];
-  scatter?: VictoryScatterProps | VictoryScatterProps[];
-  tooltip?: VictoryTooltipProps;
-}
-
-export interface LineChartProps extends VictoryLineProps {
-  parts?: LineChartPartsProps;
-}
+import Chart, { toChartAxisProps } from './Chart';
 
 /**
  * HURUmap UI Line chart is made up of VictoryChart, VictoryVoronoiContainer,
@@ -48,8 +29,7 @@ export interface LineChartProps extends VictoryLineProps {
  *   }
  * }
  */
-function LineChart({ data, parts, theme: t, ...props }: LineChartProps) {
-  const theme = (t as unknown) as VictoryThemeDefinitionLatest;
+function LineChart({ data, parts, theme, ...props }) {
   const { group: groupChart } = theme;
   if (!data || !groupChart) {
     return null;
@@ -61,11 +41,9 @@ function LineChart({ data, parts, theme: t, ...props }: LineChartProps) {
   const chartProps = parts && parts.parent;
   const containerProps = parts && parts.container;
   const groupProps =
-    parts && parts.group ? ([] as VictoryGroupProps[]).concat(parts.group) : [];
+    parts && parts.group ? [].concat(parts.group) : [];
   const scatterProps =
-    parts && parts.scatter
-      ? ([] as VictoryScatterProps[]).concat(parts.scatter)
-      : [];
+    parts && parts.scatter ? [].concat(parts.scatter) : [];
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
   const { colorScale } = groupChart;
 
@@ -91,7 +69,7 @@ function LineChart({ data, parts, theme: t, ...props }: LineChartProps) {
             {...groupProps[i % groupProps.length]}
             data={gd}
           >
-            <VictoryLine {...(props as VictoryLineProps)} />
+            <VictoryLine {...props} />
             <VictoryScatter {...scatterProps[i % scatterProps.length]} />
           </VictoryGroup>
         ))}
@@ -102,5 +80,30 @@ function LineChart({ data, parts, theme: t, ...props }: LineChartProps) {
     </Chart>
   );
 }
+
+LineChart.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+        x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+    })
+  ),
+  parts: PropTypes.shape({
+    axis: PropTypes.shape({}),
+    container: PropTypes.shape({}),
+    group: PropTypes.shape({}),
+    parent: PropTypes.shape({}),
+    scatter: PropTypes.shape({}),
+    tooltip: PropTypes.shape({})
+  }),
+  theme: PropTypes.shape({
+    group: PropTypes.shape({})
+  }),
+};
+
+LineChart.defaultProps = {
+  data: undefined,
+  parts: undefined,
+  theme: undefined,
+};
 
 export default withVictoryTheme(LineChart);
