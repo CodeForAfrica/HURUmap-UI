@@ -155,4 +155,5 @@ BarChart.defaultProps = {
   theme: undefined,
   width: undefined
 };
+
 export default withVictoryTheme(BarChart);

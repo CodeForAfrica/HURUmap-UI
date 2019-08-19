@@ -1,27 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import {
-  VictoryThemeDefinitionLatest,
-  VictoryCommonProps,
-  VictoryDatableProps,
-  VictoryMultiLabeableProps
-} from 'victory';
-
-import { toReferenceProps, ReferableChartProps } from '../ReferableChart';
+import { toReferenceProps } from '../ReferableChart';
 import withVictoryTheme from '../styles/withVictoryTheme';
-import BulletBar, { BulletData } from './BulletBar';
+import BulletBar from './BulletBar';
 import CustomContainer from '../CustomContainer';
 
-export interface OffsetType {
-  x: number;
-  y: number;
-}
-export type OffsetPropType = number | OffsetType | undefined;
-
-function toOffset(
-  prop: OffsetPropType,
-  { offset }: { offset: number | OffsetType }
-) {
+const toOffset = (prop, { offset }) => {
   if (prop) {
     if (typeof prop === 'number') {
       return { x: prop, y: prop };
@@ -33,19 +18,7 @@ function toOffset(
   }
 
   return offset;
-}
-
-interface Props<T>
-  extends VictoryCommonProps,
-    VictoryDatableProps,
-    VictoryMultiLabeableProps,
-    ReferableChartProps<T> {
-  labels?: (data: T) => string;
-  barWidth?: number;
-  // Quantitative scale
-  total: number;
-  offset?: OffsetPropType;
-}
+};
 
 /**
  * By default, Bullet chart assumes data is a percentage **if** only one value
@@ -59,11 +32,10 @@ function BulletChart({
   labels,
   offset,
   reference: ref,
-  theme: t,
+  theme,
   total,
   width
-}: Props<BulletData>) {
-  const theme = (t as unknown) as VictoryThemeDefinitionLatest;
+}) {
   const {
     bullet: chart,
     breakpoints: { sm: mobileBreakpoint }
@@ -119,5 +91,34 @@ function BulletChart({
     </CustomContainer>
   );
 }
+
+BulletChart.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.shape({})),
+  barWidth: PropTypes.number,
+  height: PropTypes.number,
+  labels: PropTypes.func,
+  offset: PropTypes.oneOf(PropTypes.number, PropTypes.shape({})),
+  reference: PropTypes.oneOf(
+    PropTypes.arrayOf(PropTypes.shape({})),
+    PropTypes.shape({})
+  ),
+  theme: PropTypes.shape({
+    bullet: PropTypes.shape({}),
+    breakpoints: PropTypes.shape({ sm: PropTypes.number })
+  }),
+  total: PropTypes.number.isRequired,
+  width: PropTypes.number
+};
+
+BulletChart.defaultProps = {
+  data: undefined,
+  barWidth: undefined,
+  height: undefined,
+  labels: undefined,
+  offset: undefined,
+  reference: undefined,
+  theme: undefined,
+  width: undefined
+};
 
 export default withVictoryTheme(BulletChart);

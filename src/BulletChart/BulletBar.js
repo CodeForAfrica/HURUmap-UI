@@ -1,28 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import { Rect, VictoryLabel, VictoryStyleInterface } from 'victory';
-
-import { ReferenceProps } from '../ReferableChart';
-
-export interface BulletData {
-  x: number;
-  label?: string;
-}
-
-interface Props<T> {
-  barWidth: number;
-  // Feature measure
-  data: T[];
-  labels: { (data: T): string };
-  // Comparative measure
-  reference: ReferenceProps<T>;
-  // Quantitative scale
-  total: number;
-  style?: VictoryStyleInterface;
-  width: number;
-  x: number;
-  y: number;
-}
+import { Rect, VictoryLabel } from 'victory';
 
 function BulletBar({
   barWidth,
@@ -34,7 +13,7 @@ function BulletBar({
   width,
   x,
   y
-}: Props<BulletData>) {
+}) {
   const featuredMeasure = (width * data[0].x) / total;
   const [, qualitativeMeasure] = data;
   const comparativeMeasure = (width * reference.data[0].x) / total;
@@ -50,7 +29,7 @@ function BulletBar({
           x={x + width}
           y={y - 2 * barWidth}
           text={labels(qualitativeMeasure)}
-          style={style.labels as React.CSSProperties}
+          style={style.labels}
         />
       )}
       <Rect
@@ -67,7 +46,7 @@ function BulletBar({
         x={x}
         y={y - 2 * barWidth}
         text={labels(data[0])}
-        style={style.data as React.CSSProperties}
+        style={style.data}
       />
       <Rect
         x={x}
@@ -82,10 +61,41 @@ function BulletBar({
         y={y - barWidth}
         width={barWidth}
         height={barWidth}
-        style={reference.style && (reference.style.data as React.CSSProperties)}
+        style={reference.style && reference.style.data}
       />
     </React.Fragment>
   );
 }
+
+BulletBar.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.shape({ x: PropTypes.number })).isRequired,
+  barWidth: PropTypes.number,
+  labels: PropTypes.func.isRequired,
+  reference: PropTypes.oneOf(
+    PropTypes.arrayOf(PropTypes.shape({})),
+    PropTypes.shape({})
+  ),
+  style: PropTypes.shape({
+    data: PropTypes.shape({}),
+    labels: PropTypes.shape({})
+  }),
+  theme: PropTypes.shape({
+    group: PropTypes.shape({})
+  }),
+  total: PropTypes.number.isRequired,
+  width: PropTypes.number,
+  x: PropTypes.number,
+  y: PropTypes.number
+};
+
+BulletBar.defaultProps = {
+  barWidth: undefined,
+  reference: undefined,
+  style: undefined,
+  theme: undefined,
+  width: undefined,
+  x: undefined,
+  y: undefined
+};
 
 export default BulletBar;
