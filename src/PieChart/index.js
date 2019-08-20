@@ -7,7 +7,6 @@ import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
 import PieLabel from './PieLabel';
 
-const DEFAULT_DONUT_INNER_RADIUS = 75; // in degrees
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
   const radius = Helpers.getRadius({ width, height, padding });
   return [radius - groupSpacing / 2];
@@ -22,7 +21,7 @@ function PieChart({
   parts,
   radius,
   radii,
-  standalone = true,
+  standalone,
   theme,
   height,
   width,
@@ -51,13 +50,6 @@ function PieChart({
     endAngle1 = -180; // Half circle, counter-clockwise
     [data1, data2] = data; // Assume data[2] is also Array
   }
-  let innerRadius = 0;
-  if (donut || chart.donut) {
-    innerRadius =
-      suggestedInnerRadius && suggestedInnerRadius > 0
-        ? suggestedInnerRadius
-        : DEFAULT_DONUT_INNER_RADIUS;
-  }
   // Only include groupSpacing if in comparison mode
   const computedGroupSpacing = data2 ? groupSpacing || chart.groupSpacing : 0;
   const computedRadii =
@@ -70,6 +62,13 @@ function PieChart({
           padding || chart.padding,
           computedGroupSpacing
         ));
+  let innerRadius = 0;
+  if (donut || (typeof donut === 'undefined' && chart.donut)) {
+    innerRadius =
+      suggestedInnerRadius && suggestedInnerRadius > 0
+        ? suggestedInnerRadius
+        : Math.min.apply(null, computedRadii) * chart.donutRatio;
+  }
 
   return (
     <CustomContainer
@@ -182,7 +181,7 @@ PieChart.defaultProps = {
   parts: undefined,
   radius: undefined,
   radii: undefined,
-  standalone: undefined,
+  standalone: true,
   theme: undefined,
   width: undefined
 };

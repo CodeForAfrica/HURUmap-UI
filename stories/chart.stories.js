@@ -263,7 +263,7 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
   .add('Default', () => (
     <div>
       <PieChart
-        donut={boolean('donut', false)}
+        donut={boolean('donut', true)}
         data={object('data', [
           { x: 'A', y: 1 },
           { x: 'B', y: 2 },
@@ -280,8 +280,8 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
   .add('Comparison', () => (
     <div>
       <PieChart
-        donut={boolean('donut', false)}
-        groupSpacing={number('groupSpacing', 8)}
+        donut={boolean('donut', true)}
+        groupSpacing={number('groupSpacing', 4)}
         data={object('data', [
           [
             { x: 'A', y: 1, label: ['A\n \nDar es Salaam 1'] },
