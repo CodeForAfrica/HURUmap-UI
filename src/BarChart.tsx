@@ -37,9 +37,6 @@ export interface BarChartPartsProps {
 }
 
 interface Props extends VictoryBarProps, ChartProps {
-  barWidth?: number;
-  groupSpacing?: number;
-  barSpacing?: number;
   data: GroupData | Data;
   parts?: BarChartPartsProps;
 }
@@ -47,9 +44,6 @@ interface Props extends VictoryBarProps, ChartProps {
 function BarChart({
   theme: t,
   data,
-  barWidth: suggestedBarWidth = 40,
-  groupSpacing: suggestedGroupSpacing = 30,
-  barSpacing = 5,
   horizontal,
   width,
   height,
@@ -62,17 +56,12 @@ function BarChart({
   if (!data || !groupChart) {
     return null;
   }
-  // This space is the sides of the chart, outside the data
-  // The axis is rendered in this space
-  const dataMargin = 95;
   let groupCount = 1;
-  let barCount = data.length;
   let plotData = [data as Data];
   const isGrouped = Boolean((data as GroupData)[0].data);
   if (isGrouped) {
     const dataFields = (data as GroupData)[0].data.map(d => d.x);
     groupCount = data.length;
-    barCount = dataFields.length * groupCount;
 
     // Inverse the data provided
     // Victory group expects the fields to group as root
@@ -91,14 +80,7 @@ function BarChart({
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
   const { colorScale } = groupChart;
 
-  const calculatedDimension =
-    (suggestedBarWidth + barSpacing) * barCount +
-    suggestedGroupSpacing * (groupCount - 1) +
-    dataMargin;
-
-  const barWidth = width
-    ? suggestedBarWidth * (width / calculatedDimension)
-    : suggestedBarWidth;
+  const barWidth = 20;
 
   return (
     <Chart
@@ -108,19 +90,16 @@ function BarChart({
       }
       responsive={responsive}
       horizontal={horizontal}
-      width={width || calculatedDimension}
-      height={height || (horizontal ? calculatedDimension : undefined)}
-      domainPadding={
-        barSpacing === 0 ? { x: suggestedBarWidth - 5 } : undefined
-      }
+      width={width}
+      height={height}
+      domainPadding={groupCount === 1 ? { x: barWidth / 2 } : undefined}
       {...chartProps}
     >
       {isGrouped ? (
-        <VictoryGroup offset={barWidth + barSpacing} {...groupProps}>
+        <VictoryGroup offset={20} {...groupProps}>
           {plotData.map((d, i) => (
             <VictoryBar
               data={d}
-              barWidth={barWidth}
               {...props}
               labelComponent={
                 <VictoryTooltip
@@ -137,7 +116,6 @@ function BarChart({
         plotData.map(d => (
           <VictoryBar
             data={d}
-            barWidth={barWidth}
             labelComponent={<VictoryTooltip {...tooltipProps} />}
             {...props}
           />

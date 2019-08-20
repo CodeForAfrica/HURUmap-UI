@@ -28,17 +28,10 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
     const data = Array(number('data', 3)).fill(null);
 
     return (
-      <div
-        style={{
-          height: '300px',
-        }}
-      >
         <BarChart
           horizontal={horizontal}
-          barWidth={number('barWidth', 100)}
-          barSpacing={number('barSpacing', 20)}
-          width={number('width', 500)}
-          height={number('height', 300)}
+          width={number('width', undefined)}
+          height={number('height', undefined)}
           data={data.map((_, index) => {
             const y = rand();
             return {
@@ -50,6 +43,12 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           parts={{
             axis: {
               dependent: {
+                tickValues: object('dependentTickValues', [10, 50, 90]),
+                tickFormat: object('dependentTickFormat', [
+                  '10%',
+                  '50%',
+                  '90%'
+                ]),
                 style: {
                   axis: {
                     display: 'block'
@@ -59,19 +58,12 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
                   },
                   tickLabels: {
                     display: 'block'
-                  },
-                  tickValues: object('dependentTickValues', [10, 50, 90]),
-                  tickFormat: object('dependentTickFormat', [
-                    '10%',
-                    '50%',
-                    '90%'
-                  ])
+                  }
                 }
               }
             }
           }}
         />
-      </div>
     );
   })
   .add('Grouped', () => {
@@ -80,14 +72,7 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
     const horizontal = boolean('horizontal', false);
 
     return (
-      <div
-        style={{
-          height: '300px'
-        }}
-      >
         <BarChart
-          barWidth={number('barWidth', undefined)}
-          barSpacing={number('barSpacing', undefined)}
           width={number('width', undefined)}
           height={number('height', undefined)}
           labels={datum =>
@@ -111,7 +96,6 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
             tooltip: { style: { textAnchor: 'start' } }
           }}
         />
-      </div>
     );
   })
   .add('Histogram', () => {
