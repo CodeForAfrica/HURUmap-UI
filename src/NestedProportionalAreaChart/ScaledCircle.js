@@ -45,6 +45,7 @@ function ScaledCircle({
     <React.Fragment>
       <PieChart
         data={backgroundData}
+        donut={false}
         height={height}
         origin={{ x: cx, y: cy }}
         radius={size}
@@ -57,6 +58,7 @@ function ScaledCircle({
         colorScale={colorScale}
         height={height}
         data={radii.map(v => [v])}
+        donut={false}
         origin={{ x: cx, y: cy }}
         radii={radii}
         standalone={false}

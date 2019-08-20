@@ -7,7 +7,6 @@ import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
 import PieLabel from './PieLabel';
 
-const DEFAULT_DONUT_INNER_RADIUS = 75; // in degrees
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
   const radius = Helpers.getRadius({ width, height, padding });
   return [radius - groupSpacing / 2];
@@ -22,7 +21,8 @@ function PieChart({
   parts,
   radius,
   radii,
-  standalone = true,
+  responsive,
+  standalone,
   theme,
   height,
   width,
@@ -39,6 +39,15 @@ function PieChart({
   if (radii && colorScale && colorScale.length > 1) {
     colorScale2 = colorScale.slice(1);
   }
+  const containerProps = Object.assign(
+    {
+      height: height || chart.height,
+      responsive,
+      standalone,
+      width: width || chart.width
+    },
+    parts && parts.container
+  );
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
 
   const startAngle1 = 0;
@@ -50,13 +59,6 @@ function PieChart({
   if (data.length > 1 && Array.isArray(data[0])) {
     endAngle1 = -180; // Half circle, counter-clockwise
     [data1, data2] = data; // Assume data[2] is also Array
-  }
-  let innerRadius = 0;
-  if (donut || chart.donut) {
-    innerRadius =
-      suggestedInnerRadius && suggestedInnerRadius > 0
-        ? suggestedInnerRadius
-        : DEFAULT_DONUT_INNER_RADIUS;
   }
   // Only include groupSpacing if in comparison mode
   const computedGroupSpacing = data2 ? groupSpacing || chart.groupSpacing : 0;
@@ -70,13 +72,16 @@ function PieChart({
           padding || chart.padding,
           computedGroupSpacing
         ));
+  let innerRadius = 0;
+  if (donut || (typeof donut === 'undefined' && chart.donut)) {
+    innerRadius =
+      suggestedInnerRadius && suggestedInnerRadius > 0
+        ? suggestedInnerRadius
+        : Math.min.apply(null, computedRadii) * chart.donutRatio;
+  }
 
   return (
-    <CustomContainer
-      standalone={standalone}
-      height={height || chart.height}
-      width={width || chart.height}
-    >
+    <CustomContainer {...containerProps}>
       <VictoryPie
         standalone={false}
         groupComponent={
@@ -153,6 +158,7 @@ PieChart.propTypes = {
   innerRadius: PropTypes.number,
   padding: PropTypes.oneOf(PropTypes.number, PropTypes.shape({})),
   parts: PropTypes.shape({
+    container: PropTypes.shape({}),
     tooltip: PropTypes.shape({})
   }),
   radius: PropTypes.number,
@@ -164,6 +170,7 @@ PieChart.propTypes = {
    * (if any).
    */
   radii: PropTypes.arrayOf(PropTypes.number),
+  responsive: PropTypes.bool,
   standalone: PropTypes.bool,
   theme: PropTypes.shape({
     pie: PropTypes.shape({})
@@ -182,7 +189,8 @@ PieChart.defaultProps = {
   parts: undefined,
   radius: undefined,
   radii: undefined,
-  standalone: undefined,
+  responsive: true,
+  standalone: true,
   theme: undefined,
   width: undefined
 };

@@ -68,7 +68,10 @@ export default function createVictoryTheme(chartOptions) {
     chart.comparisonBar
   );
   // Customize chart pie props
-  chart.pie = Object.assign({ donut: false, groupSpacing: 8 }, chart.pie);
+  chart.pie = Object.assign(
+    { donut: true, donutRatio: 0.6, groupSpacing: 4 },
+    chart.pie
+  );
   // Customize chart proportionalArea props off of chart area props
   chart.proportionalArea = Object.assign(
     { reference: defaultReference },
