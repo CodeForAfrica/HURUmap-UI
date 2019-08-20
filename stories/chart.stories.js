@@ -274,6 +274,8 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
         width={number('width', 500)}
         height={number('height', 500)}
         padding={number('padding', 75)}
+        responsive={boolean('responsive', true)}
+        standalone={boolean('standalone', true)}
       />
     </div>
   ))

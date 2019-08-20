@@ -21,6 +21,7 @@ function PieChart({
   parts,
   radius,
   radii,
+  responsive,
   standalone,
   theme,
   height,
@@ -38,6 +39,15 @@ function PieChart({
   if (radii && colorScale && colorScale.length > 1) {
     colorScale2 = colorScale.slice(1);
   }
+  const containerProps = Object.assign(
+    {
+      height: height || chart.height,
+      responsive,
+      standalone,
+      width: width || chart.width
+    },
+    parts && parts.container
+  );
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
 
   const startAngle1 = 0;
@@ -71,11 +81,7 @@ function PieChart({
   }
 
   return (
-    <CustomContainer
-      standalone={standalone}
-      height={height || chart.height}
-      width={width || chart.height}
-    >
+    <CustomContainer {...containerProps}>
       <VictoryPie
         standalone={false}
         groupComponent={
@@ -152,6 +158,7 @@ PieChart.propTypes = {
   innerRadius: PropTypes.number,
   padding: PropTypes.oneOf(PropTypes.number, PropTypes.shape({})),
   parts: PropTypes.shape({
+    container: PropTypes.shape({}),
     tooltip: PropTypes.shape({})
   }),
   radius: PropTypes.number,
@@ -163,6 +170,7 @@ PieChart.propTypes = {
    * (if any).
    */
   radii: PropTypes.arrayOf(PropTypes.number),
+  responsive: PropTypes.bool,
   standalone: PropTypes.bool,
   theme: PropTypes.shape({
     pie: PropTypes.shape({})
@@ -181,6 +189,7 @@ PieChart.defaultProps = {
   parts: undefined,
   radius: undefined,
   radii: undefined,
+  responsive: true,
   standalone: true,
   theme: undefined,
   width: undefined
