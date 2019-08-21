@@ -16,7 +16,9 @@ const useStyles = makeStyles({
     padding: '1.5625rem 1.25rem'
   },
   content: {
-    padding: '1.25rem'
+    padding: '1.25rem',
+    width: '100%',
+    height: '100%'
   },
   button: {
     border: '0.0625rem solid #d8d8d8',
