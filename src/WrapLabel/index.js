@@ -47,12 +47,12 @@ WrapLabel.propTypes = {
 };
 
 WrapLabel.defaultProps = {
-  text: '',
+  text: undefined,
   style: undefined,
-  textAnchor: 'middle',
+  textAnchor: undefined,
   transform: undefined,
-  x: 0,
-  y: 0
+  x: undefined,
+  y: undefined
 };
 
 export default WrapLabel;
