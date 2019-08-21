@@ -1,10 +1,17 @@
-import React, { useEffect, useRef, useCallback, useState } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useCallback,
+  useState,
+  Fragment
+} from 'react';
 import PropTypes from 'prop-types';
 
 import leaflet from 'leaflet';
 import { makeStyles } from '@material-ui/core';
 
 import 'leaflet/dist/leaflet.css';
+import ContentLoader from '../ContentLoader';
 import useDeepRef from './useDeepRef';
 
 const useStyles = makeStyles({
@@ -291,7 +298,27 @@ function MapIt({
   ]);
   const classes = useStyles();
 
-  return <div id={mapId} className={classes.root} />;
+  return (
+    <Fragment>
+      {!featuresToDraw && (
+        <div className={classes.root}>
+          <ContentLoader
+            width="100%"
+            height="100%"
+            primaryOpacity={0.5}
+            secondaryOpacity={1}
+          >
+            <rect x="0" y="0" width="100%" height="100%" />
+          </ContentLoader>
+        </div>
+      )}
+      <div
+        id={mapId}
+        className={classes.root}
+        style={{ display: !featuresToDraw ? 'hidden' : 'block' }}
+      />
+    </Fragment>
+  );
 }
 
 MapIt.propTypes = {
