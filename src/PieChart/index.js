@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Helpers, VictoryPie, VictoryTooltip } from 'victory';
+import { Helpers, VictoryPie, VictoryTooltip, VictoryLegend } from 'victory';
 
 import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
@@ -17,6 +17,7 @@ function PieChart({
   donut,
   groupSpacing,
   innerRadius: suggestedInnerRadius,
+  legend,
   padding,
   parts,
   radius,
@@ -25,7 +26,7 @@ function PieChart({
   standalone,
   theme,
   height,
-  width,
+  width: w,
   ...props
 }) {
   const { pie: chart } = theme;
@@ -39,15 +40,24 @@ function PieChart({
   if (radii && colorScale && colorScale.length > 1) {
     colorScale2 = colorScale.slice(1);
   }
+  const width = w || chart.width;
   const containerProps = Object.assign(
     {
       height: height || chart.height,
       responsive,
       standalone,
-      width: width || chart.width
+      width
     },
     parts && parts.container
   );
+  const legendProps =
+    legend &&
+    legend.length > 0 &&
+    Object.assign(
+      { data: legend, orientation: 'vertical', x: width - 100, y: 0 },
+      parts && parts.legend
+    );
+  const chartWidth = legendProps ? width - 100 : width;
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
 
   const startAngle1 = 0;
@@ -67,7 +77,7 @@ function PieChart({
     (radius
       ? [radius]
       : computeRadii(
-          width || chart.width,
+          chartWidth,
           height || chart.height,
           padding || chart.padding,
           computedGroupSpacing
@@ -79,6 +89,7 @@ function PieChart({
         ? suggestedInnerRadius
         : Math.min.apply(null, computedRadii) * chart.donutRatio;
   }
+  console.log('LEGEND', legend);
 
   return (
     <CustomContainer {...containerProps}>
@@ -134,6 +145,7 @@ function PieChart({
           {...props}
         />
       )}
+      {legend && legend.length > 0 && <VictoryLegend {...legendProps} />}
     </CustomContainer>
   );
 }
@@ -156,8 +168,10 @@ PieChart.propTypes = {
   groupSpacing: PropTypes.number,
   height: PropTypes.number,
   innerRadius: PropTypes.number,
+  legend: PropTypes.arrayOf(PropTypes.shape({})),
   padding: PropTypes.oneOf(PropTypes.number, PropTypes.shape({})),
   parts: PropTypes.shape({
+    legend: PropTypes.shape({}),
     container: PropTypes.shape({}),
     tooltip: PropTypes.shape({})
   }),
@@ -185,6 +199,7 @@ PieChart.defaultProps = {
   groupSpacing: undefined,
   height: undefined,
   innerRadius: undefined,
+  legend: undefined,
   padding: undefined,
   parts: undefined,
   radius: undefined,

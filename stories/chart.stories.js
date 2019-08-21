@@ -296,6 +296,13 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
           { x: 'D', y: 1 },
           { x: 'E', y: 2 }
         ])}
+        legend={[
+          { name: 'A' },
+          { name: 'B' },
+          { name: 'C' },
+          { name: 'D' },
+          { name: 'E' }
+        ]}
         width={number('width', 500)}
         height={number('height', 500)}
         padding={number('padding', 75)}
