@@ -66,7 +66,7 @@ function ChartContainer({
         container
         wrap="nowrap"
         direction="row"
-        alignItems="center"
+        alignItems="flex-start"
         justify="space-between"
       >
         <Grid item xs={8}>
