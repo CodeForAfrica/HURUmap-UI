@@ -4,10 +4,8 @@ import { withKnobs, boolean, number, select } from '@storybook/addon-knobs';
 
 import Grid from '@material-ui/core/Grid';
 
-import { BarChart, ChartContainer, EmbedPopup, InfoPopup } from '../src';
+import { BarChart, ChartContainer, ShareDropDown, InfoDropDown } from '../src';
 import { CenterDecorator } from './common';
-import ShareDropDown from '../src/ChartContainer/ShareDropDown';
-import InfoDropDown from '../src/ChartContainer/InfoDropDown';
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
 
