@@ -35,7 +35,7 @@ function ChartContainer({
   subtitle,
   children,
   onClickInfo,
-  onClickShare,
+  onClickShare
 }) {
   const classes = useStyles();
   const infoRef = React.useRef(null);
@@ -117,7 +117,7 @@ ChartContainer.propTypes = {
 
 ChartContainer.defaultProps = {
   onClickInfo: undefined,
-  onClickShare: undefined,
+  onClickShare: undefined
 };
 
 export default ChartContainer;
