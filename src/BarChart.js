@@ -39,7 +39,7 @@ function BarChart({
     }
   }
   const axisProps = (parts && toChartAxisProps(parts.axis)) || {};
-  const { tickFormat: propTickFormat } = axisProps.independent;
+  const { tickFormat: propTickFormat } = axisProps.independent || {};
   const tickFormat =
     propTickFormat ||
     (tick => {
