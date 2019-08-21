@@ -11,6 +11,7 @@ export default function createVictoryTheme(chartOptions) {
         sm: 600
       },
       axis: {
+        labelWidth: 20,
         style: {
           axisLabel: {
             display: 'none'
