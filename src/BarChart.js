@@ -39,6 +39,22 @@ function BarChart({
     }
   }
   const axisProps = (parts && toChartAxisProps(parts.axis)) || {};
+  const { tickFormat: propTickFormat } = axisProps.independent;
+  const tickFormat =
+    propTickFormat ||
+    (tick => {
+      let tickLabel = '';
+      groupData.find(dE =>
+        dE.find(gE => {
+          if (gE.x === tick) {
+            tickLabel = gE.x.toString();
+            return true;
+          }
+          return false;
+        })
+      );
+      return tickLabel;
+    });
   const chartProps = Object.assign(
     {
       domain,
@@ -76,6 +92,7 @@ function BarChart({
         ))}
       </VictoryGroup>
       <VictoryAxis
+        tickFormat={tickFormat}
         tickLabelComponent={<WrapLabel width={labelWidth} />}
         {...axisProps.independent}
       />
