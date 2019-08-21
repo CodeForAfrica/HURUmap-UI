@@ -9,6 +9,7 @@ import TypographyLoader from '../TypographyLoader';
 
 import infoIcon from '../assets/info.png';
 import shareIcon from '../assets/share.png';
+import A from '../A';
 
 const useStyles = makeStyles({
   root: {
@@ -18,7 +19,8 @@ const useStyles = makeStyles({
     padding: '1.5625rem 1.25rem'
   },
   content: {
-    padding: '1.25rem 0'
+    padding: '1.25rem 0',
+    overflow: 'hidden'
   },
   button: {
     border: '0.0625rem solid #d8d8d8',
@@ -29,12 +31,14 @@ const useStyles = makeStyles({
     }
   },
   title: {},
-  subtitle: {}
+  subtitle: {},
+  sourceLink: {}
 });
 
 function ChartContainer({
   loading,
   content,
+  sourceUrl,
   title,
   subtitle,
   children,
@@ -145,6 +149,18 @@ function ChartContainer({
           children
         )}
       </Grid>
+      <TypographyLoader
+        loading={loading}
+        loader={{
+          primaryOpacity: 0.5,
+          secondaryOpacity: 1
+        }}
+        component="span"
+      >
+        <A className={classes.sourceLink} href={sourceUrl}>
+          {sourceUrl}
+        </A>
+      </TypographyLoader>
     </Grid>
   );
 }
@@ -158,6 +174,7 @@ ChartContainer.propTypes = {
   onClickShare: PropTypes.func,
   subtitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  sourceUrl: PropTypes.string,
   loading: PropTypes.bool,
   content: PropTypes.shape({
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -166,6 +183,7 @@ ChartContainer.propTypes = {
 };
 
 ChartContainer.defaultProps = {
+  sourceUrl: undefined,
   onClickInfo: undefined,
   onClickShare: undefined,
   loading: false,
