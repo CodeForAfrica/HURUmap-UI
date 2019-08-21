@@ -165,29 +165,6 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
         />
       </div>
     );
-  })
-  .add('Histogram', () => {
-    const bins = Array(number('bins', 3)).fill(null);
-    const horizontal = boolean('horizontal', false);
-
-    return (
-      <div
-        style={{
-          height: '300px'
-        }}
-      >
-        <BarChart
-          width={number('width', 500)}
-          height={number('height', 300)}
-          barSpacing={0}
-          horizontal={horizontal}
-          data={bins.map((_, index) => {
-            const y = rand();
-            return { label: `${y}`, x: `Bin #${index}`, y };
-          })}
-        />
-      </div>
-    );
   });
 
 storiesOf('HURUmap UI|Charts/Bullet Chart', module)
