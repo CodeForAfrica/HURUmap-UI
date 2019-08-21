@@ -139,24 +139,24 @@ function PieChart({
 }
 
 PieChart.propTypes = {
-  colorScale: PropTypes.oneOf(
+  colorScale: PropTypes.oneOf([
     PropTypes.string,
     PropTypes.arrayOf(
       PropTypes.shape({
-        x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+        x: PropTypes.oneOf([PropTypes.number, PropTypes.string])
       })
     )
-  ),
+  ]),
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+      x: PropTypes.oneOf([PropTypes.number, PropTypes.string])
     })
   ),
   donut: PropTypes.bool,
   groupSpacing: PropTypes.number,
   height: PropTypes.number,
   innerRadius: PropTypes.number,
-  padding: PropTypes.oneOf(PropTypes.number, PropTypes.shape({})),
+  padding: PropTypes.oneOf([PropTypes.number, PropTypes.shape({})]),
   parts: PropTypes.shape({
     container: PropTypes.shape({}),
     tooltip: PropTypes.shape({})

@@ -86,12 +86,12 @@ function BarChart({
 
 BarChart.propTypes = {
   data: PropTypes.arrayOf(
-    PropTypes.oneOf(
+    PropTypes.oneOf([
       PropTypes.shape({
         x: PropTypes.oneOf([PropTypes.number, PropTypes.string])
       }),
       PropTypes.shape({ data: PropTypes.shape({}) })
-    )
+    ])
   ),
   barWidth: PropTypes.number,
   domain: PropTypes.oneOf([PropTypes.number, PropTypes.shape({})]),

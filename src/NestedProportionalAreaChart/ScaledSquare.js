@@ -62,18 +62,18 @@ function ScaledSquare({ colorScale = [], data, reference, style, ...props }) {
 }
 
 ScaledSquare.propTypes = {
-  colorScale: PropTypes.oneOf(
+  colorScale: PropTypes.oneOf([
     PropTypes.string,
     PropTypes.arrayOf(
       PropTypes.shape({
-        x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+        x: PropTypes.oneOf([PropTypes.number, PropTypes.string])
       })
     )
-  ),
+  ]),
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      x: PropTypes.oneOf(PropTypes.number, PropTypes.string),
-      label: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+      x: PropTypes.oneOf([PropTypes.number, PropTypes.string]),
+      label: PropTypes.oneOf([PropTypes.number, PropTypes.string])
     })
   ),
   reference: PropTypes.shape({

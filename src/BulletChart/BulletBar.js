@@ -71,10 +71,10 @@ BulletBar.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({ x: PropTypes.number })).isRequired,
   barWidth: PropTypes.number,
   labels: PropTypes.func.isRequired,
-  reference: PropTypes.oneOf(
+  reference: PropTypes.oneOf([
     PropTypes.arrayOf(PropTypes.shape({})),
     PropTypes.shape({})
-  ),
+  ]),
   style: PropTypes.shape({
     data: PropTypes.shape({}),
     labels: PropTypes.shape({})
