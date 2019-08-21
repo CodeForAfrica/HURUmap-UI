@@ -6,6 +6,8 @@ import Grid from '@material-ui/core/Grid';
 
 import { BarChart, ChartContainer, EmbedPopup, InfoPopup } from '../src';
 import { CenterDecorator } from './common';
+import ShareDropDown from '../src/ChartContainer/ShareDropDown';
+import InfoDropDown from '../src/ChartContainer/InfoDropDown';
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
 
@@ -93,7 +95,7 @@ storiesOf('HURUmap UI|ChartContainer', module)
                   }
                 }}
               />
-              <EmbedPopup
+              <ShareDropDown
                 anchorEl={shareAnchorEl}
                 onClose={handleCloseShare}
                 open={shareAnchorEl !== null}
@@ -110,8 +112,8 @@ storiesOf('HURUmap UI|ChartContainer', module)
   style="margin: 1em; max-width: 300px;"
 />
 <script src="https://tanzania.hurumap.org/static/js/embed.chart.make.js" />`}
-              </EmbedPopup>
-              <InfoPopup
+              </ShareDropDown>
+              <InfoDropDown
                 anchorEl={infoAnchorEl}
                 onClose={handleCloseInfo}
                 onExploreData={handleExploreData}
@@ -120,7 +122,7 @@ storiesOf('HURUmap UI|ChartContainer', module)
                 sourceTitle="Code for Africa"
               >
                 Explore Data
-          </InfoPopup>
+          </InfoDropDown>
             </ChartContainer>
           </Grid>
         </Grid>

@@ -10,5 +10,5 @@ export {
 export { default as createTheme } from './styles/createTheme';
 export { default as ComparisonBarChart } from './ComparisonBarChart';
 export { default as ChartContainer } from './ChartContainer';
-export { default as EmbedPopup } from './ChartContainer/EmbedPopup';
-export { default as InfoPopup } from './ChartContainer/InfoPopup';
+export { default as ShareDropDown } from './ChartContainer/ShareDropDown';
+export { default as InfoDropDown } from './ChartContainer/InfoDropDown';

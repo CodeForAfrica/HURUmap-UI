@@ -29,7 +29,7 @@ const useStyles = makeStyles(({ breakpoints }) => ({
   }
 }));
 
-function EmbedPopup({ children, onClose, open, subtitle, title, ...props }) {
+function ShareDropDown({ children, onClose, open, subtitle, title, ...props }) {
   const classes = useStyles();
 
   return (
@@ -71,4 +71,4 @@ EmbedPopup.defaultProps = {
   title: undefined
 };
 
-export default EmbedPopup;
+export default ShareDropDown;

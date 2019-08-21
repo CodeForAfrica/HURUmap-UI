@@ -32,7 +32,7 @@ const useStyles = makeStyles(({ breakpoints }) => ({
   }
 }));
 
-function InfoPopup({
+function InfoDropDown({
   children,
   onClose,
   onExploreData,
@@ -93,4 +93,4 @@ InfoPopup.defaultProps = {
   sourceTitle: undefined
 };
 
-export default InfoPopup;
+export default InfoDropDown;
