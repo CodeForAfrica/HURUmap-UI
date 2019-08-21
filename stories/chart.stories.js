@@ -4,6 +4,7 @@ import {
   withKnobs,
   boolean,
   object,
+  select,
   text,
   number
 } from '@storybook/addon-knobs';
@@ -28,29 +29,116 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
     const data = Array(number('data', 3)).fill(null);
 
     return (
-      <div
-        style={{
-          height: '300px',
-          overflowX: horizontal ? 'hidden' : 'auto',
-          overflowY: horizontal ? 'auto' : 'hidden'
-        }}
-      >
+      <div>
         <BarChart
           horizontal={horizontal}
-          barWidth={number('barWidth', 100)}
-          barSpacing={number('barSpacing', 20)}
-          width={number('width', 500)}
-          height={number('height', 300)}
+          width={number('width', undefined)}
+          height={number('height', undefined)}
           data={data.map((_, index) => {
             const y = rand();
             return {
-              label: `${index}-${index} Employment Status`,
+              label: `${index}-${y} Employment Status`,
               x: `${index}-${index} Employment Status`,
               y
             };
           })}
+          alignment={select('alignment', ['start', 'middle', 'end'], 'middle')}
+          barWidth={number('barWidth', undefined)}
+          domainPadding={object('domainPadding', { x: 0 })}
           parts={{
             axis: {
+              independent: {
+                style: {
+                  axis: {
+                    display: 'block'
+                  },
+                  grid: {
+                    display: 'block'
+                  },
+                  ticks: {
+                    display: 'block'
+                  },
+                  tickLabels: {
+                    display: 'block'
+                  }
+                }
+              },
+              dependent: {
+                tickValues: [10, 50, 90],
+                tickFormat: ['10%', '50%', '90%'],
+                style: {
+                  axis: {
+                    display: 'block'
+                  },
+                  grid: {
+                    display: 'block'
+                  },
+                  ticks: {
+                    display: 'block'
+                  },
+                  tickLabels: {
+                    display: 'block'
+                  }
+                }
+              }
+            }
+          }}
+        />
+      </div>
+    );
+  })
+  .add('Grouped', () => {
+    const groups = Array(number('groups', 3)).fill(null);
+    const data = Array(number('data', 4)).fill(null);
+    const horizontal = boolean('horizontal', false);
+    const offset = number('offset', 12);
+
+    return (
+      <div>
+        <BarChart
+          horizontal={horizontal}
+          width={number('width', 350)}
+          height={number('height', 350)}
+          /*
+            Victory requires data to be in the following format:
+            [
+              [group0bar0, group1bar0, group2bar0, ...etc],
+              [group0bar1, group1bar1, group2bar1, ...etc],
+              [group0bar2, group1bar2, group2bar2, ...etc],
+              ...etc
+            ]
+          */
+          data={data.map((_d, dataIndex) =>
+            groups.map((_g, groupIndex) => ({
+              label: `Group ${groupIndex} Data ${dataIndex} Geo`,
+              // Starting with 0 seems to trigger domainPadding coercion. See the comment below.
+              x: groupIndex + 1,
+              y: rand()
+            }))
+          )}
+          barWidth={number('barWidth', 10)}
+          offset={offset}
+          // domainPadding value may be coerced. See 2nd note: https://formidable.com/open-source/victory/docs/common-props/#domainpadding
+          domainPadding={object('domainPadding', { x: offset * data.length })}
+          parts={{
+            axis: {
+              independent: {
+                tickFormat: (tick, index) => `Group ${index} Tick`,
+                style: {
+                  axis: {
+                    display: 'block'
+                  },
+                  grid: {
+                    display: 'block'
+                  },
+                  ticks: {
+                    display: 'block'
+                  },
+                  tickLabels: {
+                    display: 'block'
+                  }
+                }
+              },
               dependent: {
                 style: {
                   axis: {
@@ -61,82 +149,19 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
                   },
                   tickLabels: {
                     display: 'block'
-                  },
-                  tickValues: object('dependentTickValues', [10, 50, 90]),
-                  tickFormat: object('dependentTickFormat', [
-                    '10%',
-                    '50%',
-                    '90%'
-                  ])
+                  }
                 }
               }
-            }
-          }}
-        />
-      </div>
-    );
-  })
-  .add('Grouped', () => {
-    const groups = Array(number('groups', 12)).fill(null);
-    const data = Array(number('data', 2)).fill(null);
-    const horizontal = boolean('horizontal', false);
-
-    return (
-      <div
-        style={{
-          height: '300px',
-          overflowX: horizontal ? 'hidden' : 'auto',
-          overflowY: horizontal ? 'auto' : 'hidden'
-        }}
-      >
-        <BarChart
-          width={number('width', 500)}
-          height={number('height', 300)}
-          labels={datum =>
-            `Group ${datum.tick} Tick\n${datum.x} ${datum.y}${text(
-              'dataUnit',
-              '%'
-            )}`
-          }
-          horizontal={horizontal}
-          data={groups.map((_, groupIndex) => ({
-            label: `Group ${groupIndex} Geo`,
-            data: data.map((_d, index) => ({
-              x: index,
-              y: rand()
-            }))
-          }))}
-          parts={{
-            axis: {
-              tickFormat: (tick, index) => `Group ${index} Tick`
+            },
+            group: {
+              labels: datum =>
+                `Group ${datum.tick} Label\n${datum.x} ${datum.y}${text(
+                  'dataUnit',
+                  '%'
+                )}`
             },
             tooltip: { style: { textAnchor: 'start' } }
           }}
-        />
-      </div>
-    );
-  })
-  .add('Histogram', () => {
-    const bins = Array(number('bins', 3)).fill(null);
-    const horizontal = boolean('horizontal', false);
-
-    return (
-      <div
-        style={{
-          height: '300px',
-          overflowX: horizontal ? 'hidden' : 'auto',
-          overflowY: horizontal ? 'auto' : 'hidden'
-        }}
-      >
-        <BarChart
-          width={number('width', 500)}
-          height={number('height', 300)}
-          barSpacing={0}
-          horizontal={horizontal}
-          data={bins.map((_, index) => {
-            const y = rand();
-            return { label: `${y}`, x: `Bin #${index}`, y };
-          })}
         />
       </div>
     );

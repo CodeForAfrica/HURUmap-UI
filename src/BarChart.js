@@ -8,109 +8,76 @@ import Chart, { toChartAxisProps } from './Chart';
 import WrapLabel from './WrapLabel';
 
 function BarChart({
-  theme,
-  data,
-  barWidth = 40,
-  groupSpacing = 30,
-  barSpacing = 5,
-  horizontal,
-  width,
+  barWidth,
+  data: d,
+  domain,
+  domainPadding,
   height,
-  responsive = false,
+  horizontal,
+  offset,
   parts,
+  responsive,
+  theme,
+  width,
   ...props
 }) {
-  const { group: groupChart } = theme;
-  if (!data || !groupChart) {
+  const {
+    axis: { labelWidth: defaultLabelWidth },
+    bar: chart,
+    group: groupChart
+  } = theme;
+  if (!d || !groupChart) {
     return null;
   }
-  // This space is the sides of the chart, outside the data
-  // The axis is rendered in this space
-  const dataMargin = 95;
-  let groupCount = 1;
-  let barCount = data.length;
-  let plotData = [data];
-  const isGrouped = Boolean(data[0].data);
-  if (isGrouped) {
-    const dataFields = data[0].data.map(d => d.x);
-    groupCount = data.length;
-    barCount = dataFields.length * groupCount;
 
-    // Inverse the data provided
-    // Victory group expects the fields to group as root
-    plotData = dataFields.map(field =>
-      data.map(x => {
-        const d = x.data.find(y => y.x === field);
-        return { x: x.label, y: d ? d.y : 0, tick: d ? d.x : 0 };
-      })
-    );
+  const groupData = Array.isArray(d[0]) ? d : [d];
+  let labelWidth = defaultLabelWidth;
+  if (groupData.length > 1) {
+    const barSpacing = offset || barWidth;
+    if (barSpacing) {
+      labelWidth = barSpacing * groupData.length;
+    }
   }
-
   const axisProps = (parts && toChartAxisProps(parts.axis)) || {};
-  const chartProps = parts && parts.parent;
+  const chartProps = Object.assign(
+    {
+      domain,
+      domainPadding,
+      height: height || chart.height,
+      horizontal,
+      responsive,
+      theme,
+      width: width || chart.width
+    },
+    parts && parts.parent
+  );
   const groupProps = parts && parts.group ? [].concat(parts.group) : [];
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
   const { colorScale } = groupChart;
 
-  const calculatedDimension =
-    (barWidth + barSpacing) * barCount +
-    groupSpacing * (groupCount - 1) +
-    dataMargin;
-
   return (
-    <Chart
-      theme={theme}
-      padding={
-        horizontal ? { left: barWidth + 5, bottom: 50, right: 50 } : undefined
-      }
-      responsive={responsive}
-      horizontal={horizontal}
-      width={horizontal ? width : calculatedDimension}
-      height={!horizontal ? height : calculatedDimension}
-      // The bar chart would always overflow by half the width plus some pixels
-      domainPadding={{ x: barWidth / 2 + 5 }}
-      {...chartProps}
-    >
-      {isGrouped ? (
-        <VictoryGroup offset={barWidth + barSpacing} {...groupProps}>
-          {plotData.map((d, i) => (
-            <VictoryBar
-              data={d}
-              barWidth={barWidth}
-              {...props}
-              labelComponent={
-                <VictoryTooltip
-                  {...tooltipProps}
-                  style={Object.assign({}, tooltipProps.style, {
-                    fill: colorScale[i]
-                  })}
-                />
-              }
-            />
-          ))}
-        </VictoryGroup>
-      ) : (
-        plotData.map(d => (
+    <Chart {...chartProps}>
+      <VictoryGroup {...groupProps} offset={offset}>
+        {groupData.map((data, i) => (
           <VictoryBar
-            data={d}
             barWidth={barWidth}
-            labelComponent={<VictoryTooltip {...tooltipProps} />}
+            data={data}
+            key={data.toString()}
+            labelComponent={
+              <VictoryTooltip
+                {...tooltipProps}
+                style={Object.assign({}, tooltipProps.style, {
+                  fill: colorScale[i]
+                })}
+              />
+            }
             {...props}
           />
-        ))
-      )}
+        ))}
+      </VictoryGroup>
       <VictoryAxis
-        tickLabelComponent={<WrapLabel width={barWidth * groupCount} />}
-        {...Object.assign(
-          {
-            style: {
-              tickLabels: {
-                display: 'block'
-              }
-            }
-          },
-          axisProps.independent
-        )}
+        tickLabelComponent={<WrapLabel width={labelWidth} />}
+        {...axisProps.independent}
       />
       <VictoryAxis dependentAxis {...axisProps.dependent} />
     </Chart>
@@ -121,16 +88,17 @@ BarChart.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.oneOf(
       PropTypes.shape({
-        x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+        x: PropTypes.oneOf([PropTypes.number, PropTypes.string])
       }),
       PropTypes.shape({ data: PropTypes.shape({}) })
     )
-  ).isRequired,
-  barSpacing: PropTypes.number,
+  ),
   barWidth: PropTypes.number,
-  groupSpacing: PropTypes.number,
+  domain: PropTypes.oneOf([PropTypes.number, PropTypes.shape({})]),
+  domainPadding: PropTypes.oneOf([PropTypes.number, PropTypes.shape({})]),
   height: PropTypes.number,
   horizontal: PropTypes.bool,
+  offset: PropTypes.number,
   parts: PropTypes.shape({
     axis: PropTypes.shape({}),
     group: PropTypes.shape({}),
@@ -139,19 +107,25 @@ BarChart.propTypes = {
   }),
   responsive: PropTypes.bool,
   theme: PropTypes.shape({
+    axis: PropTypes.shape({
+      labelWidth: PropTypes.number
+    }),
+    bar: PropTypes.shape({}),
     group: PropTypes.shape({})
   }),
   width: PropTypes.number
 };
 
 BarChart.defaultProps = {
-  barSpacing: undefined,
   barWidth: undefined,
-  groupSpacing: undefined,
+  data: undefined,
+  domain: undefined,
+  domainPadding: undefined,
   height: undefined,
   horizontal: undefined,
+  offset: undefined,
   parts: undefined,
-  responsive: undefined,
+  responsive: true,
   theme: undefined,
   width: undefined
 };

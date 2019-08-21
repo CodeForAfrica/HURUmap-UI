@@ -1,12 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import {
-  withKnobs,
-  boolean,
-  text,
-  number,
-  select
-} from '@storybook/addon-knobs';
+import { withKnobs, boolean, number, select } from '@storybook/addon-knobs';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -64,20 +58,8 @@ storiesOf('HURUmap UI|ChartContainer', module)
             )}
           >
             <ChartContainer
-              overflowX={select(
-                'overflowX',
-                ['auto', 'clip', 'hidden', 'scroll', 'visible'],
-                'auto'
-              )}
-              overflowY={select(
-                'overflowY',
-                ['auto', 'clip', 'hidden', 'scroll', 'visible'],
-                'hidden'
-              )}
               onClickInfo={handleClickInfo}
               onClickShare={handleClickShare}
-              maxChartHeight={text('maxChartHeight', '300px')}
-              maxChartWidth={text('maxChartWidth', '100%')}
               title="Lorem ipsum dolor sit amet."
               subtitle="Praesent at dignissim est. Integer porta consectetur ante, ut congue erat."
             >

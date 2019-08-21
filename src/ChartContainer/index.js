@@ -16,7 +16,9 @@ const useStyles = makeStyles({
     padding: '1.5625rem 1.25rem'
   },
   content: {
-    padding: '1.25rem'
+    padding: '1.25rem',
+    width: '100%',
+    height: '100%'
   },
   button: {
     border: '0.0625rem solid #d8d8d8',
@@ -35,11 +37,7 @@ function ChartContainer({
   subtitle,
   children,
   onClickInfo,
-  onClickShare,
-  overflowX,
-  overflowY,
-  maxChartWidth,
-  maxChartHeight
+  onClickShare
 }) {
   const classes = useStyles();
   const infoRef = React.useRef(null);
@@ -102,17 +100,7 @@ function ChartContainer({
         </Grid>
       </Grid>
       <Grid container justify="center">
-        <div
-          className={classes.content}
-          style={{
-            overflowX,
-            overflowY,
-            maxHeight: maxChartHeight,
-            maxWidth: maxChartWidth
-          }}
-        >
-          {children}
-        </div>
+        <div className={classes.content}>{children}</div>
       </Grid>
     </Grid>
   );
@@ -123,23 +111,15 @@ ChartContainer.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]).isRequired,
-  maxChartHeight: PropTypes.oneOf(PropTypes.number, PropTypes.string),
-  maxChartWidth: PropTypes.oneOf(PropTypes.number, PropTypes.string),
   onClickInfo: PropTypes.func,
   onClickShare: PropTypes.func,
-  overflowX: PropTypes.oneOf('hidden', 'auto', 'scroll'),
-  overflowY: PropTypes.oneOf('hidden', 'auto', 'scroll'),
   subtitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired
 };
 
 ChartContainer.defaultProps = {
-  maxChartHeight: undefined,
-  maxChartWidth: undefined,
   onClickInfo: undefined,
-  onClickShare: undefined,
-  overflowX: 'hidden',
-  overflowY: 'hidden'
+  onClickShare: undefined
 };
 
 export default ChartContainer;
