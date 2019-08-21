@@ -3,7 +3,7 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
-import Theme from '../src/Theme';
+import Theme from './Theme';
 
 export const CenterDecorator = storyFn => (
   <Grid
