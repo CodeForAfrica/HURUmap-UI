@@ -54,7 +54,13 @@ function PieChart({
     legend &&
     legend.length > 0 &&
     Object.assign(
-      { data: legend, orientation: 'vertical', x: width - 100, y: 0 },
+      {
+        colorScale: colorScale1,
+        data: legend,
+        orientation: 'vertical',
+        x: width - 100,
+        y: 0
+      },
       parts && parts.legend
     );
   const chartWidth = legendProps ? width - 100 : width;
@@ -89,7 +95,6 @@ function PieChart({
         ? suggestedInnerRadius
         : Math.min.apply(null, computedRadii) * chart.donutRatio;
   }
-  console.log('LEGEND', legend);
 
   return (
     <CustomContainer {...containerProps}>
@@ -145,7 +150,9 @@ function PieChart({
           {...props}
         />
       )}
-      {legend && legend.length > 0 && <VictoryLegend {...legendProps} />}
+      {legend && legend.length > 0 && (
+        <VictoryLegend standalone={false} {...legendProps} />
+      )}
     </CustomContainer>
   );
 }
