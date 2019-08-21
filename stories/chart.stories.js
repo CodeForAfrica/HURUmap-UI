@@ -96,7 +96,7 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
       groups.map((_g, groupIndex) => ({
         label: `Group ${groupIndex} Data ${dataIndex} Geo`,
         // Starting with 0 seems to trigger domainPadding coercion. See the comment below.
-        x: groupIndex + 1,
+        x: `Group ${groupIndex + 1} Tick`,
         y: rand()
       }))
     );
@@ -124,10 +124,6 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           parts={{
             axis: {
               independent: {
-                tickFormat: tick => {
-                  const found = data.find(dE => dE.find(gE => gE.x === tick));
-                  return found ? `Group ${tick} Tick` : '';
-                },
                 style: {
                   axis: {
                     display: 'block'
