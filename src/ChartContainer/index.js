@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/styles';
-import { ButtonBase, Typography } from '@material-ui/core';
+import { ButtonBase } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+import ContentLoader from '../ContentLoader';
+import TypographyLoader from '../TypographyLoader';
 
 import infoIcon from '../assets/info.png';
 import shareIcon from '../assets/share.png';
@@ -16,9 +18,7 @@ const useStyles = makeStyles({
     padding: '1.5625rem 1.25rem'
   },
   content: {
-    padding: '1.25rem',
-    width: '100%',
-    height: '100%'
+    padding: '1.25rem 0'
   },
   button: {
     border: '0.0625rem solid #d8d8d8',
@@ -33,6 +33,8 @@ const useStyles = makeStyles({
 });
 
 function ChartContainer({
+  loading,
+  content,
   title,
   subtitle,
   children,
@@ -64,13 +66,30 @@ function ChartContainer({
         justify="space-between"
       >
         <Grid item xs={8}>
-          <Typography className={classes.title} variant="h5">
+          <TypographyLoader
+            loading={loading}
+            loader={{
+              primaryOpacity: 0.5,
+              secondaryOpacity: 1
+            }}
+            className={classes.title}
+            variant="h5"
+          >
             {title}
-          </Typography>
-          <Typography className={classes.subtitle} variant="h6">
+          </TypographyLoader>
+          <TypographyLoader
+            loading={loading}
+            loader={{
+              primaryOpacity: 0.5,
+              secondaryOpacity: 1
+            }}
+            className={classes.subtitle}
+            variant="h6"
+          >
             {subtitle}
-          </Typography>
+          </TypographyLoader>
         </Grid>
+
         <Grid
           item
           xs={4}
@@ -79,28 +98,52 @@ function ChartContainer({
           direction="row"
           justify="flex-end"
         >
-          <ButtonBase
-            className={classes.button}
-            onClick={() =>
-              onClickInfo && onClickInfo(getReferenceObject(infoRef))
-            }
-            ref={infoRef}
-          >
-            <img alt="Info" src={infoIcon} />
-          </ButtonBase>
-          <ButtonBase
-            className={classes.button}
-            onClick={() =>
-              onClickShare && onClickShare(getReferenceObject(shareRef))
-            }
-            ref={shareRef}
-          >
-            <img alt="Share" src={shareIcon} />
-          </ButtonBase>
+          {loading ? (
+            <ContentLoader
+              primaryOpacity={0.5}
+              secondaryOpacity={1}
+              width="5rem"
+              height="2.5rem"
+            >
+              <rect x="0" y="0" width="100%" height="100%" />
+            </ContentLoader>
+          ) : (
+            <Fragment>
+              <ButtonBase
+                className={classes.button}
+                onClick={() =>
+                  onClickInfo && onClickInfo(getReferenceObject(infoRef))
+                }
+                ref={infoRef}
+              >
+                <img alt="Info" src={infoIcon} />
+              </ButtonBase>
+              <ButtonBase
+                className={classes.button}
+                onClick={() =>
+                  onClickShare && onClickShare(getReferenceObject(shareRef))
+                }
+                ref={shareRef}
+              >
+                <img alt="Share" src={shareIcon} />
+              </ButtonBase>
+            </Fragment>
+          )}
         </Grid>
       </Grid>
-      <Grid container justify="center">
-        <div className={classes.content}>{children}</div>
+      <Grid
+        container
+        justify="center"
+        className={classes.content}
+        style={{ width: content.width, height: content.height }}
+      >
+        {loading ? (
+          <ContentLoader primaryOpacity={0.5} secondaryOpacity={1}>
+            <rect x="0" y="0" width="100%" height="100%" />
+          </ContentLoader>
+        ) : (
+          children
+        )}
       </Grid>
     </Grid>
   );
@@ -114,12 +157,22 @@ ChartContainer.propTypes = {
   onClickInfo: PropTypes.func,
   onClickShare: PropTypes.func,
   subtitle: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
+  loading: PropTypes.bool,
+  content: PropTypes.shape({
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  })
 };
 
 ChartContainer.defaultProps = {
   onClickInfo: undefined,
-  onClickShare: undefined
+  onClickShare: undefined,
+  loading: false,
+  content: {
+    width: '100%',
+    height: '100%'
+  }
 };
 
 export default ChartContainer;

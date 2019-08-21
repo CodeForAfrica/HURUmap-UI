@@ -58,10 +58,14 @@ storiesOf('HURUmap UI|ChartContainer', module)
             )}
           >
             <ChartContainer
+              loading={boolean('loading', true)}
               onClickInfo={handleClickInfo}
               onClickShare={handleClickShare}
               title="Lorem ipsum dolor sit amet."
               subtitle="Praesent at dignissim est. Integer porta consectetur ante, ut congue erat."
+              content={{
+                height: 338
+              }}
             >
               <BarChart
                 horizontal={boolean('horizontal', false)}
