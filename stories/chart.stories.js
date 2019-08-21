@@ -89,9 +89,17 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
   })
   .add('Grouped', () => {
     const groups = Array(number('groups', 3)).fill(null);
-    const data = Array(number('data', 4)).fill(null);
+    const dataCount = Array(number('data', 4)).fill(null);
     const horizontal = boolean('horizontal', false);
     const offset = number('offset', 12);
+    const data = dataCount.map((_d, dataIndex) =>
+      groups.map((_g, groupIndex) => ({
+        label: `Group ${groupIndex} Data ${dataIndex} Geo`,
+        // Starting with 0 seems to trigger domainPadding coercion. See the comment below.
+        x: groupIndex + 1,
+        y: rand()
+      }))
+    );
 
     return (
       <div>
@@ -108,14 +116,7 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
               ...etc
             ]
           */
-          data={data.map((_d, dataIndex) =>
-            groups.map((_g, groupIndex) => ({
-              label: `Group ${groupIndex} Data ${dataIndex} Geo`,
-              // Starting with 0 seems to trigger domainPadding coercion. See the comment below.
-              x: groupIndex + 1,
-              y: rand()
-            }))
-          )}
+          data={data}
           barWidth={number('barWidth', 10)}
           offset={offset}
           // domainPadding value may be coerced. See 2nd note: https://formidable.com/open-source/victory/docs/common-props/#domainpadding
@@ -123,7 +124,10 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           parts={{
             axis: {
               independent: {
-                tickFormat: (tick, index) => `Group ${index} Tick`,
+                tickFormat: tick => {
+                  const found = data.find(dE => dE.find(gE => gE.x === tick));
+                  return found ? `Group ${tick} Tick` : '';
+                },
                 style: {
                   axis: {
                     display: 'block'
