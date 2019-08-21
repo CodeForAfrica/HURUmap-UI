@@ -76,7 +76,7 @@ function InfoDropDown({
   );
 }
 
-InfoPopup.propTypes = {
+InfoDropDown.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
@@ -88,7 +88,7 @@ InfoPopup.propTypes = {
   sourceTitle: PropTypes.string
 };
 
-InfoPopup.defaultProps = {
+InfoDropDown.defaultProps = {
   onExploreData: undefined,
   sourceTitle: undefined
 };

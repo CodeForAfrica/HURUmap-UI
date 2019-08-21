@@ -55,7 +55,7 @@ function ShareDropDown({ children, onClose, open, subtitle, title, ...props }) {
   );
 }
 
-EmbedPopup.propTypes = {
+ShareDropDown.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
@@ -66,7 +66,7 @@ EmbedPopup.propTypes = {
   title: PropTypes.string
 };
 
-EmbedPopup.defaultProps = {
+ShareDropDown.defaultProps = {
   subtitle: undefined,
   title: undefined
 };
