@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/styles';
 import { ButtonBase } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import ContentLoader from '../ContentLoader';
+import BlockLoader from '../BlockLoader';
 import TypographyLoader from '../TypographyLoader';
 
 import infoIcon from '../assets/info.png';
@@ -102,37 +102,26 @@ function ChartContainer({
           direction="row"
           justify="flex-end"
         >
-          {loading ? (
-            <ContentLoader
-              primaryOpacity={0.5}
-              secondaryOpacity={1}
-              width="5rem"
-              height="2.5rem"
+          <BlockLoader loading={loading} width="5rem" height="2.5rem">
+            <ButtonBase
+              className={classes.button}
+              onClick={() =>
+                onClickInfo && onClickInfo(getReferenceObject(infoRef))
+              }
+              ref={infoRef}
             >
-              <rect x="0" y="0" width="100%" height="100%" />
-            </ContentLoader>
-          ) : (
-            <Fragment>
-              <ButtonBase
-                className={classes.button}
-                onClick={() =>
-                  onClickInfo && onClickInfo(getReferenceObject(infoRef))
-                }
-                ref={infoRef}
-              >
-                <img alt="Info" src={infoIcon} />
-              </ButtonBase>
-              <ButtonBase
-                className={classes.button}
-                onClick={() =>
-                  onClickShare && onClickShare(getReferenceObject(shareRef))
-                }
-                ref={shareRef}
-              >
-                <img alt="Share" src={shareIcon} />
-              </ButtonBase>
-            </Fragment>
-          )}
+              <img alt="Info" src={infoIcon} />
+            </ButtonBase>
+            <ButtonBase
+              className={classes.button}
+              onClick={() =>
+                onClickShare && onClickShare(getReferenceObject(shareRef))
+              }
+              ref={shareRef}
+            >
+              <img alt="Share" src={shareIcon} />
+            </ButtonBase>
+          </BlockLoader>
         </Grid>
       </Grid>
       <Grid
@@ -141,13 +130,7 @@ function ChartContainer({
         className={classes.content}
         style={{ width: content.width, height: content.height }}
       >
-        {loading ? (
-          <ContentLoader primaryOpacity={0.5} secondaryOpacity={1}>
-            <rect x="0" y="0" width="100%" height="100%" />
-          </ContentLoader>
-        ) : (
-          children
-        )}
+        <BlockLoader loading={loading}>{children}</BlockLoader>
       </Grid>
       <TypographyLoader
         loading={loading}

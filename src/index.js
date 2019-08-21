@@ -13,5 +13,6 @@ export { default as ChartContainer } from './ChartContainer';
 export { default as EmbedPopup } from './ChartContainer/EmbedPopup';
 export { default as InfoPopup } from './ChartContainer/InfoPopup';
 export { default as ContentLoader } from './ContentLoader';
+export { default as BlockLoader } from './BlockLoader';
 export { default as TypographyLoader } from './TypographyLoader';
 export { default as A } from './A';

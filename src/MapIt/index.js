@@ -11,7 +11,7 @@ import leaflet from 'leaflet';
 import { makeStyles } from '@material-ui/core';
 
 import 'leaflet/dist/leaflet.css';
-import ContentLoader from '../ContentLoader';
+import BlockLoader from '../BlockLoader';
 import useDeepRef from './useDeepRef';
 
 const useStyles = makeStyles({
@@ -302,14 +302,7 @@ function MapIt({
     <Fragment>
       {!featuresToDraw && (
         <div className={classes.root}>
-          <ContentLoader
-            width="100%"
-            height="100%"
-            primaryOpacity={0.5}
-            secondaryOpacity={1}
-          >
-            <rect x="0" y="0" width="100%" height="100%" />
-          </ContentLoader>
+          <BlockLoader loading width="100%" height="100%" />
         </div>
       )}
       <div
