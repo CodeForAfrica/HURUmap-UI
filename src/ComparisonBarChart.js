@@ -95,7 +95,7 @@ ComparisonBarChart.propTypes = {
   reference: PropTypes.shape({}),
   theme: PropTypes.shape({
     group: PropTypes.shape({
-      colorScale: PropTypes.oneOf([
+      colorScale: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.arrayOf(PropTypes.shape({}))
       ])

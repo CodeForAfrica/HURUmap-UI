@@ -103,16 +103,13 @@ function BarChart({
 
 BarChart.propTypes = {
   data: PropTypes.arrayOf(
-    PropTypes.oneOf([
-      PropTypes.shape({
-        x: PropTypes.oneOf([PropTypes.number, PropTypes.string])
-      }),
-      PropTypes.shape({ data: PropTypes.shape({}) })
-    ])
+    PropTypes.shape({
+      x: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+    })
   ),
   barWidth: PropTypes.number,
-  domain: PropTypes.oneOf([PropTypes.number, PropTypes.shape({})]),
-  domainPadding: PropTypes.oneOf([PropTypes.number, PropTypes.shape({})]),
+  domain: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
+  domainPadding: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
   height: PropTypes.number,
   horizontal: PropTypes.bool,
   offset: PropTypes.number,

@@ -65,25 +65,25 @@ function VerticalLegend({ colorScale, data, reference, style }) {
 }
 
 VerticalLegend.propTypes = {
-  colorScale: PropTypes.oneOf([
+  colorScale: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(
       PropTypes.shape({
-        x: PropTypes.oneOf([PropTypes.number, PropTypes.string])
+        x: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
       })
     )
   ]),
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      x: PropTypes.oneOf([PropTypes.number, PropTypes.string]),
-      label: PropTypes.oneOf([PropTypes.number, PropTypes.string])
+      x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      label: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
     })
   ),
   reference: PropTypes.shape({
     data: PropTypes.arrayOf(
       PropTypes.shape({
-        x: PropTypes.oneOf([PropTypes.number, PropTypes.string]),
-        label: PropTypes.oneOf([PropTypes.number, PropTypes.string])
+        x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        label: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
       })
     )
   }),
