@@ -96,17 +96,17 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
       groups.map((_g, groupIndex) => ({
         label: `Group ${groupIndex} Data ${dataIndex} Geo`,
         // Starting with 0 seems to trigger domainPadding coercion. See the comment below.
-        x: `Group ${groupIndex + 1} Tick`,
+        x: `Group ${groupIndex + 1} TickLabel`,
         y: rand()
       }))
     );
 
     return (
-      <div>
+      <div style={{ overflow: 'hidden' }}>
         <BarChart
           horizontal={horizontal}
-          width={number('width', 350)}
-          height={number('height', 350)}
+          width={number('width', 500)}
+          height={number('height', 500)}
           /*
             Victory requires data to be in the following format:
             [
@@ -122,6 +122,9 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           // domainPadding value may be coerced. See 2nd note: https://formidable.com/open-source/victory/docs/common-props/#domainpadding
           domainPadding={object('domainPadding', { x: offset * data.length })}
           parts={{
+            parent: {
+              padding: { top: 0, left: 150, bottom: 150, right: 0 }
+            },
             axis: {
               independent: {
                 style: {
