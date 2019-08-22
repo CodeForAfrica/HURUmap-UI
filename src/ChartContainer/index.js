@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/styles';
-import { ButtonBase, Typography } from '@material-ui/core';
+import { ButtonBase } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+import BlockLoader from '../BlockLoader';
+import TypographyLoader from '../TypographyLoader';
 
 import infoIcon from '../assets/info.png';
 import shareIcon from '../assets/share.png';
+import A from '../A';
 
 const useStyles = makeStyles({
   root: {
@@ -16,9 +19,8 @@ const useStyles = makeStyles({
     padding: '1.5625rem 1.25rem'
   },
   content: {
-    padding: '1.25rem',
-    width: '100%',
-    height: '100%'
+    padding: '1.25rem 0',
+    overflow: 'hidden'
   },
   button: {
     border: '0.0625rem solid #d8d8d8',
@@ -29,10 +31,14 @@ const useStyles = makeStyles({
     }
   },
   title: {},
-  subtitle: {}
+  subtitle: {},
+  sourceLink: {}
 });
 
 function ChartContainer({
+  loading,
+  content,
+  sourceUrl,
   title,
   subtitle,
   children,
@@ -60,17 +66,34 @@ function ChartContainer({
         container
         wrap="nowrap"
         direction="row"
-        alignItems="center"
+        alignItems="flex-start"
         justify="space-between"
       >
         <Grid item xs={8}>
-          <Typography className={classes.title} variant="h5">
+          <TypographyLoader
+            loading={loading}
+            loader={{
+              primaryOpacity: 0.5,
+              secondaryOpacity: 1
+            }}
+            className={classes.title}
+            variant="h5"
+          >
             {title}
-          </Typography>
-          <Typography className={classes.subtitle} variant="h6">
+          </TypographyLoader>
+          <TypographyLoader
+            loading={loading}
+            loader={{
+              primaryOpacity: 0.5,
+              secondaryOpacity: 1
+            }}
+            className={classes.subtitle}
+            variant="h6"
+          >
             {subtitle}
-          </Typography>
+          </TypographyLoader>
         </Grid>
+
         <Grid
           item
           xs={4}
@@ -79,29 +102,48 @@ function ChartContainer({
           direction="row"
           justify="flex-end"
         >
-          <ButtonBase
-            className={classes.button}
-            onClick={() =>
-              onClickInfo && onClickInfo(getReferenceObject(infoRef))
-            }
-            ref={infoRef}
-          >
-            <img alt="Info" src={infoIcon} />
-          </ButtonBase>
-          <ButtonBase
-            className={classes.button}
-            onClick={() =>
-              onClickShare && onClickShare(getReferenceObject(shareRef))
-            }
-            ref={shareRef}
-          >
-            <img alt="Share" src={shareIcon} />
-          </ButtonBase>
+          <BlockLoader loading={loading} width="5rem" height="2.5rem">
+            <ButtonBase
+              className={classes.button}
+              onClick={() =>
+                onClickInfo && onClickInfo(getReferenceObject(infoRef))
+              }
+              ref={infoRef}
+            >
+              <img alt="Info" src={infoIcon} />
+            </ButtonBase>
+            <ButtonBase
+              className={classes.button}
+              onClick={() =>
+                onClickShare && onClickShare(getReferenceObject(shareRef))
+              }
+              ref={shareRef}
+            >
+              <img alt="Share" src={shareIcon} />
+            </ButtonBase>
+          </BlockLoader>
         </Grid>
       </Grid>
-      <Grid container justify="center">
-        <div className={classes.content}>{children}</div>
+      <Grid
+        container
+        justify="center"
+        className={classes.content}
+        style={{ width: content.width, height: content.height }}
+      >
+        <BlockLoader loading={loading}>{children}</BlockLoader>
       </Grid>
+      <TypographyLoader
+        loading={loading}
+        loader={{
+          primaryOpacity: 0.5,
+          secondaryOpacity: 1
+        }}
+        component="span"
+      >
+        <A className={classes.sourceLink} href={sourceUrl}>
+          {sourceUrl}
+        </A>
+      </TypographyLoader>
     </Grid>
   );
 }
@@ -114,12 +156,24 @@ ChartContainer.propTypes = {
   onClickInfo: PropTypes.func,
   onClickShare: PropTypes.func,
   subtitle: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
+  sourceUrl: PropTypes.string,
+  loading: PropTypes.bool,
+  content: PropTypes.shape({
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  })
 };
 
 ChartContainer.defaultProps = {
+  sourceUrl: undefined,
   onClickInfo: undefined,
-  onClickShare: undefined
+  onClickShare: undefined,
+  loading: false,
+  content: {
+    width: '100%',
+    height: '100%'
+  }
 };
 
 export default ChartContainer;
