@@ -14,9 +14,12 @@ export default function BlockLoader({ loading, children, ...props }) {
 
 BlockLoader.propTypes = {
   loading: PropTypes.bool.isRequired,
-  children: PropTypes.shape().isRequired,
-  width: PropTypes.oneOf([PropTypes.string, PropTypes.number]),
-  height: PropTypes.oneOf([PropTypes.string, PropTypes.number])
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired,
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 BlockLoader.defaultProps = {
