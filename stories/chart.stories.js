@@ -89,16 +89,24 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
   })
   .add('Grouped', () => {
     const groups = Array(number('groups', 3)).fill(null);
-    const data = Array(number('data', 4)).fill(null);
+    const dataCount = Array(number('data', 4)).fill(null);
     const horizontal = boolean('horizontal', false);
     const offset = number('offset', 12);
+    const data = dataCount.map((_d, dataIndex) =>
+      groups.map((_g, groupIndex) => ({
+        label: `Group ${groupIndex} Data ${dataIndex} Geo`,
+        // Starting with 0 seems to trigger domainPadding coercion. See the comment below.
+        x: `Group ${groupIndex + 1} TickLabel`,
+        y: rand()
+      }))
+    );
 
     return (
-      <div>
+      <div style={{ overflow: 'hidden' }}>
         <BarChart
           horizontal={horizontal}
-          width={number('width', 350)}
-          height={number('height', 350)}
+          width={number('width', 500)}
+          height={number('height', 500)}
           /*
             Victory requires data to be in the following format:
             [
@@ -108,22 +116,17 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
               ...etc
             ]
           */
-          data={data.map((_d, dataIndex) =>
-            groups.map((_g, groupIndex) => ({
-              label: `Group ${groupIndex} Data ${dataIndex} Geo`,
-              // Starting with 0 seems to trigger domainPadding coercion. See the comment below.
-              x: groupIndex + 1,
-              y: rand()
-            }))
-          )}
+          data={data}
           barWidth={number('barWidth', 10)}
           offset={offset}
           // domainPadding value may be coerced. See 2nd note: https://formidable.com/open-source/victory/docs/common-props/#domainpadding
           domainPadding={object('domainPadding', { x: offset * data.length })}
           parts={{
+            parent: {
+              padding: { top: 0, left: 150, bottom: 150, right: 0 }
+            },
             axis: {
               independent: {
-                tickFormat: (tick, index) => `Group ${index} Tick`,
                 style: {
                   axis: {
                     display: 'block'
