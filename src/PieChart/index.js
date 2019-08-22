@@ -18,6 +18,7 @@ function PieChart({
   groupSpacing,
   innerRadius: suggestedInnerRadius,
   legend,
+  legendWidth: suggestedLegendWidth,
   padding,
   parts,
   radius,
@@ -62,7 +63,8 @@ function PieChart({
       },
       parts && parts.legend
     );
-  const chartWidth = legendProps ? width - 100 : width;
+  const legendWidth = suggestedLegendWidth || chart.legendWidth;
+  const chartWidth = legendProps ? width - legendWidth : width;
   const tooltipProps = Object.assign(
     { style: { textAnchor: donut ? 'middle' : 'start' } },
     parts && parts.tooltip
@@ -90,6 +92,7 @@ function PieChart({
           padding || chart.padding,
           computedGroupSpacing
         ));
+  const chartRadius = Math.max.apply(null, computedRadii);
   let innerRadius = 0;
   if (donut || (typeof donut === 'undefined' && chart.donut)) {
     innerRadius =
@@ -97,18 +100,20 @@ function PieChart({
         ? suggestedInnerRadius
         : Math.min.apply(null, computedRadii) * chart.donutRatio;
   }
+  const paddingObj = Helpers.getPadding({ padding });
+  const paddingTop = paddingObj.top || 0;
   const labelComponent = donut ? (
     <VictoryTooltip
       {...tooltipProps}
       cornerRadius={innerRadius}
       flyoutStyle={{ fill: 'none', stroke: 'none' }}
       height={innerRadius * 2}
-      labelComponent={<PieLabel colorScale={colorScale1} />}
+      labelComponent={<PieLabel colorScale={colorScale1} renderInPortal />}
       orientation="top"
       pointerLength={0}
       width={innerRadius * 2}
       x={width / 2}
-      y={height / 2 + innerRadius}
+      y={paddingTop + chartRadius + innerRadius}
     />
   ) : (
     <VictoryTooltip
@@ -124,8 +129,8 @@ function PieChart({
         <VictoryLegend
           standalone={false}
           {...legendProps}
-          x={width - 100}
-          y={height - chartWidth}
+          x={chartWidth}
+          y={paddingTop}
         />
       )}
       <VictoryPie
@@ -141,11 +146,12 @@ function PieChart({
         endAngle={endAngle1}
         innerRadius={innerRadius}
         labelRadius={labelRadius}
+        origin={{ x: width / 2, y: paddingTop + chartRadius }}
         radius={computedRadii[0]}
         startAngle={startAngle1}
         theme={theme}
-        height={height}
-        width={width}
+        height={chartWidth}
+        width={chartWidth}
         labelComponent={labelComponent}
         {...props}
       />
@@ -163,6 +169,7 @@ function PieChart({
           }
           innerRadius={innerRadius}
           labelRadius={labelRadius}
+          origin={{ x: width / 2, y: paddingTop + chartRadius }}
           radius={computedRadii[1 % computedRadii.length]}
           startAngle={startAngle2}
           theme={theme}
@@ -195,6 +202,7 @@ PieChart.propTypes = {
   height: PropTypes.number,
   innerRadius: PropTypes.number,
   legend: PropTypes.arrayOf(PropTypes.shape({})),
+  legendWidth: PropTypes.number,
   padding: PropTypes.oneOf(PropTypes.number, PropTypes.shape({})),
   parts: PropTypes.shape({
     legend: PropTypes.shape({}),
@@ -226,6 +234,7 @@ PieChart.defaultProps = {
   height: undefined,
   innerRadius: undefined,
   legend: undefined,
+  legendWidth: undefined,
   padding: undefined,
   parts: undefined,
   radius: undefined,
