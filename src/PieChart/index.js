@@ -5,6 +5,7 @@ import { Helpers, VictoryPie, VictoryTooltip, VictoryLegend } from 'victory';
 
 import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
+import DonutLabel from './DonutLabel';
 import PieLabel from './PieLabel';
 
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
@@ -25,7 +26,7 @@ function PieChart({
   responsive,
   standalone,
   theme,
-  height,
+  height: h,
   width: w,
   ...props
 }) {
@@ -40,10 +41,11 @@ function PieChart({
   if (radii && colorScale && colorScale.length > 1) {
     colorScale2 = colorScale.slice(1);
   }
+  const height = h || chart.height;
   const width = w || chart.width;
   const containerProps = Object.assign(
     {
-      height: height || chart.height,
+      height,
       responsive,
       standalone,
       width
@@ -64,7 +66,10 @@ function PieChart({
       parts && parts.legend
     );
   const chartWidth = legendProps ? width - 100 : width;
-  const tooltipProps = (parts && parts.tooltip) || { style: {} };
+  const tooltipProps = Object.assign(
+    { style: { textAnchor: donut ? 'middle' : 'start' } },
+    parts && parts.tooltip
+  );
 
   const startAngle1 = 0;
   let endAngle1 = 360; // Full circle
@@ -95,6 +100,18 @@ function PieChart({
         ? suggestedInnerRadius
         : Math.min.apply(null, computedRadii) * chart.donutRatio;
   }
+  const labelComponent = donut ? (
+    <DonutLabel
+      colorScale={colorScale1}
+      height={innerRadius}
+      width={innerRadius}
+      x={chartWidth / 2}
+      y={height / 2}
+    />
+  ) : (
+    <PieLabel colorScale={colorScale1} />
+  );
+  const labelRadius = donut ? innerRadius + 10 : undefined;
 
   return (
     <CustomContainer {...containerProps}>
@@ -110,16 +127,14 @@ function PieChart({
         data={data1}
         endAngle={endAngle1}
         innerRadius={innerRadius}
+        labelRadius={labelRadius}
         radius={computedRadii[0]}
         startAngle={startAngle1}
         theme={theme}
         height={height}
         width={width}
         labelComponent={
-          <VictoryTooltip
-            {...tooltipProps}
-            labelComponent={<PieLabel colorScale={colorScale1} />}
-          />
+          <VictoryTooltip {...tooltipProps} labelComponent={labelComponent} />
         }
         {...props}
       />
@@ -136,16 +151,14 @@ function PieChart({
             />
           }
           innerRadius={innerRadius}
+          labelRadius={labelRadius}
           radius={computedRadii[1 % computedRadii.length]}
           startAngle={startAngle2}
           theme={theme}
           height={height}
           width={width}
           labelComponent={
-            <VictoryTooltip
-              {...tooltipProps}
-              labelComponent={<PieLabel colorScale={colorScale2} />}
-            />
+            <VictoryTooltip {...tooltipProps} labelComponent={labelComponent} />
           }
           {...props}
         />

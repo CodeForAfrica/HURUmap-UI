@@ -335,9 +335,6 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
         width={number('width', 500)}
         height={number('height', 500)}
         padding={number('padding', 100)}
-        parts={{
-          tooltip: { style: { textAnchor: 'start' } }
-        }}
       />
     </div>
   ));
