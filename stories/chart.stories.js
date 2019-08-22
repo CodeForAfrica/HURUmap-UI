@@ -290,11 +290,11 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
       <PieChart
         donut={boolean('donut', true)}
         data={object('data', [
-          { x: 'A', y: 1 },
-          { x: 'B', y: 2 },
-          { x: 'C', y: 3 },
-          { x: 'D', y: 1 },
-          { x: 'E', y: 2 }
+          { x: 'A', y: 1, label: ['A\n \nDar es Salaam 1'] },
+          { x: 'B', y: 2, label: ['B\n \nDar es Salaam 2'] },
+          { x: 'C', y: 3, label: ['C\n \nDar es Salaam 3'] },
+          { x: 'D', y: 1, label: ['D\n \nDar es Salaam 1'] },
+          { x: 'E', y: 2, label: ['E\n \nDar es Salaam 2'] }
         ])}
         legend={[
           { name: 'A' },
@@ -305,7 +305,7 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
         ]}
         width={number('width', 500)}
         height={number('height', 500)}
-        padding={number('padding', 75)}
+        padding={number('padding', 100)}
         responsive={boolean('responsive', true)}
         standalone={boolean('standalone', true)}
       />
@@ -332,6 +332,13 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
             { x: 'E', y: 5, label: ['E\n \nKagera 5'] }
           ]
         ])}
+        legend={[
+          { name: 'A' },
+          { name: 'B' },
+          { name: 'C' },
+          { name: 'D' },
+          { name: 'E' }
+        ]}
         width={number('width', 500)}
         height={number('height', 500)}
         padding={number('padding', 100)}
