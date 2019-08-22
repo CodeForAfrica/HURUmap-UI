@@ -93,35 +93,46 @@ function PieChart({
           computedGroupSpacing
         ));
   const chartRadius = Math.max.apply(null, computedRadii);
-  let innerRadius = 0;
+  let chartInnerRadius = 0;
   if (donut || (typeof donut === 'undefined' && chart.donut)) {
-    innerRadius =
+    chartInnerRadius =
       suggestedInnerRadius && suggestedInnerRadius > 0
         ? suggestedInnerRadius
         : Math.min.apply(null, computedRadii) * chart.donutRatio;
   }
   const paddingObj = Helpers.getPadding({ padding });
   const paddingTop = paddingObj.top || 0;
-  const labelComponent = donut ? (
+  const labelComponent1 = donut ? (
     <VictoryTooltip
       {...tooltipProps}
-      cornerRadius={innerRadius}
+      cornerRadius={chartInnerRadius}
       flyoutStyle={{ fill: 'none', stroke: 'none' }}
-      height={innerRadius * 2}
-      labelComponent={<PieLabel colorScale={colorScale1} renderInPortal />}
+      height={chartInnerRadius * 2}
+      labelComponent={<PieLabel colorScale={colorScale1} />}
       orientation="top"
       pointerLength={0}
-      width={innerRadius * 2}
+      width={chartInnerRadius * 2}
       x={width / 2}
-      y={paddingTop + chartRadius + innerRadius}
+      y={paddingTop + chartRadius + chartInnerRadius}
     />
   ) : (
     <VictoryTooltip
       {...tooltipProps}
+      orientation="left"
       labelComponent={<PieLabel colorScale={colorScale1} />}
     />
   );
-  const labelRadius = donut ? innerRadius + 10 : undefined;
+  let labelComponent2 = labelComponent1;
+  if (data2 && data2.length > 0 && !donut) {
+    labelComponent2 = (
+      <VictoryTooltip
+        {...tooltipProps}
+        orientation="right"
+        labelComponent={<PieLabel colorScale={colorScale1} />}
+      />
+    );
+  }
+  const labelRadius = donut ? chartInnerRadius + 10 : undefined;
 
   return (
     <CustomContainer {...containerProps}>
@@ -144,7 +155,7 @@ function PieChart({
         colorScale={colorScale1}
         data={data1}
         endAngle={endAngle1}
-        innerRadius={innerRadius}
+        innerRadius={chartInnerRadius}
         labelRadius={labelRadius}
         origin={{ x: width / 2, y: paddingTop + chartRadius }}
         radius={computedRadii[0]}
@@ -152,7 +163,7 @@ function PieChart({
         theme={theme}
         height={chartWidth}
         width={chartWidth}
-        labelComponent={labelComponent}
+        labelComponent={labelComponent1}
         {...props}
       />
       {data2 && data2.length > 0 && (
@@ -167,7 +178,7 @@ function PieChart({
               transform={`translate(${computedGroupSpacing / 2}, 0)`}
             />
           }
-          innerRadius={innerRadius}
+          innerRadius={chartInnerRadius}
           labelRadius={labelRadius}
           origin={{ x: width / 2, y: paddingTop + chartRadius }}
           radius={computedRadii[1 % computedRadii.length]}
@@ -175,7 +186,7 @@ function PieChart({
           theme={theme}
           height={height}
           width={width}
-          labelComponent={labelComponent}
+          labelComponent={labelComponent2}
           {...props}
         />
       )}
