@@ -61,9 +61,9 @@ storiesOf('HURUmap UI|ChartContainer', module)
               loading={boolean('loading', true)}
               onClickInfo={handleClickInfo}
               onClickShare={handleClickShare}
-              title="Lorem ipsum dolor sit amet."
-              subtitle="Praesent at dignissim est. Integer porta consectetur ante, ut congue erat."
-              sourceUrl="http://dev.dominion.africa"
+              title={text('title', 'Lorem ipsum dolor sit amet.')}
+              subtitle={text('Subtitle', 'Praesent at dignissim est. Integer porta consectetur ante, ut congue erat.')}
+              sourceUrl={text('sourceUrl', 'http://dev.dominion.africa')}
               content={{
                 height: 338
               }}
