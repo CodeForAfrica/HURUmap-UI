@@ -37,13 +37,22 @@ WrapLabel.propTypes = {
     PropTypes.arrayOf(PropTypes.string),
     PropTypes.string,
     PropTypes.number
-  ]).isRequired,
-  style: PropTypes.string.isRequired,
-  textAnchor: PropTypes.string.isRequired,
-  transform: PropTypes.string.isRequired,
+  ]),
+  style: PropTypes.shape({}),
+  textAnchor: PropTypes.string,
+  transform: PropTypes.string,
   width: PropTypes.number.isRequired,
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired
+  x: PropTypes.number,
+  y: PropTypes.number
+};
+
+WrapLabel.defaultProps = {
+  text: undefined,
+  style: undefined,
+  textAnchor: undefined,
+  transform: undefined,
+  x: undefined,
+  y: undefined
 };
 
 export default WrapLabel;

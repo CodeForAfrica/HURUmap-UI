@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 function CustomContainer({
   children,
   height,
+  overflow,
   responsive,
   standalone,
   style,
@@ -28,6 +29,7 @@ function CustomContainer({
   const svgProps = Object.assign({
     width,
     height,
+    overflow,
     role: 'img',
     viewBox: responsive ? `0 0 ${width} ${height}` : undefined
   });
@@ -52,6 +54,7 @@ CustomContainer.propTypes = {
     PropTypes.node
   ]).isRequired,
   height: PropTypes.number,
+  overflow: PropTypes.oneOf(['auto', 'hidden', 'scroll', 'visible']),
   responsive: PropTypes.bool,
   standalone: PropTypes.bool,
   style: PropTypes.shape({}),
@@ -60,6 +63,7 @@ CustomContainer.propTypes = {
 
 CustomContainer.defaultProps = {
   height: undefined,
+  overflow: 'visible',
   responsive: true,
   standalone: true,
   style: undefined,

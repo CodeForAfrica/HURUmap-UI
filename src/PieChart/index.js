@@ -192,17 +192,17 @@ function PieChart({
 }
 
 PieChart.propTypes = {
-  colorScale: PropTypes.oneOf(
+  colorScale: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(
       PropTypes.shape({
-        x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+        x: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
       })
     )
-  ),
+  ]),
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+      x: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
     })
   ),
   donut: PropTypes.bool,
@@ -211,7 +211,7 @@ PieChart.propTypes = {
   innerRadius: PropTypes.number,
   legend: PropTypes.arrayOf(PropTypes.shape({})),
   legendWidth: PropTypes.number,
-  padding: PropTypes.oneOf(PropTypes.number, PropTypes.shape({})),
+  padding: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
   parts: PropTypes.shape({
     legend: PropTypes.shape({}),
     container: PropTypes.shape({}),

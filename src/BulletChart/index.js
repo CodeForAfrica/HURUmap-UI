@@ -97,11 +97,11 @@ BulletChart.propTypes = {
   barWidth: PropTypes.number,
   height: PropTypes.number,
   labels: PropTypes.func,
-  offset: PropTypes.oneOf(PropTypes.number, PropTypes.shape({})),
-  reference: PropTypes.oneOf(
+  offset: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
+  reference: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.shape({})),
     PropTypes.shape({})
-  ),
+  ]),
   theme: PropTypes.shape({
     bullet: PropTypes.shape({}),
     breakpoints: PropTypes.shape({ sm: PropTypes.number })

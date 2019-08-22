@@ -82,7 +82,7 @@ function LineChart({ data, parts, theme, ...props }) {
 LineChart.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      x: PropTypes.oneOf(PropTypes.number, PropTypes.string)
+      x: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
     })
   ),
   parts: PropTypes.shape({
