@@ -5,7 +5,6 @@ import { Helpers, VictoryPie, VictoryTooltip, VictoryLegend } from 'victory';
 
 import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
-import DonutLabel from './DonutLabel';
 import PieLabel from './PieLabel';
 
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
@@ -59,9 +58,7 @@ function PieChart({
       {
         colorScale: colorScale1,
         data: legend,
-        orientation: 'vertical',
-        x: width - 100,
-        y: 0
+        orientation: 'vertical'
       },
       parts && parts.legend
     );
@@ -101,20 +98,36 @@ function PieChart({
         : Math.min.apply(null, computedRadii) * chart.donutRatio;
   }
   const labelComponent = donut ? (
-    <DonutLabel
-      colorScale={colorScale1}
-      height={innerRadius}
-      width={innerRadius}
-      x={chartWidth / 2}
-      y={height / 2}
+    <VictoryTooltip
+      {...tooltipProps}
+      cornerRadius={innerRadius}
+      flyoutStyle={{ fill: 'none', stroke: 'none' }}
+      height={innerRadius * 2}
+      labelComponent={<PieLabel colorScale={colorScale1} />}
+      orientation="top"
+      pointerLength={0}
+      width={innerRadius * 2}
+      x={width / 2}
+      y={height / 2 + innerRadius}
     />
   ) : (
-    <PieLabel colorScale={colorScale1} />
+    <VictoryTooltip
+      {...tooltipProps}
+      labelComponent={<PieLabel colorScale={colorScale1} />}
+    />
   );
   const labelRadius = donut ? innerRadius + 10 : undefined;
 
   return (
     <CustomContainer {...containerProps}>
+      {legend && legend.length > 0 && (
+        <VictoryLegend
+          standalone={false}
+          {...legendProps}
+          x={width - 100}
+          y={height - chartWidth}
+        />
+      )}
       <VictoryPie
         standalone={false}
         groupComponent={
@@ -133,9 +146,7 @@ function PieChart({
         theme={theme}
         height={height}
         width={width}
-        labelComponent={
-          <VictoryTooltip {...tooltipProps} labelComponent={labelComponent} />
-        }
+        labelComponent={labelComponent}
         {...props}
       />
       {data2 && data2.length > 0 && (
@@ -157,14 +168,9 @@ function PieChart({
           theme={theme}
           height={height}
           width={width}
-          labelComponent={
-            <VictoryTooltip {...tooltipProps} labelComponent={labelComponent} />
-          }
+          labelComponent={labelComponent}
           {...props}
         />
-      )}
-      {legend && legend.length > 0 && (
-        <VictoryLegend standalone={false} {...legendProps} />
       )}
     </CustomContainer>
   );
