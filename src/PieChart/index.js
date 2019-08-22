@@ -129,7 +129,7 @@ function PieChart({
       />
     );
   }
-  const labelRadius = donut ? chartInnerRadius + 10 : undefined;
+  const labelRadius = donut ? chartInnerRadius : undefined;
 
   return (
     <CustomContainer {...containerProps}>
