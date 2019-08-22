@@ -19,15 +19,15 @@ function PieChart({
   innerRadius: suggestedInnerRadius,
   legend,
   legendWidth: suggestedLegendWidth,
-  padding,
+  padding: suggestedPadding,
   parts,
   radius,
   radii,
   responsive,
   standalone,
   theme,
-  height: h,
-  width: w,
+  height: suggestedHeight,
+  width: suggestedWidth,
   ...props
 }) {
   const { pie: chart } = theme;
@@ -41,8 +41,8 @@ function PieChart({
   if (radii && colorScale && colorScale.length > 1) {
     colorScale2 = colorScale.slice(1);
   }
-  const height = h || chart.height;
-  const width = w || chart.width;
+  const height = suggestedHeight || chart.height;
+  const width = suggestedWidth || chart.width;
   const containerProps = Object.assign(
     {
       height,
@@ -82,16 +82,14 @@ function PieChart({
   }
   // Only include groupSpacing if in comparison mode
   const computedGroupSpacing = data2 ? groupSpacing || chart.groupSpacing : 0;
+  const padding = Helpers.getPadding({
+    padding: suggestedPadding || chart.padding
+  });
   const computedRadii =
     radii ||
     (radius
       ? [radius]
-      : computeRadii(
-          chartWidth,
-          height || chart.height,
-          padding || chart.padding,
-          computedGroupSpacing
-        ));
+      : computeRadii(chartWidth, height, padding, computedGroupSpacing));
   const chartRadius = Math.max.apply(null, computedRadii);
   let chartInnerRadius = 0;
   if (donut || (typeof donut === 'undefined' && chart.donut)) {
@@ -100,8 +98,7 @@ function PieChart({
         ? suggestedInnerRadius
         : Math.min.apply(null, computedRadii) * chart.donutRatio;
   }
-  const paddingObj = Helpers.getPadding({ padding });
-  const paddingTop = paddingObj.top || 0;
+  const paddingTop = padding.top || 0;
   const labelComponent1 = donut ? (
     <VictoryTooltip
       {...tooltipProps}
