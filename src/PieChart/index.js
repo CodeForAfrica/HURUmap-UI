@@ -5,6 +5,7 @@ import { Helpers, VictoryPie, VictoryTooltip, VictoryLegend } from 'victory';
 
 import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
+import DonutLabel from './DonutLabel';
 import PieLabel from './PieLabel';
 
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
@@ -100,8 +101,9 @@ function PieChart({
   }
   const paddingTop = padding.top || 0;
   const labelComponent1 = donut ? (
-    <VictoryTooltip
+    <DonutLabel
       {...tooltipProps}
+      colorScale={colorScale1}
       cornerRadius={chartInnerRadius}
       flyoutStyle={{ fill: 'none', stroke: 'none' }}
       height={chartInnerRadius * 2}
