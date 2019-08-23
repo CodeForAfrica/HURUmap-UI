@@ -70,7 +70,7 @@ function PieChart({
     endAngle1 = -180; // Half circle, counter-clockwise
     [data1, data2] = data; // Assume data[2] is also Array
   }
-  // Show legend if a legend prop is passed on or data contains objects with
+  // Show legend if a legend prop is provided or data contains objects with
   // `name` attribute.
   // https://formidable.com/open-source/victory/docs/victory-legend/#data
   const legendData =
@@ -110,6 +110,9 @@ function PieChart({
         : Math.min.apply(null, computedRadii) * chart.donutRatio;
   }
   const paddingTop = padding.top || 0;
+  // We define tooltip for donut label component here than using a separate
+  // due to svg rendering components in the provided order and we don't have
+  // z-index property to reorder them.
   const labelComponent1 = donut ? (
     <VictoryTooltip
       {...tooltipProps}
