@@ -18,8 +18,12 @@ const sortData = (data, sortKey) => {
       return 0;
     };
     const sortDescending = (a, b) => sort(a, b, -1, 1);
+    // remember to create a copy of the array as not to modify it
+    const dataToSort = data.slice(0);
     sortedData =
-      sortKey[0] === '-' ? data.sort(sortDescending) : data.sort(sort);
+      sortKey[0] === '-'
+        ? dataToSort.sort(sortDescending)
+        : dataToSort.sort(sort);
   }
   return sortedData;
 };
