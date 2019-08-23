@@ -6,6 +6,7 @@ import { Helpers, VictoryPie, VictoryTooltip, VictoryLegend } from 'victory';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
 import DonutLabel from './DonutLabel';
+import LegendLabel from './LegendLabel';
 import PieLabel from './PieLabel';
 
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
@@ -16,6 +17,7 @@ function PieChart({
   colorScale,
   data,
   donut,
+  donutLabelKey,
   groupSpacing,
   innerRadius: suggestedInnerRadius,
   legend,
@@ -53,19 +55,6 @@ function PieChart({
     },
     parts && parts.container
   );
-  const legendProps =
-    legend &&
-    legend.length > 0 &&
-    Object.assign(
-      {
-        colorScale: colorScale1,
-        data: legend,
-        orientation: 'vertical'
-      },
-      parts && parts.legend
-    );
-  const legendWidth = suggestedLegendWidth || chart.legendWidth;
-  const chartWidth = legendProps ? width - legendWidth : width;
   const tooltipProps = Object.assign(
     { style: { textAnchor: donut ? 'middle' : 'start' } },
     parts && parts.tooltip
@@ -81,6 +70,27 @@ function PieChart({
     endAngle1 = -180; // Half circle, counter-clockwise
     [data1, data2] = data; // Assume data[2] is also Array
   }
+  // Show legend if a legend prop is passed on or data contains objects with
+  // `name` attribute.
+  // https://formidable.com/open-source/victory/docs/victory-legend/#data
+  const legendData =
+    legend ||
+    (data1 && data1[0].name && data1) ||
+    (data2 && data2[0].name && data2);
+
+  const legendProps =
+    legendData &&
+    Object.assign(
+      {
+        colorScale: colorScale1,
+        data: legendData,
+        orientation: 'vertical'
+      },
+      parts && parts.legend
+    );
+
+  const legendWidth = suggestedLegendWidth || chart.legendWidth;
+  const chartWidth = legendProps ? width - legendWidth : width;
   // Only include groupSpacing if in comparison mode
   const computedGroupSpacing = data2 ? groupSpacing || chart.groupSpacing : 0;
   const padding = Helpers.getPadding({
@@ -101,11 +111,11 @@ function PieChart({
   }
   const paddingTop = padding.top || 0;
   const labelComponent1 = donut ? (
-    <DonutLabel
+    <VictoryTooltip
       {...tooltipProps}
       colorScale={colorScale1}
       cornerRadius={chartInnerRadius}
-      flyoutStyle={{ fill: 'none', stroke: 'none' }}
+      flyoutStyle={{ fill: 'white', stroke: 'none' }}
       height={chartInnerRadius * 2}
       labelComponent={<PieLabel colorScale={colorScale1} />}
       orientation="top"
@@ -132,15 +142,32 @@ function PieChart({
     );
   }
   const labelRadius = donut ? chartInnerRadius : undefined;
+  const donutLabelData = data2 ? data[donutLabelKey.dataIndex] : data1;
 
   return (
     <CustomContainer {...containerProps}>
-      {legend && legend.length > 0 && (
+      {legendProps && (
         <VictoryLegend
           standalone={false}
+          labelComponent={
+            <LegendLabel colorScale={colorScale1} {...tooltipProps} />
+          }
           {...legendProps}
           x={chartWidth}
           y={paddingTop}
+        />
+      )}
+      {donut && (
+        <DonutLabel
+          data={donutLabelData}
+          colorScale={colorScale1}
+          sortKey={donutLabelKey.sortKey}
+          style={{
+            textAnchor: 'middle'
+          }}
+          text={data1[0].label[0]}
+          x={width / 2}
+          y={paddingTop + chartRadius}
         />
       )}
       <VictoryPie
@@ -208,6 +235,10 @@ PieChart.propTypes = {
     })
   ),
   donut: PropTypes.bool,
+  donutLabelKey: PropTypes.shape({
+    dataIndex: PropTypes.number.isRequired,
+    sortKey: PropTypes.oneOf(['value', '-value'])
+  }),
   groupSpacing: PropTypes.number,
   height: PropTypes.number,
   innerRadius: PropTypes.number,
@@ -240,6 +271,7 @@ PieChart.defaultProps = {
   colorScale: undefined,
   data: undefined,
   donut: undefined,
+  donutLabelKey: { dataIndex: 0, sortKey: undefined },
   groupSpacing: undefined,
   height: undefined,
   innerRadius: undefined,
