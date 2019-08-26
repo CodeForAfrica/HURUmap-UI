@@ -55,10 +55,6 @@ function PieChart({
     },
     parts && parts.container
   );
-  const tooltipProps = Object.assign(
-    { style: { textAnchor: donut ? 'middle' : 'start' } },
-    parts && parts.tooltip
-  );
 
   const startAngle1 = 0;
   let endAngle1 = 360; // Full circle
@@ -110,6 +106,22 @@ function PieChart({
         : Math.min.apply(null, computedRadii) * chart.donutRatio;
   }
   const paddingTop = padding.top || 0;
+  const donutLabelData = data2 ? data[donutLabelKey.dataIndex] : data1;
+  const { style: suggestedHeightStyle } = props;
+  const donutLabelStyle = Object.assign(
+    { textAnchor: 'middle' },
+    suggestedHeightStyle && suggestedHeightStyle.labels
+  );
+
+  const tooltipProps = Object.assign(
+    { style: { textAnchor: donut ? 'middle' : 'start' } },
+    parts && parts.tooltip
+  );
+  const tooltipStyle = Object.assign(
+    {},
+    donutLabelStyle,
+    tooltipProps.style.labels
+  );
   // We define tooltip for donut label component here than using a separate
   // due to svg rendering components in the provided order and we don't have
   // z-index property to reorder them.
@@ -120,7 +132,9 @@ function PieChart({
       cornerRadius={chartInnerRadius}
       flyoutStyle={{ fill: 'white', stroke: 'none' }}
       height={chartInnerRadius * 2}
-      labelComponent={<PieLabel colorScale={colorScale1} />}
+      labelComponent={
+        <PieLabel colorScale={colorScale1} style={tooltipStyle} />
+      }
       orientation="top"
       pointerLength={0}
       width={chartInnerRadius * 2}
@@ -145,7 +159,6 @@ function PieChart({
     );
   }
   const labelRadius = donut ? chartInnerRadius : undefined;
-  const donutLabelData = data2 ? data[donutLabelKey.dataIndex] : data1;
 
   return (
     <CustomContainer {...containerProps}>
@@ -165,10 +178,8 @@ function PieChart({
           data={donutLabelData}
           colorScale={colorScale1}
           sortKey={donutLabelKey.sortKey}
-          style={{
-            textAnchor: 'middle'
-          }}
-          text={data1[0].label[0]}
+          style={donutLabelStyle}
+          text={data1[0].label}
           x={width / 2}
           y={paddingTop + chartRadius}
         />
@@ -263,6 +274,9 @@ PieChart.propTypes = {
    */
   radii: PropTypes.arrayOf(PropTypes.number),
   responsive: PropTypes.bool,
+  style: PropTypes.shape({
+    labels: PropTypes.shape({})
+  }),
   standalone: PropTypes.bool,
   theme: PropTypes.shape({
     pie: PropTypes.shape({})
@@ -286,6 +300,7 @@ PieChart.defaultProps = {
   radii: undefined,
   responsive: true,
   standalone: true,
+  style: undefined,
   theme: undefined,
   width: undefined
 };

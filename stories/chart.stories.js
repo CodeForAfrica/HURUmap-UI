@@ -294,17 +294,35 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
         donut={boolean('donut', true)}
         donutLabelKey={object('donutLabelKey', { dataIndex: 0, sortKey: '' })}
         data={object('data', [
-          { x: 'A', y: 6, name: 'A', label: 'A\n \nDar es Salaam 1' },
-          { x: 'B', y: 2, name: 'B', label: 'B\n \nDar es Salaam 2' },
-          { x: 'C', y: 3, name: 'C', label: 'C\n \nDar es Salaam 3' },
-          { x: 'D', y: 1, name: 'D', label: 'D\n \nDar es Salaam 1' },
-          { x: 'E', y: 12, name: 'E', label: 'E\n \nDar es Salaam 2' }
+          { x: 'Female', y: 22, label: 'Female\n22%' },
+          { x: 'Male', y: 78, label: 'Male\n78%' }
         ])}
         width={number('width', 500)}
         height={number('height', 500)}
         padding={number('padding', 100)}
+        parts={{
+          tooltip: {
+            style: {
+              fontSize: 28
+            }
+          },
+          legend: {
+            style: { labels: { fontSize: 20, fontWeight: 'bold' } }
+          }
+        }}
+        legend={[
+          { name: 'Female', label: 'Female: 22%' },
+          { name: 'Male', label: 'Male: 78%' }
+        ]}
         responsive={boolean('responsive', true)}
         standalone={boolean('standalone', true)}
+        style={{
+          labels: {
+            fill: 'black',
+            fontSize: '18',
+            fontWeight: 'bold'
+          }
+        }}
       />
     </div>
   ))

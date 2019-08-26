@@ -28,8 +28,7 @@ const sortData = (data, sortKey) => {
   return sortedData;
 };
 
-function DonutLabel(props) {
-  const { colorScale, data, sortKey, x, y } = props;
+function DonutLabel({ colorScale, data, sortKey, x, y, ...props }) {
   const textData = sortData(data, sortKey)[0];
   const textIndex = data.findIndex(d => d.x === textData.x) + 1;
 
@@ -37,10 +36,10 @@ function DonutLabel(props) {
     <PieLabel
       colorScale={colorScale}
       datum={{ _x: textIndex }}
-      style={{ textAnchor: 'middle' }}
       text={textData.label}
       x={x}
       y={y}
+      {...props}
     />
   );
 }
