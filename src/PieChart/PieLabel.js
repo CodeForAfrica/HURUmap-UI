@@ -12,10 +12,14 @@ function PieLabel({
   ...props
 }) {
   const style = Array.isArray(colorScale)
-    ? Object.assign({}, originalStyle, {
-        // eslint-disable-next-line no-underscore-dangle
-        fill: colorScale[(datum._x - 1) % colorScale.length]
-      })
+    ? Object.assign(
+        {},
+        {
+          // eslint-disable-next-line no-underscore-dangle
+          fill: colorScale[(datum._x - 1) % colorScale.length]
+        },
+        originalStyle
+      )
     : originalStyle;
 
   return <VictoryLabel style={style} {...props} />;
