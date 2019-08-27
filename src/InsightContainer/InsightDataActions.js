@@ -26,9 +26,10 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-start',
-    height: 'max-content'
+    height: '3.5rem'
   },
   button: {
+    height: '100%',
     borderRadius: '0',
     '&:hover': {
       backgroundColor: 'transparent'
@@ -243,11 +244,11 @@ InsightDataActions.propTypes = {
 };
 
 InsightDataActions.defaultProps = {
-  onDownload: undefined,
-  onShare: undefined,
-  onShowData: undefined,
-  embedCode: '',
-  onCompare: undefined
+  onDownload: null,
+  onShare: null,
+  onShowData: null,
+  embedCode: 'null',
+  onCompare: null
 };
 
 export default InsightDataActions;
