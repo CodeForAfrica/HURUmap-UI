@@ -70,7 +70,7 @@ export default function createVictoryTheme(chartOptions) {
   );
   // Customize chart pie props
   chart.pie = Object.assign(
-    { donut: true, donutRatio: 0.6, groupSpacing: 4 },
+    { donut: true, donutRatio: 0.6, groupSpacing: 4, legendWidth: 100 },
     chart.pie
   );
   // Customize chart proportionalArea props off of chart area props
