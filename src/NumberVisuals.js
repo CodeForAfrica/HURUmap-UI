@@ -4,14 +4,11 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Typography, List, ListItem, ListItemText } from '@material-ui/core';
 
-const useStyles = makeStyles(({ breakpoints }) => ({
+const useStyles = makeStyles(() => ({
   root: {
     width: '100%',
     height: 'auto',
-    margin: '1rem',
-    [breakpoints.up('md')]: {
-      width: '25%'
-    }
+    margin: '1rem'
   },
   hidden: {
     display: 'none'
