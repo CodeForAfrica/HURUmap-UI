@@ -36,6 +36,7 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           data={data.map((_, index) => {
             const y = rand();
             return {
+              tooltip: `${index}-${index} Employment Status`,
               x: `${index}-${index} Employment Status`,
               y
             };

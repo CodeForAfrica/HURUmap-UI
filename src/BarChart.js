@@ -92,6 +92,7 @@ function BarChart({
               <BarLabel
                 tooltipProps={{
                   ...tooltipProps,
+                  data,
                   style: Object.assign({}, tooltipProps.style, {
                     fill: colorScale[i]
                   })

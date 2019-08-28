@@ -2,7 +2,14 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { VictoryLabel, VictoryTooltip } from 'victory';
 
-function BarLabel({ tooltipProps, active, x, y, ...props }) {
+function BarLabel({
+  tooltipProps: { data, ...tooltipProps },
+  datum,
+  active,
+  x,
+  y,
+  ...props
+}) {
   /**
    * Minus 25 to ovoid tooltip overlap with the label
    */
@@ -10,44 +17,52 @@ function BarLabel({ tooltipProps, active, x, y, ...props }) {
   useEffect(() => {
     function mouseMove(e) {
       if (active) {
+        const bbox = e.target.getBBox();
         setTooltipPosition({
           x,
-          y: e.clientY + 25
+          y: bbox.y + bbox.height / 2
         });
       }
     }
 
-    window.addEventListener('mousemove', mouseMove);
+    window.document.body.addEventListener('mousemove', mouseMove);
 
     return () => {
-      window.removeEventListener('mousemove', mouseMove);
+      window.document.body.removeEventListener('mousemove', mouseMove);
     };
   }, [active, x]);
-  const uniqueId =
+
+  const uniqueId = () =>
     Math.random()
       .toString(36)
       .substring(2) + Date.now().toString(36);
 
   return (
-    <g>
-      <VictoryLabel key={uniqueId} x={x} y={y} {...props} />
+    <>
+      <VictoryLabel key={uniqueId()} x={x} y={y} datum={datum} {...props} />
       <VictoryTooltip
-        key={uniqueId}
+        key={uniqueId()}
         active={active}
         x={tooltipPosition.x}
         y={tooltipPosition.y}
         {...tooltipProps}
+        datum={datum}
         {...props}
+        // eslint-disable-next-line react/prop-types, no-underscore-dangle
+        text={data[datum._x - 1].tooltip}
       />
-    </g>
+    </>
   );
 }
 
 BarLabel.propTypes = {
-  tooltipProps: PropTypes.shape({}).isRequired,
+  tooltipProps: PropTypes.shape({
+    data: PropTypes.shape({})
+  }).isRequired,
   active: PropTypes.bool,
   x: PropTypes.number,
-  y: PropTypes.number
+  y: PropTypes.number,
+  datum: PropTypes.shape({})
 };
 
 /**
@@ -58,7 +73,8 @@ BarLabel.defaultEvents = VictoryTooltip.defaultEvents;
 BarLabel.defaultProps = {
   active: false,
   x: undefined,
-  y: undefined
+  y: undefined,
+  datum: undefined
 };
 
 export default BarLabel;
