@@ -26,7 +26,8 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-start',
-    height: '3.5rem'
+    height: '3.5625rem',
+    marginTop: '0.6rem'
   },
   button: {
     height: '100%',

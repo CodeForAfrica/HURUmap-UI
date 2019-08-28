@@ -48,7 +48,7 @@ storiesOf('HURUmap UI|InsightChartContainer', module)
           >
             <InsightContainer
               loading={boolean('loading', true)}
-              title="Lorem ipsum dolor sit amet."
+              title="Lorem ipsum dolor sit amet"
               sourceUrl="http://dev.dominion.africa"
               content={{
                 height: 338
@@ -66,7 +66,6 @@ storiesOf('HURUmap UI|InsightChartContainer', module)
                     '(194, 667, 872 ±241, 381.6)'
                   )}
                   description={text('Description', 'Median household income')}
-                  style={{ width: '100%'}}
                   comparisonData={object('Comparison Data', [
                     {
                       parentComparison: 'about 90 percent',

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
+import { Typography } from '@material-ui/core';
 import BlockLoader from '../BlockLoader';
 import TypographyLoader from '../TypographyLoader';
 
@@ -13,8 +14,7 @@ const useStyles = makeStyles({
   root: {
     width: 'available',
     height: 'auto',
-    backgroundColor: '#fff',
-    padding: '1.5625rem 1.25rem'
+    backgroundColor: '#fff'
   },
   content: {
     padding: '1.25rem 0',
@@ -31,7 +31,11 @@ const useStyles = makeStyles({
   actionsGrid: {
     backgroundColor: '#eeebeb'
   },
-  title: {},
+  title: {
+    marginTop: '1rem',
+    fontWeight: 'bold',
+    fontSize: '1.25rem'
+  },
   subtitle: {},
   sourceLink: {},
   analysisLink: {
@@ -47,6 +51,17 @@ const useStyles = makeStyles({
     color: '#29a87c',
     border: 'solid 2px #29a87c',
     backgroundColor: '#fff'
+  },
+  summaryGrid: {
+    padding: '0 1.25rem'
+  },
+  summaryHead: {
+    fontWeight: 'bold',
+    fontSize: '1rem'
+  },
+  summaryBrief: {
+    fontSize: '0.8125rem',
+    lineHeight: 2
   }
 });
 
@@ -57,7 +72,9 @@ function InsightContainer({
   title,
   children,
   analysis,
-  analysisUrl
+  analysisUrl,
+  summaryBrief,
+  summaryHead
 }) {
   const classes = useStyles();
 
@@ -70,7 +87,7 @@ function InsightContainer({
   const handleComapre = () => {};
 
   return (
-    <Grid container spacing={2} className={classes.root}>
+    <Grid container spacing={4} className={classes.root}>
       <Grid container item md={3}>
         <BlockLoader loading={loading}>{children[0]}</BlockLoader>
       </Grid>
@@ -110,8 +127,14 @@ function InsightContainer({
         </TypographyLoader>
       </Grid>
       <Grid container item md={4} className={classes.actionsGrid}>
-        <Grid container item direction="row" justify="flex-start">
-          <BlockLoader loading={loading} width="5rem" height="2.5rem">
+        <Grid
+          container
+          item
+          direction="row"
+          alignItems="flex-start"
+          justify="center"
+        >
+          <BlockLoader loading={loading} height="2.5rem">
             <InsightDataActions
               title={title}
               onShare={handleShare}
@@ -121,9 +144,19 @@ function InsightContainer({
             />
           </BlockLoader>
         </Grid>
-        <Grid item>
+        <Grid container item className={classes.summaryGrid}>
           <BlockLoader loading={loading}>
-            <div style={{ width: '100%', padding: '0 1.938rem' }}>
+            <Typography className={classes.summaryHead}>
+              {summaryHead}
+            </Typography>
+            <Typography className={classes.summaryBrief}>
+              {summaryBrief}
+            </Typography>
+          </BlockLoader>
+        </Grid>
+        <Grid container item>
+          <BlockLoader loading={loading}>
+            <div style={{ width: '100%', padding: '0 1.2rem' }}>
               <A className={classes.analysisLink} href={analysisUrl}>
                 {analysis}
               </A>
@@ -142,6 +175,8 @@ InsightContainer.propTypes = {
   loading: PropTypes.bool,
   analysis: PropTypes.string,
   analysisUrl: PropTypes.string,
+  summaryHead: PropTypes.string,
+  summaryBrief: PropTypes.string,
   content: PropTypes.shape({
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
@@ -153,6 +188,9 @@ InsightContainer.defaultProps = {
   loading: false,
   analysisUrl: '/profiles/nigeria',
   analysis: 'Read the country analysis',
+  summaryHead: 'Summary',
+  summaryBrief:
+    'Lorem ipsum dolor sit amec, the related demographic analysis for South Africa',
   content: {
     width: '100%',
     height: '100%'
