@@ -52,14 +52,14 @@ const useStyles = makeStyles({
     border: 'solid 2px #29a87c',
     backgroundColor: '#fff'
   },
-  summaryGrid: {
+  contextGrid: {
     padding: '0 1.25rem'
   },
-  summaryHead: {
+  contextHead: {
     fontWeight: 'bold',
     fontSize: '1rem'
   },
-  summaryBrief: {
+  contextBrief: {
     fontSize: '0.8125rem',
     lineHeight: 2
   }
@@ -71,20 +71,17 @@ function InsightContainer({
   sourceUrl,
   title,
   children,
-  analysis,
-  analysisUrl,
-  summaryBrief,
-  summaryHead
+  insightActions,
+  insightContext,
+  insightLink
 }) {
   const classes = useStyles();
-
-  const handleShare = () => {};
-
-  const handleDownload = () => {};
-
-  const handleShowData = () => {};
-
-  const handleComapre = () => {};
+  const {
+    handleShare,
+    handleComapre,
+    handleDownload,
+    handleShowData
+  } = insightActions;
 
   return (
     <Grid container spacing={4} className={classes.root}>
@@ -144,53 +141,84 @@ function InsightContainer({
             />
           </BlockLoader>
         </Grid>
-        <Grid container item className={classes.summaryGrid}>
-          <BlockLoader loading={loading}>
-            <Typography className={classes.summaryHead}>
-              {summaryHead}
-            </Typography>
-            <Typography className={classes.summaryBrief}>
-              {summaryBrief}
-            </Typography>
-          </BlockLoader>
-        </Grid>
-        <Grid container item>
-          <BlockLoader loading={loading}>
-            <div style={{ width: '100%', padding: '0 1.2rem' }}>
-              <A className={classes.analysisLink} href={analysisUrl}>
-                {analysis}
-              </A>
-            </div>
-          </BlockLoader>
-        </Grid>
+        {insightContext && (
+          <Grid container item className={classes.contextGrid}>
+            <BlockLoader loading={loading}>
+              <Typography className={classes.contextHead}>
+                {insightContext.head}
+              </Typography>
+              <Typography className={classes.contextBrief}>
+                {insightContext.brief}
+              </Typography>
+            </BlockLoader>
+          </Grid>
+        )}
+        {insightLink && (
+          <Grid container item>
+            <BlockLoader loading={loading}>
+              <div style={{ width: '100%', padding: '0 1.2rem' }}>
+                <A className={classes.analysisLink} href={insightLink.href}>
+                  {insightLink.title}
+                </A>
+              </div>
+            </BlockLoader>
+          </Grid>
+        )}
       </Grid>
     </Grid>
   );
 }
 
+const customProp = (props, propName, componentName) => {
+  const { children } = props;
+  if (!Array.isArray(children) || children.length !== 2) {
+    return new Error(
+      `${propName} in ${componentName} needs to be an array of two node`
+    );
+  }
+  return null;
+};
+
 InsightContainer.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.node).isRequired,
+  children: customProp,
   title: PropTypes.string.isRequired,
   sourceUrl: PropTypes.string,
   loading: PropTypes.bool,
-  analysis: PropTypes.string,
-  analysisUrl: PropTypes.string,
-  summaryHead: PropTypes.string,
-  summaryBrief: PropTypes.string,
   content: PropTypes.shape({
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  }),
+  insightLink: PropTypes.shape({
+    href: PropTypes.string,
+    title: PropTypes.string
+  }),
+  insightContext: PropTypes.shape({
+    head: PropTypes.string,
+    brief: PropTypes.string
+  }),
+  insightActions: PropTypes.shape({
+    handleShare: PropTypes.func,
+    handleDownload: PropTypes.func,
+    handleShowData: PropTypes.func,
+    handleComapre: PropTypes.func
   })
 };
 
 InsightContainer.defaultProps = {
+  children: undefined,
   sourceUrl: undefined,
   loading: false,
-  analysisUrl: '/profiles/nigeria',
-  analysis: 'Read the country analysis',
-  summaryHead: 'Summary',
-  summaryBrief:
-    'Lorem ipsum dolor sit amec, the related demographic analysis for South Africa',
+  insightLink: {
+    href: '/profiles/nigeria',
+    title: 'Read the country analysis'
+  },
+  insightContext: undefined,
+  insightActions: {
+    handleShare: () => {},
+    handleDownload: () => {},
+    handleShowData: () => {},
+    handleComapre: () => {}
+  },
   content: {
     width: '100%',
     height: '100%'
