@@ -115,7 +115,7 @@ EmbedCodeTextArea.propTypes = {
   code: PropTypes.string.isRequired
 };
 
-function InsightDataActions({
+function Actions({
   title,
   onShare,
   onDownload,
@@ -228,7 +228,7 @@ function InsightDataActions({
   );
 }
 
-InsightDataActions.propTypes = {
+Actions.propTypes = {
   title: PropTypes.string.isRequired,
   onDownload: PropTypes.func,
   onShare: PropTypes.func,
@@ -237,7 +237,7 @@ InsightDataActions.propTypes = {
   onCompare: PropTypes.func
 };
 
-InsightDataActions.defaultProps = {
+Actions.defaultProps = {
   onDownload: null,
   onShare: null,
   onShowData: null,
@@ -245,4 +245,4 @@ InsightDataActions.defaultProps = {
   onCompare: null
 };
 
-export default InsightDataActions;
+export default Actions;
