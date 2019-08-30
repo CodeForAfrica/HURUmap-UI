@@ -131,8 +131,8 @@ function ChartContainer({
               className={classes.button}
               onClick={() =>
                 onClickInfo && onClickInfo(getReferenceObject(infoRef))
-                  ? handleClickInfo
-                  : null
+                  ? onClickInfo
+                  : handleClickInfo
               }
               ref={infoRef}
             >
