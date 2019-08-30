@@ -8,7 +8,7 @@ import BlockLoader from '../BlockLoader';
 import TypographyLoader from '../TypographyLoader';
 
 import A from '../A';
-import InsightDataActions from './InsightDataActions';
+import Actions from './Actions';
 
 const useStyles = makeStyles({
   root: {
@@ -132,7 +132,7 @@ function InsightContainer({
           justify="center"
         >
           <BlockLoader loading={loading} height="2.5rem">
-            <InsightDataActions
+            <Actions
               title={title}
               onShare={handleShare}
               onDownload={handleDownload}

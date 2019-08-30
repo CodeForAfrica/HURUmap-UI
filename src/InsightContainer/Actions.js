@@ -46,7 +46,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-function ActionButtonComponent({ children, onClick, ...props }) {
+function ActionButton({ children, onClick, ...props }) {
   const classes = useStyles();
   return (
     <IconButton className={classes.button} onClick={onClick} {...props}>
@@ -63,7 +63,7 @@ function ActionButtonComponent({ children, onClick, ...props }) {
   );
 }
 
-ActionButtonComponent.propTypes = {
+ActionButton.propTypes = {
   onClick: PropTypes.func,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
@@ -71,11 +71,9 @@ ActionButtonComponent.propTypes = {
   ]).isRequired
 };
 
-ActionButtonComponent.defaultProps = {
+ActionButton.defaultProps = {
   onClick: null
 };
-
-const ActionButton = ActionButtonComponent;
 
 const EmbedCodeTextArea = ({ code }) => {
   const ref = createRef();
