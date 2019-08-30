@@ -5,7 +5,6 @@ import {
   boolean,
   object,
   select,
-  text,
   number
 } from '@storybook/addon-knobs';
 
@@ -37,14 +36,14 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           data={data.map((_, index) => {
             const y = rand();
             return {
-              label: `${index}-${y} Employment Status`,
+              tooltip: `${index}-${index} Employment Status`,
               x: `${index}-${index} Employment Status`,
               y
             };
           })}
           alignment={select('alignment', ['start', 'middle', 'end'], 'middle')}
           barWidth={number('barWidth', undefined)}
-          domainPadding={object('domainPadding', { x: 0 })}
+          domainPadding={object('domainPadding', { x: 20 })}
           parts={{
             axis: {
               independent: {
@@ -92,9 +91,8 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
     const dataCount = Array(number('data', 4)).fill(null);
     const horizontal = boolean('horizontal', false);
     const offset = number('offset', 12);
-    const data = dataCount.map((_d, dataIndex) =>
+    const data = dataCount.map(() =>
       groups.map((_g, groupIndex) => ({
-        label: `Group ${groupIndex} Data ${dataIndex} Geo`,
         // Starting with 0 seems to trigger domainPadding coercion. See the comment below.
         x: `Group ${groupIndex + 1} TickLabel`,
         y: rand()
@@ -157,11 +155,11 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
               }
             },
             group: {
-              labels: datum =>
-                `Group ${datum.tick} Label\n${datum.x} ${datum.y}${text(
-                  'dataUnit',
-                  '%'
-                )}`
+              // labels: datum =>
+              //   `Group ${datum.tick} Label\n${datum.x} ${datum.y}${text(
+              //     'dataUnit',
+              //     '%'
+              //   )}`
             },
             tooltip: { style: { textAnchor: 'start' } }
           }}
