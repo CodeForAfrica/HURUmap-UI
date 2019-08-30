@@ -3,13 +3,7 @@ import { PropTypes } from 'prop-types';
 
 import { makeStyles } from '@material-ui/styles';
 
-import {
-  IconButton,
-  Typography,
-  Grid,
-  Popover,
-  ClickAwayListener
-} from '@material-ui/core';
+import { IconButton, Typography, Grid, Popover } from '@material-ui/core';
 
 import shareIcon from '../assets/icons/network-connection.svg';
 import embedIcon from '../assets/icons/code.svg';
@@ -217,6 +211,7 @@ function InsightDataActions({
 
       <Popover
         open={Boolean(anchorEl)}
+        onClose={() => setAnchorEl(null)}
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: 'top',
@@ -227,9 +222,7 @@ function InsightDataActions({
           horizontal: 'center'
         }}
       >
-        <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
-          <EmbedCodeTextArea code={embedCode} />
-        </ClickAwayListener>
+        <EmbedCodeTextArea code={embedCode} />
       </Popover>
     </div>
   );
