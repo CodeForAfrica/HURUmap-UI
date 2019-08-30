@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import { VictoryBar, VictoryGroup, VictoryAxis } from 'victory';
 
-import withVictoryTheme from './styles/withVictoryTheme';
-import Chart, { toChartAxisProps } from './Chart';
-import WrapLabel from './WrapLabel';
+import withVictoryTheme from '../styles/withVictoryTheme';
+import Chart, { toChartAxisProps } from '../Chart';
+import WrapLabel from '../WrapLabel';
 import BarLabel from './BarLabel';
 
 function BarChart({

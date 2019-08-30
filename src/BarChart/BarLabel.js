@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { VictoryLabel } from 'victory';
 
-import Tooltip from './Tooltip';
+import Tooltip from '../Tooltip';
 
 function BarLabel({
   datum,
