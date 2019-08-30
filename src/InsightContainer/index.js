@@ -169,27 +169,26 @@ function InsightContainer({
   );
 }
 
-const childrenNodes = {
-  children: PropTypes.arrayOf(PropTypes.node)
-};
-
 // This is a factory function (also called a higher-order function)
-const createCustomPropType = isRequired => {
+const createTwoNodeArrayType = isRequired => {
   // The factory returns a custom prop type
   return (props, propName, componentName) => {
+    const childrenNodes = {
+      children: PropTypes.arrayOf(PropTypes.node)
+    };
     const { [propName]: prop } = props;
     if (prop == null && isRequired) {
       // Prop is required but wasn't specified. Throw an error.
       return new Error(`${propName} in ${componentName} isRequired`);
     }
-    // check types and length
-    const isNode = !PropTypes.checkPropTypes(
+    // check if not node types or not length == 2 return error
+    const notNode = !PropTypes.checkPropTypes(
       childrenNodes,
       props,
       propName,
       componentName
     );
-    if (!Array.isArray(prop) || prop.length !== 2 || isNode) {
+    if (prop.length !== 2 || notNode) {
       return new Error(
         `${propName} in ${componentName} needs to be an array of two node`
       );
@@ -199,11 +198,11 @@ const createCustomPropType = isRequired => {
 };
 
 // Using the factory, create two different versions of your prop type
-const customPropType = createCustomPropType(false);
-customPropType.isRequired = createCustomPropType(true);
+const twoNodeArrayType = createTwoNodeArrayType(false);
+twoNodeArrayType.isRequired = createTwoNodeArrayType(true);
 
 InsightContainer.propTypes = {
-  children: customPropType.isRequired,
+  children: twoNodeArrayType.isRequired,
   title: PropTypes.string.isRequired,
   sourceUrl: PropTypes.string,
   loading: PropTypes.bool,
