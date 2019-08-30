@@ -10,14 +10,9 @@ function BarLabel({
   text,
   tooltipProps: { data, ...tooltipProps },
   x,
-  y: originalY,
+  y,
   ...props
 }) {
-  /**
-   * Minus 25 to ovoid tooltip overlap with the label
-   */
-  const y = originalY - 25;
-
   return (
     <>
       <VictoryLabel datum={datum} text={text} {...props} />
