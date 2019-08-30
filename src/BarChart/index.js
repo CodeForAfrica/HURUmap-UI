@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { VictoryBar, VictoryGroup, VictoryAxis, VictoryTooltip } from 'victory';
+import { VictoryBar, VictoryGroup, VictoryAxis } from 'victory';
 
-import withVictoryTheme from './styles/withVictoryTheme';
-import Chart, { toChartAxisProps } from './Chart';
-import WrapLabel from './WrapLabel';
+import withVictoryTheme from '../styles/withVictoryTheme';
+import Chart, { toChartAxisProps } from '../Chart';
+import WrapLabel from '../WrapLabel';
+import BarLabel from './BarLabel';
 
 function BarChart({
   barWidth,
@@ -71,20 +72,31 @@ function BarChart({
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
   const { colorScale } = groupChart;
 
+  const numberFormatter = new Intl.NumberFormat('en-GB');
+
   return (
     <Chart {...chartProps}>
       <VictoryGroup {...groupProps} offset={offset}>
         {groupData.map((data, i) => (
           <VictoryBar
+            name="bar"
             barWidth={barWidth}
             data={data}
             key={data.toString()}
+            labels={datum =>
+              typeof datum.y !== 'number'
+                ? 'N/A'
+                : numberFormatter.format(datum.y)
+            }
             labelComponent={
-              <VictoryTooltip
-                {...tooltipProps}
-                style={Object.assign({}, tooltipProps.style, {
-                  fill: colorScale[i]
-                })}
+              <BarLabel
+                tooltipProps={{
+                  ...tooltipProps,
+                  data,
+                  style: Object.assign({}, tooltipProps.style, {
+                    fill: colorScale[i]
+                  })
+                }}
               />
             }
             {...props}
