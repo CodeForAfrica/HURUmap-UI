@@ -174,15 +174,13 @@ const childrenNodes = {
 };
 
 // This is a factory function (also called a higher-order function)
-function createCustomPropType(isRequired) {
+const createCustomPropType = isRequired => {
   // The factory returns a custom prop type
-  return function(props, propName, componentName) {
+  return (props, propName, componentName) => {
     const { [propName]: prop } = props;
     if (prop == null && isRequired) {
-      // Prop is missing
       // Prop is required but wasn't specified. Throw an error.
       return new Error(`${propName} in ${componentName} isRequired`);
-      // Prop is optional. Do nothing.
     }
     // check types and length
     const isNode = !PropTypes.checkPropTypes(
@@ -198,7 +196,7 @@ function createCustomPropType(isRequired) {
     }
     return null;
   };
-}
+};
 
 // Using the factory, create two different versions of your prop type
 const customPropType = createCustomPropType(false);
