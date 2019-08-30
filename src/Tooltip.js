@@ -64,6 +64,4 @@ Tooltip.defaultEvents = props => [
   }
 ];
 
-Tooltip.propTypes = {};
-
 export default Tooltip;

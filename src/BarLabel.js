@@ -1,80 +1,60 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { VictoryLabel, VictoryTooltip } from 'victory';
+
+import { VictoryLabel } from 'victory';
+
+import Tooltip from './Tooltip';
 
 function BarLabel({
-  tooltipProps: { data, ...tooltipProps },
   datum,
-  active,
+  text,
+  tooltipProps: { data, ...tooltipProps },
   x,
-  y,
+  y: originalY,
   ...props
 }) {
   /**
    * Minus 25 to ovoid tooltip overlap with the label
    */
-  const [tooltipPosition, setTooltipPosition] = useState({ x, y: y - 25 });
-  useEffect(() => {
-    function mouseMove(e) {
-      if (active) {
-        const bbox = e.target.getBBox();
-        setTooltipPosition({
-          x,
-          y: bbox.y + bbox.height / 2
-        });
-      }
-    }
-
-    window.document.body.addEventListener('mousemove', mouseMove);
-
-    return () => {
-      window.document.body.removeEventListener('mousemove', mouseMove);
-    };
-  }, [active, x]);
-
-  const uniqueId = () =>
-    Math.random()
-      .toString(36)
-      .substring(2) + Date.now().toString(36);
+  const y = originalY - 25;
 
   return (
     <>
-      <VictoryLabel key={uniqueId()} x={x} y={y} datum={datum} {...props} />
-      <VictoryTooltip
-        key={uniqueId()}
-        active={active}
-        x={tooltipPosition.x}
-        y={tooltipPosition.y}
+      <VictoryLabel datum={datum} text={text} {...props} />
+      <Tooltip
         {...tooltipProps}
         datum={datum}
-        {...props}
+        // eslint-disable-next-line no-underscore-dangle
+        text={(data && datum && data[datum._x - 1].tooltip) || text}
+        x={x}
+        y={y}
         // eslint-disable-next-line react/prop-types, no-underscore-dangle
-        text={data[datum._x - 1].tooltip}
+        {...props}
       />
     </>
   );
 }
 
 BarLabel.propTypes = {
+  datum: PropTypes.shape({ _x: PropTypes.number }),
+  text: PropTypes.string,
   tooltipProps: PropTypes.shape({
     data: PropTypes.shape({})
   }).isRequired,
-  active: PropTypes.bool,
   x: PropTypes.number,
-  y: PropTypes.number,
-  datum: PropTypes.shape({})
+  y: PropTypes.number
 };
 
 /**
  * Enable tooltip to show on mouse over.
  */
-BarLabel.defaultEvents = VictoryTooltip.defaultEvents;
+BarLabel.defaultEvents = Tooltip.defaultEvents;
 
 BarLabel.defaultProps = {
-  active: false,
+  datum: undefined,
+  text: undefined,
   x: undefined,
-  y: undefined,
-  datum: undefined
+  y: undefined
 };
 
 export default BarLabel;
