@@ -10,7 +10,7 @@ import TypographyLoader from '../TypographyLoader';
 import A from '../A';
 import Actions from './Actions';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(({ breakpoints }) => ({
   root: {
     width: 'available',
     height: 'auto',
@@ -43,14 +43,17 @@ const useStyles = makeStyles({
     display: 'inline-flex',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
-    padding: '1.125rem 0',
+    padding: '1.125rem 3rem',
     textDecoration: 'none',
     outline: 'none',
     borderRadius: '0.75rem',
     color: '#29a87c',
     border: 'solid 2px #29a87c',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    [breakpoints.up('md')]: {
+      padding: '1.125rem 0.5rem',
+      width: '80%'
+    }
   },
   contextGrid: {
     padding: '0 1.25rem'
@@ -62,8 +65,14 @@ const useStyles = makeStyles({
   contextBrief: {
     fontSize: '0.8125rem',
     lineHeight: 2
+  },
+  linkGrid: {
+    marginTop: '2rem',
+    [breakpoints.up('md')]: {
+      marginTop: 0
+    }
   }
-});
+}));
 
 function InsightContainer({
   loading,
@@ -154,13 +163,17 @@ function InsightContainer({
           </Grid>
         )}
         {insightLink && (
-          <Grid container item>
+          <Grid
+            container
+            item
+            alignItems="flex-start"
+            justify="center"
+            className={classes.linkGrid}
+          >
             <BlockLoader loading={loading}>
-              <div style={{ width: '100%', padding: '0 1.2rem' }}>
-                <A className={classes.analysisLink} href={insightLink.href}>
-                  {insightLink.title}
-                </A>
-              </div>
+              <A className={classes.analysisLink} href={insightLink.href}>
+                {insightLink.title}
+              </A>
             </BlockLoader>
           </Grid>
         )}

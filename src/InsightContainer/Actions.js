@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'flex-start',
-    height: '3.5625rem',
+    justifyContent: 'center',
     marginTop: '0.6rem'
   },
   button: {
@@ -128,7 +128,7 @@ function Actions({
     setAnchorEl(event.currentTarget);
   };
   return (
-    <div className={classes.root}>
+    <Grid container className={classes.root}>
       {onShare && (
         <ActionButton
           ga-on="click"
@@ -222,7 +222,7 @@ function Actions({
       >
         <EmbedCodeTextArea code={embedCode} />
       </Popover>
-    </div>
+    </Grid>
   );
 }
 
