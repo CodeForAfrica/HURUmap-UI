@@ -29,6 +29,7 @@ To publish a new release;
 
 ```
 bumpversion patch
+git push --tags
 npm publish
 ```
 
