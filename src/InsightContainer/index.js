@@ -85,10 +85,10 @@ function InsightContainer({
 
   return (
     <Grid container spacing={4} className={classes.root}>
-      <Grid container item md={3}>
+      <Grid container item md={3} sm={12}>
         <BlockLoader loading={loading}>{children[0]}</BlockLoader>
       </Grid>
-      <Grid container item md={5}>
+      <Grid container item md={5} sm={12}>
         <Grid item>
           <TypographyLoader
             loading={loading}
@@ -123,7 +123,7 @@ function InsightContainer({
           </A>
         </TypographyLoader>
       </Grid>
-      <Grid container item md={4} className={classes.actionsGrid}>
+      <Grid container item md={4} sm={12} className={classes.actionsGrid}>
         <Grid
           container
           item
