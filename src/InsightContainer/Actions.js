@@ -18,8 +18,9 @@ const useStyles = makeStyles(() => ({
     width: 'fit-content',
     clear: 'both',
     display: 'flex',
+    height: '3.563rem',
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'center',
     marginTop: '0.6rem'
   },
@@ -54,8 +55,9 @@ function ActionButton({ children, onClick, ...props }) {
         component="span"
         container
         direction="column"
-        justify="center"
+        justify="space-between"
         alignItems="center"
+        style={{ height: '35px' }}
       >
         {children}
       </Grid>
@@ -128,7 +130,7 @@ function Actions({
     setAnchorEl(event.currentTarget);
   };
   return (
-    <Grid container className={classes.root}>
+    <div container className={classes.root}>
       {onShare && (
         <ActionButton
           ga-on="click"
@@ -222,7 +224,7 @@ function Actions({
       >
         <EmbedCodeTextArea code={embedCode} />
       </Popover>
-    </Grid>
+    </div>
   );
 }
 
