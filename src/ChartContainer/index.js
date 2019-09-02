@@ -26,12 +26,9 @@ const useStyles = makeStyles({
     overflow: 'hidden'
   },
   button: {
-    border: '0.0625rem solid #d8d8d8',
+    padding: '0 0.1rem',
     height: '2.5rem',
-    width: '2.5rem',
-    '&:first-child': {
-      borderRight: 'none'
-    }
+    width: '2.5rem'
   },
   title: {},
   subtitle: {},
