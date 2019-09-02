@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Button, Grid, Link, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
+  root: {},
   source: {
     padding: '1.25rem',
     width: '100%',
@@ -26,7 +27,13 @@ function InfoPanel({
   const classes = useStyles();
   const sourceTitle = sT || sourceLink;
   return (
-    <Grid ref={forwardedRef} container justify="center" {...props}>
+    <Grid
+      ref={forwardedRef}
+      className={classes.root}
+      container
+      justify="center"
+      {...props}
+    >
       <Typography className={classes.source}>
         {'Sources: '}
         <Link href={sourceLink} target="_blank" rel="noopener noreferrer">
@@ -49,7 +56,7 @@ InfoPanel.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]).isRequired,
-  forwardedRef: PropTypes.shape({}).isRequired,
+  forwardedRef: PropTypes.func.isRequired,
   onExploreData: PropTypes.func,
   sourceLink: PropTypes.string.isRequired,
   sourceTitle: PropTypes.string

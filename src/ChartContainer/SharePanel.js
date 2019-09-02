@@ -10,7 +10,10 @@ import {
 } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
-  root: {}
+  root: {},
+  title: {},
+  subtitle: {},
+  code: {}
 }));
 
 function SharePanel({ children, forwardedRef, subtitle, title, ...props }) {
@@ -18,9 +21,13 @@ function SharePanel({ children, forwardedRef, subtitle, title, ...props }) {
 
   return (
     <div ref={forwardedRef} {...props} className={classes.root}>
-      {title && <DialogTitle>{title}</DialogTitle>}
+      {title && <DialogTitle className={classes.title}>{title}</DialogTitle>}
       <DialogContent>
-        {subtitle && <DialogContentText>{subtitle}</DialogContentText>}
+        {subtitle && (
+          <DialogContentText className={classes.subtitle}>
+            {subtitle}
+          </DialogContentText>
+        )}
         <Typography variant="caption" component="code">
           <pre className={classes.code}>{children}</pre>
         </Typography>
@@ -34,7 +41,7 @@ SharePanel.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]).isRequired,
-  forwardedRef: PropTypes.shape({}).isRequired,
+  forwardedRef: PropTypes.func.isRequired,
   subtitle: PropTypes.string,
   title: PropTypes.string
 };

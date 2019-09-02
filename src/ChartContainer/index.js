@@ -42,8 +42,9 @@ function ChartContainer({
   content,
   infoComponent: suggestedInfoComponent,
   loading,
+  share,
   shareComponent: suggestedShareComponent,
-  sourceUrl,
+  source,
   title,
   subtitle,
   children
@@ -72,8 +73,8 @@ function ChartContainer({
       const InfoComponent = React.forwardRef((props, ref) => (
         <InfoPanel
           forwardedRef={ref}
-          sourceLink="https://codeforafrica.org"
-          sourceTitle="Code for Africa"
+          sourceLink={source.url}
+          sourceTitle={source.title || source.url}
         >
           Explore Data
         </InfoPanel>
@@ -91,7 +92,7 @@ function ChartContainer({
         </DropDown>
       ) : null
     );
-  }, [infoAnchorEl, suggestedInfoComponent]);
+  }, [infoAnchorEl, source.title, source.url, suggestedInfoComponent]);
 
   const shareRef = React.useRef(null);
   const [shareAnchorEl, setShareAnchorEl] = React.useState(null);
@@ -104,19 +105,10 @@ function ChartContainer({
       const ShareComponent = React.forwardRef((props, ref) => (
         <SharePanel
           forwardedRef={ref}
-          title="Embed code for this chart"
-          subtitle="Copy the code below, then paste into your own CMS or HTML. Embedded charts are responsive to your page width, and have been tested in Firefox, Safari, Chrome, and Edge."
+          title={share.title}
+          subtitle={share.subtitle}
         >
-          {`<iframe
-id="cr-embed-region-11-literacy_and_numeracy_tests-english_test_dist"
-className="census-reporter-embed"
-src="https://tanzania.hurumap.org/embed/iframe.html?geoID=region-11&geoVersion=2009&chartDataID=literacy_and_numeracy_tests-english_test_dist&dataYear=2015&chartType=pie&chartHeight=200&chartQualifier=&chartRelease=Uwezo+Annual+Assessment+Report+2015&chartSourceTitle=&chartSourceLink=&chartTitle=Percentage+of+children+aged+6-16+passing+English+literacy+tests&chartSubtitle=&initialSort=-value&statType=percentage"
-frameBorder="0"
-width="100%"
-height="300"
-style="margin: 1em; max-width: 300px;"
-/>
-<script src="https://tanzania.hurumap.org/static/js/embed.chart.make.js" />`}
+          {share.code}
         </SharePanel>
       ));
       shareComponent = <ShareComponent />;
@@ -132,7 +124,13 @@ style="margin: 1em; max-width: 300px;"
         </DropDown>
       ) : null
     );
-  }, [shareAnchorEl, suggestedShareComponent]);
+  }, [
+    share.code,
+    share.subtitle,
+    share.title,
+    shareAnchorEl,
+    suggestedShareComponent
+  ]);
 
   function handleClickInfo(anchorEl) {
     setShareAnchorEl(null);
@@ -230,8 +228,8 @@ style="margin: 1em; max-width: 300px;"
         }}
         component="span"
       >
-        <A className={classes.sourceLink} href={sourceUrl}>
-          {sourceUrl}
+        <A className={classes.sourceLink} href={source.url}>
+          {source.title || source.url}
         </A>
       </TypographyLoader>
     </Grid>
@@ -245,9 +243,17 @@ ChartContainer.propTypes = {
   ]).isRequired,
   infoComponent: PropTypes.node,
   shareComponent: PropTypes.node,
+  source: PropTypes.shape({
+    title: PropTypes.string,
+    url: PropTypes.string.isRequired
+  }),
+  share: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    subtitle: PropTypes.string,
+    code: PropTypes.string
+  }),
   subtitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  sourceUrl: PropTypes.string,
   loading: PropTypes.bool,
   content: PropTypes.shape({
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -257,8 +263,26 @@ ChartContainer.propTypes = {
 
 ChartContainer.defaultProps = {
   infoComponent: undefined,
+  share: {
+    title: 'Embed code for this chart',
+    subtitle:
+      'Copy the code below, then paste into your own CMS or HTML. Embedded charts are responsive to your page width, and have been tested in Firefox, Safari, Chrome, and Edge.',
+    code: `<iframe
+id="cr-embed-region-11-literacy_and_numeracy_tests-english_test_dist"
+className="census-reporter-embed"
+src="https://tanzania.hurumap.org/embed/iframe.html?geoID=region-11&geoVersion=2009&chartDataID=literacy_and_numeracy_tests-english_test_dist&dataYear=2015&chartType=pie&chartHeight=200&chartQualifier=&chartRelease=Uwezo+Annual+Assessment+Report+2015&chartSourceTitle=&chartSourceLink=&chartTitle=Percentage+of+children+aged+6-16+passing+English+literacy+tests&chartSubtitle=&initialSort=-value&statType=percentage"
+frameBorder="0"
+width="100%"
+height="300"
+style="margin: 1em; max-width: 300px;"
+/>
+<script src="https://tanzania.hurumap.org/static/js/embed.chart.make.js" />`
+  },
   shareComponent: undefined,
-  sourceUrl: undefined,
+  source: {
+    url: 'https://codeforafrica.org',
+    title: 'Code for Africa'
+  },
   loading: false,
   content: {
     width: '100%',
