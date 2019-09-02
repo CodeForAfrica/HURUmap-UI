@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/styles';
@@ -10,8 +10,9 @@ import TypographyLoader from '../TypographyLoader';
 import infoIcon from '../assets/info.png';
 import shareIcon from '../assets/share.png';
 import A from '../A';
-import InfoDropDown from './InfoDropDown';
-import ShareDropDown from './ShareDropDown';
+import DropDown from './DropDown';
+import InfoPanel from './InfoPanel';
+import SharePanel from './SharePanel';
 
 const useStyles = makeStyles({
   root: {
@@ -38,18 +39,16 @@ const useStyles = makeStyles({
 });
 
 function ChartContainer({
-  loading,
   content,
+  infoComponent: suggestedInfoComponent,
+  loading,
+  shareComponent: suggestedShareComponent,
   sourceUrl,
   title,
   subtitle,
-  children,
-  onClickInfo,
-  onClickShare
+  children
 }) {
   const classes = useStyles();
-  const infoRef = React.useRef(null);
-  const shareRef = React.useRef(null);
   const getReferenceObject = ref => {
     const { current } = ref;
     if (current) {
@@ -62,8 +61,78 @@ function ChartContainer({
     return null;
   };
 
+  const infoRef = React.useRef(null);
   const [infoAnchorEl, setInfoAnchorEl] = React.useState(null);
+  const handleCloseInfo = () => setInfoAnchorEl(null);
+  const [infoDropDown, setInfoDropDown] = React.useState(null);
+  useEffect(() => {
+    let infoComponent = suggestedInfoComponent;
+    if (typeof infoComponent === 'undefined') {
+      // see: https://material-ui.com/guides/composition/#caveat-with-refs
+      const InfoComponent = React.forwardRef((props, ref) => (
+        <InfoPanel
+          forwardedRef={ref}
+          sourceLink="https://codeforafrica.org"
+          sourceTitle="Code for Africa"
+        >
+          Explore Data
+        </InfoPanel>
+      ));
+      infoComponent = <InfoComponent />;
+    }
+    setInfoDropDown(
+      infoComponent ? (
+        <DropDown
+          anchorEl={infoAnchorEl}
+          onClose={handleCloseInfo}
+          open={infoAnchorEl !== null}
+        >
+          {infoComponent}
+        </DropDown>
+      ) : null
+    );
+  }, [infoAnchorEl, suggestedInfoComponent]);
+
+  const shareRef = React.useRef(null);
   const [shareAnchorEl, setShareAnchorEl] = React.useState(null);
+  const [shareDropDown, setShareDropDown] = React.useState(null);
+  const handleCloseShare = () => setShareAnchorEl(null);
+  useEffect(() => {
+    let shareComponent = suggestedShareComponent;
+    if (typeof shareComponent === 'undefined') {
+      // see: https://material-ui.com/guides/composition/#caveat-with-refs
+      const ShareComponent = React.forwardRef((props, ref) => (
+        <SharePanel
+          forwardedRef={ref}
+          title="Embed code for this chart"
+          subtitle="Copy the code below, then paste into your own CMS or HTML. Embedded charts are responsive to your page width, and have been tested in Firefox, Safari, Chrome, and Edge."
+        >
+          {`<iframe
+id="cr-embed-region-11-literacy_and_numeracy_tests-english_test_dist"
+className="census-reporter-embed"
+src="https://tanzania.hurumap.org/embed/iframe.html?geoID=region-11&geoVersion=2009&chartDataID=literacy_and_numeracy_tests-english_test_dist&dataYear=2015&chartType=pie&chartHeight=200&chartQualifier=&chartRelease=Uwezo+Annual+Assessment+Report+2015&chartSourceTitle=&chartSourceLink=&chartTitle=Percentage+of+children+aged+6-16+passing+English+literacy+tests&chartSubtitle=&initialSort=-value&statType=percentage"
+frameBorder="0"
+width="100%"
+height="300"
+style="margin: 1em; max-width: 300px;"
+/>
+<script src="https://tanzania.hurumap.org/static/js/embed.chart.make.js" />`}
+        </SharePanel>
+      ));
+      shareComponent = <ShareComponent />;
+    }
+    setShareDropDown(
+      shareComponent ? (
+        <DropDown
+          anchorEl={shareAnchorEl}
+          onClose={handleCloseShare}
+          open={shareAnchorEl !== null}
+        >
+          {shareComponent}
+        </DropDown>
+      ) : null
+    );
+  }, [shareAnchorEl, suggestedShareComponent]);
 
   function handleClickInfo(anchorEl) {
     setShareAnchorEl(null);
@@ -75,15 +144,6 @@ function ChartContainer({
     setShareAnchorEl(anchorEl);
   }
 
-  function handleCloseInfo() {
-    setInfoAnchorEl(null);
-  }
-
-  function handleCloseShare() {
-    setShareAnchorEl(null);
-  }
-
-  function handleExploreData() {}
   return (
     <Grid container className={classes.root}>
       <Grid
@@ -126,61 +186,32 @@ function ChartContainer({
           direction="row"
           justify="flex-end"
         >
-          <BlockLoader loading={loading} width="5rem" height="2.5rem">
-            <ButtonBase
-              className={classes.button}
-              onClick={() =>
-                onClickInfo && onClickInfo(getReferenceObject(infoRef))
-                  ? onClickInfo
-                  : handleClickInfo
-              }
-              ref={infoRef}
-            >
-              <img alt="Info" src={infoIcon} />
-            </ButtonBase>
+          {infoDropDown && (
+            <BlockLoader loading={loading} width="2.5rem" height="2.5rem">
+              <ButtonBase
+                className={classes.button}
+                onClick={() => handleClickInfo(getReferenceObject(infoRef))}
+                ref={infoRef}
+              >
+                <img alt="Info" src={infoIcon} />
+              </ButtonBase>
+            </BlockLoader>
+          )}
 
-            <ButtonBase
-              className={classes.button}
-              onClick={() =>
-                onClickShare && onClickShare(getReferenceObject(shareRef))
-                  ? handleClickShare
-                  : null
-              }
-              ref={shareRef}
-            >
-              <img alt="Share" src={shareIcon} />
-            </ButtonBase>
-          </BlockLoader>
+          {shareDropDown && (
+            <BlockLoader loading={loading} width="2.5rem" height="2.5rem">
+              <ButtonBase
+                className={classes.button}
+                onClick={() => handleClickShare(getReferenceObject(infoRef))}
+                ref={shareRef}
+              >
+                <img alt="Share" src={shareIcon} />
+              </ButtonBase>
+            </BlockLoader>
+          )}
 
-          <ShareDropDown
-            anchorEl={shareAnchorEl}
-            onClose={handleCloseShare}
-            open={shareAnchorEl !== null}
-            title="Embed code for this chart"
-            subtitle="Copy the code below, then paste into your own CMS or HTML. Embedded charts are responsive to your page width, and have been tested in Firefox, Safari, Chrome, and Edge."
-          >
-            {`<iframe
-  id="cr-embed-region-11-literacy_and_numeracy_tests-english_test_dist"
-  className="census-reporter-embed"
-  src="https://tanzania.hurumap.org/embed/iframe.html?geoID=region-11&geoVersion=2009&chartDataID=literacy_and_numeracy_tests-english_test_dist&dataYear=2015&chartType=pie&chartHeight=200&chartQualifier=&chartRelease=Uwezo+Annual+Assessment+Report+2015&chartSourceTitle=&chartSourceLink=&chartTitle=Percentage+of+children+aged+6-16+passing+English+literacy+tests&chartSubtitle=&initialSort=-value&statType=percentage"
-  frameBorder="0"
-  width="100%"
-  height="300"
-  style="margin: 1em; max-width: 300px;"
-/>
-<script src="https://tanzania.hurumap.org/static/js/embed.chart.make.js" />`}
-          </ShareDropDown>
-
-          <InfoDropDown
-            anchorEl={infoAnchorEl}
-            onClose={handleCloseInfo}
-            onExploreData={handleExploreData}
-            open={infoAnchorEl !== null}
-            sourceLink="https://codeforafrica.org"
-            sourceTitle="Code for Africa"
-          >
-            Explore Data
-          </InfoDropDown>
+          {infoDropDown}
+          {shareDropDown}
         </Grid>
       </Grid>
       <Grid
@@ -212,8 +243,8 @@ ChartContainer.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]).isRequired,
-  onClickInfo: PropTypes.func,
-  onClickShare: PropTypes.func,
+  infoComponent: PropTypes.node,
+  shareComponent: PropTypes.node,
   subtitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   sourceUrl: PropTypes.string,
@@ -225,9 +256,9 @@ ChartContainer.propTypes = {
 };
 
 ChartContainer.defaultProps = {
+  infoComponent: undefined,
+  shareComponent: undefined,
   sourceUrl: undefined,
-  onClickInfo: undefined,
-  onClickShare: undefined,
   loading: false,
   content: {
     width: '100%',
