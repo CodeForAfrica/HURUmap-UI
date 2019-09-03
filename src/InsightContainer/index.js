@@ -38,6 +38,11 @@ const useStyles = makeStyles(({ breakpoints }) => ({
   },
   subtitle: {},
   sourceLink: {},
+  sourceGrid: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    marginLeft: '1rem'
+  },
   analysisLink: {
     cursor: 'pointer',
     display: 'inline-flex',
@@ -97,6 +102,21 @@ function InsightContainer({
     <Grid container spacing={4} className={classes.root}>
       <Grid container item md={3} sm={12}>
         <BlockLoader loading={loading}>{children[0]}</BlockLoader>
+        <TypographyLoader
+          loading={loading}
+          loader={{
+            primaryOpacity: 0.5,
+            secondaryOpacity: 1
+          }}
+          component="span"
+          className={classes.sourceGrid}
+        >
+          {source && (
+            <A className={classes.sourceLink} href={source.href}>
+              {`Source: ${source.title || source.href} `}
+            </A>
+          )}
+        </TypographyLoader>
       </Grid>
       <Grid container item md={5} sm={12}>
         <Grid item>
@@ -120,20 +140,6 @@ function InsightContainer({
         >
           <BlockLoader loading={loading}>{children[1]}</BlockLoader>
         </Grid>
-        <TypographyLoader
-          loading={loading}
-          loader={{
-            primaryOpacity: 0.5,
-            secondaryOpacity: 1
-          }}
-          component="span"
-        >
-          {source && (
-            <A className={classes.sourceLink} href={source.href}>
-              {`Source: ${source.title || source.href} `}
-            </A>
-          )}
-        </TypographyLoader>
       </Grid>
       <Grid container item md={4} sm={12} className={classes.actionsGrid}>
         <Grid

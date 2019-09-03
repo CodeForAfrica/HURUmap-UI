@@ -36,7 +36,11 @@ storiesOf('HURUmap UI|InsightChartContainer', module)
           <InsightContainer
             loading={boolean('loading', true)}
             title="Lorem ipsum dolor sit amet"
-            sourceUrl="http://dev.dominion.africa"
+            source={object(
+              'source', { 
+                title: "Community Survey 2016",
+                href: "http://dev.dominion.africa"
+            })}
             content={{
               height: 338
             }}
