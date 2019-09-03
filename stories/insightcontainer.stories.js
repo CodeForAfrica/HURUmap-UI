@@ -29,8 +29,9 @@ storiesOf('HURUmap UI|InsightChartContainer', module)
       >
         <Grid
           item
-          xs={select('xs', ['auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 9)}
-          md={select('md', ['auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 9)}
+          xs={select('xs', ['auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 8)}
+          md={select('md', ['auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 12)}
+          style={{ padding: '0.625rem'}}
         >
           <InsightContainer
             loading={boolean('loading', true)}
