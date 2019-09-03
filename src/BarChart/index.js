@@ -10,6 +10,7 @@ import BarLabel from './BarLabel';
 
 function BarChart({
   barWidth,
+  labelWidth: propLabelWidth,
   data: d,
   domain,
   domainPadding,
@@ -23,7 +24,7 @@ function BarChart({
   ...props
 }) {
   const {
-    axis: { labelWidth: defaultLabelWidth },
+    axis: { labelWidth: themeLabelWidth },
     bar: chart,
     group: groupChart
   } = theme;
@@ -32,8 +33,8 @@ function BarChart({
   }
 
   const groupData = Array.isArray(d[0]) ? d : [d];
-  let labelWidth = defaultLabelWidth;
-  if (groupData.length > 1) {
+  let labelWidth = propLabelWidth || themeLabelWidth;
+  if (groupData.length > 1 && !propLabelWidth) {
     const barSpacing = offset || barWidth;
     if (barSpacing) {
       labelWidth = barSpacing * groupData.length;
@@ -120,6 +121,7 @@ BarChart.propTypes = {
     })
   ),
   barWidth: PropTypes.number,
+  labelWidth: PropTypes.number,
   domain: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
   domainPadding: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
   height: PropTypes.number,
@@ -144,6 +146,7 @@ BarChart.propTypes = {
 
 BarChart.defaultProps = {
   barWidth: undefined,
+  labelWidth: undefined,
   data: undefined,
   domain: undefined,
   domainPadding: undefined,
