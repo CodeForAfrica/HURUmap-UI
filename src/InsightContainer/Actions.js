@@ -11,7 +11,7 @@ import downloadIcon from '../assets/icons/download.svg';
 import compareIcon from '../assets/icons/compare.svg';
 import showIcon from '../assets/icons/tablet-reader.svg';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(({ breakpoints }) => ({
   root: {
     backgroundColor: 'white',
     borderRadius: '0.625rem',
@@ -22,13 +22,22 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: '0.6rem'
+    marginTop: '0.6rem',
+    [breakpoints.up('md')]: {
+      width: '100%'
+    }
   },
   button: {
     height: '100%',
     borderRadius: '0',
     '&:hover': {
       backgroundColor: 'transparent'
+    },
+    [breakpoints.up('md')]: {
+      padding: '0.25rem'
+    },
+    [breakpoints.up('lg')]: {
+      padding: '0.625rem'
     }
   },
   actionText: {
