@@ -67,9 +67,9 @@ const useStyles = makeStyles(({ breakpoints }) => ({
     lineHeight: 2
   },
   linkGrid: {
-    marginTop: '2rem',
+    margin: '3rem 0',
     [breakpoints.up('md')]: {
-      marginTop: 0
+      margin: 0
     }
   }
 }));

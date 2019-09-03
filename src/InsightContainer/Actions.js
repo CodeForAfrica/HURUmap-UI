@@ -22,10 +22,7 @@ const useStyles = makeStyles(({ breakpoints }) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: '0.6rem',
-    [breakpoints.up('md')]: {
-      width: '100%'
-    }
+    marginTop: '0.6rem'
   },
   button: {
     height: '100%',
