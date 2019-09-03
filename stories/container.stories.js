@@ -1,10 +1,22 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, boolean, number, select } from '@storybook/addon-knobs';
+import {
+  withKnobs,
+  boolean,
+  number,
+  select,
+  object
+} from '@storybook/addon-knobs';
 
 import Grid from '@material-ui/core/Grid';
 
-import { BarChart, ChartContainer, EmbedPopup, InfoPopup } from '../src';
+import {
+  BarChart,
+  ChartContainer,
+  EmbedPopup,
+  InfoPopup,
+  PieChart
+} from '../src';
 import { CenterDecorator } from './common';
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
@@ -37,6 +49,8 @@ storiesOf('HURUmap UI|ChartContainer', module)
 
       function handleExploreData() {}
 
+      const chartType = select('chartType', ['pie', 'bar'], 'pie');
+
       return (
         <Grid
           container
@@ -64,40 +78,96 @@ storiesOf('HURUmap UI|ChartContainer', module)
               title="Lorem ipsum dolor sit amet."
               subtitle="Praesent at dignissim est. Integer porta consectetur ante, ut congue erat."
               sourceLink="http://dev.dominion.africa"
-              content={{
-                height: 338
-              }}
+              content={object('content', { height: 400, width: '100%' })}
             >
-              <BarChart
-                horizontal={boolean('horizontal', false)}
-                width={500}
-                height={300}
-                data={Array(number('data', 100))
-                  .fill(null)
-                  .map((_, index) => ({
-                    x: `${index}-${index}`,
-                    y: rand()
-                  }))}
-                parts={{
-                  axis: {
-                    dependent: {
+              {chartType === 'pie' && (
+                <PieChart
+                  donut={boolean('donut', true)}
+                  donutLabelKey={object('donutLabelKey', {
+                    dataIndex: 0,
+                    sortKey: ''
+                  })}
+                  data={object('data', [
+                    { x: 'Female', y: 22, label: 'Female\n22%' },
+                    { x: 'Male', y: 78, label: 'Male\n78%' }
+                  ])}
+                  legendWidth={40}
+                  radii={[150]}
+                  parts={{
+                    tooltip: {
                       style: {
-                        axis: {
-                          display: 'block'
-                        },
-                        grid: {
-                          display: 'block'
-                        },
-                        tickLabels: {
-                          display: 'block'
+                        fontSize: 28
+                      }
+                    },
+                    legend: {
+                      style: { labels: { fontSize: 20, fontWeight: 'bold' } }
+                    }
+                  }}
+                  legend={[
+                    { name: 'Female', label: 'Female: 22%' },
+                    { name: 'Male', label: 'Male: 78%' }
+                  ]}
+                  responsive={boolean('responsive', true)}
+                  standalone={boolean('standalone', true)}
+                  style={{
+                    labels: {
+                      fill: 'black',
+                      fontSize: '18',
+                      fontWeight: 'bold'
+                    }
+                  }}
+                />
+              )}
+
+              {chartType === 'bar' && (
+                <BarChart
+                  horizontal={boolean('horizontal', false)}
+                  width={500}
+                  height={300}
+                  domainPadding={object('domainPadding', { x: 15 })}
+                  data={Array(number('data', 10))
+                    .fill(null)
+                    .map((_, index) => ({
+                      x: `${index} wrap label`,
+                      y: rand()
+                    }))}
+                  parts={{
+                    axis: {
+                      independent: {
+                        style: {
+                          axis: {
+                            display: 'block'
+                          },
+                          grid: {
+                            display: 'block'
+                          },
+                          ticks: {
+                            display: 'block'
+                          },
+                          tickLabels: {
+                            display: 'block'
+                          }
                         }
                       },
-                      tickValues: [10, 50, 90],
-                      tickFormat: ['10%', '50%', '90%']
+                      dependent: {
+                        style: {
+                          axis: {
+                            display: 'block'
+                          },
+                          grid: {
+                            display: 'block'
+                          },
+                          tickLabels: {
+                            display: 'block'
+                          }
+                        },
+                        tickValues: [10, 50, 90],
+                        tickFormat: ['10%', '50%', '90%']
+                      }
                     }
-                  }
-                }}
-              />
+                  }}
+                />
+              )}
             </ChartContainer>
           </Grid>
           <EmbedPopup

@@ -32,7 +32,9 @@ const useStyles = makeStyles({
   },
   title: {},
   subtitle: {},
-  sourceLink: {}
+  sourceLink: {
+    marginLeft: '50px'
+  }
 });
 
 function ChartContainer({
@@ -131,20 +133,22 @@ function ChartContainer({
         className={classes.content}
         style={{ width: content.width, height: content.height }}
       >
-        <BlockLoader loading={loading}>{children}</BlockLoader>
+        <div>
+          <BlockLoader loading={loading}>{children}</BlockLoader>
+          <TypographyLoader
+            loading={loading}
+            loader={{
+              primaryOpacity: 0.5,
+              secondaryOpacity: 1
+            }}
+            component="span"
+          >
+            <A className={classes.sourceLink} href={sourceLink}>
+              {`Source: ${sourceTitle || sourceLink}`}
+            </A>
+          </TypographyLoader>
+        </div>
       </Grid>
-      <TypographyLoader
-        loading={loading}
-        loader={{
-          primaryOpacity: 0.5,
-          secondaryOpacity: 1
-        }}
-        component="span"
-      >
-        <A className={classes.sourceLink} href={sourceLink}>
-          {`Source: ${sourceTitle || sourceLink}`}
-        </A>
-      </TypographyLoader>
     </Grid>
   );
 }
