@@ -77,7 +77,7 @@ const useStyles = makeStyles(({ breakpoints }) => ({
 function InsightContainer({
   loading,
   content,
-  sourceUrl,
+  source,
   title,
   children,
   insightActions,
@@ -128,8 +128,8 @@ function InsightContainer({
           }}
           component="span"
         >
-          <A className={classes.sourceLink} href={sourceUrl}>
-            {sourceUrl}
+          <A className={classes.sourceLink} href={source.href}>
+            {`Source: ${source.title || source.href}`}
           </A>
         </TypographyLoader>
       </Grid>
@@ -218,7 +218,10 @@ twoNodeArrayType.isRequired = createTwoNodeArrayType(true);
 InsightContainer.propTypes = {
   children: twoNodeArrayType.isRequired,
   title: PropTypes.string.isRequired,
-  sourceUrl: PropTypes.string,
+  source: PropTypes.shape({
+    title: PropTypes.string,
+    href: PropTypes.string
+  }),
   loading: PropTypes.bool,
   content: PropTypes.shape({
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -242,7 +245,10 @@ InsightContainer.propTypes = {
 };
 
 InsightContainer.defaultProps = {
-  sourceUrl: undefined,
+  source: PropTypes.shape({
+    title: undefined,
+    href: undefined
+  }),
   loading: false,
   insightLink: {
     href: '/profiles/nigeria',

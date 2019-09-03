@@ -59,10 +59,7 @@ const useStyles = makeStyles(({ breakpoints }) => ({
 function ActionButton({
   children,
   onClick,
-  gaOn,
-  gaEventAction,
-  gaEventCategory,
-  gaEventLabel,
+  gaEvents: { gaOn, gaEventAction, gaEventCategory, gaEventLabel },
   ...props
 }) {
   const classes = useStyles();
@@ -96,14 +93,22 @@ ActionButton.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]).isRequired,
-  gaOn: PropTypes.string.isRequired,
-  gaEventCategory: PropTypes.string.isRequired,
-  gaEventAction: PropTypes.string.isRequired,
-  gaEventLabel: PropTypes.string.isRequired
+  gaEvents: PropTypes.shape({
+    gaOn: PropTypes.string,
+    gaEventCategory: PropTypes.string,
+    gaEventAction: PropTypes.string,
+    gaEventLabel: PropTypes.string
+  })
 };
 
 ActionButton.defaultProps = {
-  onClick: null
+  onClick: null,
+  gaEvents: {
+    gaOn: undefined,
+    gaEventCategory: undefined,
+    gaEventAction: undefined,
+    gaEventLabel: undefined
+  }
 };
 
 const EmbedCodeTextArea = ({ code }) => {
@@ -161,13 +166,7 @@ function Actions({
   return (
     <div container className={classes.root}>
       {onShare && (
-        <ActionButton
-          gaOn={share.gaOn}
-          gaEventCategory={share.gaEventCategory}
-          gaEventAction={share.gaEventAction}
-          gaEventLabel={share.gaEventLabel}
-          onClick={onShare}
-        >
+        <ActionButton gaEvents={share} onClick={onShare}>
           <img alt="" src={shareIcon} />
           <Typography className={classes.actionText}>Share</Typography>
         </ActionButton>
@@ -176,13 +175,7 @@ function Actions({
       {onDownload && (
         <Fragment>
           <div className={classes.verticalDivider} />
-          <ActionButton
-            gaOn={download.gaOn}
-            gaEventCategory={download.gaEventCategory}
-            gaEventAction={download.gaEventAction}
-            gaEventLabel={download.gaEventLabel}
-            onClick={onDownload}
-          >
+          <ActionButton gaEvents={download} onClick={onDownload}>
             <img alt="" src={downloadIcon} />
             <Typography className={classes.actionText}>Download</Typography>
           </ActionButton>
@@ -192,13 +185,7 @@ function Actions({
       {embedCode && (
         <Fragment>
           <div className={classes.verticalDivider} />
-          <ActionButton
-            gaOn={embed.gaOn}
-            gaEventCategory={embed.gaEventCategory}
-            gaEventAction={embed.gaEventAction}
-            gaEventLabel={embed.gaEventLabel}
-            onClick={handleEmbed}
-          >
+          <ActionButton gaEvents={embed} onClick={handleEmbed}>
             <img alt="" src={embedIcon} />
             <Typography className={classes.actionText}>Embed</Typography>
           </ActionButton>
@@ -209,13 +196,7 @@ function Actions({
         <Fragment>
           <div className={classes.verticalDivider} />
 
-          <ActionButton
-            gaOn={compare.gaOn}
-            gaEventCategory={compare.gaEventCategory}
-            gaEventAction={compare.gaEventAction}
-            gaEventLabel={compare.gaEventLabel}
-            onClick={onCompare}
-          >
+          <ActionButton gaEvents={compare} onClick={onCompare}>
             <img alt="" src={compareIcon} />
             <Typography className={classes.actionText}>Compare</Typography>
           </ActionButton>
@@ -225,13 +206,7 @@ function Actions({
       {onShowData && (
         <Fragment>
           <div className={classes.verticalDivider} />
-          <ActionButton
-            gaOn={showData.gaOn}
-            gaEventCategory={showData.gaEventCategory}
-            gaEventAction={showData.gaEventAction}
-            gaEventLabel={showData.gaEventLabel}
-            onClick={onShowData}
-          >
+          <ActionButton gaEvents={showData} onClick={onShowData}>
             <img alt="" src={showIcon} />
             <Typography className={classes.actionText}>Show Data</Typography>
           </ActionButton>
@@ -264,36 +239,11 @@ Actions.propTypes = {
   embedCode: PropTypes.string,
   onCompare: PropTypes.func,
   gaEvents: PropTypes.shape({
-    share: PropTypes.shape({
-      gaOn: PropTypes.string,
-      gaEventCategory: PropTypes.string,
-      gaEventAction: PropTypes.string,
-      gaEventLabel: PropTypes.string
-    }),
-    download: PropTypes.shape({
-      gaOn: PropTypes.string,
-      gaEventCategory: PropTypes.string,
-      gaEventAction: PropTypes.string,
-      gaEventLabel: PropTypes.string
-    }),
-    compare: PropTypes.shape({
-      gaOn: PropTypes.string,
-      gaEventCategory: PropTypes.string,
-      gaEventAction: PropTypes.string,
-      gaEventLabel: PropTypes.string
-    }),
-    showData: PropTypes.shape({
-      gaOn: PropTypes.string,
-      gaEventCategory: PropTypes.string,
-      gaEventAction: PropTypes.string,
-      gaEventLabel: PropTypes.string
-    }),
-    embed: PropTypes.shape({
-      gaOn: PropTypes.string,
-      gaEventCategory: PropTypes.string,
-      gaEventAction: PropTypes.string,
-      gaEventLabel: PropTypes.string
-    })
+    share: PropTypes.shape({}),
+    download: PropTypes.shape({}),
+    compare: PropTypes.shape({}),
+    showData: PropTypes.shape({}),
+    embed: PropTypes.shape({})
   })
 };
 
@@ -303,38 +253,13 @@ Actions.defaultProps = {
   onShowData: null,
   embedCode: 'null',
   onCompare: null,
-  gaEvents: PropTypes.shape({
-    share: PropTypes.shape({
-      gaOn: undefined,
-      gaEventCategory: undefined,
-      gaEventAction: undefined,
-      gaEventLabel: undefined
-    }),
-    download: PropTypes.shape({
-      gaOn: undefined,
-      gaEventCategory: undefined,
-      gaEventAction: undefined,
-      gaEventLabel: undefined
-    }),
-    compare: PropTypes.shape({
-      gaOn: undefined,
-      gaEventCategory: undefined,
-      gaEventAction: undefined,
-      gaEventLabel: undefined
-    }),
-    showData: PropTypes.shape({
-      gaOn: undefined,
-      gaEventCategory: undefined,
-      gaEventAction: undefined,
-      gaEventLabel: undefined
-    }),
-    embed: PropTypes.shape({
-      gaOn: undefined,
-      gaEventCategory: undefined,
-      gaEventAction: undefined,
-      gaEventLabel: undefined
-    })
-  })
+  gaEvents: {
+    share: undefined,
+    download: undefined,
+    compare: undefined,
+    showData: undefined,
+    embed: undefined
+  }
 };
 
 export default Actions;
