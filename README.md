@@ -22,6 +22,17 @@ If you'd like to contribute to sensors.AFRICA, check out the [CONTRIBUTING.md](.
 
 [TODO](https://www.npmjs.com/package/all-contributors-cli)
 
+
+## Publish A New Release
+
+To publish a new release;
+
+```
+bumpversion patch
+git push --tags
+npm publish
+```
+
 ---
 
 ## License
