@@ -82,7 +82,8 @@ function InsightContainer({
   children,
   insightActions,
   insightContext,
-  insightLink
+  insightLink,
+  gaEvents
 }) {
   const classes = useStyles();
   const {
@@ -142,11 +143,11 @@ function InsightContainer({
         >
           <BlockLoader loading={loading} height="2.5rem">
             <Actions
-              title={title}
               onShare={handleShare}
               onDownload={handleDownload}
               onShowData={handleShowData}
               onCompare={handleComapre}
+              gaEvents={gaEvents}
             />
           </BlockLoader>
         </Grid>
@@ -236,7 +237,8 @@ InsightContainer.propTypes = {
     handleDownload: PropTypes.func,
     handleShowData: PropTypes.func,
     handleComapre: PropTypes.func
-  })
+  }),
+  gaEvents: PropTypes.shape({})
 };
 
 InsightContainer.defaultProps = {
@@ -256,7 +258,8 @@ InsightContainer.defaultProps = {
   content: {
     width: '100%',
     height: '100%'
-  }
+  },
+  gaEvents: undefined
 };
 
 export default InsightContainer;

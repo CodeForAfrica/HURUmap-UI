@@ -56,10 +56,26 @@ const useStyles = makeStyles(({ breakpoints }) => ({
   }
 }));
 
-function ActionButton({ children, onClick, ...props }) {
+function ActionButton({
+  children,
+  onClick,
+  gaOn,
+  gaEventAction,
+  gaEventCategory,
+  gaEventLabel,
+  ...props
+}) {
   const classes = useStyles();
   return (
-    <IconButton className={classes.button} onClick={onClick} {...props}>
+    <IconButton
+      className={classes.button}
+      onClick={onClick}
+      ga-on={gaOn}
+      ga-event-category={gaEventCategory}
+      ga-event-action={gaEventAction}
+      ga-event-label={gaEventLabel}
+      {...props}
+    >
       <Grid
         component="span"
         container
@@ -79,7 +95,11 @@ ActionButton.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
-  ]).isRequired
+  ]).isRequired,
+  gaOn: PropTypes.string.isRequired,
+  gaEventCategory: PropTypes.string.isRequired,
+  gaEventAction: PropTypes.string.isRequired,
+  gaEventLabel: PropTypes.string.isRequired
 };
 
 ActionButton.defaultProps = {
@@ -125,12 +145,12 @@ EmbedCodeTextArea.propTypes = {
 };
 
 function Actions({
-  title,
   onShare,
   onDownload,
   onShowData,
   onCompare,
-  embedCode
+  embedCode,
+  gaEvents: { share, embed, showData, download, compare }
 }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -142,10 +162,10 @@ function Actions({
     <div container className={classes.root}>
       {onShare && (
         <ActionButton
-          ga-on="click"
-          ga-event-category="Data"
-          ga-event-action="Share"
-          ga-event-label={title}
+          gaOn={share.gaOn}
+          gaEventCategory={share.gaEventCategory}
+          gaEventAction={share.gaEventAction}
+          gaEventLabel={share.gaEventLabel}
           onClick={onShare}
         >
           <img alt="" src={shareIcon} />
@@ -157,10 +177,10 @@ function Actions({
         <Fragment>
           <div className={classes.verticalDivider} />
           <ActionButton
-            ga-on="click"
-            ga-event-category="Data"
-            ga-event-action="Download"
-            ga-event-label={title}
+            gaOn={download.gaOn}
+            gaEventCategory={download.gaEventCategory}
+            gaEventAction={download.gaEventAction}
+            gaEventLabel={download.gaEventLabel}
             onClick={onDownload}
           >
             <img alt="" src={downloadIcon} />
@@ -173,10 +193,10 @@ function Actions({
         <Fragment>
           <div className={classes.verticalDivider} />
           <ActionButton
-            ga-on="click"
-            ga-event-category="Data"
-            ga-event-action="Embed"
-            ga-event-label={title}
+            gaOn={embed.gaOn}
+            gaEventCategory={embed.gaEventCategory}
+            gaEventAction={embed.gaEventAction}
+            gaEventLabel={embed.gaEventLabel}
             onClick={handleEmbed}
           >
             <img alt="" src={embedIcon} />
@@ -190,10 +210,10 @@ function Actions({
           <div className={classes.verticalDivider} />
 
           <ActionButton
-            ga-on="click"
-            ga-event-category="Data"
-            ga-event-action="Compare"
-            ga-event-label={title}
+            gaOn={compare.gaOn}
+            gaEventCategory={compare.gaEventCategory}
+            gaEventAction={compare.gaEventAction}
+            gaEventLabel={compare.gaEventLabel}
             onClick={onCompare}
           >
             <img alt="" src={compareIcon} />
@@ -206,10 +226,10 @@ function Actions({
         <Fragment>
           <div className={classes.verticalDivider} />
           <ActionButton
-            ga-on="click"
-            ga-event-category="Data"
-            ga-event-action="ShowData"
-            ga-event-label={title}
+            gaOn={showData.gaOn}
+            gaEventCategory={showData.gaEventCategory}
+            gaEventAction={showData.gaEventAction}
+            gaEventLabel={showData.gaEventLabel}
             onClick={onShowData}
           >
             <img alt="" src={showIcon} />
@@ -238,12 +258,43 @@ function Actions({
 }
 
 Actions.propTypes = {
-  title: PropTypes.string.isRequired,
   onDownload: PropTypes.func,
   onShare: PropTypes.func,
   onShowData: PropTypes.func,
   embedCode: PropTypes.string,
-  onCompare: PropTypes.func
+  onCompare: PropTypes.func,
+  gaEvents: PropTypes.shape({
+    share: PropTypes.shape({
+      gaOn: PropTypes.string,
+      gaEventCategory: PropTypes.string,
+      gaEventAction: PropTypes.string,
+      gaEventLabel: PropTypes.string
+    }),
+    download: PropTypes.shape({
+      gaOn: PropTypes.string,
+      gaEventCategory: PropTypes.string,
+      gaEventAction: PropTypes.string,
+      gaEventLabel: PropTypes.string
+    }),
+    compare: PropTypes.shape({
+      gaOn: PropTypes.string,
+      gaEventCategory: PropTypes.string,
+      gaEventAction: PropTypes.string,
+      gaEventLabel: PropTypes.string
+    }),
+    showData: PropTypes.shape({
+      gaOn: PropTypes.string,
+      gaEventCategory: PropTypes.string,
+      gaEventAction: PropTypes.string,
+      gaEventLabel: PropTypes.string
+    }),
+    embed: PropTypes.shape({
+      gaOn: PropTypes.string,
+      gaEventCategory: PropTypes.string,
+      gaEventAction: PropTypes.string,
+      gaEventLabel: PropTypes.string
+    })
+  })
 };
 
 Actions.defaultProps = {
@@ -251,7 +302,39 @@ Actions.defaultProps = {
   onShare: null,
   onShowData: null,
   embedCode: 'null',
-  onCompare: null
+  onCompare: null,
+  gaEvents: PropTypes.shape({
+    share: PropTypes.shape({
+      gaOn: undefined,
+      gaEventCategory: undefined,
+      gaEventAction: undefined,
+      gaEventLabel: undefined
+    }),
+    download: PropTypes.shape({
+      gaOn: undefined,
+      gaEventCategory: undefined,
+      gaEventAction: undefined,
+      gaEventLabel: undefined
+    }),
+    compare: PropTypes.shape({
+      gaOn: undefined,
+      gaEventCategory: undefined,
+      gaEventAction: undefined,
+      gaEventLabel: undefined
+    }),
+    showData: PropTypes.shape({
+      gaOn: undefined,
+      gaEventCategory: undefined,
+      gaEventAction: undefined,
+      gaEventLabel: undefined
+    }),
+    embed: PropTypes.shape({
+      gaOn: undefined,
+      gaEventCategory: undefined,
+      gaEventAction: undefined,
+      gaEventLabel: undefined
+    })
+  })
 };
 
 export default Actions;
