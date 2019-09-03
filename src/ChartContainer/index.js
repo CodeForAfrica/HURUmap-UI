@@ -38,7 +38,8 @@ const useStyles = makeStyles({
 function ChartContainer({
   loading,
   content,
-  sourceUrl,
+  sourceLink,
+  sourceTitle,
   title,
   subtitle,
   children,
@@ -140,8 +141,8 @@ function ChartContainer({
         }}
         component="span"
       >
-        <A className={classes.sourceLink} href={sourceUrl}>
-          {sourceUrl}
+        <A className={classes.sourceLink} href={sourceLink}>
+          {`Source: ${sourceTitle || sourceLink}`}
         </A>
       </TypographyLoader>
     </Grid>
@@ -157,7 +158,8 @@ ChartContainer.propTypes = {
   onClickShare: PropTypes.func,
   subtitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  sourceUrl: PropTypes.string,
+  sourceLink: PropTypes.string,
+  sourceTitle: PropTypes.string,
   loading: PropTypes.bool,
   content: PropTypes.shape({
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -166,7 +168,8 @@ ChartContainer.propTypes = {
 };
 
 ChartContainer.defaultProps = {
-  sourceUrl: undefined,
+  sourceLink: undefined,
+  sourceTitle: undefined,
   onClickInfo: undefined,
   onClickShare: undefined,
   loading: false,
