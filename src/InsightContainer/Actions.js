@@ -50,6 +50,9 @@ const useStyles = makeStyles(({ breakpoints }) => ({
     width: '0.07rem',
     height: '1.913rem',
     backgroundColor: '#eaeaea'
+  },
+  iconGrid: {
+    height: '2.1875rem'
   }
 }));
 
@@ -63,7 +66,7 @@ function ActionButton({ children, onClick, ...props }) {
         direction="column"
         justify="space-between"
         alignItems="center"
-        style={{ height: '35px' }}
+        className={classes.iconGrid}
       >
         {children}
       </Grid>
