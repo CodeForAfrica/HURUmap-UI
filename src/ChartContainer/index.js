@@ -32,13 +32,16 @@ const useStyles = makeStyles({
   },
   title: {},
   subtitle: {},
-  sourceLink: {}
+  sourceLink: {
+    marginLeft: '50px'
+  }
 });
 
 function ChartContainer({
   loading,
   content,
-  sourceUrl,
+  sourceLink,
+  sourceTitle,
   title,
   subtitle,
   children,
@@ -130,20 +133,22 @@ function ChartContainer({
         className={classes.content}
         style={{ width: content.width, height: content.height }}
       >
-        <BlockLoader loading={loading}>{children}</BlockLoader>
+        <div>
+          <BlockLoader loading={loading}>{children}</BlockLoader>
+          <TypographyLoader
+            loading={loading}
+            loader={{
+              primaryOpacity: 0.5,
+              secondaryOpacity: 1
+            }}
+            component="span"
+          >
+            <A className={classes.sourceLink} href={sourceLink}>
+              {`Source: ${sourceTitle || sourceLink}`}
+            </A>
+          </TypographyLoader>
+        </div>
       </Grid>
-      <TypographyLoader
-        loading={loading}
-        loader={{
-          primaryOpacity: 0.5,
-          secondaryOpacity: 1
-        }}
-        component="span"
-      >
-        <A className={classes.sourceLink} href={sourceUrl}>
-          {sourceUrl}
-        </A>
-      </TypographyLoader>
     </Grid>
   );
 }
@@ -157,7 +162,8 @@ ChartContainer.propTypes = {
   onClickShare: PropTypes.func,
   subtitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  sourceUrl: PropTypes.string,
+  sourceLink: PropTypes.string,
+  sourceTitle: PropTypes.string,
   loading: PropTypes.bool,
   content: PropTypes.shape({
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -166,7 +172,8 @@ ChartContainer.propTypes = {
 };
 
 ChartContainer.defaultProps = {
-  sourceUrl: undefined,
+  sourceLink: undefined,
+  sourceTitle: undefined,
   onClickInfo: undefined,
   onClickShare: undefined,
   loading: false,
