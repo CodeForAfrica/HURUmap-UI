@@ -128,9 +128,11 @@ function InsightContainer({
           }}
           component="span"
         >
-          <A className={classes.sourceLink} href={source.href}>
-            {`Source: ${source.title || source.href}`}
-          </A>
+          {source && (
+            <A className={classes.sourceLink} href={source.href}>
+              {`Source: ${source.title || source.href} `}
+            </A>
+          )}
         </TypographyLoader>
       </Grid>
       <Grid container item md={4} sm={12} className={classes.actionsGrid}>
@@ -245,10 +247,7 @@ InsightContainer.propTypes = {
 };
 
 InsightContainer.defaultProps = {
-  source: PropTypes.shape({
-    title: undefined,
-    href: undefined
-  }),
+  source: undefined,
   loading: false,
   insightLink: {
     href: '/profiles/nigeria',
