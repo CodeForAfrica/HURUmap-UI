@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/styles';
 import {
+  Container,
   DialogTitle,
   DialogContent,
   DialogContentText,
   Typography
 } from '@material-ui/core';
+
+import DropDown from './DropDown';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -16,39 +19,53 @@ const useStyles = makeStyles(() => ({
   code: {}
 }));
 
-function SharePanel({ children, forwardedRef, subtitle, title, ...props }) {
-  const classes = useStyles();
+function EmbedDropDown({
+  anchorEl,
+  children,
+  onClose,
+  open: openProp,
+  subtitle,
+  title,
+  ...props
+}) {
+  const classes = useStyles(props);
+  const open = typeof openProps === 'undefined' ? anchorEl !== null : openProp;
 
   return (
-    <div ref={forwardedRef} {...props} className={classes.root}>
-      {title && <DialogTitle className={classes.title}>{title}</DialogTitle>}
-      <DialogContent>
-        {subtitle && (
-          <DialogContentText className={classes.subtitle}>
-            {subtitle}
-          </DialogContentText>
-        )}
-        <Typography variant="caption" component="code">
-          <pre className={classes.code}>{children}</pre>
-        </Typography>
-      </DialogContent>
-    </div>
+    <DropDown anchorEl={anchorEl} onClose={onClose} open={open} {...props}>
+      <Container className={classes.root}>
+        {title && <DialogTitle className={classes.title}>{title}</DialogTitle>}
+        <DialogContent>
+          {subtitle && (
+            <DialogContentText className={classes.subtitle}>
+              {subtitle}
+            </DialogContentText>
+          )}
+          <Typography variant="caption" component="code">
+            <pre className={classes.code}>{children}</pre>
+          </Typography>
+        </DialogContent>
+      </Container>
+    </DropDown>
   );
 }
 
-SharePanel.propTypes = {
+EmbedDropDown.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]).isRequired,
-  forwardedRef: PropTypes.func.isRequired,
+  anchorEl: PropTypes.shape({}).isRequired,
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool,
   subtitle: PropTypes.string,
   title: PropTypes.string
 };
 
-SharePanel.defaultProps = {
+EmbedDropDown.defaultProps = {
+  open: undefined,
   subtitle: null,
   title: null
 };
 
-export default SharePanel;
+export default EmbedDropDown;
