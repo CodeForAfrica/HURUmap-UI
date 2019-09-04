@@ -7,7 +7,8 @@ export { default as BulletChart } from './BulletChart';
 export { default as ChartContainer } from './ChartContainer';
 export { default as ComparisonBarChart } from './ComparisonBarChart';
 export { default as ContentLoader } from './ContentLoader';
-export { default as InfoPanel } from './ChartContainer/InfoPanel';
+export { default as DropDown } from './ChartContainer/DropDown';
+export { default as EmbedDropDown } from './ChartContainer/EmbedDropDown';
 export { default as InsightContainer } from './InsightContainer';
 export { default as LineChart } from './LineChart';
 export {
@@ -15,5 +16,5 @@ export {
 } from './NestedProportionalAreaChart';
 export { default as NumberVisuals } from './NumberVisuals';
 export { default as PieChart } from './PieChart';
-export { default as SharePanel } from './ChartContainer/SharePanel';
+export { default as ShareDropDown } from './ChartContainer/ShareDropDown';
 export { default as TypographyLoader } from './TypographyLoader';

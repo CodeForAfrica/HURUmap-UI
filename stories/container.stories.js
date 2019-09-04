@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { storiesOf } from '@storybook/react';
 import {
   boolean,
@@ -15,6 +17,7 @@ import { Typography } from '@material-ui/core';
 import {
   BarChart,
   ChartContainer,
+  DropDown,
   InsightContainer,
   NumberVisuals,
   PieChart
@@ -58,8 +61,6 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                 'Praesent at dignissim est. Integer porta consectetur ante, ut congue erat.'
               )}
               sourceUrl={text('sourceUrl', 'http://dev.dominion.africa')}
-              // onClickInfo={handleClickInfo}
-              // onClickShare={handleClickShare}
               sourceLink="http://dev.dominion.africa"
               content={object('content', { height: 400, width: '100%' })}
             >
@@ -157,8 +158,36 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
       );
     })
   )
-  .add('Hidden Drop Downs', () =>
+  .add('Custom', () =>
     React.createElement(() => {
+      const [el, setEl] = React.useState();
+      const [name, setName] = React.useState();
+
+      const onClick = (anchorEl, anchorName) => {
+        setEl(anchorEl);
+        setName(anchorName);
+      };
+
+      const handleClose = () => setEl(null);
+
+      function CustomPopover({ open, anchorEl, onClose }) {
+        return (
+          <DropDown open={open} anchorEl={anchorEl} onClose={onClose}>
+            <Typography>{`${name} Dropdown`}</Typography>
+          </DropDown>
+        );
+      }
+      CustomPopover.propTypes = {
+        open: PropTypes.bool.isRequired,
+        anchorEl: PropTypes.shape.isRequired,
+        onClose: PropTypes.func.isRequired
+      };
+
+      const share = boolean('share', true);
+      const download = boolean('download', true);
+      const embed = boolean('embed', true);
+      const compare = boolean('compare', true);
+      const data = boolean('data', true);
       return (
         <Grid
           container
@@ -180,12 +209,23 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
             )}
           >
             <ChartContainer
-              infoComponent={null}
               content={{
                 height: 338
               }}
-              loading={boolean('loading', true)}
-              shareComponent={null}
+              loading={boolean('loading', false)}
+              onClickShare={
+                share ? anchorEl => onClick(anchorEl, 'Share') : null
+              }
+              onClickDownload={
+                download ? anchorEl => onClick(anchorEl, 'Download') : null
+              }
+              onClickEmbed={
+                embed ? anchorEl => onClick(anchorEl, 'Embed') : null
+              }
+              onClickCompare={
+                compare ? anchorEl => onClick(anchorEl, 'Compare') : null
+              }
+              onClickData={data ? anchorEl => onClick(anchorEl, 'Data') : null}
               title={text('title', 'Lorem ipsum dolor sit amet.')}
               subtitle={text(
                 'Subtitle',
@@ -222,78 +262,10 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                   }
                 }}
               />
-            </ChartContainer>
-          </Grid>
-        </Grid>
-      );
-    })
-  )
-  .add('Custom Drop Downs', () =>
-    React.createElement(() => {
-      return (
-        <Grid
-          container
-          justify="center"
-          alignItems="center"
-          style={{ background: 'whitesmoke', height: '100%' }}
-        >
-          <Grid
-            item
-            xs={select(
-              'xs',
-              ['auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-              12
-            )}
-            md={select(
-              'md',
-              ['auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-              6
-            )}
-          >
-            <ChartContainer
-              infoComponent={
-                <Typography variant="body2">Custom Info Component</Typography>
-              }
-              content={{
-                height: 338
-              }}
-              loading={boolean('loading', true)}
-              shareComponent={null}
-              title={text('title', 'Lorem ipsum dolor sit amet.')}
-              subtitle={text(
-                'Subtitle',
-                'Praesent at dignissim est. Integer porta consectetur ante, ut congue erat.'
-              )}
-            >
-              <BarChart
-                horizontal={boolean('horizontal', false)}
-                width={500}
-                height={300}
-                data={Array(number('data', 100))
-                  .fill(null)
-                  .map((_, index) => ({
-                    x: `${index}-${index}`,
-                    y: rand()
-                  }))}
-                parts={{
-                  axis: {
-                    dependent: {
-                      style: {
-                        axis: {
-                          display: 'block'
-                        },
-                        grid: {
-                          display: 'block'
-                        },
-                        tickLabels: {
-                          display: 'block'
-                        }
-                      },
-                      tickValues: [10, 50, 90],
-                      tickFormat: ['10%', '50%', '90%']
-                    }
-                  }
-                }}
+              <CustomPopover
+                open={el != null}
+                anchorEl={el}
+                onClose={handleClose}
               />
             </ChartContainer>
           </Grid>
