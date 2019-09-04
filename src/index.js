@@ -8,6 +8,7 @@ export { default as ChartContainer } from './ChartContainer';
 export { default as ComparisonBarChart } from './ComparisonBarChart';
 export { default as ContentLoader } from './ContentLoader';
 export { default as InfoPanel } from './ChartContainer/InfoPanel';
+export { default as InsightContainer } from './InsightContainer';
 export { default as LineChart } from './LineChart';
 export {
   default as NestedProportionalAreaChart
