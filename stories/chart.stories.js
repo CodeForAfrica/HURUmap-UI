@@ -5,7 +5,6 @@ import {
   boolean,
   object,
   select,
-  text,
   number
 } from '@storybook/addon-knobs';
 
@@ -37,14 +36,14 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           data={data.map((_, index) => {
             const y = rand();
             return {
-              label: `${index}-${y} Employment Status`,
+              tooltip: `${index}-${index} Employment Status`,
               x: `${index}-${index} Employment Status`,
               y
             };
           })}
           alignment={select('alignment', ['start', 'middle', 'end'], 'middle')}
           barWidth={number('barWidth', undefined)}
-          domainPadding={object('domainPadding', { x: 0 })}
+          domainPadding={object('domainPadding', { x: 20 })}
           parts={{
             axis: {
               independent: {
@@ -89,16 +88,23 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
   })
   .add('Grouped', () => {
     const groups = Array(number('groups', 3)).fill(null);
-    const data = Array(number('data', 4)).fill(null);
+    const dataCount = Array(number('data', 4)).fill(null);
     const horizontal = boolean('horizontal', false);
     const offset = number('offset', 12);
+    const data = dataCount.map(() =>
+      groups.map((_g, groupIndex) => ({
+        // Starting with 0 seems to trigger domainPadding coercion. See the comment below.
+        x: `Group ${groupIndex + 1} TickLabel`,
+        y: rand()
+      }))
+    );
 
     return (
-      <div>
+      <div style={{ overflow: 'hidden' }}>
         <BarChart
           horizontal={horizontal}
-          width={number('width', 350)}
-          height={number('height', 350)}
+          width={number('width', 500)}
+          height={number('height', 500)}
           /*
             Victory requires data to be in the following format:
             [
@@ -108,22 +114,17 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
               ...etc
             ]
           */
-          data={data.map((_d, dataIndex) =>
-            groups.map((_g, groupIndex) => ({
-              label: `Group ${groupIndex} Data ${dataIndex} Geo`,
-              // Starting with 0 seems to trigger domainPadding coercion. See the comment below.
-              x: groupIndex + 1,
-              y: rand()
-            }))
-          )}
+          data={data}
           barWidth={number('barWidth', 10)}
           offset={offset}
           // domainPadding value may be coerced. See 2nd note: https://formidable.com/open-source/victory/docs/common-props/#domainpadding
           domainPadding={object('domainPadding', { x: offset * data.length })}
           parts={{
+            parent: {
+              padding: { top: 0, left: 150, bottom: 150, right: 0 }
+            },
             axis: {
               independent: {
-                tickFormat: (tick, index) => `Group ${index} Tick`,
                 style: {
                   axis: {
                     display: 'block'
@@ -154,11 +155,11 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
               }
             },
             group: {
-              labels: datum =>
-                `Group ${datum.tick} Label\n${datum.x} ${datum.y}${text(
-                  'dataUnit',
-                  '%'
-                )}`
+              // labels: datum =>
+              //   `Group ${datum.tick} Label\n${datum.x} ${datum.y}${text(
+              //     'dataUnit',
+              //     '%'
+              //   )}`
             },
             tooltip: { style: { textAnchor: 'start' } }
           }}
@@ -289,18 +290,37 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
     <div>
       <PieChart
         donut={boolean('donut', true)}
+        donutLabelKey={object('donutLabelKey', { dataIndex: 0, sortKey: '' })}
         data={object('data', [
-          { x: 'A', y: 1 },
-          { x: 'B', y: 2 },
-          { x: 'C', y: 3 },
-          { x: 'D', y: 1 },
-          { x: 'E', y: 2 }
+          { x: 'Female', y: 22, label: 'Female\n22%' },
+          { x: 'Male', y: 78, label: 'Male\n78%' }
         ])}
         width={number('width', 500)}
         height={number('height', 500)}
-        padding={number('padding', 75)}
+        padding={number('padding', 100)}
+        parts={{
+          tooltip: {
+            style: {
+              fontSize: 28
+            }
+          },
+          legend: {
+            style: { labels: { fontSize: 20, fontWeight: 'bold' } }
+          }
+        }}
+        legend={[
+          { name: 'Female', label: 'Female: 22%' },
+          { name: 'Male', label: 'Male: 78%' }
+        ]}
         responsive={boolean('responsive', true)}
         standalone={boolean('standalone', true)}
+        style={{
+          labels: {
+            fill: 'black',
+            fontSize: '18',
+            fontWeight: 'bold'
+          }
+        }}
       />
     </div>
   ))
@@ -308,29 +328,27 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
     <div>
       <PieChart
         donut={boolean('donut', true)}
+        donutLabelKey={object('donutLabelKey', { dataIndex: 0, sortKey: '' })}
         groupSpacing={number('groupSpacing', 4)}
         data={object('data', [
           [
-            { x: 'A', y: 1, label: ['A\n \nDar es Salaam 1'] },
-            { x: 'B', y: 2, label: ['B\n \nDar es Salaam 2'] },
-            { x: 'C', y: 3, label: ['C\n \nDar es Salaam 3'] },
-            { x: 'D', y: 1, label: ['D\n \nDar es Salaam 1'] },
-            { x: 'E', y: 2, label: ['E\n \nDar es Salaam 2'] }
+            { x: 'A', y: 6, name: 'A', label: 'A\n \nDar es Salaam 1' },
+            { x: 'B', y: 1, name: 'B', label: 'B\n \nDar es Salaam 2' },
+            { x: 'C', y: 3, name: 'C', label: 'C\n \nDar es Salaam 3' },
+            { x: 'D', y: 1, name: 'D', label: 'D\n \nDar es Salaam 1' },
+            { x: 'E', y: 12, name: 'E', label: 'E\n \nDar es Salaam 2' }
           ],
           [
-            { x: 'A', y: 2, label: ['A\n \nKagera 2'] },
-            { x: 'B', y: 1, label: ['B\n \nKagera 1'] },
-            { x: 'C', y: 1, label: ['C\n \nKagera 1'] },
-            { x: 'D', y: 1, label: ['D\n \nKagera 1'] },
-            { x: 'E', y: 5, label: ['E\n \nKagera 5'] }
+            { x: 'A', y: 3, label: 'A\n \nKagera 2' },
+            { x: 'B', y: 1, label: 'B\n \nKagera 1' },
+            { x: 'C', y: 2, label: 'C\n \nKagera 1' },
+            { x: 'D', y: 2, label: 'D\n \nKagera 1' },
+            { x: 'E', y: 5, label: 'E\n \nKagera 5' }
           ]
         ])}
         width={number('width', 500)}
         height={number('height', 500)}
         padding={number('padding', 100)}
-        parts={{
-          tooltip: { style: { textAnchor: 'start' } }
-        }}
       />
     </div>
   ));

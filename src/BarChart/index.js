@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { VictoryBar, VictoryGroup, VictoryAxis, VictoryTooltip } from 'victory';
+import { VictoryBar, VictoryGroup, VictoryAxis } from 'victory';
 
-import withVictoryTheme from './styles/withVictoryTheme';
-import Chart, { toChartAxisProps } from './Chart';
-import WrapLabel from './WrapLabel';
+import withVictoryTheme from '../styles/withVictoryTheme';
+import Chart, { toChartAxisProps } from '../Chart';
+import WrapLabel from '../WrapLabel';
+import BarLabel from './BarLabel';
 
 function BarChart({
   barWidth,
+  labelWidth: propLabelWidth,
   data: d,
   domain,
   domainPadding,
@@ -22,7 +24,7 @@ function BarChart({
   ...props
 }) {
   const {
-    axis: { labelWidth: defaultLabelWidth },
+    axis: { labelWidth: themeLabelWidth },
     bar: chart,
     group: groupChart
   } = theme;
@@ -31,14 +33,30 @@ function BarChart({
   }
 
   const groupData = Array.isArray(d[0]) ? d : [d];
-  let labelWidth = defaultLabelWidth;
-  if (groupData.length > 1) {
+  let labelWidth = propLabelWidth || themeLabelWidth;
+  if (groupData.length > 1 && !propLabelWidth) {
     const barSpacing = offset || barWidth;
     if (barSpacing) {
       labelWidth = barSpacing * groupData.length;
     }
   }
   const axisProps = (parts && toChartAxisProps(parts.axis)) || {};
+  const { tickFormat: propTickFormat } = axisProps.independent || {};
+  const tickFormat =
+    propTickFormat ||
+    (tick => {
+      let tickLabel = '';
+      groupData.find(dE =>
+        dE.find(gE => {
+          if (gE.x === tick) {
+            tickLabel = gE.x.toString();
+            return true;
+          }
+          return false;
+        })
+      );
+      return tickLabel;
+    });
   const chartProps = Object.assign(
     {
       domain,
@@ -55,20 +73,31 @@ function BarChart({
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
   const { colorScale } = groupChart;
 
+  const numberFormatter = new Intl.NumberFormat('en-GB');
+
   return (
     <Chart {...chartProps}>
       <VictoryGroup {...groupProps} offset={offset}>
         {groupData.map((data, i) => (
           <VictoryBar
+            name="bar"
             barWidth={barWidth}
             data={data}
             key={data.toString()}
+            labels={datum =>
+              typeof datum.y !== 'number'
+                ? 'N/A'
+                : numberFormatter.format(datum.y)
+            }
             labelComponent={
-              <VictoryTooltip
-                {...tooltipProps}
-                style={Object.assign({}, tooltipProps.style, {
-                  fill: colorScale[i]
-                })}
+              <BarLabel
+                tooltipProps={{
+                  ...tooltipProps,
+                  data,
+                  style: Object.assign({}, tooltipProps.style, {
+                    fill: colorScale[i]
+                  })
+                }}
               />
             }
             {...props}
@@ -76,6 +105,7 @@ function BarChart({
         ))}
       </VictoryGroup>
       <VictoryAxis
+        tickFormat={tickFormat}
         tickLabelComponent={<WrapLabel width={labelWidth} />}
         {...axisProps.independent}
       />
@@ -86,16 +116,14 @@ function BarChart({
 
 BarChart.propTypes = {
   data: PropTypes.arrayOf(
-    PropTypes.oneOf(
-      PropTypes.shape({
-        x: PropTypes.oneOf([PropTypes.number, PropTypes.string])
-      }),
-      PropTypes.shape({ data: PropTypes.shape({}) })
-    )
+    PropTypes.shape({
+      x: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+    })
   ),
   barWidth: PropTypes.number,
-  domain: PropTypes.oneOf([PropTypes.number, PropTypes.shape({})]),
-  domainPadding: PropTypes.oneOf([PropTypes.number, PropTypes.shape({})]),
+  labelWidth: PropTypes.number,
+  domain: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
+  domainPadding: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
   height: PropTypes.number,
   horizontal: PropTypes.bool,
   offset: PropTypes.number,
@@ -118,6 +146,7 @@ BarChart.propTypes = {
 
 BarChart.defaultProps = {
   barWidth: undefined,
+  labelWidth: undefined,
   data: undefined,
   domain: undefined,
   domainPadding: undefined,

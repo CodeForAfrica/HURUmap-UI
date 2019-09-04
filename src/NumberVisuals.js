@@ -125,11 +125,11 @@ function NumberVisuals({
 }
 
 NumberVisuals.propTypes = {
-  subtitle: PropTypes.oneOf(PropTypes.number, PropTypes.string),
-  statistic: PropTypes.oneOf(PropTypes.number, PropTypes.string),
-  statisticDeviation: PropTypes.oneOf(PropTypes.number, PropTypes.string),
-  secondaryDeviation: PropTypes.oneOf(PropTypes.number, PropTypes.string),
-  description: PropTypes.oneOf(PropTypes.number, PropTypes.string),
+  subtitle: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  statistic: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  statisticDeviation: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  secondaryDeviation: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  description: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   comparisonData: PropTypes.arrayOf(PropTypes.shape({}))
 };
 

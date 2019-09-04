@@ -32,7 +32,9 @@ const useStyles = makeStyles({
   },
   title: {},
   subtitle: {},
-  sourceLink: {}
+  sourceLink: {
+    marginLeft: '50px'
+  }
 });
 
 function ChartContainer({
@@ -41,7 +43,8 @@ function ChartContainer({
   loading,
   share,
   shareComponent: suggestedShareComponent,
-  source,
+  sourceLink,
+  sourceTitle,
   title,
   subtitle,
   children
@@ -70,8 +73,8 @@ function ChartContainer({
       const InfoComponent = React.forwardRef((props, ref) => (
         <InfoPanel
           forwardedRef={ref}
-          sourceLink={source.url}
-          sourceTitle={source.title || source.url}
+          sourceLink={sourceLink}
+          sourceTitle={sourceTitle || sourceLink}
         >
           Explore Data
         </InfoPanel>
@@ -89,7 +92,7 @@ function ChartContainer({
         </DropDown>
       ) : null
     );
-  }, [infoAnchorEl, source.title, source.url, suggestedInfoComponent]);
+  }, [infoAnchorEl, sourceLink, sourceTitle, suggestedInfoComponent]);
 
   const shareRef = React.useRef(null);
   const [shareAnchorEl, setShareAnchorEl] = React.useState(null);
@@ -215,20 +218,22 @@ function ChartContainer({
         className={classes.content}
         style={{ width: content.width, height: content.height }}
       >
-        <BlockLoader loading={loading}>{children}</BlockLoader>
+        <div>
+          <BlockLoader loading={loading}>{children}</BlockLoader>
+          <TypographyLoader
+            loading={loading}
+            loader={{
+              primaryOpacity: 0.5,
+              secondaryOpacity: 1
+            }}
+            component="span"
+          >
+            <A className={classes.sourceLink} href={sourceLink}>
+              {`Source: ${sourceTitle || sourceLink}`}
+            </A>
+          </TypographyLoader>
+        </div>
       </Grid>
-      <TypographyLoader
-        loading={loading}
-        loader={{
-          primaryOpacity: 0.5,
-          secondaryOpacity: 1
-        }}
-        component="span"
-      >
-        <A className={classes.sourceLink} href={source.url}>
-          {source.title || source.url}
-        </A>
-      </TypographyLoader>
     </Grid>
   );
 }
@@ -240,10 +245,6 @@ ChartContainer.propTypes = {
   ]).isRequired,
   infoComponent: PropTypes.node,
   shareComponent: PropTypes.node,
-  source: PropTypes.shape({
-    title: PropTypes.string,
-    url: PropTypes.string.isRequired
-  }),
   share: PropTypes.shape({
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.string,
@@ -251,6 +252,8 @@ ChartContainer.propTypes = {
   }),
   subtitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  sourceLink: PropTypes.string,
+  sourceTitle: PropTypes.string,
   loading: PropTypes.bool,
   content: PropTypes.shape({
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -276,10 +279,10 @@ style="margin: 1em; max-width: 300px;"
 <script src="https://tanzania.hurumap.org/static/js/embed.chart.make.js" />`
   },
   shareComponent: undefined,
-  source: {
-    url: 'https://codeforafrica.org',
-    title: 'Code for Africa'
-  },
+  sourceLink: undefined,
+  sourceTitle: undefined,
+  // onClickInfo: undefined,
+  // onClickShare: undefined,
   loading: false,
   content: {
     width: '100%',

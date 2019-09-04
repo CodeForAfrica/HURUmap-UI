@@ -3,6 +3,7 @@ import { storiesOf } from '@storybook/react';
 import {
   boolean,
   number,
+  object,
   select,
   text,
   withKnobs
@@ -11,7 +12,7 @@ import {
 import Grid from '@material-ui/core/Grid';
 
 import { Typography } from '@material-ui/core';
-import { BarChart, ChartContainer } from '../src';
+import { BarChart, ChartContainer, PieChart } from '../src';
 import { CenterDecorator } from './common';
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
@@ -21,6 +22,8 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
   .addDecorator(withKnobs)
   .add('Default', () =>
     React.createElement(() => {
+      const chartType = select('chartType', ['bar', 'pie'], 'pie');
+
       return (
         <Grid
           container
@@ -49,40 +52,99 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                 'Praesent at dignissim est. Integer porta consectetur ante, ut congue erat.'
               )}
               sourceUrl={text('sourceUrl', 'http://dev.dominion.africa')}
-              content={{
-                height: 338
-              }}
+              // onClickInfo={handleClickInfo}
+              // onClickShare={handleClickShare}
+              sourceLink="http://dev.dominion.africa"
+              content={object('content', { height: 400, width: '100%' })}
             >
-              <BarChart
-                horizontal={boolean('horizontal', false)}
-                width={500}
-                height={300}
-                data={Array(number('data', 100))
-                  .fill(null)
-                  .map((_, index) => ({
-                    x: `${index}-${index}`,
-                    y: rand()
-                  }))}
-                parts={{
-                  axis: {
-                    dependent: {
+              {chartType === 'pie' && (
+                <PieChart
+                  donut={boolean('donut', true)}
+                  donutLabelKey={object('donutLabelKey', {
+                    dataIndex: 0,
+                    sortKey: ''
+                  })}
+                  data={object('data', [
+                    { x: 'Female', y: 22, label: 'Female\n22%' },
+                    { x: 'Male', y: 78, label: 'Male\n78%' }
+                  ])}
+                  legendWidth={40}
+                  radii={[150]}
+                  parts={{
+                    tooltip: {
                       style: {
-                        axis: {
-                          display: 'block'
-                        },
-                        grid: {
-                          display: 'block'
-                        },
-                        tickLabels: {
-                          display: 'block'
+                        fontSize: 28
+                      }
+                    },
+                    legend: {
+                      style: { labels: { fontSize: 20, fontWeight: 'bold' } }
+                    }
+                  }}
+                  legend={[
+                    { name: 'Female', label: 'Female: 22%' },
+                    { name: 'Male', label: 'Male: 78%' }
+                  ]}
+                  responsive={boolean('responsive', true)}
+                  standalone={boolean('standalone', true)}
+                  style={{
+                    labels: {
+                      fill: 'black',
+                      fontSize: '18',
+                      fontWeight: 'bold'
+                    }
+                  }}
+                />
+              )}
+
+              {chartType === 'bar' && (
+                <BarChart
+                  horizontal={boolean('horizontal', false)}
+                  width={500}
+                  height={300}
+                  domainPadding={object('domainPadding', { x: 15 })}
+                  data={Array(number('data', 10))
+                    .fill(null)
+                    .map((_, index) => ({
+                      x: `${index} wrap label`,
+                      y: rand()
+                    }))}
+                  parts={{
+                    axis: {
+                      independent: {
+                        style: {
+                          axis: {
+                            display: 'block'
+                          },
+                          grid: {
+                            display: 'block'
+                          },
+                          ticks: {
+                            display: 'block'
+                          },
+                          tickLabels: {
+                            display: 'block'
+                          }
                         }
                       },
-                      tickValues: [10, 50, 90],
-                      tickFormat: ['10%', '50%', '90%']
+                      dependent: {
+                        style: {
+                          axis: {
+                            display: 'block'
+                          },
+                          grid: {
+                            display: 'block'
+                          },
+                          tickLabels: {
+                            display: 'block'
+                          }
+                        },
+                        tickValues: [10, 50, 90],
+                        tickFormat: ['10%', '50%', '90%']
+                      }
                     }
-                  }
-                }}
-              />
+                  }}
+                />
+              )}
             </ChartContainer>
           </Grid>
         </Grid>
