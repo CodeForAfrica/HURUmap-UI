@@ -10,6 +10,8 @@ export {
 export { default as createTheme } from './styles/createTheme';
 export { default as ComparisonBarChart } from './ComparisonBarChart';
 export { default as ChartContainer } from './ChartContainer';
+export { default as InsightContainer } from './InsightContainer';
+export { default as Actions } from './InsightContainer/Actions';
 export { default as EmbedPopup } from './ChartContainer/EmbedPopup';
 export { default as InfoPopup } from './ChartContainer/InfoPopup';
 export { default as ContentLoader } from './ContentLoader';
