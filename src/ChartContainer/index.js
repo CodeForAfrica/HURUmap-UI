@@ -42,6 +42,7 @@ const useStyles = makeStyles({
 });
 
 function ChartContainer({
+  children,
   content,
   embed,
   loading,
@@ -54,9 +55,9 @@ function ChartContainer({
   sourceTitle,
   title,
   subtitle,
-  children
+  ...props
 }) {
-  const classes = useStyles();
+  const classes = useStyles(props);
   const getReferenceObject = ref => {
     const { current } = ref;
     if (current) {
