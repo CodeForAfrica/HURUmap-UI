@@ -183,11 +183,11 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
         onClose: PropTypes.func.isRequired
       };
 
-      const share = boolean('share', true);
-      const download = boolean('download', true);
-      const embed = boolean('embed', true);
-      const compare = boolean('compare', true);
-      const data = boolean('data', true);
+      const share = boolean('Share', true);
+      const download = boolean('Download', true);
+      const embed = boolean('Embed', true);
+      const compare = boolean('Compare', true);
+      const data = boolean('Show Data', true);
       return (
         <Grid
           container
