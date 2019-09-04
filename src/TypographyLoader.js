@@ -32,16 +32,20 @@ export default function TypographyLoader({
 }
 
 TypographyLoader.propTypes = {
-  children: PropTypes.shape().isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]),
   loading: PropTypes.bool,
   loader: PropTypes.shape({
-    width: PropTypes.oneOf([PropTypes.number, PropTypes.string]).isRequired,
-    height: PropTypes.oneOf([PropTypes.number, PropTypes.string]).isRequired
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
   })
 };
 
 TypographyLoader.defaultProps = {
   loading: false,
+  children: null,
   loader: {
     width: '100%',
     height: '20px'

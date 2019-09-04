@@ -24,7 +24,11 @@ function Chart({ children, overflow, responsive = true, events: e, ...props }) {
   return (
     <VictoryChart
       containerComponent={
-        <VictoryContainer events={events} responsive={responsive} />
+        <VictoryContainer
+          events={events}
+          responsive={responsive}
+          style={{ height: 'auto' }}
+        />
       }
       {...props}
     >
