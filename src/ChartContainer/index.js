@@ -7,12 +7,15 @@ import Grid from '@material-ui/core/Grid';
 import BlockLoader from '../BlockLoader';
 import TypographyLoader from '../TypographyLoader';
 
-import infoIcon from '../assets/info.png';
-import shareIcon from '../assets/share.png';
 import A from '../A';
-import DropDown from './DropDown';
-import InfoPanel from './InfoPanel';
-import SharePanel from './SharePanel';
+import EmbedDropDown from './EmbedDropDown';
+import ShareDropDown from './ShareDropDown';
+
+import compareIcon from '../assets/icons/compare.svg';
+import dataIcon from '../assets/icons/tablet-reader.svg';
+import downloadIcon from '../assets/icons/download.svg';
+import embedIcon from '../assets/icons/code.svg';
+import shareIcon from '../assets/icons/network-connection.svg';
 
 const useStyles = makeStyles({
   root: {
@@ -26,7 +29,8 @@ const useStyles = makeStyles({
     overflow: 'hidden'
   },
   button: {
-    padding: '0 0.1rem',
+    border: '0.0625rem solid #d8d8d8',
+    marginLeft: '-0.0625rem',
     height: '2.5rem',
     width: '2.5rem'
   },
@@ -39,10 +43,13 @@ const useStyles = makeStyles({
 
 function ChartContainer({
   content,
-  infoComponent: suggestedInfoComponent,
+  embed,
   loading,
-  share,
-  shareComponent: suggestedShareComponent,
+  onClickCompare,
+  onClickData,
+  onClickDownload,
+  onClickEmbed: onClickEmbedProp,
+  onClickShare: onClickShareProp,
   sourceLink,
   sourceTitle,
   title,
@@ -62,85 +69,68 @@ function ChartContainer({
     return null;
   };
 
-  const infoRef = React.useRef(null);
-  const [infoAnchorEl, setInfoAnchorEl] = React.useState(null);
-  const handleCloseInfo = () => setInfoAnchorEl(null);
-  const [infoDropDown, setInfoDropDown] = React.useState(null);
-  useEffect(() => {
-    let infoComponent = suggestedInfoComponent;
-    if (typeof infoComponent === 'undefined') {
-      // see: https://material-ui.com/guides/composition/#caveat-with-refs
-      const InfoComponent = React.forwardRef((props, ref) => (
-        <InfoPanel
-          forwardedRef={ref}
-          sourceLink={sourceLink}
-          sourceTitle={sourceTitle || sourceLink}
-        >
-          Explore Data
-        </InfoPanel>
-      ));
-      infoComponent = <InfoComponent />;
-    }
-    setInfoDropDown(
-      infoComponent ? (
-        <DropDown
-          anchorEl={infoAnchorEl}
-          onClose={handleCloseInfo}
-          open={infoAnchorEl !== null}
-        >
-          {infoComponent}
-        </DropDown>
-      ) : null
-    );
-  }, [infoAnchorEl, sourceLink, sourceTitle, suggestedInfoComponent]);
+  const compareButtonRef = React.useRef(null);
 
-  const shareRef = React.useRef(null);
+  const dataButtonRef = React.useRef(null);
+
+  const downloadButtonRef = React.useRef(null);
+
+  const [embedAnchorEl, setEmbedAnchorEl] = React.useState(null);
+  const embedButtonRef = React.useRef(null);
+  const [embedDropDown, setEmbedDropDown] = React.useState(null);
+  const handleCloseEmbed = () => setEmbedAnchorEl(null);
+  useEffect(() => {
+    if (typeof onClickEmbedProp === 'undefined') {
+      const dropDown = embedAnchorEl ? (
+        <EmbedDropDown
+          anchorEl={embedAnchorEl}
+          onClose={handleCloseEmbed}
+          open={embedAnchorEl === null}
+          title={embed.title}
+          subtitle={embed.subtitle}
+        >
+          {embed.code}
+        </EmbedDropDown>
+      ) : null;
+      setEmbedDropDown(dropDown);
+    }
+  }, [embed, embedAnchorEl, onClickEmbedProp]);
+
+  const shareButtonRef = React.useRef(null);
   const [shareAnchorEl, setShareAnchorEl] = React.useState(null);
   const [shareDropDown, setShareDropDown] = React.useState(null);
   const handleCloseShare = () => setShareAnchorEl(null);
   useEffect(() => {
-    let shareComponent = suggestedShareComponent;
-    if (typeof shareComponent === 'undefined') {
-      // see: https://material-ui.com/guides/composition/#caveat-with-refs
-      const ShareComponent = React.forwardRef((props, ref) => (
-        <SharePanel
-          forwardedRef={ref}
-          title={share.title}
-          subtitle={share.subtitle}
-        >
-          {share.code}
-        </SharePanel>
-      ));
-      shareComponent = <ShareComponent />;
-    }
-    setShareDropDown(
-      shareComponent ? (
-        <DropDown
+    if (typeof onClickShareProp === 'undefined') {
+      const dropDown = shareAnchorEl ? (
+        <ShareDropDown
           anchorEl={shareAnchorEl}
           onClose={handleCloseShare}
-          open={shareAnchorEl !== null}
+          sourceLink={sourceLink}
+          sourceTitle={sourceTitle}
         >
-          {shareComponent}
-        </DropDown>
-      ) : null
-    );
-  }, [
-    share.code,
-    share.subtitle,
-    share.title,
-    shareAnchorEl,
-    suggestedShareComponent
-  ]);
+          Explore Data
+        </ShareDropDown>
+      ) : null;
+      setShareDropDown(dropDown);
+    }
+  }, [onClickShareProp, shareAnchorEl, sourceLink, sourceTitle]);
 
-  function handleClickInfo(anchorEl) {
-    setShareAnchorEl(null);
-    setInfoAnchorEl(anchorEl);
-  }
+  const onClickEmbed =
+    onClickEmbedProp ||
+    (typeof onClickEmbedProp === 'undefined' &&
+      (anchorEl => {
+        setShareAnchorEl(null);
+        setEmbedAnchorEl(anchorEl);
+      }));
 
-  function handleClickShare(anchorEl) {
-    setInfoAnchorEl(null);
-    setShareAnchorEl(anchorEl);
-  }
+  const onClickShare =
+    onClickShareProp ||
+    (typeof onClickShareProp === 'undefined' &&
+      (anchorEl => {
+        setEmbedAnchorEl(null);
+        setShareAnchorEl(anchorEl);
+      }));
 
   return (
     <Grid container className={classes.root}>
@@ -184,31 +174,71 @@ function ChartContainer({
           direction="row"
           justify="flex-end"
         >
-          {infoDropDown && (
+          {onClickShare && (
             <BlockLoader loading={loading} width="2.5rem" height="2.5rem">
               <ButtonBase
                 className={classes.button}
-                onClick={() => handleClickInfo(getReferenceObject(infoRef))}
-                ref={infoRef}
-              >
-                <img alt="Info" src={infoIcon} />
-              </ButtonBase>
-            </BlockLoader>
-          )}
-
-          {shareDropDown && (
-            <BlockLoader loading={loading} width="2.5rem" height="2.5rem">
-              <ButtonBase
-                className={classes.button}
-                onClick={() => handleClickShare(getReferenceObject(infoRef))}
-                ref={shareRef}
+                onClick={() => onClickShare(getReferenceObject(shareButtonRef))}
+                ref={shareButtonRef}
               >
                 <img alt="Share" src={shareIcon} />
               </ButtonBase>
             </BlockLoader>
           )}
 
-          {infoDropDown}
+          {onClickDownload && (
+            <BlockLoader loading={loading} width="2.5rem" height="2.5rem">
+              <ButtonBase
+                className={classes.button}
+                onClick={() =>
+                  onClickDownload(getReferenceObject(downloadButtonRef))
+                }
+                ref={downloadButtonRef}
+              >
+                <img alt="Download" src={downloadIcon} />
+              </ButtonBase>
+            </BlockLoader>
+          )}
+
+          {onClickEmbed && (
+            <BlockLoader loading={loading} width="2.5rem" height="2.5rem">
+              <ButtonBase
+                className={classes.button}
+                onClick={() => onClickEmbed(getReferenceObject(embedButtonRef))}
+                ref={embedButtonRef}
+              >
+                <img alt="Embed" src={embedIcon} />
+              </ButtonBase>
+            </BlockLoader>
+          )}
+
+          {onClickCompare && (
+            <BlockLoader loading={loading} width="2.5rem" height="2.5rem">
+              <ButtonBase
+                className={classes.button}
+                onClick={() =>
+                  onClickCompare(getReferenceObject(compareButtonRef))
+                }
+                ref={compareButtonRef}
+              >
+                <img alt="Compare" src={compareIcon} />
+              </ButtonBase>
+            </BlockLoader>
+          )}
+
+          {onClickData && (
+            <BlockLoader loading={loading} width="2.5rem" height="2.5rem">
+              <ButtonBase
+                className={classes.button}
+                onClick={() => onClickData(getReferenceObject(dataButtonRef))}
+                ref={dataButtonRef}
+              >
+                <img alt="Show Data" src={dataIcon} />
+              </ButtonBase>
+            </BlockLoader>
+          )}
+
+          {embedDropDown}
           {shareDropDown}
         </Grid>
       </Grid>
@@ -239,17 +269,20 @@ function ChartContainer({
 }
 
 ChartContainer.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ]).isRequired,
-  infoComponent: PropTypes.node,
-  shareComponent: PropTypes.node,
-  share: PropTypes.shape({
+  embed: PropTypes.shape({
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.string,
     code: PropTypes.string
   }),
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired,
+  onClickCompare: PropTypes.func,
+  onClickData: PropTypes.func,
+  onClickDownload: PropTypes.func,
+  onClickEmbed: PropTypes.func,
+  onClickShare: PropTypes.func,
   subtitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   sourceLink: PropTypes.string,
@@ -262,8 +295,7 @@ ChartContainer.propTypes = {
 };
 
 ChartContainer.defaultProps = {
-  infoComponent: undefined,
-  share: {
+  embed: {
     title: 'Embed code for this chart',
     subtitle:
       'Copy the code below, then paste into your own CMS or HTML. Embedded charts are responsive to your page width, and have been tested in Firefox, Safari, Chrome, and Edge.',
@@ -278,11 +310,13 @@ style="margin: 1em; max-width: 300px;"
 />
 <script src="https://tanzania.hurumap.org/static/js/embed.chart.make.js" />`
   },
-  shareComponent: undefined,
+  onClickCompare: undefined,
+  onClickData: undefined,
+  onClickDownload: undefined,
+  onClickEmbed: undefined,
+  onClickShare: undefined,
   sourceLink: undefined,
   sourceTitle: undefined,
-  // onClickInfo: undefined,
-  // onClickShare: undefined,
   loading: false,
   content: {
     width: '100%',
