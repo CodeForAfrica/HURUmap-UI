@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { makeStyles } from '@material-ui/styles';
+import { withStyles } from '@material-ui/styles';
 import { ButtonBase } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import BlockLoader from '../BlockLoader';
@@ -11,7 +11,7 @@ import infoIcon from '../assets/info.png';
 import shareIcon from '../assets/share.png';
 import A from '../A';
 
-const useStyles = makeStyles({
+const styles = {
   root: {
     width: 'available',
     height: 'auto',
@@ -33,9 +33,10 @@ const useStyles = makeStyles({
   title: {},
   subtitle: {},
   sourceLink: {}
-});
+};
 
 function ChartContainer({
+  classes,
   loading,
   content,
   sourceUrl,
@@ -45,7 +46,6 @@ function ChartContainer({
   onClickInfo,
   onClickShare
 }) {
-  const classes = useStyles();
   const infoRef = React.useRef(null);
   const shareRef = React.useRef(null);
   const getReferenceObject = ref => {
@@ -149,6 +149,14 @@ function ChartContainer({
 }
 
 ChartContainer.propTypes = {
+  classes: PropTypes.shape({
+    root: PropTypes.string,
+    button: PropTypes.string,
+    content: PropTypes.string,
+    title: PropTypes.string,
+    subtitle: PropTypes.string,
+    sourceLink: PropTypes.string
+  }).isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
@@ -176,4 +184,4 @@ ChartContainer.defaultProps = {
   }
 };
 
-export default ChartContainer;
+export default withStyles(styles)(ChartContainer);

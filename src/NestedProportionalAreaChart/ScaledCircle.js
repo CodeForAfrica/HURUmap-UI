@@ -15,6 +15,7 @@ import VerticalLegend from './VerticalLegend';
  *
  */
 function ScaledCircle({
+  numberLabelFormat,
   colorScale = [],
   data,
   groupSpacing,
@@ -71,6 +72,7 @@ function ScaledCircle({
           colorScale={colorScale}
           reference={reference}
           style={style}
+          numberLabelFormat={numberLabelFormat}
         />
       ) : (
         <HorizontalLegend
@@ -81,6 +83,7 @@ function ScaledCircle({
           reference={reference}
           cx={cx}
           cy={cy}
+          numberLabelFormat={numberLabelFormat}
         />
       )}
     </React.Fragment>
@@ -88,6 +91,7 @@ function ScaledCircle({
 }
 
 ScaledCircle.propTypes = {
+  numberLabelFormat: PropTypes.func,
   colorScale: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(
@@ -114,6 +118,7 @@ ScaledCircle.propTypes = {
 };
 
 ScaledCircle.defaultProps = {
+  numberLabelFormat: x => x,
   colorScale: undefined,
   data: undefined,
   mobile: false,
