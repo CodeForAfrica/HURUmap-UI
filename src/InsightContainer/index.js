@@ -56,8 +56,10 @@ const useStyles = makeStyles(({ breakpoints }) => ({
     border: 'solid 2px #29a87c',
     backgroundColor: '#fff',
     [breakpoints.up('md')]: {
-      padding: '1.125rem 0.5rem',
-      width: '70%'
+      padding: '1.125rem 0.8rem'
+    },
+    [breakpoints.up('lg')]: {
+      padding: '1.125rem 2.5rem'
     }
   },
   contextGrid: {
