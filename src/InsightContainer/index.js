@@ -93,7 +93,7 @@ function InsightContainer({
   const classes = useStyles();
   const {
     handleShare,
-    handleComapre,
+    handleCompare,
     handleDownload,
     handleShowData
   } = insightActions;
@@ -154,7 +154,7 @@ function InsightContainer({
               onShare={handleShare}
               onDownload={handleDownload}
               onShowData={handleShowData}
-              onCompare={handleComapre}
+              onCompare={handleCompare}
               gaEvents={gaEvents}
             />
           </BlockLoader>
@@ -247,7 +247,7 @@ InsightContainer.propTypes = {
     handleShare: PropTypes.func,
     handleDownload: PropTypes.func,
     handleShowData: PropTypes.func,
-    handleComapre: PropTypes.func
+    handleCompare: PropTypes.func
   }),
   gaEvents: PropTypes.shape({})
 };
@@ -264,7 +264,7 @@ InsightContainer.defaultProps = {
     handleShare: () => {},
     handleDownload: () => {},
     handleShowData: () => {},
-    handleComapre: () => {}
+    handleCompare: () => {}
   },
   content: {
     width: '100%',
