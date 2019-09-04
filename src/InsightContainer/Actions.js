@@ -38,7 +38,6 @@ const useStyles = makeStyles(({ breakpoints }) => ({
     }
   },
   actionText: {
-    fontFamily: 'Muli',
     fontSize: '0.6rem',
     fontWeight: 'bold',
     fontStyle: 'normal',
