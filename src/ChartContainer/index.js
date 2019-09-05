@@ -114,7 +114,7 @@ function ChartContainer({
       ) : null;
       setEmbedDropDown(dropDown);
     }
-  }, [classes, embed, embedAnchorEl, onClickEmbedProp, props]);
+  }, [classes, embed, embedAnchorEl, onClickEmbedProp]);
 
   const shareButtonRef = React.useRef(null);
   const [shareAnchorEl, setShareAnchorEl] = React.useState(null);
@@ -141,14 +141,7 @@ function ChartContainer({
       ) : null;
       setShareDropDown(dropDown);
     }
-  }, [
-    classes,
-    onClickShareProp,
-    props,
-    shareAnchorEl,
-    sourceLink,
-    sourceTitle
-  ]);
+  }, [classes, onClickShareProp, shareAnchorEl, sourceLink, sourceTitle]);
 
   const onClickEmbed =
     onClickEmbedProp ||
