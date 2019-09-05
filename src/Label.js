@@ -13,7 +13,7 @@ const canvas = document.createElement('canvas');
  * @param {*} param0 .
  */
 function Label({ text: originalText, width, ...props }) {
-  const [text, setText] = useState();
+  const [text, setText] = useState(originalText);
   useEffect(() => {
     if (originalText && width) {
       const words = originalText.split(/\s+/).reverse();
