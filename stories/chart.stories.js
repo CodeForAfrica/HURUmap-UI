@@ -322,7 +322,7 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
           },
           { name: 'Short one', label: 'Male: 78%' }
         ]}
-        legendWidth={100}
+        legendWidth={number('Legend width', 100)}
         responsive={boolean('responsive', true)}
         standalone={boolean('standalone', true)}
         style={{
