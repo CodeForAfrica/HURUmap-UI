@@ -259,9 +259,11 @@ function ChartContainer({
             }}
             component="span"
           >
-            <A className={classes.sourceLink} href={sourceLink}>
-              {`Source: ${sourceTitle || sourceLink}`}
-            </A>
+            {sourceLink && (
+              <A className={classes.sourceLink} href={sourceLink}>
+                {`Source: ${sourceTitle || sourceLink}`}
+              </A>
+            )}
           </TypographyLoader>
         </div>
       </Grid>

@@ -78,6 +78,7 @@ function NestedProportionalAreaChart({
               colorScale={chart.colorScale}
               reference={reference}
               data={data}
+              formatNumberForLabel={formatNumberForLabel}
             />
           ) : (
             <ScaledCircle
