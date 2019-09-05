@@ -19,7 +19,9 @@ const useStyles = makeStyles({
   code: {
     width: '100%',
     overflow: 'auto'
-  }
+  },
+  dropDownRoot: {},
+  dropDownPaper: {}
 });
 
 function EmbedDropDown({
@@ -35,7 +37,12 @@ function EmbedDropDown({
   const open = typeof openProps === 'undefined' ? anchorEl !== null : openProp;
 
   return (
-    <DropDown anchorEl={anchorEl} onClose={onClose} open={open} {...props}>
+    <DropDown
+      anchorEl={anchorEl}
+      onClose={onClose}
+      open={open}
+      classes={{ root: classes.dropDownRoot, paper: classes.dropDownPaper }}
+    >
       <Container className={classes.root}>
         {title && <DialogTitle className={classes.title}>{title}</DialogTitle>}
         <DialogContent>

@@ -38,7 +38,18 @@ const useStyles = makeStyles({
   subtitle: {},
   sourceLink: {
     marginLeft: '50px'
-  }
+  },
+  embedRoot: {},
+  embedTitile: {},
+  embedSubTitle: {},
+  embedCode: {},
+  embedDropDownRoot: {},
+  emebedDropDownPaper: {},
+  shareRoot: {},
+  shareSource: {},
+  shareExplore: {},
+  shareDropDownRoot: {},
+  shareDropDownPaper: {}
 });
 
 function ChartContainer({
@@ -89,14 +100,32 @@ function ChartContainer({
           open={embedAnchorEl === null}
           title={embed.title}
           subtitle={embed.subtitle}
-          {...props}
+          classes={{
+            root: classes.embedRoot,
+            title: classes.embedTitile,
+            subtitle: classes.embedSubTitle,
+            code: classes.embedCode,
+            dropDownRoot: classes.embedDropDownRoot,
+            dropDownPaper: classes.emebedDropDownPaper
+          }}
         >
           {embed.code}
         </EmbedDropDown>
       ) : null;
       setEmbedDropDown(dropDown);
     }
-  }, [embed, embedAnchorEl, onClickEmbedProp, props]);
+  }, [
+    classes.embedCode,
+    classes.embedDropDownRoot,
+    classes.embedRoot,
+    classes.embedSubTitle,
+    classes.embedTitile,
+    classes.emebedDropDownPaper,
+    embed,
+    embedAnchorEl,
+    onClickEmbedProp,
+    props
+  ]);
 
   const shareButtonRef = React.useRef(null);
   const [shareAnchorEl, setShareAnchorEl] = React.useState(null);
@@ -110,14 +139,31 @@ function ChartContainer({
           onClose={handleCloseShare}
           sourceLink={sourceLink}
           sourceTitle={sourceTitle}
-          {...props}
+          classes={{
+            root: classes.shareRoot,
+            source: classes.shareSource,
+            explore: classes.shareExplore,
+            dropDownRoot: classes.shareDropDownRoot,
+            dropDownPaper: classes.shareDropDownPaper
+          }}
         >
           Explore Data
         </ShareDropDown>
       ) : null;
       setShareDropDown(dropDown);
     }
-  }, [onClickShareProp, props, shareAnchorEl, sourceLink, sourceTitle]);
+  }, [
+    classes.shareDropDownPaper,
+    classes.shareDropDownRoot,
+    classes.shareExplore,
+    classes.shareRoot,
+    classes.shareSource,
+    onClickShareProp,
+    props,
+    shareAnchorEl,
+    sourceLink,
+    sourceTitle
+  ]);
 
   const onClickEmbed =
     onClickEmbedProp ||

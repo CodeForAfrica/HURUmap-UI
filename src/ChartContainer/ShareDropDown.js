@@ -15,7 +15,9 @@ const useStyles = makeStyles(() => ({
   },
   explore: {
     margin: '20px'
-  }
+  },
+  dropDownRoot: {},
+  dropDownPaper: {}
 }));
 
 function InfoPanel({
@@ -32,7 +34,12 @@ function InfoPanel({
   const open = typeof openProps === 'undefined' ? anchorEl !== null : openProp;
 
   return (
-    <DropDown anchorEl={anchorEl} onClose={onClose} open={open} {...props}>
+    <DropDown
+      anchorEl={anchorEl}
+      onClose={onClose}
+      open={open}
+      classes={{ root: classes.dropDownRoot, paper: classes.dropDownPaper }}
+    >
       <Grid className={classes.root} container justify="center" {...props}>
         <Typography className={classes.source}>
           {'Sources: '}
