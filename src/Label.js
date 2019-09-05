@@ -5,6 +5,19 @@ import { VictoryLabel } from 'victory';
 
 const canvas = document.createElement('canvas');
 
+const getFont = (style = {}) => {
+  const { font, fontFamily, fontSize } = style;
+  if (font) {
+    return font;
+  }
+  // font requires at least family and size: https://developer.mozilla.org/en-US/docs/Web/CSS/font#Syntax
+  if (fontFamily && fontSize) {
+    const unit = typeof fontSize === 'number' ? 'px' : '';
+    return `${fontSize}${unit} ${fontFamily}`;
+  }
+  return undefined;
+};
+
 /**
  * While VictoryLabel can handle array of strings, it can not handle wrapping
  * for a long string. We need this component to help breakdown long strings
@@ -12,7 +25,7 @@ const canvas = document.createElement('canvas');
  *
  * @param {*} param0 .
  */
-function Label({ text: originalText, width, ...props }) {
+function Label({ text: originalText, width, style, ...props }) {
   const [text, setText] = useState(originalText);
   useEffect(() => {
     const wrap = textToWrap => {
@@ -20,6 +33,10 @@ function Label({ text: originalText, width, ...props }) {
       const textLines = [];
       let word = words.pop();
       let line = [];
+      const font = getFont(style);
+      if (font) {
+        Label.canvasContext.font = font;
+      }
 
       while (word) {
         line.push(word);
@@ -52,20 +69,22 @@ function Label({ text: originalText, width, ...props }) {
         : originalText.split('\n');
       setText(textToWrap.map(wrap).join('\n'));
     }
-  }, [originalText, width]);
+  }, [originalText, style, width]);
 
-  return <VictoryLabel text={text} {...props} />;
+  return <VictoryLabel style={style} text={text} {...props} />;
 }
 
 // Lets reuse canvas context.
 Label.canvasContext = canvas.getContext('2d');
 
 Label.propTypes = {
+  style: PropTypes.shape({}),
   text: PropTypes.string,
   width: PropTypes.number
 };
 
 Label.defaultProps = {
+  style: undefined,
   text: undefined,
   width: undefined
 };
