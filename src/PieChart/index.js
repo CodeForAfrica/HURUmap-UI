@@ -162,17 +162,6 @@ function PieChart({
 
   return (
     <CustomContainer {...containerProps}>
-      {legendProps && (
-        <VictoryLegend
-          standalone={false}
-          labelComponent={
-            <LegendLabel colorScale={colorScale1} width={legendWidth} />
-          }
-          {...legendProps}
-          x={chartWidth}
-          y={paddingTop}
-        />
-      )}
       {donut && (
         <DonutLabel
           data={donutLabelData}
@@ -228,6 +217,17 @@ function PieChart({
           width={width}
           labelComponent={labelComponent2}
           {...props}
+        />
+      )}
+      {legendProps && (
+        <VictoryLegend
+          standalone={false}
+          labelComponent={
+            <LegendLabel colorScale={colorScale1} width={legendWidth} />
+          }
+          {...legendProps}
+          x={chartWidth}
+          y={paddingTop}
         />
       )}
     </CustomContainer>

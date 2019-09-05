@@ -320,7 +320,10 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
             name: 'A very, very, very, very long legend name',
             label: 'Female: 22%'
           },
-          { name: 'Short one', label: 'Male: 78%' }
+          {
+            name: 'Short one',
+            label: 'Long tooltip label should appear above chart: 78%'
+          }
         ]}
         legendWidth={number('Legend width', 100)}
         responsive={boolean('responsive', true)}
