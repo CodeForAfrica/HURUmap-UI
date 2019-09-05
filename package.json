@@ -38,6 +38,7 @@
   "main": "dist/index.js",
   "scripts": {
     "prepublish": "yarn lint && yarn build",
+    "postpublish": "yarn deploy",
     "lint": "yarn eslint --fix --ignore-path './.gitignore' --ext '.js,.json,.md' './'",
     "lint-staged": "yarn eslint --fix",
     "start": "start-storybook",
