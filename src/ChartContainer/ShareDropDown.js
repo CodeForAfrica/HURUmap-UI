@@ -9,12 +9,12 @@ import DropDown from './DropDown';
 const useStyles = makeStyles(() => ({
   root: {},
   source: {
-    padding: '1.25rem',
+    padding: '20px',
     width: '100%',
-    borderBottom: '1px solid #c4c4c4'
+    borderBottom: '0.0625rem solid #c4c4c4'
   },
   explore: {
-    margin: '1.25rem'
+    margin: '20px'
   }
 }));
 
@@ -26,13 +26,20 @@ function InfoPanel({
   open: openProp,
   sourceLink,
   sourceTitle,
+  classes: propClasses,
   ...props
 }) {
-  const classes = useStyles(props);
+  const classes = useStyles({ classes: propClasses });
   const open = typeof openProps === 'undefined' ? anchorEl !== null : openProp;
 
   return (
-    <DropDown anchorEl={anchorEl} onClose={onClose} open={open} {...props}>
+    <DropDown
+      anchorEl={anchorEl}
+      onClose={onClose}
+      open={open}
+      classes={propClasses && propClasses.modal}
+      {...props}
+    >
       <Grid className={classes.root} container justify="center" {...props}>
         <Typography className={classes.source}>
           {'Sources: '}
@@ -53,6 +60,15 @@ function InfoPanel({
 }
 
 InfoPanel.propTypes = {
+  classes: PropTypes.shape({
+    root: PropTypes.string,
+    source: PropTypes.string,
+    explore: PropTypes.string,
+    modal: PropTypes.shape({
+      root: PropTypes.string,
+      paper: PropTypes.string
+    })
+  }).isRequired,
   anchorEl: PropTypes.shape({}).isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),

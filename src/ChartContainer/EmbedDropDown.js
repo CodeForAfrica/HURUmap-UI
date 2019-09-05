@@ -12,12 +12,15 @@ import {
 
 import DropDown from './DropDown';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   root: {},
   title: {},
   subtitle: {},
-  code: {}
-}));
+  code: {
+    width: '100%',
+    overflow: 'auto'
+  }
+});
 
 function EmbedDropDown({
   anchorEl,
@@ -26,13 +29,20 @@ function EmbedDropDown({
   open: openProp,
   subtitle,
   title,
+  classes: propClasses,
   ...props
 }) {
-  const classes = useStyles(props);
+  const classes = useStyles({ classes: propClasses });
   const open = typeof openProps === 'undefined' ? anchorEl !== null : openProp;
 
   return (
-    <DropDown anchorEl={anchorEl} onClose={onClose} open={open} {...props}>
+    <DropDown
+      anchorEl={anchorEl}
+      onClose={onClose}
+      open={open}
+      classes={propClasses && propClasses.modal}
+      {...props}
+    >
       <Container className={classes.root}>
         {title && <DialogTitle className={classes.title}>{title}</DialogTitle>}
         <DialogContent>
@@ -51,6 +61,16 @@ function EmbedDropDown({
 }
 
 EmbedDropDown.propTypes = {
+  classes: PropTypes.shape({
+    root: PropTypes.string,
+    title: PropTypes.string,
+    subtitle: PropTypes.string,
+    code: PropTypes.string,
+    modal: PropTypes.shape({
+      root: PropTypes.string,
+      paper: PropTypes.string
+    })
+  }).isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node

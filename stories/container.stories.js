@@ -14,6 +14,7 @@ import {
 import Grid from '@material-ui/core/Grid';
 
 import { Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 import {
   BarChart,
   ChartContainer,
@@ -32,13 +33,25 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
   .add('Default', () =>
     React.createElement(() => {
       const chartType = select('chartType', ['bar', 'pie'], 'pie');
-
+      const classes = makeStyles(({ breakpoints }) => ({
+        title: {
+          fontWeight: 'bold'
+        },
+        explore: {
+          fontWeight: 'bold'
+        },
+        embedModal: {
+          [breakpoints.up('sm')]: {
+            width: '30rem'
+          }
+        }
+      }))();
       return (
         <Grid
           container
           justify="center"
           alignItems="center"
-          style={{ background: 'whitesmoke', height: '100%' }}
+          style={{ background: 'whitesmoke', height: '50rem' }}
         >
           <Grid
             item
@@ -63,6 +76,17 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
               sourceUrl={text('sourceUrl', 'http://dev.dominion.africa')}
               sourceLink="http://dev.dominion.africa"
               content={object('content', { height: 400, width: '100%' })}
+              classes={{
+                title: classes.title,
+                shareDropDown: {
+                  explore: classes.explore
+                },
+                embedDropDown: {
+                  modal: {
+                    root: classes.embedModal
+                  }
+                }
+              }}
             >
               {chartType === 'pie' && (
                 <PieChart
@@ -289,7 +313,7 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
           item
           xs={select('xs', ['auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 8)}
           md={select('md', ['auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 10)}
-          style={{ padding: '0.625rem' }}
+          style={{ padding: '10px' }}
         >
           <InsightContainer
             loading={boolean('loading', true)}

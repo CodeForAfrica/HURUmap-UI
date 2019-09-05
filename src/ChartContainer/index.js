@@ -55,9 +55,9 @@ function ChartContainer({
   sourceTitle,
   title,
   subtitle,
-  ...props
+  classes: propClasses
 }) {
-  const classes = useStyles(props);
+  const classes = useStyles({ classes: propClasses });
   const getReferenceObject = ref => {
     const { current } = ref;
     if (current) {
@@ -89,13 +89,14 @@ function ChartContainer({
           open={embedAnchorEl === null}
           title={embed.title}
           subtitle={embed.subtitle}
+          classes={propClasses && propClasses.embedDropDown}
         >
           {embed.code}
         </EmbedDropDown>
       ) : null;
       setEmbedDropDown(dropDown);
     }
-  }, [embed, embedAnchorEl, onClickEmbedProp]);
+  }, [embed, propClasses, embedAnchorEl, onClickEmbedProp]);
 
   const shareButtonRef = React.useRef(null);
   const [shareAnchorEl, setShareAnchorEl] = React.useState(null);
@@ -109,13 +110,14 @@ function ChartContainer({
           onClose={handleCloseShare}
           sourceLink={sourceLink}
           sourceTitle={sourceTitle}
+          classes={propClasses && propClasses.shareDropDown}
         >
           Explore Data
         </ShareDropDown>
       ) : null;
       setShareDropDown(dropDown);
     }
-  }, [onClickShareProp, shareAnchorEl, sourceLink, sourceTitle]);
+  }, [onClickShareProp, propClasses, shareAnchorEl, sourceLink, sourceTitle]);
 
   const onClickEmbed =
     onClickEmbedProp ||
@@ -249,7 +251,7 @@ function ChartContainer({
         className={classes.content}
         style={{ width: content.width, height: content.height }}
       >
-        <div>
+        <div style={{ height: '100%' }}>
           <BlockLoader loading={loading}>{children}</BlockLoader>
           <TypographyLoader
             loading={loading}
@@ -272,6 +274,25 @@ function ChartContainer({
 }
 
 ChartContainer.propTypes = {
+  classes: PropTypes.shape({
+    root: PropTypes.string,
+    content: PropTypes.string,
+    button: PropTypes.string,
+    title: PropTypes.string,
+    subtitle: PropTypes.string,
+    sourceLink: PropTypes.string,
+    embedDropDown: PropTypes.shape({
+      root: PropTypes.string,
+      title: PropTypes.string.isRequired,
+      subtitle: PropTypes.string,
+      code: PropTypes.string
+    }),
+    shareDropDown: PropTypes.shape({
+      root: PropTypes.string,
+      source: PropTypes.string,
+      explore: PropTypes.string
+    })
+  }).isRequired,
   embed: PropTypes.shape({
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.string,
