@@ -114,18 +114,7 @@ function ChartContainer({
       ) : null;
       setEmbedDropDown(dropDown);
     }
-  }, [
-    classes.embedCode,
-    classes.embedDropDownRoot,
-    classes.embedRoot,
-    classes.embedSubTitle,
-    classes.embedTitile,
-    classes.emebedDropDownPaper,
-    embed,
-    embedAnchorEl,
-    onClickEmbedProp,
-    props
-  ]);
+  }, [classes, embed, embedAnchorEl, onClickEmbedProp, props]);
 
   const shareButtonRef = React.useRef(null);
   const [shareAnchorEl, setShareAnchorEl] = React.useState(null);
@@ -153,11 +142,7 @@ function ChartContainer({
       setShareDropDown(dropDown);
     }
   }, [
-    classes.shareDropDownPaper,
-    classes.shareDropDownRoot,
-    classes.shareExplore,
-    classes.shareRoot,
-    classes.shareSource,
+    classes,
     onClickShareProp,
     props,
     shareAnchorEl,
