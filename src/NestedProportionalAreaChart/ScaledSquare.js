@@ -9,7 +9,14 @@ import VerticalLegend from './VerticalLegend';
 /**
  *
  */
-function ScaledSquare({ colorScale = [], data, reference, style, ...props }) {
+function ScaledSquare({
+  formatNumberForLabel,
+  colorScale = [],
+  data,
+  reference,
+  style,
+  ...props
+}) {
   const size = MOBILE_WIDTH;
   const x = 0;
   const y = 100; // Chart starts 100px from top i.e. below labels
@@ -56,12 +63,14 @@ function ScaledSquare({ colorScale = [], data, reference, style, ...props }) {
         colorScale={colorScale}
         reference={reference}
         style={style}
+        formatNumberForLabel={formatNumberForLabel}
       />
     </React.Fragment>
   );
 }
 
 ScaledSquare.propTypes = {
+  formatNumberForLabel: PropTypes.func,
   colorScale: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(
@@ -86,6 +95,7 @@ ScaledSquare.propTypes = {
 };
 
 ScaledSquare.defaultProps = {
+  formatNumberForLabel: x => x,
   colorScale: undefined,
   data: undefined,
   reference: undefined,

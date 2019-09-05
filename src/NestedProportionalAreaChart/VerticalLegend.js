@@ -14,7 +14,13 @@ import withVictoryTheme from '../styles/withVictoryTheme';
 /**
  *
  */
-function VerticalLegend({ colorScale, data, reference, style }) {
+function VerticalLegend({
+  formatNumberForLabel,
+  colorScale,
+  data,
+  reference,
+  style
+}) {
   // For starters, lets assume each data label has 36px height,
   // reference label has 48 px, and there is 10px between labels
   // and charts
@@ -35,7 +41,7 @@ function VerticalLegend({ colorScale, data, reference, style }) {
           x={x}
           dx={0}
           y={90} // 100 - 10
-          text={data[i].x}
+          text={formatNumberForLabel(data[i].x)}
           style={dataLabelsStyle(i, colorScale, style)}
           dy={-i * 36}
         />
@@ -47,7 +53,7 @@ function VerticalLegend({ colorScale, data, reference, style }) {
         lineHeight={0}
         x={x}
         y={MOBILE_HEIGHT - 25}
-        text={referenceData.x}
+        text={formatNumberForLabel(referenceData.x)}
         style={referenceDataStyle(reference)}
       />
       {referenceData.label && (
@@ -65,6 +71,7 @@ function VerticalLegend({ colorScale, data, reference, style }) {
 }
 
 VerticalLegend.propTypes = {
+  formatNumberForLabel: PropTypes.func,
   colorScale: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(
@@ -93,6 +100,7 @@ VerticalLegend.propTypes = {
 };
 
 VerticalLegend.defaultProps = {
+  formatNumberForLabel: x => x,
   colorScale: undefined,
   data: undefined,
   reference: undefined,
