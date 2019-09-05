@@ -90,9 +90,10 @@ function InsightContainer({
   insightActions,
   insightContext,
   insightLink,
-  gaEvents
+  gaEvents,
+  ...props
 }) {
-  const classes = useStyles();
+  const classes = useStyles(props);
   const {
     handleShare,
     handleCompare,
