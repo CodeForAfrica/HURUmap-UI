@@ -353,12 +353,15 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
     </div>
   ));
 
+const formatter = new Intl.NumberFormat('en-GB');
+
 storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('Default', () => (
     <div>
       <NestedProportionalAreaChart
+        formatNumberForLabel={x => formatter.format(x)}
         square={boolean('square', false)}
         height={number('height', 350)}
         width={number('width', 350)}
@@ -370,6 +373,7 @@ storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
   .add('Comparison', () => (
     <div>
       <NestedProportionalAreaChart
+        formatNumberForLabel={x => formatter.format(x)}
         square={boolean('square', false)}
         height={number('height', 350)}
         width={number('width', 650)}

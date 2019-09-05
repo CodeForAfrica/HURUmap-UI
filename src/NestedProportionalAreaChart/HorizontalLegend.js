@@ -14,6 +14,7 @@ import {
  *
  */
 function HorizontalLegend({
+  formatNumberForLabel,
   colorScale,
   cx,
   cy,
@@ -56,7 +57,7 @@ function HorizontalLegend({
             dx={0}
             y={cy}
             dy={18} // 36 / 2 since we want data value vertical centered
-            text={data[i].x}
+            text={formatNumberForLabel(data[i].x)}
             style={dataLabelsStyle(i, colorScale, style)}
           />
           {data[i].label && (
@@ -81,7 +82,7 @@ function HorizontalLegend({
         lineHeight={0}
         x={cx + 200}
         y={2 * cy - 24}
-        text={referenceData.x}
+        text={formatNumberForLabel(referenceData.x)}
         style={referenceDataStyle(reference)}
       />
       {referenceData.label && (
@@ -99,6 +100,7 @@ function HorizontalLegend({
 }
 
 HorizontalLegend.propTypes = {
+  formatNumberForLabel: PropTypes.func,
   colorScale: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(
@@ -130,6 +132,7 @@ HorizontalLegend.propTypes = {
 };
 
 HorizontalLegend.defaultProps = {
+  formatNumberForLabel: x => x, // return unformatted number
   colorScale: undefined,
   data: undefined,
   radii: undefined,

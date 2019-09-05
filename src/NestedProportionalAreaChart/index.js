@@ -22,7 +22,8 @@ function NestedProportionalAreaChart({
   square = false,
   style,
   theme,
-  width: w
+  width: w,
+  formatNumberForLabel
 }) {
   const { proportionalArea: chart } = theme;
   if (!data || !chart) {
@@ -89,6 +90,7 @@ function NestedProportionalAreaChart({
               reference={reference}
               style={style}
               theme={theme}
+              formatNumberForLabel={formatNumberForLabel}
             />
           )}
         </g>
@@ -98,6 +100,7 @@ function NestedProportionalAreaChart({
 }
 
 NestedProportionalAreaChart.propTypes = {
+  formatNumberForLabel: PropTypes.func,
   data: PropTypes.arrayOf(PropTypes.shape({})),
   groupSpacing: PropTypes.number,
   height: PropTypes.number,
@@ -119,6 +122,7 @@ NestedProportionalAreaChart.propTypes = {
 };
 
 NestedProportionalAreaChart.defaultProps = {
+  formatNumberForLabel: x => x,
   data: undefined,
   groupSpacing: undefined,
   height: undefined,
