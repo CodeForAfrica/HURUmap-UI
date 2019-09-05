@@ -166,11 +166,7 @@ function PieChart({
         <VictoryLegend
           standalone={false}
           labelComponent={
-            <LegendLabel
-              colorScale={colorScale1}
-              width={legendWidth}
-              {...tooltipProps}
-            />
+            <LegendLabel colorScale={colorScale1} width={legendWidth} />
           }
           {...legendProps}
           x={chartWidth}
