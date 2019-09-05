@@ -24,7 +24,10 @@ export default function CustomContentLoader({
 }
 
 CustomContentLoader.propTypes = {
-  children: PropTypes.shape().isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
