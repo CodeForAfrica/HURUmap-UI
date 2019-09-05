@@ -159,6 +159,7 @@ function InsightContainer({
               onShowData={handleShowData}
               onCompare={handleCompare}
               gaEvents={gaEvents}
+              {...props}
             />
           </BlockLoader>
         </Grid>
