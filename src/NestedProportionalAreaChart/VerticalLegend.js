@@ -15,7 +15,7 @@ import withVictoryTheme from '../styles/withVictoryTheme';
  *
  */
 function VerticalLegend({
-  numberLabelFormat,
+  formatNumberForLabel,
   colorScale,
   data,
   reference,
@@ -41,7 +41,7 @@ function VerticalLegend({
           x={x}
           dx={0}
           y={90} // 100 - 10
-          text={numberLabelFormat(data[i].x)}
+          text={formatNumberForLabel(data[i].x)}
           style={dataLabelsStyle(i, colorScale, style)}
           dy={-i * 36}
         />
@@ -53,7 +53,7 @@ function VerticalLegend({
         lineHeight={0}
         x={x}
         y={MOBILE_HEIGHT - 25}
-        text={numberLabelFormat(referenceData.x)}
+        text={formatNumberForLabel(referenceData.x)}
         style={referenceDataStyle(reference)}
       />
       {referenceData.label && (
@@ -71,7 +71,7 @@ function VerticalLegend({
 }
 
 VerticalLegend.propTypes = {
-  numberLabelFormat: PropTypes.func,
+  formatNumberForLabel: PropTypes.func,
   colorScale: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(
@@ -100,7 +100,7 @@ VerticalLegend.propTypes = {
 };
 
 VerticalLegend.defaultProps = {
-  numberLabelFormat: x => x,
+  formatNumberForLabel: x => x,
   colorScale: undefined,
   data: undefined,
   reference: undefined,

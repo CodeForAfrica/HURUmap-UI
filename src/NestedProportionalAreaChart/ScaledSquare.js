@@ -10,7 +10,7 @@ import VerticalLegend from './VerticalLegend';
  *
  */
 function ScaledSquare({
-  numberLabelFormat,
+  formatNumberForLabel,
   colorScale = [],
   data,
   reference,
@@ -63,14 +63,14 @@ function ScaledSquare({
         colorScale={colorScale}
         reference={reference}
         style={style}
-        numberLabelFormat={numberLabelFormat}
+        formatNumberForLabel={formatNumberForLabel}
       />
     </React.Fragment>
   );
 }
 
 ScaledSquare.propTypes = {
-  numberLabelFormat: PropTypes.func,
+  formatNumberForLabel: PropTypes.func,
   colorScale: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(
@@ -95,7 +95,7 @@ ScaledSquare.propTypes = {
 };
 
 ScaledSquare.defaultProps = {
-  numberLabelFormat: x => x,
+  formatNumberForLabel: x => x,
   colorScale: undefined,
   data: undefined,
   reference: undefined,
