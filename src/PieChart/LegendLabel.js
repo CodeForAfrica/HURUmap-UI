@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { VictoryTooltip } from 'victory';
 
 import PieLabel from './PieLabel';
-import Label from '../Label';
 
 /**
  * VictoryLegend only uses `name` for displaying the key. This component
@@ -12,12 +11,13 @@ import Label from '../Label';
  *
  * @param {*} props .
  */
+// while we need `width` for the label, we don't need it for tooltip
 function LegendLabel({ width, ...props }) {
   const { colorScale, data, datum, index } = props;
 
   return (
     <g>
-      <Label width={width} {...props} />
+      <PieLabel width={width} {...props} />
       <VictoryTooltip
         {...props}
         datum={Object.assign({ _x: index + 1 }, datum)}
