@@ -154,9 +154,10 @@ function Actions({
   onShowData,
   onCompare,
   embedCode,
-  gaEvents: { share, embed, showData, download, compare }
+  gaEvents: { share, embed, showData, download, compare },
+  ...props
 }) {
-  const classes = useStyles();
+  const classes = useStyles(props);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleEmbed = event => {
