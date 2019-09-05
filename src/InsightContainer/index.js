@@ -78,7 +78,12 @@ const useStyles = makeStyles(({ breakpoints }) => ({
     [breakpoints.up('md')]: {
       margin: 0
     }
-  }
+  },
+  actionButton: {},
+  actionIconGrid: {},
+  actionRoot: {},
+  actionVerticalDivider: {},
+  actionText: {}
 }));
 
 function InsightContainer({
@@ -159,7 +164,13 @@ function InsightContainer({
               onShowData={handleShowData}
               onCompare={handleCompare}
               gaEvents={gaEvents}
-              {...props}
+              classes={{
+                button: classes.actionButton,
+                iconGrid: classes.actionIconGrid,
+                actionText: classes.actionText,
+                verticalDivider: classes.actionVerticalDivider,
+                root: classes.actionRoot
+              }}
             />
           </BlockLoader>
         </Grid>
