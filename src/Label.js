@@ -15,8 +15,8 @@ const canvas = document.createElement('canvas');
 function Label({ text: originalText, width, ...props }) {
   const [text, setText] = useState(originalText);
   useEffect(() => {
-    if (originalText && width) {
-      const words = originalText.split(/\s+/).reverse();
+    const wrap = textToWrap => {
+      const words = textToWrap.split(/\s+/).reverse();
       const textLines = [];
       let word = words.pop();
       let line = [];
@@ -43,15 +43,21 @@ function Label({ text: originalText, width, ...props }) {
       if (line.length > 0) {
         textLines.push(line.join(' '));
       }
-      setText(textLines.join('\n'));
+      return textLines.join('\n');
+    };
+    if (originalText && width) {
+      // Preserve any `\n` in original text string (if any)
+      const textToWrap = Array.isArray(originalText)
+        ? originalText
+        : originalText.split('\n');
+      setText(textToWrap.map(wrap).join('\n'));
     }
   }, [originalText, width]);
 
   return <VictoryLabel text={text} {...props} />;
 }
 
-// Creating canvas and context is any expensive operation so lets reuse the
-// context.
+// Lets reuse canvas context.
 Label.canvasContext = canvas.getContext('2d');
 
 Label.propTypes = {
