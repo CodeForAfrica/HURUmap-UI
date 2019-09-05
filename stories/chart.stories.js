@@ -305,12 +305,13 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
             }
           },
           legend: {
+            rowGutter: number('Legend row spacing', 20),
             style: { labels: { fontSize: 20, fontWeight: 'bold' } }
           }
         }}
         legend={[
-          { name: 'Female', label: 'Female: 22%' },
-          { name: 'Male', label: 'Male: 78%' }
+          { name: 'A very, very, very, very long legend name', label: 'Female: 22%' },
+          { name: 'Short one', label: 'Male: 78%' }
         ]}
         responsive={boolean('responsive', true)}
         standalone={boolean('standalone', true)}
