@@ -78,14 +78,8 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
               content={object('content', { height: 400, width: '100%' })}
               classes={{
                 title: classes.title,
-                shareDropDown: {
-                  explore: classes.explore
-                },
-                embedDropDown: {
-                  modal: {
-                    root: classes.embedModal
-                  }
-                }
+                shareExplore: classes.explore,
+                embedDropDownRoot: classes.embedModal
               }}
             >
               {chartType === 'pie' && (

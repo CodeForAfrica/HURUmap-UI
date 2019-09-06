@@ -38,7 +38,18 @@ const useStyles = makeStyles({
   subtitle: {},
   sourceLink: {
     marginLeft: '50px'
-  }
+  },
+  embedRoot: {},
+  embedTitle: {},
+  embedSubtitle: {},
+  embedCode: {},
+  embedDropDownRoot: {},
+  embedDropDownPaper: {},
+  shareRoot: {},
+  shareSource: {},
+  shareExplore: {},
+  shareDropDownRoot: {},
+  shareDropDownPaper: {}
 });
 
 function ChartContainer({
@@ -55,9 +66,9 @@ function ChartContainer({
   sourceTitle,
   title,
   subtitle,
-  classes: propClasses
+  ...props
 }) {
-  const classes = useStyles({ classes: propClasses });
+  const classes = useStyles(props);
   const getReferenceObject = ref => {
     const { current } = ref;
     if (current) {
@@ -89,14 +100,21 @@ function ChartContainer({
           open={embedAnchorEl === null}
           title={embed.title}
           subtitle={embed.subtitle}
-          classes={propClasses && propClasses.embedDropDown}
+          classes={{
+            root: classes.embedRoot,
+            title: classes.embedTitle,
+            subtitle: classes.embedSubtitle,
+            code: classes.embedCode,
+            dropDownRoot: classes.embedDropDownRoot,
+            dropDownPaper: classes.embedDropDownPaper
+          }}
         >
           {embed.code}
         </EmbedDropDown>
       ) : null;
       setEmbedDropDown(dropDown);
     }
-  }, [embed, propClasses, embedAnchorEl, onClickEmbedProp]);
+  }, [classes, embed, embedAnchorEl, onClickEmbedProp]);
 
   const shareButtonRef = React.useRef(null);
   const [shareAnchorEl, setShareAnchorEl] = React.useState(null);
@@ -110,14 +128,20 @@ function ChartContainer({
           onClose={handleCloseShare}
           sourceLink={sourceLink}
           sourceTitle={sourceTitle}
-          classes={propClasses && propClasses.shareDropDown}
+          classes={{
+            root: classes.shareRoot,
+            source: classes.shareSource,
+            explore: classes.shareExplore,
+            dropDownRoot: classes.shareDropDownRoot,
+            dropDownPaper: classes.shareDropDownPaper
+          }}
         >
           Explore Data
         </ShareDropDown>
       ) : null;
       setShareDropDown(dropDown);
     }
-  }, [onClickShareProp, propClasses, shareAnchorEl, sourceLink, sourceTitle]);
+  }, [classes, onClickShareProp, shareAnchorEl, sourceLink, sourceTitle]);
 
   const onClickEmbed =
     onClickEmbedProp ||
@@ -274,25 +298,6 @@ function ChartContainer({
 }
 
 ChartContainer.propTypes = {
-  classes: PropTypes.shape({
-    root: PropTypes.string,
-    content: PropTypes.string,
-    button: PropTypes.string,
-    title: PropTypes.string,
-    subtitle: PropTypes.string,
-    sourceLink: PropTypes.string,
-    embedDropDown: PropTypes.shape({
-      root: PropTypes.string,
-      title: PropTypes.string.isRequired,
-      subtitle: PropTypes.string,
-      code: PropTypes.string
-    }),
-    shareDropDown: PropTypes.shape({
-      root: PropTypes.string,
-      source: PropTypes.string,
-      explore: PropTypes.string
-    })
-  }).isRequired,
   embed: PropTypes.shape({
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.string,

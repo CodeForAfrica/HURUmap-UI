@@ -19,7 +19,9 @@ const useStyles = makeStyles({
   code: {
     width: '100%',
     overflow: 'auto'
-  }
+  },
+  dropDownRoot: {},
+  dropDownPaper: {}
 });
 
 function EmbedDropDown({
@@ -29,10 +31,9 @@ function EmbedDropDown({
   open: openProp,
   subtitle,
   title,
-  classes: propClasses,
   ...props
 }) {
-  const classes = useStyles({ classes: propClasses });
+  const classes = useStyles(props);
   const open = typeof openProps === 'undefined' ? anchorEl !== null : openProp;
 
   return (
@@ -40,8 +41,7 @@ function EmbedDropDown({
       anchorEl={anchorEl}
       onClose={onClose}
       open={open}
-      classes={propClasses && propClasses.modal}
-      {...props}
+      classes={{ root: classes.dropDownRoot, paper: classes.dropDownPaper }}
     >
       <Container className={classes.root}>
         {title && <DialogTitle className={classes.title}>{title}</DialogTitle>}
@@ -61,16 +61,6 @@ function EmbedDropDown({
 }
 
 EmbedDropDown.propTypes = {
-  classes: PropTypes.shape({
-    root: PropTypes.string,
-    title: PropTypes.string,
-    subtitle: PropTypes.string,
-    code: PropTypes.string,
-    modal: PropTypes.shape({
-      root: PropTypes.string,
-      paper: PropTypes.string
-    })
-  }).isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node

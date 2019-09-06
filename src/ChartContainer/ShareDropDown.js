@@ -15,7 +15,9 @@ const useStyles = makeStyles(() => ({
   },
   explore: {
     margin: '20px'
-  }
+  },
+  dropDownRoot: {},
+  dropDownPaper: {}
 }));
 
 function InfoPanel({
@@ -26,10 +28,9 @@ function InfoPanel({
   open: openProp,
   sourceLink,
   sourceTitle,
-  classes: propClasses,
   ...props
 }) {
-  const classes = useStyles({ classes: propClasses });
+  const classes = useStyles(props);
   const open = typeof openProps === 'undefined' ? anchorEl !== null : openProp;
 
   return (
@@ -37,8 +38,7 @@ function InfoPanel({
       anchorEl={anchorEl}
       onClose={onClose}
       open={open}
-      classes={propClasses && propClasses.modal}
-      {...props}
+      classes={{ root: classes.dropDownRoot, paper: classes.dropDownPaper }}
     >
       <Grid className={classes.root} container justify="center" {...props}>
         <Typography className={classes.source}>
@@ -60,15 +60,6 @@ function InfoPanel({
 }
 
 InfoPanel.propTypes = {
-  classes: PropTypes.shape({
-    root: PropTypes.string,
-    source: PropTypes.string,
-    explore: PropTypes.string,
-    modal: PropTypes.shape({
-      root: PropTypes.string,
-      paper: PropTypes.string
-    })
-  }).isRequired,
   anchorEl: PropTypes.shape({}).isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
