@@ -79,11 +79,15 @@ const useStyles = makeStyles(({ breakpoints }) => ({
       margin: 0
     }
   },
-  actionButton: {},
-  actionIconGrid: {},
+  shareButton: {},
+  compareButton: {},
+  embedButton: {},
+  showDataButton: {},
+  downloadButton: {},
+  actionButtonIconGrid: {},
   actionRoot: {},
-  actionVerticalDivider: {},
-  actionText: {}
+  actionButtonVerticalDivider: {},
+  actionButtonText: {}
 }));
 
 function InsightContainer({
@@ -165,10 +169,14 @@ function InsightContainer({
               onCompare={handleCompare}
               gaEvents={gaEvents}
               classes={{
-                button: classes.actionButton,
-                iconGrid: classes.actionIconGrid,
-                actionText: classes.actionText,
-                verticalDivider: classes.actionVerticalDivider,
+                shareButton: classes.shareButton,
+                embedButton: classes.embedButton,
+                showDataButton: classes.showDataButton,
+                compareButton: classes.compareButton,
+                downloadButton: classes.downloadButton,
+                actionButtonIconGrid: classes.actionButtonIconGrid,
+                actionButtonText: classes.actionButtonText,
+                verticalDivider: classes.actionButtonVerticalDivider,
                 root: classes.actionRoot
               }}
             />

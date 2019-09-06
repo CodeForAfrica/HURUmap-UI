@@ -40,11 +40,11 @@ const useStyles = makeStyles({
     marginLeft: '50px'
   },
   embedRoot: {},
-  embedTitile: {},
-  embedSubTitle: {},
+  embedTitle: {},
+  embedSubtitle: {},
   embedCode: {},
   embedDropDownRoot: {},
-  emebedDropDownPaper: {},
+  embedDropDownPaper: {},
   shareRoot: {},
   shareSource: {},
   shareExplore: {},
@@ -102,11 +102,11 @@ function ChartContainer({
           subtitle={embed.subtitle}
           classes={{
             root: classes.embedRoot,
-            title: classes.embedTitile,
-            subtitle: classes.embedSubTitle,
+            title: classes.embedTitle,
+            subtitle: classes.embedSubtitle,
             code: classes.embedCode,
             dropDownRoot: classes.embedDropDownRoot,
-            dropDownPaper: classes.emebedDropDownPaper
+            dropDownPaper: classes.embedDropDownPaper
           }}
         >
           {embed.code}

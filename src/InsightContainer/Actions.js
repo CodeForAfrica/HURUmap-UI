@@ -37,7 +37,7 @@ const useStyles = makeStyles(({ breakpoints }) => ({
       padding: '0.625rem'
     }
   },
-  actionText: {
+  actionButtonText: {
     fontSize: '0.6rem',
     fontWeight: 'bold',
     fontStyle: 'normal',
@@ -52,7 +52,12 @@ const useStyles = makeStyles(({ breakpoints }) => ({
   },
   iconGrid: {
     height: '2.1875rem'
-  }
+  },
+  shareButton: {},
+  compareButton: {},
+  embedButton: {},
+  showDataButton: {},
+  downloadButton: {}
 }));
 
 function ActionButton({
@@ -61,7 +66,7 @@ function ActionButton({
   gaEvents: { gaOn, gaEventAction, gaEventCategory, gaEventLabel },
   ...props
 }) {
-  const classes = useStyles();
+  const classes = useStyles(props);
   return (
     <IconButton
       className={classes.button}
@@ -166,18 +171,34 @@ function Actions({
   return (
     <div container className={classes.root}>
       {onShare && (
-        <ActionButton gaEvents={share} onClick={onShare}>
+        <ActionButton
+          gaEvents={share}
+          onClick={onShare}
+          classes={{
+            button: classes.shareButton,
+            iconGrid: classes.actionButtonIconGrid
+          }}
+        >
           <img alt="" src={shareIcon} />
-          <Typography className={classes.actionText}>Share</Typography>
+          <Typography className={classes.actionButtonText}>Share</Typography>
         </ActionButton>
       )}
 
       {onDownload && (
         <Fragment>
           <div className={classes.verticalDivider} />
-          <ActionButton gaEvents={download} onClick={onDownload}>
+          <ActionButton
+            gaEvents={download}
+            onClick={onDownload}
+            classes={{
+              button: classes.downloadButton,
+              iconGrid: classes.actionButtonIconGrid
+            }}
+          >
             <img alt="" src={downloadIcon} />
-            <Typography className={classes.actionText}>Download</Typography>
+            <Typography className={classes.actionButtonText}>
+              Download
+            </Typography>
           </ActionButton>
         </Fragment>
       )}
@@ -185,9 +206,16 @@ function Actions({
       {embedCode && (
         <Fragment>
           <div className={classes.verticalDivider} />
-          <ActionButton gaEvents={embed} onClick={handleEmbed}>
+          <ActionButton
+            gaEvents={embed}
+            onClick={handleEmbed}
+            classes={{
+              button: classes.embedButton,
+              iconGrid: classes.actionButtonIconGrid
+            }}
+          >
             <img alt="" src={embedIcon} />
-            <Typography className={classes.actionText}>Embed</Typography>
+            <Typography className={classes.actionButtonText}>Embed</Typography>
           </ActionButton>
         </Fragment>
       )}
@@ -196,9 +224,18 @@ function Actions({
         <Fragment>
           <div className={classes.verticalDivider} />
 
-          <ActionButton gaEvents={compare} onClick={onCompare}>
+          <ActionButton
+            gaEvents={compare}
+            onClick={onCompare}
+            classes={{
+              button: classes.compareButton,
+              iconGrid: classes.actionButtonIconGrid
+            }}
+          >
             <img alt="" src={compareIcon} />
-            <Typography className={classes.actionText}>Compare</Typography>
+            <Typography className={classes.actionButtonText}>
+              Compare
+            </Typography>
           </ActionButton>
         </Fragment>
       )}
@@ -206,9 +243,18 @@ function Actions({
       {onShowData && (
         <Fragment>
           <div className={classes.verticalDivider} />
-          <ActionButton gaEvents={showData} onClick={onShowData}>
+          <ActionButton
+            gaEvents={showData}
+            onClick={onShowData}
+            classes={{
+              button: classes.showDataButton,
+              iconGrid: classes.actionButtonIconGrid
+            }}
+          >
             <img alt="" src={showIcon} />
-            <Typography className={classes.actionText}>Show Data</Typography>
+            <Typography className={classes.actionButtonText}>
+              Show Data
+            </Typography>
           </ActionButton>
         </Fragment>
       )}
