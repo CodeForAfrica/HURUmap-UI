@@ -146,7 +146,7 @@ function PieChart({
       pointerLength={0}
       width={chartInnerRadius * 2}
       x={origin.x}
-      y={paddingTop + chartRadius + chartInnerRadius}
+      y={origin.y + chartInnerRadius}
     />
   ) : (
     <VictoryTooltip
@@ -177,7 +177,7 @@ function PieChart({
           style={donutLabelStyle}
           text={data1[0].label}
           x={origin.x}
-          y={paddingTop + chartRadius}
+          y={origin.y}
         />
       )}
       <VictoryPie
