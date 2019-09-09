@@ -161,7 +161,7 @@ function InsightContainer({
           alignItems="flex-start"
           justify="center"
         >
-          <BlockLoader loading={loading} height="2.5rem">
+          <BlockLoader loading={loading} height={40}>
             <Actions
               onShare={handleShare}
               onDownload={handleDownload}

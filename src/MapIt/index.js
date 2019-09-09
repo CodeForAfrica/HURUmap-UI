@@ -302,7 +302,7 @@ function MapIt({
     <Fragment>
       {!featuresToDraw && (
         <div className={classes.root}>
-          <BlockLoader loading width="100%" height="100%" />
+          <BlockLoader loading />
         </div>
       )}
       <div

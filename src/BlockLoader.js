@@ -18,12 +18,12 @@ BlockLoader.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]),
-  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  width: PropTypes.number,
+  height: PropTypes.number
 };
 
 BlockLoader.defaultProps = {
   children: null,
-  width: '100%',
-  height: '100%'
+  width: -1,
+  height: -1
 };

@@ -19,8 +19,11 @@ function BarLabel({
       <Tooltip
         {...tooltipProps}
         datum={datum}
-        // eslint-disable-next-line no-underscore-dangle
-        text={(data && datum && data[datum._x - 1].tooltip) || text}
+        text={
+          // eslint-disable-next-line no-underscore-dangle
+          (data && datum && data[datum._x - 1] && data[datum._x - 1].tooltip) ||
+          text
+        }
         x={x}
         y={y}
         // eslint-disable-next-line react/prop-types, no-underscore-dangle
@@ -32,9 +35,13 @@ function BarLabel({
 
 BarLabel.propTypes = {
   datum: PropTypes.shape({ _x: PropTypes.number }),
-  text: PropTypes.string,
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   tooltipProps: PropTypes.shape({
-    data: PropTypes.shape({})
+    data: PropTypes.arrayOf(
+      PropTypes.shape({
+        tooltip: PropTypes.string
+      })
+    )
   }).isRequired,
   x: PropTypes.number,
   y: PropTypes.number
