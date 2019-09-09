@@ -319,6 +319,10 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
             content={{
               height: 338
             }}
+            embedCode={text(
+              'embedCode',
+              'Embed Chart Code'
+            )}
           >
             <NumberVisuals
               subtitle={text('Subtitle', 'Income')}
@@ -334,6 +338,7 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
               description={text('Description', 'Median household income')}
               comparisonData={object('Comparison Data', [
                 {
+                  id: 0,
                   parentComparison: 'about 90 percent',
                   parentDescription: 'of the amount in United States: $32,397',
                   parentDeviation: '±0.24%'

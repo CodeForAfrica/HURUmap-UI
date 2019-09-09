@@ -100,6 +100,7 @@ function InsightContainer({
   insightContext,
   insightLink,
   gaEvents,
+  embedCode,
   ...props
 }) {
   const classes = useStyles(props);
@@ -168,6 +169,7 @@ function InsightContainer({
               onShowData={handleShowData}
               onCompare={handleCompare}
               gaEvents={gaEvents}
+              embedCode={embedCode}
               classes={{
                 shareButton: classes.shareButton,
                 embedButton: classes.embedButton,
@@ -272,11 +274,13 @@ InsightContainer.propTypes = {
     handleShowData: PropTypes.func,
     handleCompare: PropTypes.func
   }),
-  gaEvents: PropTypes.shape({})
+  gaEvents: PropTypes.shape({}),
+  embedCode: PropTypes.string
 };
 
 InsightContainer.defaultProps = {
   source: undefined,
+  embedCode: undefined,
   loading: false,
   insightLink: {
     href: '/profiles/nigeria',
