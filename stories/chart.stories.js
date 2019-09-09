@@ -297,7 +297,8 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
         ])}
         width={number('width', 500)}
         height={number('height', 500)}
-        padding={number('padding', 100)}
+        padding={number('padding', 0)}
+        origin={object('origin', { x: 200, y: 200 })}
         parts={{
           tooltip: {
             style: {
@@ -305,13 +306,27 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
             }
           },
           legend: {
-            style: { labels: { fontSize: 20, fontWeight: 'bold' } }
+            rowGutter: number('Legend row spacing', 20),
+            style: {
+              labels: object('Legend style', {
+                fontFamily: 'Arial',
+                fontSize: 20,
+                fontWeight: 'bold'
+              })
+            }
           }
         }}
         legend={[
-          { name: 'Female', label: 'Female: 22%' },
-          { name: 'Male', label: 'Male: 78%' }
+          {
+            name: 'A very, very, very, very long legend name',
+            label: 'Female: 22%'
+          },
+          {
+            name: 'Short one',
+            label: 'Long tooltip label should appear above chart: 78%'
+          }
         ]}
+        legendWidth={number('Legend width', 100)}
         responsive={boolean('responsive', true)}
         standalone={boolean('standalone', true)}
         style={{
@@ -348,7 +363,7 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
         ])}
         width={number('width', 500)}
         height={number('height', 500)}
-        padding={number('padding', 100)}
+        padding={number('padding', 0)}
       />
     </div>
   ));

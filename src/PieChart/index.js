@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Helpers, VictoryPie, VictoryTooltip, VictoryLegend } from 'victory';
 
 import withVictoryTheme from '../styles/withVictoryTheme';
+
 import CustomContainer from '../CustomContainer';
 import DonutLabel from './DonutLabel';
 import LegendLabel from './LegendLabel';
@@ -13,6 +14,7 @@ const computeRadii = (width, height, padding, groupSpacing = 0) => {
   const radius = Helpers.getRadius({ width, height, padding });
   return [radius - groupSpacing / 2];
 };
+
 function PieChart({
   colorScale,
   data,
@@ -22,6 +24,7 @@ function PieChart({
   innerRadius: suggestedInnerRadius,
   legend,
   legendWidth: suggestedLegendWidth,
+  origin: suggestedOrigin,
   padding: suggestedPadding,
   parts,
   radius,
@@ -106,6 +109,10 @@ function PieChart({
         : Math.min.apply(null, computedRadii) * chart.donutRatio;
   }
   const paddingTop = padding.top || 0;
+  const origin = suggestedOrigin || {
+    x: chartWidth / 2,
+    y: paddingTop + chartRadius
+  };
   const donutLabelData = data2 ? data[donutLabelKey.dataIndex] : data1;
   const { style: suggestedHeightStyle } = props;
   const donutLabelStyle = Object.assign(
@@ -138,8 +145,8 @@ function PieChart({
       orientation="top"
       pointerLength={0}
       width={chartInnerRadius * 2}
-      x={width / 2}
-      y={paddingTop + chartRadius + chartInnerRadius}
+      x={origin.x}
+      y={origin.y + chartInnerRadius}
     />
   ) : (
     <VictoryTooltip
@@ -162,17 +169,6 @@ function PieChart({
 
   return (
     <CustomContainer {...containerProps}>
-      {legendProps && (
-        <VictoryLegend
-          standalone={false}
-          labelComponent={
-            <LegendLabel colorScale={colorScale1} {...tooltipProps} />
-          }
-          {...legendProps}
-          x={chartWidth}
-          y={paddingTop}
-        />
-      )}
       {donut && (
         <DonutLabel
           data={donutLabelData}
@@ -180,8 +176,8 @@ function PieChart({
           sortKey={donutLabelKey.sortKey}
           style={donutLabelStyle}
           text={data1[0].label}
-          x={width / 2}
-          y={paddingTop + chartRadius}
+          x={origin.x}
+          y={origin.y}
         />
       )}
       <VictoryPie
@@ -197,7 +193,7 @@ function PieChart({
         endAngle={endAngle1}
         innerRadius={chartInnerRadius}
         labelRadius={labelRadius}
-        origin={{ x: width / 2, y: paddingTop + chartRadius }}
+        origin={origin}
         radius={computedRadii[0]}
         startAngle={startAngle1}
         theme={theme}
@@ -220,7 +216,7 @@ function PieChart({
           }
           innerRadius={chartInnerRadius}
           labelRadius={labelRadius}
-          origin={{ x: width / 2, y: paddingTop + chartRadius }}
+          origin={origin}
           radius={computedRadii[1 % computedRadii.length]}
           startAngle={startAngle2}
           theme={theme}
@@ -228,6 +224,17 @@ function PieChart({
           width={width}
           labelComponent={labelComponent2}
           {...props}
+        />
+      )}
+      {legendProps && (
+        <VictoryLegend
+          standalone={false}
+          labelComponent={
+            <LegendLabel colorScale={colorScale1} width={legendWidth} />
+          }
+          {...legendProps}
+          x={chartWidth}
+          y={paddingTop}
         />
       )}
     </CustomContainer>
@@ -258,6 +265,10 @@ PieChart.propTypes = {
   innerRadius: PropTypes.number,
   legend: PropTypes.arrayOf(PropTypes.shape({})),
   legendWidth: PropTypes.number,
+  origin: PropTypes.shape({
+    x: PropTypes.number,
+    y: PropTypes.number
+  }),
   padding: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
   parts: PropTypes.shape({
     legend: PropTypes.shape({}),
@@ -294,6 +305,7 @@ PieChart.defaultProps = {
   innerRadius: undefined,
   legend: undefined,
   legendWidth: undefined,
+  origin: undefined,
   padding: undefined,
   parts: undefined,
   radius: undefined,
