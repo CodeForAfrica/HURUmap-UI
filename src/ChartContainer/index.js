@@ -62,6 +62,7 @@ function ChartContainer({
   onClickDownload,
   onClickEmbed: onClickEmbedProp,
   onClickShare: onClickShareProp,
+  share,
   sourceLink,
   sourceTitle,
   title,
@@ -124,24 +125,31 @@ function ChartContainer({
     if (typeof onClickShareProp === 'undefined') {
       const dropDown = shareAnchorEl ? (
         <ShareDropDown
+          {...share}
           anchorEl={shareAnchorEl}
-          onClose={handleCloseShare}
-          sourceLink={sourceLink}
-          sourceTitle={sourceTitle}
           classes={{
             root: classes.shareRoot,
-            source: classes.shareSource,
+            social: classes.shareSocial,
+            title: classes.shareTitle,
             explore: classes.shareExplore,
             dropDownRoot: classes.shareDropDownRoot,
             dropDownPaper: classes.shareDropDownPaper
           }}
+          onClose={handleCloseShare}
         >
           Explore Data
         </ShareDropDown>
       ) : null;
       setShareDropDown(dropDown);
     }
-  }, [classes, onClickShareProp, shareAnchorEl, sourceLink, sourceTitle]);
+  }, [
+    classes,
+    onClickShareProp,
+    share,
+    shareAnchorEl,
+    sourceLink,
+    sourceTitle
+  ]);
 
   const onClickEmbed =
     onClickEmbedProp ||
@@ -312,6 +320,27 @@ ChartContainer.propTypes = {
   onClickDownload: PropTypes.func,
   onClickEmbed: PropTypes.func,
   onClickShare: PropTypes.func,
+  share: PropTypes.shape({
+    email: PropTypes.shape({
+      subject: PropTypes.string,
+      body: PropTypes.string,
+      separator: PropTypes.string
+    }),
+    facebook: PropTypes.shape({
+      url: PropTypes.string,
+      quote: PropTypes.string,
+      hashtag: PropTypes.string
+    }),
+    shareIcon: PropTypes.shape({
+      round: PropTypes.bool,
+      size: PropTypes.number
+    }),
+    twitter: PropTypes.shape({
+      url: PropTypes.string,
+      title: PropTypes.string,
+      hashtags: PropTypes.string
+    })
+  }),
   subtitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   sourceLink: PropTypes.string,
@@ -344,6 +373,11 @@ style="margin: 1em; max-width: 300px;"
   onClickDownload: undefined,
   onClickEmbed: undefined,
   onClickShare: undefined,
+  share: {
+    // Default to twitter and facebook, sharing window.location.url
+    facebook: {},
+    twitter: {}
+  },
   sourceLink: undefined,
   sourceTitle: undefined,
   loading: false,
