@@ -78,7 +78,16 @@ const useStyles = makeStyles(({ breakpoints }) => ({
     [breakpoints.up('md')]: {
       margin: 0
     }
-  }
+  },
+  shareButton: {},
+  compareButton: {},
+  embedButton: {},
+  showDataButton: {},
+  downloadButton: {},
+  actionButtonIconGrid: {},
+  actionRoot: {},
+  actionButtonVerticalDivider: {},
+  actionButtonText: {}
 }));
 
 function InsightContainer({
@@ -90,9 +99,10 @@ function InsightContainer({
   insightActions,
   insightContext,
   insightLink,
-  gaEvents
+  gaEvents,
+  ...props
 }) {
-  const classes = useStyles();
+  const classes = useStyles(props);
   const {
     handleShare,
     handleCompare,
@@ -158,6 +168,17 @@ function InsightContainer({
               onShowData={handleShowData}
               onCompare={handleCompare}
               gaEvents={gaEvents}
+              classes={{
+                shareButton: classes.shareButton,
+                embedButton: classes.embedButton,
+                showDataButton: classes.showDataButton,
+                compareButton: classes.compareButton,
+                downloadButton: classes.downloadButton,
+                actionButtonIconGrid: classes.actionButtonIconGrid,
+                actionButtonText: classes.actionButtonText,
+                verticalDivider: classes.actionButtonVerticalDivider,
+                root: classes.actionRoot
+              }}
             />
           </BlockLoader>
         </Grid>

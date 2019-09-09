@@ -11,12 +11,13 @@ import PieLabel from './PieLabel';
  *
  * @param {*} props .
  */
-function LegendLabel(props) {
+// while we need `width` for the label, we don't need it for tooltip
+function LegendLabel({ width, ...props }) {
   const { colorScale, data, datum, index } = props;
 
   return (
     <g>
-      <PieLabel {...props} />
+      <PieLabel width={width} {...props} />
       <VictoryTooltip
         {...props}
         datum={Object.assign({ _x: index + 1 }, datum)}
@@ -37,14 +38,16 @@ LegendLabel.propTypes = {
     })
   ),
   datum: PropTypes.arrayOf(PropTypes.shape({})),
-  index: PropTypes.number
+  index: PropTypes.number,
+  width: PropTypes.number
 };
 
 LegendLabel.defaultProps = {
   data: undefined,
   colorScale: undefined,
   datum: undefined,
-  index: undefined
+  index: undefined,
+  width: undefined
 };
 
 export default LegendLabel;

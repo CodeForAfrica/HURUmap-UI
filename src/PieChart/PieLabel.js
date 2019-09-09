@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { VictoryLabel } from 'victory';
-
 import withVictoryTheme from '../styles/withVictoryTheme';
+import Label from '../Label';
 
 function PieLabel({
   colorScale = [],
@@ -22,7 +21,7 @@ function PieLabel({
       )
     : originalStyle;
 
-  return <VictoryLabel style={style} {...props} />;
+  return <Label style={style} {...props} />;
 }
 
 PieLabel.propTypes = {
