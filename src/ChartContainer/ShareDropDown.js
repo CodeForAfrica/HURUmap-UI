@@ -23,14 +23,11 @@ const useStyles = makeStyles(() => ({
     textTransform: 'uppercase',
     borderBottom: '0.0625rem solid #c4c4c4'
   },
-  explore: {
-    margin: '20px'
-  },
   dropDownRoot: {},
   dropDownPaper: {}
 }));
 
-function SharePanel({
+function ShareDropDown({
   anchorEl,
   children,
   email,
@@ -92,7 +89,7 @@ function SharePanel({
   );
 }
 
-SharePanel.propTypes = {
+ShareDropDown.propTypes = {
   anchorEl: PropTypes.shape({}).isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
@@ -123,7 +120,7 @@ SharePanel.propTypes = {
   title: PropTypes.string
 };
 
-SharePanel.defaultProps = {
+ShareDropDown.defaultProps = {
   open: undefined,
   email: null,
   facebook: null,
@@ -134,4 +131,4 @@ SharePanel.defaultProps = {
   twitter: null
 };
 
-export default SharePanel;
+export default ShareDropDown;
