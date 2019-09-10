@@ -57,9 +57,10 @@ function NumberVisuals({
   statisticDeviation,
   secondaryDeviation,
   description,
-  comparisonData
+  comparisonData,
+  ...props
 }) {
-  const classes = useStyles();
+  const classes = useStyles(props);
   const [onHover, setOnHover] = useState(false);
   const toggleHover = () => setOnHover(!onHover);
   return (
@@ -90,32 +91,33 @@ function NumberVisuals({
       <Typography className={classes.description}>{description}</Typography>
 
       <List className={classes.list}>
-        {comparisonData.map(d => (
-          <ListItem className={classes.listParent}>
-            <ListItemText
-              primary={
-                <Typography className={classes.listTypography}>
-                  <span className={classes.comparison}>
-                    {` `}
-                    {d.parentComparison}
-                  </span>
-                  <span>
-                    {` `}
-                    {d.parentDescription}
-                  </span>
-                  <span
-                    className={
-                      !onHover ? classes.hidden : classes.secondaryDeviation
-                    }
-                  >
-                    {` `}
-                    {d.parentDeviation}
-                  </span>
-                </Typography>
-              }
-            />
-          </ListItem>
-        ))}
+        {comparisonData &&
+          comparisonData.map(d => (
+            <ListItem className={classes.listParent} key={d.id}>
+              <ListItemText
+                primary={
+                  <Typography className={classes.listTypography}>
+                    <span className={classes.comparison}>
+                      {` `}
+                      {d.parentComparison}
+                    </span>
+                    <span>
+                      {` `}
+                      {d.parentDescription}
+                    </span>
+                    <span
+                      className={
+                        !onHover ? classes.hidden : classes.secondaryDeviation
+                      }
+                    >
+                      {` `}
+                      {d.parentDeviation}
+                    </span>
+                  </Typography>
+                }
+              />
+            </ListItem>
+          ))}
       </List>
     </div>
   );

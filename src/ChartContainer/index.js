@@ -213,7 +213,7 @@ function ChartContainer({
           justify="flex-end"
         >
           {onClickShare && (
-            <BlockLoader loading={loading} width="2.5rem" height="2.5rem">
+            <BlockLoader loading={loading} width={40} height={40}>
               <ButtonBase
                 className={classes.button}
                 onClick={() => onClickShare(getReferenceObject(shareButtonRef))}
@@ -225,7 +225,7 @@ function ChartContainer({
           )}
 
           {onClickDownload && (
-            <BlockLoader loading={loading} width="2.5rem" height="2.5rem">
+            <BlockLoader loading={loading} width={40} height={40}>
               <ButtonBase
                 className={classes.button}
                 onClick={() =>
@@ -239,7 +239,7 @@ function ChartContainer({
           )}
 
           {onClickEmbed && (
-            <BlockLoader loading={loading} width="2.5rem" height="2.5rem">
+            <BlockLoader loading={loading} width={40} height={40}>
               <ButtonBase
                 className={classes.button}
                 onClick={() => onClickEmbed(getReferenceObject(embedButtonRef))}
@@ -251,7 +251,7 @@ function ChartContainer({
           )}
 
           {onClickCompare && (
-            <BlockLoader loading={loading} width="2.5rem" height="2.5rem">
+            <BlockLoader loading={loading} width={40} height={40}>
               <ButtonBase
                 className={classes.button}
                 onClick={() =>
@@ -265,7 +265,7 @@ function ChartContainer({
           )}
 
           {onClickData && (
-            <BlockLoader loading={loading} width="2.5rem" height="2.5rem">
+            <BlockLoader loading={loading} width={40} height={40}>
               <ButtonBase
                 className={classes.button}
                 onClick={() => onClickData(getReferenceObject(dataButtonRef))}
@@ -286,7 +286,9 @@ function ChartContainer({
         className={classes.content}
         style={{ width: content.width, height: content.height }}
       >
-        <div style={{ height: '100%' }}>
+        {/* Set width 100% only when loading to allow Chart to define its own width 
+            otherwise a chart with a small width will scale and look large. */}
+        <div style={{ width: loading && '100%', height: '100%' }}>
           <BlockLoader loading={loading}>{children}</BlockLoader>
           <TypographyLoader
             loading={loading}
@@ -367,7 +369,7 @@ src="https://tanzania.hurumap.org/embed/iframe.html?geoID=region-11&geoVersion=2
 frameBorder="0"
 width="100%"
 height="300"
-style="margin: 1em; max-width: 300px;"
+style="margin: 1em; max-width: 18.75rem;"
 />
 <script src="https://tanzania.hurumap.org/static/js/embed.chart.make.js" />`
   },

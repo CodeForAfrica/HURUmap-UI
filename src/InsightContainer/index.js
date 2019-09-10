@@ -37,6 +37,7 @@ const useStyles = makeStyles(({ breakpoints }) => ({
     fontSize: '1.25rem'
   },
   subtitle: {},
+  highlight: {},
   sourceLink: {},
   sourceGrid: {
     display: 'flex',
@@ -100,6 +101,7 @@ function InsightContainer({
   insightContext,
   insightLink,
   gaEvents,
+  embedCode,
   ...props
 }) {
   const classes = useStyles(props);
@@ -112,7 +114,7 @@ function InsightContainer({
 
   return (
     <Grid container spacing={4} className={classes.root}>
-      <Grid container item md={3} sm={12}>
+      <Grid container item md={3} sm={12} className={classes.highlight}>
         <BlockLoader loading={loading}>{children[0]}</BlockLoader>
         <TypographyLoader
           loading={loading}
@@ -161,13 +163,14 @@ function InsightContainer({
           alignItems="flex-start"
           justify="center"
         >
-          <BlockLoader loading={loading} height="2.5rem">
+          <BlockLoader loading={loading} height={40}>
             <Actions
               onShare={handleShare}
               onDownload={handleDownload}
               onShowData={handleShowData}
               onCompare={handleCompare}
               gaEvents={gaEvents}
+              embedCode={embedCode}
               classes={{
                 shareButton: classes.shareButton,
                 embedButton: classes.embedButton,
@@ -272,11 +275,13 @@ InsightContainer.propTypes = {
     handleShowData: PropTypes.func,
     handleCompare: PropTypes.func
   }),
-  gaEvents: PropTypes.shape({})
+  gaEvents: PropTypes.shape({}),
+  embedCode: PropTypes.string
 };
 
 InsightContainer.defaultProps = {
   source: undefined,
+  embedCode: undefined,
   loading: false,
   insightLink: {
     href: '/profiles/nigeria',

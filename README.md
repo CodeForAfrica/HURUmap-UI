@@ -25,7 +25,8 @@ If you'd like to contribute to sensors.AFRICA, check out the [CONTRIBUTING.md](.
 
 ## Publish A New Release
 
-To publish a new release;
+To publish a new release, we use the excellent [bumpversion](https://pypi.org/project/bumpversion/) package.
+Install it and then run;
 
 ```
 bumpversion patch
