@@ -297,7 +297,7 @@ Actions.defaultProps = {
   onDownload: null,
   onShare: null,
   onShowData: null,
-  embedCode: 'null',
+  embedCode: undefined,
   onCompare: null,
   gaEvents: {
     share: undefined,
