@@ -63,55 +63,53 @@ function ShareDropDown({
     >
       <Grid className={classes.root} container justify="center" {...props}>
         <DialogTitle className={classes.title}>{title}</DialogTitle>
-        <DialogContent className={classes.social}>
-          <Grid container>
-            <Grid
-              item
-              xs={12}
-              className={classes.social}
-              container
-              justify="center"
-            >
-              {twitter && (
-                <TwitterShareButton
-                  url={twitterShareUrl}
-                  {...twitterProps}
-                  className={classes.socialIcon}
-                >
-                  <TwitterIcon {...shareIcon} />
-                </TwitterShareButton>
-              )}
-              {facebook && (
-                <FacebookShareButton
-                  url={facebookShareUrl}
-                  {...facebookProps}
-                  className={classes.socialIcon}
-                >
-                  <FacebookIcon {...shareIcon} />
-                </FacebookShareButton>
-              )}
-              {email && (
-                <EmailShareButton
-                  url={emailShareUrl}
-                  {...emailProps}
-                  className={classes.socialIcon}
-                >
-                  <EmailIcon {...shareIcon} />
-                </EmailShareButton>
-              )}
-            </Grid>
-            {url && (
-              <TextField
-                defaultValue={url}
-                className={classes.url}
-                InputProps={{
-                  readOnly: true,
-                  classes: { root: classes.urlInput }
-                }}
-                variant="outlined"
-              />
+        <DialogContent>
+          <Grid
+            item
+            xs={12}
+            className={classes.social}
+            container
+            justify="center"
+          >
+            {twitter && (
+              <TwitterShareButton
+                url={twitterShareUrl}
+                {...twitterProps}
+                className={classes.socialIcon}
+              >
+                <TwitterIcon {...shareIcon} />
+              </TwitterShareButton>
+            )}
+            {facebook && (
+              <FacebookShareButton
+                url={facebookShareUrl}
+                {...facebookProps}
+                className={classes.socialIcon}
+              >
+                <FacebookIcon {...shareIcon} />
+              </FacebookShareButton>
+            )}
+            {email && (
+              <EmailShareButton
+                url={emailShareUrl}
+                {...emailProps}
+                className={classes.socialIcon}
+              >
+                <EmailIcon {...shareIcon} />
+              </EmailShareButton>
             )}
           </Grid>
+          {url && (
+            <TextField
+              defaultValue={url}
+              className={classes.url}
+              InputProps={{
+                readOnly: true,
+                classes: { root: classes.urlInput }
+              }}
+              variant="outlined"
+            />
+          )}
         </DialogContent>
       </Grid>
     </DropDown>
