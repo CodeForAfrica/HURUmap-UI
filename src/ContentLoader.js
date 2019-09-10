@@ -1,20 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
+import shortid from 'shortid';
 
 export default function CustomContentLoader({
+  id,
   children,
   height,
   width,
   ...props
 }) {
+  const [dimmension, setDimension] = useState({
+    width: width === undefined ? 0 : width,
+    height: height === undefined ? 0 : height
+  });
+  useEffect(() => {
+    const rect = document
+      .getElementById(id)
+      .parentElement.getBoundingClientRect();
+    setDimension({
+      width: width === undefined ? rect.width : width,
+      height: height === undefined ? rect.height : height
+    });
+  }, [id, width, height]);
+
   return (
     <ContentLoader
+      id={id}
       primaryOpacity={0.01}
       secondaryOpacity={0.1}
-      width="100%"
-      height="100%"
-      viewBox={`0 0 ${width} ${height}`}
+      width={dimmension.width}
+      height={dimmension.height}
+      viewBox={`0 0 ${dimmension.width} ${dimmension.height}`}
       style={{ width, height }}
       {...props}
     >
@@ -24,15 +41,17 @@ export default function CustomContentLoader({
 }
 
 CustomContentLoader.propTypes = {
+  id: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]).isRequired,
-  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  width: PropTypes.number,
+  height: PropTypes.number
 };
 
 CustomContentLoader.defaultProps = {
-  width: '100%',
-  height: '100%'
+  id: shortid.generate(),
+  width: undefined,
+  height: undefined
 };

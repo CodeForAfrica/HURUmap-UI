@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import shortid from 'shortid';
 
 import wrapSVGText from './wrapSVGText';
 
@@ -12,14 +13,9 @@ function WrapLabel({ width, text, x, y, style, transform, textAnchor }) {
     }
   }, [text, width, x]);
 
-  const uniqueId =
-    Math.random()
-      .toString(36)
-      .substring(2) + Date.now().toString(36);
-
   return (
     <text
-      key={uniqueId}
+      key={shortid.generate()}
       ref={node => {
         ref.current = node;
       }}
