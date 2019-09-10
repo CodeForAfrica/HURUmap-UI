@@ -46,8 +46,10 @@ const useStyles = makeStyles({
   embedDropDownRoot: {},
   embedDropDownPaper: {},
   shareRoot: {},
-  shareSource: {},
-  shareExplore: {},
+  shareTitle: {},
+  shareSocial: {},
+  shareUrl: {},
+  shareUrlInput: {},
   shareDropDownRoot: {},
   shareDropDownPaper: {}
 });
@@ -129,9 +131,10 @@ function ChartContainer({
           anchorEl={shareAnchorEl}
           classes={{
             root: classes.shareRoot,
-            social: classes.shareSocial,
             title: classes.shareTitle,
-            explore: classes.shareExplore,
+            social: classes.shareSocial,
+            url: classes.shareUrl,
+            urlInput: classes.shareUrlInput,
             dropDownRoot: classes.shareDropDownRoot,
             dropDownPaper: classes.shareDropDownPaper
           }}
