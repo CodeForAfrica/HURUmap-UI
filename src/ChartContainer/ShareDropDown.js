@@ -33,7 +33,6 @@ const useStyles = makeStyles(() => ({
 
 function ShareDropDown({
   anchorEl,
-  children,
   email,
   facebook,
   onClose,
@@ -54,6 +53,9 @@ function ShareDropDown({
   const { url: emailShareUrlProp, ...emailProps } = email || {};
   const emailShareUrl = email && (emailShareUrlProp || url);
 
+  if (!twitter && !facebook && !email) {
+    return null;
+  }
   return (
     <DropDown
       anchorEl={anchorEl}
@@ -62,7 +64,7 @@ function ShareDropDown({
       classes={{ root: classes.dropDownRoot, paper: classes.dropDownPaper }}
     >
       <Grid className={classes.root} container justify="center" {...props}>
-        <DialogTitle className={classes.title}>{title}</DialogTitle>
+        {title && <DialogTitle className={classes.title}>{title}</DialogTitle>}
         <DialogContent>
           <Grid
             item
@@ -118,10 +120,6 @@ function ShareDropDown({
 
 ShareDropDown.propTypes = {
   anchorEl: PropTypes.shape({}).isRequired,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ]).isRequired,
   email: PropTypes.shape({
     subject: PropTypes.string,
     body: PropTypes.string,
