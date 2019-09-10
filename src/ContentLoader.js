@@ -10,16 +10,16 @@ export default function CustomContentLoader({
   ...props
 }) {
   const [dimmension, setDimension] = useState({
-    width: width === -1 ? 0 : width,
-    height: height === -1 ? 0 : height
+    width: width === undefined ? 0 : width,
+    height: height === undefined ? 0 : height
   });
   useEffect(() => {
     const rect = document
       .getElementById(id)
       .parentElement.getBoundingClientRect();
     setDimension({
-      width: width === -1 ? rect.width : width,
-      height: height === -1 ? rect.height : height
+      width: width === undefined ? rect.width : width,
+      height: height === undefined ? rect.height : height
     });
   }, [id, width, height]);
 
@@ -54,6 +54,6 @@ CustomContentLoader.defaultProps = {
     Math.random()
       .toString(36)
       .substring(2) + Date.now().toString(36),
-  width: -1,
-  height: -1
+  width: undefined,
+  height: undefined
 };

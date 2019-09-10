@@ -24,6 +24,6 @@ BlockLoader.propTypes = {
 
 BlockLoader.defaultProps = {
   children: null,
-  width: -1,
-  height: -1
+  width: undefined,
+  height: undefined
 };
