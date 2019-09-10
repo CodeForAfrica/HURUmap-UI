@@ -37,6 +37,7 @@ const useStyles = makeStyles(({ breakpoints }) => ({
     fontSize: '1.25rem'
   },
   subtitle: {},
+  highlight: {},
   sourceLink: {},
   sourceGrid: {
     display: 'flex',
@@ -113,7 +114,7 @@ function InsightContainer({
 
   return (
     <Grid container spacing={4} className={classes.root}>
-      <Grid container item md={3} sm={12}>
+      <Grid container item md={3} sm={12} className={classes.highlight}>
         <BlockLoader loading={loading}>{children[0]}</BlockLoader>
         <TypographyLoader
           loading={loading}
