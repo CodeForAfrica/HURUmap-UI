@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
+import shortid from 'shortid';
 
 export default function CustomContentLoader({
   id,
@@ -50,10 +51,7 @@ CustomContentLoader.propTypes = {
 };
 
 CustomContentLoader.defaultProps = {
-  id:
-    Math.random()
-      .toString(36)
-      .substring(2) + Date.now().toString(36),
+  id: shortid.generate(),
   width: undefined,
   height: undefined
 };
