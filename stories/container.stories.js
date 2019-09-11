@@ -73,6 +73,10 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                 'Subtitle',
                 'Praesent at dignissim est. Integer porta consectetur ante, ut congue erat.'
               )}
+              share={object('share', {
+                facebook: {},
+                twitter: {}
+              })}
               sourceUrl={text('sourceUrl', 'http://dev.dominion.africa')}
               sourceLink="http://dev.dominion.africa"
               content={object('content', { height: 400, width: '100%' })}
