@@ -25,13 +25,10 @@ If you'd like to contribute to sensors.AFRICA, check out the [CONTRIBUTING.md](.
 
 ## Publish A New Release
 
-To publish a new release, we use the excellent [bumpversion](https://pypi.org/project/bumpversion/) package.
-Install it and then run;
+To publish a new release, we use the excellent [yarn version](https://yarnpkg.com/lang/en/docs/cli/version/) cli command, configured to both publish to npm as well as deploy storybook to GitHub pages.
 
 ```
-bumpversion patch
-git push --tags
-npm publish
+yarn version
 ```
 
 ---
