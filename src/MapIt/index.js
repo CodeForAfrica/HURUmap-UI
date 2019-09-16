@@ -25,6 +25,7 @@ function MapIt({
   id,
   url = 'https://mapit.hurumap.org',
   tolerance = 0.001,
+  zoom = 3,
   generation = '1',
   drawChildren,
   drawProfile,
@@ -219,7 +220,7 @@ function MapIt({
         touchZoom: false,
         zoomControl: false,
         center: [0, 0],
-        zoom: 3,
+        zoom,
         ...leafletPropsMemoized
       });
 
@@ -286,6 +287,7 @@ function MapIt({
     }
   }, [
     mapId,
+    zoom,
     tileLayer,
     featuresToDraw,
     drawProfile,
@@ -318,6 +320,7 @@ MapIt.propTypes = {
   id: PropTypes.string,
   url: PropTypes.string,
   tolerance: PropTypes.number,
+  zoom: PropTypes.number,
   drawChildren: PropTypes.bool,
   drawProfile: PropTypes.bool,
   geoLevel: PropTypes.string,
@@ -336,6 +339,7 @@ MapIt.defaultProps = {
   id: undefined,
   url: undefined,
   tolerance: undefined,
+  zoom: undefined,
   drawChildren: undefined,
   drawProfile: undefined,
   geoLevel: undefined,
