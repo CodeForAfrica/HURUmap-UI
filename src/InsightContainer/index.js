@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
+
+import domToImage from 'dom-to-image';
 
 import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
@@ -108,9 +110,36 @@ function InsightContainer({
   const {
     handleShare,
     handleCompare,
-    handleDownload,
+    handleDownload: handleDownloadProp,
     handleShowData
   } = insightActions;
+  const chartRef = useRef(null);
+
+  const toPng = () => {
+    if (chartRef.current) {
+      // We need to remove `md` classes to make sure we screenshot the chart
+      // at it's natural/maximum size
+      chartRef.current.classList.remove('MuiGrid-grid-md-5');
+      return domToImage.toPng(chartRef.current).then(dataUrl => {
+        chartRef.current.classList.add('MuiGrid-grid-md-5');
+
+        return dataUrl;
+      });
+    }
+    return Promise.resolve(undefined);
+  };
+
+  const defaultHandleDownload = (e, dataUrl) => {
+    const link = document.createElement('a');
+    link.download = `${title}.png`;
+    link.href = dataUrl;
+
+    document.body.appendChild(link); // Firefox requires this
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleDownload = handleDownloadProp || defaultHandleDownload;
 
   return (
     <Grid container spacing={4} className={classes.root}>
@@ -132,7 +161,7 @@ function InsightContainer({
           )}
         </TypographyLoader>
       </Grid>
-      <Grid container item md={5} sm={12}>
+      <Grid container item md={5} sm={12} ref={chartRef}>
         <Grid item>
           <TypographyLoader
             loading={loading}
@@ -165,8 +194,13 @@ function InsightContainer({
         >
           <BlockLoader loading={loading} height={40}>
             <Actions
-              onShare={handleShare}
-              onDownload={handleDownload}
+              onShare={
+                handleShare && (e => toPng().then(handleShare.bind(null, e)))
+              }
+              onDownload={
+                handleDownload &&
+                (e => toPng().then(handleDownload.bind(null, e)))
+              }
               onShowData={handleShowData}
               onCompare={handleCompare}
               gaEvents={gaEvents}
@@ -290,7 +324,7 @@ InsightContainer.defaultProps = {
   insightContext: undefined,
   insightActions: {
     handleShare: () => {},
-    handleDownload: () => {},
+    handleDownload: undefined,
     handleShowData: () => {},
     handleCompare: () => {}
   },
