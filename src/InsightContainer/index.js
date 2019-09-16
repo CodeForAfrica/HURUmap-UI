@@ -130,13 +130,15 @@ function InsightContainer({
   };
 
   const defaultHandleDownload = (e, dataUrl) => {
-    const link = document.createElement('a');
-    link.download = `${title}.png`;
-    link.href = dataUrl;
+    if (dataUrl) {
+      const link = document.createElement('a');
+      link.download = `${title}.png`;
+      link.href = dataUrl;
 
-    document.body.appendChild(link); // Firefox requires this
-    link.click();
-    document.body.removeChild(link);
+      document.body.appendChild(link); // Firefox requires this
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   const handleDownload = handleDownloadProp || defaultHandleDownload;
