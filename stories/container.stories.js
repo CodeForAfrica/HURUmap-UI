@@ -77,7 +77,10 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                 facebook: {},
                 twitter: {}
               })}
-              sourceUrl={text('sourceUrl', 'http://dev.dominion.africa')}
+              sourceTitle={text(
+                'sourceTitle',
+                'Census 2011: Statistics South Africa (2011) South African Population Census 2011. Indicators derived from the full population Census'
+              )}
               sourceLink="http://dev.dominion.africa"
               content={object('content', { height: 400, width: '100%' })}
               classes={{
@@ -87,92 +90,96 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
               }}
             >
               {chartType === 'pie' && (
-                <PieChart
-                  donut={boolean('donut', true)}
-                  donutLabelKey={object('donutLabelKey', {
-                    dataIndex: 0,
-                    sortKey: ''
-                  })}
-                  data={object('data', [
-                    { x: 'Female', y: 22, label: 'Female\n22%' },
-                    { x: 'Male', y: 78, label: 'Male\n78%' }
-                  ])}
-                  legendWidth={40}
-                  radii={[150]}
-                  parts={{
-                    tooltip: {
-                      style: {
-                        fontSize: 28
+                <div>
+                  <PieChart
+                    donut={boolean('donut', true)}
+                    donutLabelKey={object('donutLabelKey', {
+                      dataIndex: 0,
+                      sortKey: ''
+                    })}
+                    data={object('data', [
+                      { x: 'Female', y: 22, label: 'Female\n22%' },
+                      { x: 'Male', y: 78, label: 'Male\n78%' }
+                    ])}
+                    legendWidth={40}
+                    radii={[150]}
+                    parts={{
+                      tooltip: {
+                        style: {
+                          fontSize: 28
+                        }
+                      },
+                      legend: {
+                        style: { labels: { fontSize: 20, fontWeight: 'bold' } }
                       }
-                    },
-                    legend: {
-                      style: { labels: { fontSize: 20, fontWeight: 'bold' } }
-                    }
-                  }}
-                  legend={[
-                    { name: 'Female', label: 'Female: 22%' },
-                    { name: 'Male', label: 'Male: 78%' }
-                  ]}
-                  responsive={boolean('responsive', true)}
-                  standalone={boolean('standalone', true)}
-                  style={{
-                    labels: {
-                      fill: 'black',
-                      fontSize: '18',
-                      fontWeight: 'bold'
-                    }
-                  }}
-                />
+                    }}
+                    legend={[
+                      { name: 'Female', label: 'Female: 22%' },
+                      { name: 'Male', label: 'Male: 78%' }
+                    ]}
+                    responsive={boolean('responsive', true)}
+                    standalone={boolean('standalone', true)}
+                    style={{
+                      labels: {
+                        fill: 'black',
+                        fontSize: '18',
+                        fontWeight: 'bold'
+                      }
+                    }}
+                  />
+                </div>
               )}
 
               {chartType === 'bar' && (
-                <BarChart
-                  horizontal={boolean('horizontal', false)}
-                  width={500}
-                  height={300}
-                  domainPadding={object('domainPadding', { x: 15 })}
-                  data={Array(number('data', 10))
-                    .fill(null)
-                    .map((_, index) => ({
-                      x: `${index} wrap label`,
-                      y: rand()
-                    }))}
-                  parts={{
-                    axis: {
-                      independent: {
-                        style: {
-                          axis: {
-                            display: 'block'
-                          },
-                          grid: {
-                            display: 'block'
-                          },
-                          ticks: {
-                            display: 'block'
-                          },
-                          tickLabels: {
-                            display: 'block'
-                          }
-                        }
-                      },
-                      dependent: {
-                        style: {
-                          axis: {
-                            display: 'block'
-                          },
-                          grid: {
-                            display: 'block'
-                          },
-                          tickLabels: {
-                            display: 'block'
+                <div style={{ width: 500, height: 300 }}>
+                  <BarChart
+                    horizontal={boolean('horizontal', false)}
+                    width={500}
+                    height={300}
+                    domainPadding={object('domainPadding', { x: 15 })}
+                    data={Array(number('data', 10))
+                      .fill(null)
+                      .map((_, index) => ({
+                        x: `${index} wrap label`,
+                        y: rand()
+                      }))}
+                    parts={{
+                      axis: {
+                        independent: {
+                          style: {
+                            axis: {
+                              display: 'block'
+                            },
+                            grid: {
+                              display: 'block'
+                            },
+                            ticks: {
+                              display: 'block'
+                            },
+                            tickLabels: {
+                              display: 'block'
+                            }
                           }
                         },
-                        tickValues: [10, 50, 90],
-                        tickFormat: ['10%', '50%', '90%']
+                        dependent: {
+                          style: {
+                            axis: {
+                              display: 'block'
+                            },
+                            grid: {
+                              display: 'block'
+                            },
+                            tickLabels: {
+                              display: 'block'
+                            }
+                          },
+                          tickValues: [10, 50, 90],
+                          tickFormat: ['10%', '50%', '90%']
+                        }
                       }
-                    }
-                  }}
-                />
+                    }}
+                  />
+                </div>
               )}
             </ChartContainer>
           </Grid>

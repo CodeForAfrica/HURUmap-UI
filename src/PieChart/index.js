@@ -140,7 +140,11 @@ function PieChart({
       flyoutStyle={{ fill: 'white', stroke: 'none' }}
       height={chartInnerRadius * 2}
       labelComponent={
-        <PieLabel colorScale={colorScale1} style={tooltipStyle} />
+        <PieLabel
+          colorScale={colorScale1}
+          style={tooltipStyle}
+          width={chartInnerRadius * 2}
+        />
       }
       orientation="top"
       pointerLength={0}
@@ -176,6 +180,7 @@ function PieChart({
           sortKey={donutLabelKey.sortKey}
           style={donutLabelStyle}
           text={data1[0].label}
+          width={chartInnerRadius * 2}
           x={origin.x}
           y={origin.y}
         />

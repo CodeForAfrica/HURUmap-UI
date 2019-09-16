@@ -28,6 +28,11 @@ const useStyles = makeStyles({
     padding: '1.25rem 0',
     overflow: 'hidden'
   },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
   button: {
     border: '0.0625rem solid #d8d8d8',
     marginLeft: '-0.0625rem',
@@ -37,6 +42,7 @@ const useStyles = makeStyles({
   title: {},
   subtitle: {},
   sourceLink: {
+    width: '100%',
     marginLeft: '50px'
   },
   embedRoot: {},
@@ -286,9 +292,12 @@ function ChartContainer({
         className={classes.content}
         style={{ width: content.width, height: content.height }}
       >
-        {/* Set width 100% only when loading to allow Chart to define its own width 
+        {/* Set width 100% only when loading to allow Chart to define its own width
             otherwise a chart with a small width will scale and look large. */}
-        <div style={{ width: loading && '100%', height: '100%' }}>
+        <div
+          style={{ width: loading && '100%', height: '100%' }}
+          className={classes.container}
+        >
           <BlockLoader loading={loading}>{children}</BlockLoader>
           <TypographyLoader
             loading={loading}
@@ -296,7 +305,8 @@ function ChartContainer({
               primaryOpacity: 0.5,
               secondaryOpacity: 1
             }}
-            component="span"
+            component="div"
+            style={{ width: '100%' }}
           >
             {sourceLink && (
               <A className={classes.sourceLink} href={sourceLink}>
