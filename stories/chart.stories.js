@@ -26,13 +26,15 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
   .add('Default', () => {
     const horizontal = boolean('horizontal', false);
     const data = Array(number('data', 3)).fill(null);
+    const height = number('height', undefined) || 350;
+    const width = number('width', undefined) || 350;
 
     return (
-      <div>
+      <div style={{ height, width }}>
         <BarChart
           horizontal={horizontal}
-          width={number('width', undefined)}
-          height={number('height', undefined)}
+          width={width}
+          height={height}
           data={data.map((_, index) => {
             const y = rand();
             return {
@@ -98,13 +100,15 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
         y: rand()
       }))
     );
+    const height = number('height', undefined) || 350;
+    const width = number('width', undefined) || 350;
 
     return (
-      <div style={{ overflow: 'hidden' }}>
+      <div style={{ height, width, overflow: 'hidden' }}>
         <BarChart
           horizontal={horizontal}
-          width={number('width', 500)}
-          height={number('height', 500)}
+          width={width}
+          height={height}
           /*
             Victory requires data to be in the following format:
             [
@@ -153,13 +157,6 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
                   }
                 }
               }
-            },
-            group: {
-              // labels: datum =>
-              //   `Group ${datum.tick} Label\n${datum.x} ${datum.y}${text(
-              //     'dataUnit',
-              //     '%'
-              //   )}`
             },
             tooltip: { style: { textAnchor: 'start' } }
           }}

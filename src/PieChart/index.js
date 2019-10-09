@@ -147,6 +147,7 @@ function PieChart({
     />
   ) : (
     <VictoryTooltip
+      constrainToVisibleArea
       {...tooltipProps}
       orientation={data2 && data2.length > 0 ? 'left' : undefined}
       labelComponent={<PieLabel colorScale={colorScale1} />}

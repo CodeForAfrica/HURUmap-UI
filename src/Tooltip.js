@@ -10,7 +10,7 @@ import { VictoryTooltip, Selection } from 'victory';
  * this custom component
  */
 function Tooltip(props) {
-  return <VictoryTooltip {...props} />;
+  return <VictoryTooltip constrainToVisibleArea {...props} />;
 }
 
 Tooltip.defaultEvents = props => [

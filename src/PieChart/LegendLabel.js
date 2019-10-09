@@ -19,6 +19,7 @@ function LegendLabel({ width, ...props }) {
     <g>
       <PieLabel width={width} {...props} />
       <VictoryTooltip
+        constrainToVisibleArea
         {...props}
         datum={{ _x: index + 1, ...datum }}
         text={data[index].label}
