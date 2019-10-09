@@ -46,39 +46,40 @@ export default function createVictoryTheme(chartOptions) {
     }
   };
   // Customize chart bullet props off of chart group props
-  chart.bullet = Object.assign(
-    {
-      barWidth: 5,
-      offset: { x: 20, y: 50 },
-      style: {
-        data: {
-          fill: '#d8d8d8'
-        },
-        labels: {
-          fill: '#9b9b9b'
-        }
+  chart.bullet = {
+    barWidth: 5,
+    offset: { x: 20, y: 50 },
+    style: {
+      data: {
+        fill: '#d8d8d8'
+      },
+      labels: {
+        fill: '#9b9b9b'
       }
     },
-    chart.group,
-    chart.bullet
-  );
+    ...chart.group,
+    ...chart.bullet
+  };
   // Customize chart comparisonBar props off of chart group props
-  chart.comparisonBar = Object.assign(
-    { reference: defaultReference },
-    chart.group,
-    chart.comparisonBar
-  );
+  chart.comparisonBar = {
+    reference: defaultReference,
+    ...chart.group,
+    ...chart.comparisonBar
+  };
   // Customize chart pie props
-  chart.pie = Object.assign(
-    { donut: true, donutRatio: 0.6, groupSpacing: 4, legendWidth: 100 },
-    chart.pie
-  );
+  chart.pie = {
+    donut: true,
+    donutRatio: 0.6,
+    groupSpacing: 4,
+    legendWidth: 100,
+    ...chart.pie
+  };
   // Customize chart proportionalArea props off of chart area props
-  chart.proportionalArea = Object.assign(
-    { reference: defaultReference },
-    chart.area,
-    chart.proportionalArea
-  );
+  chart.proportionalArea = {
+    reference: defaultReference,
+    ...chart.area,
+    ...chart.proportionalArea
+  };
   // Use pie chart colorScale prop if proportionalArea doesn't have one
   if (!chart.proportionalArea.colorScale && chart.pie) {
     chart.proportionalArea.colorScale = chart.pie.colorScale;

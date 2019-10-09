@@ -48,15 +48,14 @@ function BulletChart({
   const computedData = Array.isArray(data[0]) ? data.slice(0, 2) : [data];
   const computedHeight = height || chart.height;
   const computedOffset = toOffset(offset, chart);
-  const computedStyle = Object.assign({}, chart.style);
+  const computedStyle = { ...chart.style };
   const computedWidth = width || chart.width;
   const isMobile = computedWidth < mobileBreakpoint;
   const isDirectionColumn = isMobile || computedData.length < 2;
-  const reference = Object.assign(
-    {},
-    { style: chart.reference },
-    toReferenceProps(ref)
-  );
+  const reference = {
+    style: chart.reference,
+    ...toReferenceProps(ref)
+  };
 
   return (
     <CustomContainer width={width} height={height}>
@@ -68,9 +67,10 @@ function BulletChart({
             data={d}
             labels={labels || (() => '')}
             reference={reference}
-            style={Object.assign({}, computedStyle, {
+            style={{
+              ...computedStyle,
               data: { fill: chart.colorScale[i % chart.colorScale.length] }
-            })}
+            }}
             total={total}
             width={
               isDirectionColumn

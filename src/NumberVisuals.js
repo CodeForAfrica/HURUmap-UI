@@ -72,7 +72,6 @@ function NumberVisuals({
           onMouseEnter={toggleHover}
           onMouseLeave={toggleHover}
         >
-          {` `}
           {statistic}
           <span
             className={!onHover ? classes.hidden : classes.statisticDeviation}
@@ -98,19 +97,14 @@ function NumberVisuals({
                 primary={
                   <Typography className={classes.listTypography}>
                     <span className={classes.comparison}>
-                      {` `}
                       {d.parentComparison}
                     </span>
-                    <span>
-                      {` `}
-                      {d.parentDescription}
-                    </span>
+                    <span>{d.parentDescription}</span>
                     <span
                       className={
                         !onHover ? classes.hidden : classes.secondaryDeviation
                       }
                     >
-                      {` `}
                       {d.parentDeviation}
                     </span>
                   </Typography>

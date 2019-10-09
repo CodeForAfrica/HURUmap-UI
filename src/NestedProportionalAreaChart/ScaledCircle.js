@@ -43,7 +43,7 @@ function ScaledCircle({
   // should be the reference data.
   const backgroundData = radii.length > 1 ? [[size], [size]] : [size];
   return (
-    <React.Fragment>
+    <>
       <PieChart
         data={backgroundData}
         donut={false}
@@ -86,7 +86,7 @@ function ScaledCircle({
           formatNumberForLabel={formatNumberForLabel}
         />
       )}
-    </React.Fragment>
+    </>
   );
 }
 

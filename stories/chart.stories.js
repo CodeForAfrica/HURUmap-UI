@@ -220,7 +220,7 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
         ])}
         parts={{
           group: {
-            labels: d => `y: ${d.y}`
+            labels: ({ datum }) => `y: ${datum.y}`
           },
           axis: {
             style: {
@@ -274,7 +274,7 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
           group: {
             // Line chart combines line and scatter hence best to define
             // labels at group level
-            labels: datum => `${datum.x}\n${datum.geo} ${datum.y}`
+            labels: ({ datum }) => `${datum.x}\n${datum.geo} ${datum.y}`
           },
           scatter: [{ size: 5, symbol: 'circle' }, { size: 5, symbol: 'plus' }],
           tooltip: { style: { textAnchor: 'start' } }

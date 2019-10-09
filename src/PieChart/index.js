@@ -49,15 +49,13 @@ function PieChart({
   }
   const height = suggestedHeight || chart.height;
   const width = suggestedWidth || chart.width;
-  const containerProps = Object.assign(
-    {
-      height,
-      responsive,
-      standalone,
-      width
-    },
-    parts && parts.container
-  );
+  const containerProps = {
+    height,
+    responsive,
+    standalone,
+    width,
+    ...(parts && parts.container)
+  };
 
   const startAngle1 = 0;
   let endAngle1 = 360; // Full circle
@@ -77,16 +75,12 @@ function PieChart({
     (data1 && data1[0].name && data1) ||
     (data2 && data2[0].name && data2);
 
-  const legendProps =
-    legendData &&
-    Object.assign(
-      {
-        colorScale: colorScale1,
-        data: legendData,
-        orientation: 'vertical'
-      },
-      parts && parts.legend
-    );
+  const legendProps = legendData && {
+    colorScale: colorScale1,
+    data: legendData,
+    orientation: 'vertical',
+    ...(parts && parts.legend)
+  };
 
   const legendWidth = suggestedLegendWidth || chart.legendWidth;
   const chartWidth = legendProps ? width - legendWidth : width;
@@ -115,20 +109,19 @@ function PieChart({
   };
   const donutLabelData = data2 ? data[donutLabelKey.dataIndex] : data1;
   const { style: suggestedHeightStyle } = props;
-  const donutLabelStyle = Object.assign(
-    { textAnchor: 'middle' },
-    suggestedHeightStyle && suggestedHeightStyle.labels
-  );
+  const donutLabelStyle = {
+    textAnchor: 'middle',
+    ...(suggestedHeightStyle && suggestedHeightStyle.labels)
+  };
 
-  const tooltipProps = Object.assign(
-    { style: { textAnchor: donut ? 'middle' : 'start' } },
-    parts && parts.tooltip
-  );
-  const tooltipStyle = Object.assign(
-    {},
-    donutLabelStyle,
-    tooltipProps.style.labels
-  );
+  const tooltipProps = {
+    style: { textAnchor: donut ? 'middle' : 'start' },
+    ...(parts && parts.tooltip)
+  };
+  const tooltipStyle = {
+    ...donutLabelStyle,
+    ...tooltipProps.style.labels
+  };
   // We define tooltip for donut label component here than using a separate
   // due to svg rendering components in the provided order and we don't have
   // z-index property to reorder them.

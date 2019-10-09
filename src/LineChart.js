@@ -58,9 +58,7 @@ function LineChart({ data, parts, theme, ...props }) {
             labelComponent={
               <VictoryTooltip
                 {...tooltipProps}
-                style={Object.assign({}, tooltipProps.style, {
-                  fill: colorScale[i]
-                })}
+                style={{ ...tooltipProps.style, fill: colorScale[i] }}
               />
             }
             /* groupProps can override the above props */

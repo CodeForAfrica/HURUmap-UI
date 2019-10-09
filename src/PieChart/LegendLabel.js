@@ -20,7 +20,7 @@ function LegendLabel({ width, ...props }) {
       <PieLabel width={width} {...props} />
       <VictoryTooltip
         {...props}
-        datum={Object.assign({ _x: index + 1 }, datum)}
+        datum={{ _x: index + 1, ...datum }}
         text={data[index].label}
         labelComponent={<PieLabel colorScale={colorScale} />}
       />

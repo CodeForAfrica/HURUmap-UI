@@ -1,4 +1,4 @@
-import React, { useCallback, Fragment, useState, useRef } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 import { storiesOf } from '@storybook/react';
 import {
   withKnobs,
@@ -67,7 +67,7 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
        */
       const onClickLayer = useCallback(action('onClickGeoLayer'), []);
       return (
-        <Fragment>
+        <>
           <Grid container direction="column" style={{ width: 200 }}>
             <p>
               Clicking this button,
@@ -101,7 +101,7 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
             })}
             onClickGeoLayer={onClickLayer}
           />
-        </Fragment>
+        </>
       );
     })
   )

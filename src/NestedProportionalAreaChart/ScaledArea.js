@@ -49,17 +49,12 @@ export function scaleMobileDimensions(height, width) {
  * @param colorScale string | string[].
  * @param style object.
  */
-export const dataLabelsStyle = (index, colorScale, style) =>
-  Object.assign(
-    {
-      fontSize: 36,
-      fontWeight: 'bold'
-    },
-    style && style.data,
-    {
-      fill: colorScale[index % colorScale.length]
-    }
-  );
+export const dataLabelsStyle = (index, colorScale, style) => ({
+  fontSize: 36,
+  fontWeight: 'bold',
+  ...(style && style.data),
+  fill: colorScale[index % colorScale.length]
+});
 
 /**
  * Style for reference data point.
@@ -68,13 +63,11 @@ export const dataLabelsStyle = (index, colorScale, style) =>
 export const referenceDataStyle = reference => {
   const { style: referenceStyle } = reference;
 
-  return Object.assign(
-    {
-      fontWeight: 'bold'
-    },
+  return {
+    fontWeight: 'bold',
     // Since data has gradient fill style, lets use labels style
-    (referenceStyle && referenceStyle.labels) || {}
-  );
+    ...((referenceStyle && referenceStyle.labels) || {})
+  };
 };
 
 /**

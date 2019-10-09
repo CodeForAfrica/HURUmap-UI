@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { scaleDesktopDimensions, scaleMobileDimensions } from './ScaledArea';
@@ -30,11 +30,10 @@ function NestedProportionalAreaChart({
     return null;
   }
 
-  const reference = Object.assign(
-    {},
-    { style: chart.reference },
-    toReferenceProps(ref)
-  );
+  const reference = {
+    style: chart.reference,
+    ...toReferenceProps(ref)
+  };
   const height = h || chart.height;
   const width = w || chart.width;
   const isHandset = width < theme.breakpoints.sm;
@@ -50,7 +49,7 @@ function NestedProportionalAreaChart({
   // ------------------------------------
 
   return (
-    <Fragment>
+    <>
       {/* Main container component */}
       <CustomContainer height={height} width={width}>
         <defs>
@@ -96,7 +95,7 @@ function NestedProportionalAreaChart({
           )}
         </g>
       </CustomContainer>
-    </Fragment>
+    </>
   );
 }
 

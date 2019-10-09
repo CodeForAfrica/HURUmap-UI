@@ -28,7 +28,7 @@ function ScaledSquare({
   // NOTE: Nested square must be sorted to ensure they're all visible
   // but we need to remember original position to ensure right color is used.
   return (
-    <React.Fragment>
+    <>
       <Rect
         {...props}
         key={referenceData.x}
@@ -65,7 +65,7 @@ function ScaledSquare({
         style={style}
         formatNumberForLabel={formatNumberForLabel}
       />
-    </React.Fragment>
+    </>
   );
 }
 

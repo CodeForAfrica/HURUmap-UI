@@ -57,18 +57,16 @@ function BarChart({
       );
       return tickLabel;
     });
-  const chartProps = Object.assign(
-    {
-      domain,
-      domainPadding,
-      height: height || chart.height,
-      horizontal,
-      responsive,
-      theme,
-      width: width || chart.width
-    },
-    parts && parts.parent
-  );
+  const chartProps = {
+    domain,
+    domainPadding,
+    height: height || chart.height,
+    horizontal,
+    responsive,
+    theme,
+    width: width || chart.width,
+    ...(parts && parts.parent)
+  };
   const groupProps = parts && parts.group ? [].concat(parts.group) : [];
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
   const { colorScale } = groupChart;
@@ -84,7 +82,7 @@ function BarChart({
             barWidth={barWidth}
             data={data}
             key={data.toString()}
-            labels={datum =>
+            labels={({ datum }) =>
               typeof datum.y !== 'number'
                 ? 'N/A'
                 : numberFormatter.format(datum.y)
@@ -94,9 +92,7 @@ function BarChart({
                 tooltipProps={{
                   ...tooltipProps,
                   data,
-                  style: Object.assign({}, tooltipProps.style, {
-                    fill: colorScale[i]
-                  })
+                  style: { ...tooltipProps.style, fill: colorScale[i] }
                 }}
               />
             }

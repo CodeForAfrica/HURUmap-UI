@@ -22,25 +22,28 @@ function CustomContainer({
   const dimensions = responsive
     ? { width: '100%', height: 'auto' }
     : { width, height };
-  const divStyle = Object.assign(
-    { pointerEvents: 'none', touchAction: 'none', position: 'relative' },
-    dimensions
-  );
-  const svgProps = Object.assign({
+  const divStyle = {
+    pointerEvents: 'none',
+    touchAction: 'none',
+    position: 'relative',
+    ...dimensions
+  };
+  const svgProps = {
     width,
     height,
     overflow,
     role: 'img',
     viewBox: responsive ? `0 0 ${width} ${height}` : undefined
-  });
+  };
   // Overflow visible will allow tooltips to not be cut off
-  const svgStyle = Object.assign(
-    { pointerEvents: 'all', overflow: 'visible' },
-    dimensions
-  );
+  const svgStyle = {
+    pointerEvents: 'all',
+    overflow: 'visible',
+    ...dimensions
+  };
 
   return (
-    <div style={Object.assign({}, style, divStyle)}>
+    <div style={{ ...style, ...divStyle }}>
       <svg {...svgProps} style={svgStyle}>
         {children}
       </svg>

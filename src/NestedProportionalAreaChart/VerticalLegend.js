@@ -32,7 +32,7 @@ function VerticalLegend({
   const x = 0;
 
   return (
-    <React.Fragment>
+    <>
       {/* Data values at the top of the chart */}
       {data.map((d, i) => (
         <VictoryLabel
@@ -66,7 +66,7 @@ function VerticalLegend({
           style={referenceLabelsStyle(reference)}
         />
       )}
-    </React.Fragment>
+    </>
   );
 }
 
