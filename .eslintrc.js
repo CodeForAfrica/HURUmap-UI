@@ -14,6 +14,8 @@ module.exports = {
       { devDependencies: ['.storybook/**', 'stories/**'] }
     ],
     'react/jsx-filename-extension': [1, { extensions: ['.js'] }],
+    'react/jsx-props-no-spreading':'ignore', // We use HOC, etc. & this will wreck havoc
+    'react/jsx-curly-newline': 'ignore', // Clashes with prettier => prettier wins
     'react/jsx-wrap-multilines': [1, {
       "declaration": "parens",
       "assignment": "parens",
