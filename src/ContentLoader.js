@@ -33,7 +33,6 @@ export default function CustomContentLoader({
       height={dimension.height}
       viewBox={`0 0 ${dimension.width} ${dimension.height}`}
       style={{ width, height }}
-      // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
     >
       {children}
