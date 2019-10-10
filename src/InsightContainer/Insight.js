@@ -8,7 +8,6 @@ import BlockLoader from '../BlockLoader';
 const useStyles = makeStyles(({ breakpoints, variant }) => ({
   root: {
     backgroundColor: '#eeebeb',
-    // minWidth: '21.75rem',
     width: '100%',
     [breakpoints.up('md')]: {
       width: variant === 'data' ? '17,765625rem' : '18.890625rem' // .75 of lg
