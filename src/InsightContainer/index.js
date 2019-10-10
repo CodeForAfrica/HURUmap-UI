@@ -3,116 +3,92 @@ import PropTypes from 'prop-types';
 
 import domToImage from 'dom-to-image';
 
-import { makeStyles } from '@material-ui/styles';
-import Grid from '@material-ui/core/Grid';
-import { Typography } from '@material-ui/core';
+import { makeStyles, Grid, Typography } from '@material-ui/core';
+
 import BlockLoader from '../BlockLoader';
 import TypographyLoader from '../TypographyLoader';
 
 import A from '../A';
 import Actions from './Actions';
+import Insight from './Insight';
 
-const useStyles = makeStyles(({ breakpoints }) => ({
+const useStyles = makeStyles(({ breakpoints, variant }) => ({
   root: {
-    width: 'available',
     height: 'auto',
-    backgroundColor: '#fff'
+    backgroundColor: '#f6f6f6'
   },
   content: {
-    padding: '1.25rem 0',
-    overflow: 'hidden'
-  },
-  button: {
-    border: '0.0625rem solid #d8d8d8',
-    height: '2.5rem',
-    width: '2.5rem',
-    '&:first-child': {
-      borderRight: 'none'
+    height: '100%',
+    width: '100%',
+    [breakpoints.up('md')]: {
+      width: variant === 'data' ? '28.975rem' : '25.03125rem' // .75 of lg
+    },
+    [breakpoints.up('lg')]: {
+      width: variant === 'data' ? '38.5rem' : '33.375rem'
     }
   },
-  actionsGrid: {
-    backgroundColor: '#eeebeb'
-  },
   title: {
-    marginTop: '1rem',
+    fontSize: '1.25rem',
     fontWeight: 'bold',
-    fontSize: '1.25rem'
+    marginTop: '1rem'
   },
-  subtitle: {},
-  highlight: {},
+  highlight: {
+    height: '100%',
+    width: '100%',
+    [breakpoints.up('md')]: {
+      width: '11.71875rem' // .75 of lg
+    },
+    [breakpoints.up('lg')]: {
+      width: '15.625rem'
+    }
+  },
   sourceLink: {},
   sourceGrid: {
     display: 'flex',
     alignItems: 'flex-end',
     marginLeft: '1rem'
   },
-  analysisLink: {
-    cursor: 'pointer',
-    display: 'inline-flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '1.125rem 3rem',
-    textDecoration: 'none',
-    outline: 'none',
-    borderRadius: '0.75rem',
-    color: '#29a87c',
-    border: 'solid 2px #29a87c',
-    backgroundColor: '#fff',
-    [breakpoints.up('md')]: {
-      padding: '1.125rem 0.8rem'
-    },
-    [breakpoints.up('lg')]: {
-      padding: '1.125rem 2.5rem'
-    }
+  insight: {
+    height: '100%'
   },
-  contextGrid: {
-    padding: '0 1.25rem'
+  insightAnalysisLink: {},
+  insightDataLink: {},
+  insightDescription: {},
+  insightTitle: {},
+  actions: {
+    margin: '1rem 0'
   },
-  contextHead: {
-    fontWeight: 'bold',
-    fontSize: '1rem'
-  },
-  contextBrief: {
-    fontSize: '0.8125rem',
-    lineHeight: 2
-  },
-  linkGrid: {
-    margin: '3rem 0',
-    [breakpoints.up('md')]: {
-      margin: 0
-    }
-  },
-  shareButton: {},
-  compareButton: {},
-  embedButton: {},
-  showDataButton: {},
-  downloadButton: {},
-  actionButtonIconGrid: {},
-  actionRoot: {},
-  actionButtonVerticalDivider: {},
-  actionButtonText: {}
+  actionsShareButton: {},
+  actionsCompareButton: {},
+  actionsEmbedButton: {},
+  actionsShowDataButton: {},
+  actionsDownloadButton: {},
+  actionsActionButtonIconGrid: {},
+  actionsActionButtonVerticalDivider: {},
+  actionsActionButtonText: {}
 }));
 
 function InsightContainer({
+  actions,
+  children,
+  embedCode,
+  gaEvents,
+  insight: insightProp,
   loading,
-  content,
   source,
   title,
-  children,
-  insightActions,
-  insightContext,
-  insightLink,
-  gaEvents,
-  embedCode,
   ...props
 }) {
   const classes = useStyles(props);
+  const { variant } = props;
+  const highlightChild = variant === 'data' && children[0];
+  const contentChild = variant === 'data' ? children[1] : children;
   const {
     handleShare,
     handleCompare,
     handleDownload: handleDownloadProp,
     handleShowData
-  } = insightActions;
+  } = actions;
   const chartRef = useRef(null);
 
   const toPng = () => {
@@ -142,112 +118,98 @@ function InsightContainer({
   };
 
   const handleDownload = handleDownloadProp || defaultHandleDownload;
+  const actionsChildren = (
+    <BlockLoader loading={loading} height={40} width="100%">
+      <Actions
+        onShare={handleShare && (e => toPng().then(handleShare.bind(null, e)))}
+        onDownload={
+          handleDownload && (e => toPng().then(handleDownload.bind(null, e)))
+        }
+        onShowData={handleShowData}
+        onCompare={handleCompare}
+        gaEvents={gaEvents}
+        embedCode={embedCode}
+        classes={{
+          root: classes.actions,
+          shareButton: classes.actionsShareButton,
+          embedButton: classes.actionsEmbedButton,
+          showDataButton: classes.actionsShowDataButton,
+          compareButton: classes.actionsCompareButton,
+          downloadButton: classes.actionsDownloadButton,
+          actionButtonIconGrid: classes.actionsButtonIconGrid,
+          actionButtonText: classes.actionsActionButtonText,
+          verticalDivider: classes.actionsActionButtonVerticalDivider
+        }}
+      />
+    </BlockLoader>
+  );
+  const insight = insightProp || {};
 
   return (
-    <Grid container spacing={4} className={classes.root}>
-      <Grid container item md={3} sm={12} className={classes.highlight}>
-        <BlockLoader loading={loading}>{children[0]}</BlockLoader>
-        <TypographyLoader
-          loading={loading}
-          loader={{
-            primaryOpacity: 0.5,
-            secondaryOpacity: 1
-          }}
-          component="span"
-          className={classes.sourceGrid}
-        >
-          {source && (
-            <A className={classes.sourceLink} href={source.href}>
-              {`Source: ${source.title || source.href} `}
-            </A>
-          )}
-        </TypographyLoader>
-      </Grid>
-      <Grid container item md={5} sm={12} ref={chartRef}>
+    <Grid container className={classes.root}>
+      {variant === 'data' && (
         <Grid item>
-          <TypographyLoader
-            loading={loading}
-            loader={{
-              primaryOpacity: 0.5,
-              secondaryOpacity: 1
-            }}
-            className={classes.title}
-            variant="h5"
-          >
-            {title}
-          </TypographyLoader>
-        </Grid>
-        <Grid
-          container
-          justify="center"
-          className={classes.content}
-          style={{ width: content.width, height: content.height }}
-        >
-          <BlockLoader loading={loading}>{children[1]}</BlockLoader>
-        </Grid>
-      </Grid>
-      <Grid container item md={4} sm={12} className={classes.actionsGrid}>
-        <Grid
-          container
-          item
-          direction="row"
-          alignItems="flex-start"
-          justify="center"
-        >
-          <BlockLoader loading={loading} height={40}>
-            <Actions
-              onShare={
-                handleShare && (e => toPng().then(handleShare.bind(null, e)))
-              }
-              onDownload={
-                handleDownload &&
-                (e => toPng().then(handleDownload.bind(null, e)))
-              }
-              onShowData={handleShowData}
-              onCompare={handleCompare}
-              gaEvents={gaEvents}
-              embedCode={embedCode}
-              classes={{
-                shareButton: classes.shareButton,
-                embedButton: classes.embedButton,
-                showDataButton: classes.showDataButton,
-                compareButton: classes.compareButton,
-                downloadButton: classes.downloadButton,
-                actionButtonIconGrid: classes.actionButtonIconGrid,
-                actionButtonText: classes.actionButtonText,
-                verticalDivider: classes.actionButtonVerticalDivider,
-                root: classes.actionRoot
-              }}
-            />
-          </BlockLoader>
-        </Grid>
-        {insightContext && (
-          <Grid container item className={classes.contextGrid}>
-            <BlockLoader loading={loading}>
-              <Typography className={classes.contextHead}>
-                {insightContext.head}
-              </Typography>
-              <Typography className={classes.contextBrief}>
-                {insightContext.brief}
-              </Typography>
-            </BlockLoader>
-          </Grid>
-        )}
-        {insightLink && (
           <Grid
             container
-            item
-            alignItems="flex-start"
-            justify="center"
-            className={classes.linkGrid}
+            alignItems="space-between"
+            className={classes.highlight}
           >
-            <BlockLoader loading={loading}>
-              <A className={classes.analysisLink} href={insightLink.href}>
-                {insightLink.title}
-              </A>
+            <BlockLoader loading={loading}>{highlightChild}</BlockLoader>
+            <TypographyLoader
+              height={20}
+              loading={loading}
+              loader={{
+                primaryOpacity: 0.5,
+                secondaryOpacity: 1
+              }}
+              component="span"
+              className={classes.sourceGrid}
+            >
+              {source && (
+                <A className={classes.sourceLink} href={source.href}>
+                  {`Source: ${source.title || source.href}`}
+                </A>
+              )}
+            </TypographyLoader>
+          </Grid>
+        </Grid>
+      )}
+
+      <Grid item ref={chartRef}>
+        <Grid container justify="center" className={classes.content}>
+          <Grid item xs={12}>
+            <BlockLoader loading={loading} height={20} width="80%">
+              <Typography variant="h5" className={classes.title}>
+                {title}
+              </Typography>
             </BlockLoader>
           </Grid>
-        )}
+          <BlockLoader loading={loading} height={300} width="100%">
+            {contentChild}
+          </BlockLoader>
+          {variant === 'analysis' ? actionsChildren : null}
+        </Grid>
+      </Grid>
+
+      <Grid item>
+        <Insight
+          analysisLink={insight.analysisLink}
+          classes={{
+            root: classes.insight,
+            analysisLink: classes.insightAnalysis,
+            dataLink: classes.insightDataLink,
+            description: classes.insightDescription,
+            insight: classes.insightContent,
+            title: classes.insightTitle
+          }}
+          dataLink={insight.dataLink}
+          description={insight.description}
+          title={insight.title}
+          variant={variant}
+          loading={loading}
+        >
+          {variant === 'data' ? actionsChildren : null}
+        </Insight>
       </Grid>
     </Grid>
   );
@@ -286,55 +248,57 @@ const twoNodeArrayType = createTwoNodeArrayType(false);
 twoNodeArrayType.isRequired = createTwoNodeArrayType(true);
 
 InsightContainer.propTypes = {
-  children: twoNodeArrayType.isRequired,
-  title: PropTypes.string.isRequired,
-  source: PropTypes.shape({
-    title: PropTypes.string,
-    href: PropTypes.string
-  }),
-  loading: PropTypes.bool,
-  content: PropTypes.shape({
-    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-  }),
-  insightLink: PropTypes.shape({
-    href: PropTypes.string,
-    title: PropTypes.string
-  }),
-  insightContext: PropTypes.shape({
-    head: PropTypes.string,
-    brief: PropTypes.string
-  }),
-  insightActions: PropTypes.shape({
+  actions: PropTypes.shape({
     handleShare: PropTypes.func,
     handleDownload: PropTypes.func,
     handleShowData: PropTypes.func,
     handleCompare: PropTypes.func
   }),
+  children: twoNodeArrayType.isRequired,
+  embedCode: PropTypes.string,
   gaEvents: PropTypes.shape({}),
-  embedCode: PropTypes.string
+  insight: PropTypes.shape({
+    analysisLink: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape({
+        href: PropTypes.string,
+        title: PropTypes.string,
+        variant: PropTypes.oneOf(['contained', 'outlined'])
+      })
+    ]),
+    dataLink: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape({
+        href: PropTypes.string,
+        title: PropTypes.string,
+        variant: PropTypes.oneOf(['contained', 'outlined'])
+      })
+    ]),
+    description: PropTypes.string,
+    title: PropTypes.string
+  }),
+  loading: PropTypes.bool,
+  source: PropTypes.shape({
+    title: PropTypes.string,
+    href: PropTypes.string
+  }),
+  title: PropTypes.string.isRequired,
+  variant: PropTypes.oneOf(['data', 'analysis'])
 };
 
 InsightContainer.defaultProps = {
-  source: undefined,
-  embedCode: undefined,
-  loading: false,
-  insightLink: {
-    href: '/profiles/nigeria',
-    title: 'Read the country analysis'
-  },
-  insightContext: undefined,
-  insightActions: {
+  actions: {
     handleShare: () => {},
     handleDownload: undefined,
     handleShowData: () => {},
     handleCompare: () => {}
   },
-  content: {
-    width: '100%',
-    height: '100%'
-  },
-  gaEvents: undefined
+  embedCode: undefined,
+  gaEvents: undefined,
+  insight: undefined,
+  loading: false,
+  source: undefined,
+  variant: 'data'
 };
 
 export default InsightContainer;
