@@ -310,79 +310,82 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
     React.createElement(() => {
       const useStyles = makeStyles(() => ({
         highlight: {
-          backgroundColor: '#eeebeb'
+          backgroundColor: 'whitesmoke'
         }
       }));
       const classes = useStyles();
 
       return (
-        <Grid
-          container
-          justify="center"
-          alignItems="center"
-          style={{ background: 'whitesmoke', height: '100%' }}
-        >
-          <Grid
-            item
-            xs={select(
-              'xs',
-              ['auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-              8
-            )}
-            md={select(
-              'md',
-              ['auto', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-              10
-            )}
-            style={{ padding: '10px' }}
+        <div>
+          <InsightContainer
+            classes={{ root: classes.root }}
+            embedCode={text('embedCode', 'Embed Chart Code')}
+            insight={object('insight', {
+              analysisLink: '#',
+              dataLink: '#',
+              description:
+                'Ethnically diverse population of over 55 million Country benefits from broad social cohesion, with inter-ethtensions rare Two thirds of the population live on lethan $2 per day - espcially rural areas',
+              title: 'Summary'
+            })}
+            loading={boolean('loading', false)}
+            source={object('source', {
+              title: 'Community Survey 2016',
+              href: 'http://dev.dominion.africa'
+            })}
+            title="Lorem ipsum dolor sit amet"
+            variant={select('variant', ['data', 'analysis'], 'data')}
           >
-            <InsightContainer
-              classes={{ highlight: classes.highlight }}
-              loading={boolean('loading', true)}
-              title="Lorem ipsum dolor sit amet"
-              source={object('source', {
-                title: 'Community Survey 2016',
-                href: 'http://dev.dominion.africa'
-              })}
-              content={{
-                height: 338
-              }}
-              embedCode={text('embedCode', 'Embed Chart Code')}
-            >
-              <NumberVisuals
-                subtitle={text('Subtitle', 'Income')}
-                statistic={text('Statistic', '$60,336')}
-                statisticDeviation={text(
-                  'Statistic Deviation',
-                  'https://dev.dominion.africa/profile/country-ZA±0.1% '
-                )}
-                secondaryDeviation={text(
-                  'Secondary Deviation',
-                  '(194, 667, 872 ±241, 381.6)'
-                )}
-                description={text('Description', 'Median household income')}
-                comparisonData={object('Comparison Data', [
-                  {
-                    id: 0,
-                    parentComparison: 'about 90 percent',
-                    parentDescription:
-                      'of the amount in United States: $32,397',
-                    parentDeviation: '±0.24%'
-                  }
-                ])}
-              />
+            <NumberVisuals
+              subtitle={text('Subtitle', 'Income')}
+              statistic={text('Statistic', '$60,336')}
+              statisticDeviation={text(
+                'Statistic Deviation',
+                'https://dev.dominion.africa/profile/country-ZA±0.1% '
+              )}
+              secondaryDeviation={text(
+                'Secondary Deviation',
+                '(194, 667, 872 ±241, 381.6)'
+              )}
+              description={text('Description', 'Median household income')}
+              comparisonData={object('Comparison Data', [
+                {
+                  id: 0,
+                  parentComparison: 'about 90 percent',
+                  parentDescription: 'of the amount in United States: $32,397',
+                  parentDeviation: '±0.24%'
+                }
+              ])}
+            />
+            <div style={{ height: 300, width: 500 }}>
               <BarChart
                 horizontal={boolean('horizontal', false)}
                 width={500}
                 height={300}
-                data={Array(number('data', 100))
+                data={Array(number('data', 10))
                   .fill(null)
                   .map((_, index) => ({
                     x: `${index}-${index}`,
                     y: rand()
                   }))}
+                domainPadding={{ x: 20 }}
                 parts={{
                   axis: {
+                    independent: {
+                      style: {
+                        axis: {
+                          display: 'block'
+                        },
+                        grid: {
+                          display: 'block'
+                        },
+                        ticks: {
+                          display: 'block'
+                        },
+                        tickLabels: {
+                          display: 'block'
+                        }
+                      }
+                    },
                     dependent: {
                       style: {
                         axis: {
@@ -401,9 +404,9 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
                   }
                 }}
               />
-            </InsightContainer>
-          </Grid>
-        </Grid>
+            </div>
+          </InsightContainer>
+        </div>
       );
     })
   );
