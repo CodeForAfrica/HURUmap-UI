@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, Fragment, useState } from 'react';
+import React, { createRef, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 
 import { makeStyles } from '@material-ui/styles';
@@ -185,7 +185,7 @@ function Actions({
       )}
 
       {onDownload && (
-        <Fragment>
+        <>
           <div className={classes.verticalDivider} />
           <ActionButton
             gaEvents={download}
@@ -200,11 +200,11 @@ function Actions({
               Download
             </Typography>
           </ActionButton>
-        </Fragment>
+        </>
       )}
 
       {embedCode && (
-        <Fragment>
+        <>
           <div className={classes.verticalDivider} />
           <ActionButton
             gaEvents={embed}
@@ -217,11 +217,11 @@ function Actions({
             <img alt="" src={embedIcon} />
             <Typography className={classes.actionButtonText}>Embed</Typography>
           </ActionButton>
-        </Fragment>
+        </>
       )}
 
       {onCompare && (
-        <Fragment>
+        <>
           <div className={classes.verticalDivider} />
 
           <ActionButton
@@ -237,11 +237,11 @@ function Actions({
               Compare
             </Typography>
           </ActionButton>
-        </Fragment>
+        </>
       )}
 
       {onShowData && (
-        <Fragment>
+        <>
           <div className={classes.verticalDivider} />
           <ActionButton
             gaEvents={showData}
@@ -256,7 +256,7 @@ function Actions({
               Show Data
             </Typography>
           </ActionButton>
-        </Fragment>
+        </>
       )}
 
       <Popover

@@ -35,17 +35,16 @@ function ComparisonBarChart({
         barWidth={5}
         style={referenceStyle}
         data={[referenceData]}
-        labels={datum => datum.y}
+        labels={({ datum }) => datum.y}
         labelComponent={<VictoryLabel x={50} dy={-15} />}
         {...props}
       />
       <VictoryAxis
         style={{
-          tickLabels: Object.assign(
-            {},
-            { display: 'block' },
-            referenceStyle && referenceStyle.labels
-          )
+          tickLabels: {
+            display: 'block',
+            ...(referenceStyle && referenceStyle.labels)
+          }
         }}
         tickFormat={x => (x === referenceData.x ? referenceData.x : '')}
         tickLabelComponent={<VictoryLabel x={50} dy={20} textAnchor="start" />}
@@ -79,7 +78,7 @@ function ComparisonBarChart({
           }
         }}
         data={[data[0]]}
-        labels={datum => datum.y}
+        labels={({ datum }) => datum.y}
         {...barProps}
       />
     </Chart>

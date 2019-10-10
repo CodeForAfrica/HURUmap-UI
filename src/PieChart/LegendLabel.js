@@ -19,8 +19,9 @@ function LegendLabel({ width, ...props }) {
     <g>
       <PieLabel width={width} {...props} />
       <VictoryTooltip
+        constrainToVisibleArea
         {...props}
-        datum={Object.assign({ _x: index + 1 }, datum)}
+        datum={{ _x: index + 1, ...datum }}
         text={data[index].label}
         labelComponent={<PieLabel colorScale={colorScale} />}
       />

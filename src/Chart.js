@@ -20,7 +20,7 @@ function Chart({ children, overflow, responsive = true, events: e, ...props }) {
   // `events`, `height` and `width` are the only props passed to the
   // chart container SVG, `style` isn't.
   // https://github.com/FormidableLabs/victory/blob/c0bff5240ce25d51a6fb6b9db091a2c27e0f5903/packages/victory-core/src/victory-container/victory-container.js#L118-L159
-  const events = Object.assign({ overflow }, e);
+  const events = { overflow, ...e };
   return (
     <VictoryChart
       containerComponent={

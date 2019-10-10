@@ -34,9 +34,9 @@ function HorizontalLegend({
   } = reference;
 
   return (
-    <React.Fragment>
+    <>
       {radii.map((r, i) => (
-        <React.Fragment>
+        <>
           <line
             // -1 => left; 1 => right
             x1={cx - (i < 1 ? 1 : -1) * 190}
@@ -74,7 +74,7 @@ function HorizontalLegend({
               text={data[i].label}
             />
           )}
-        </React.Fragment>
+        </>
       ))}
 
       <VictoryLabel
@@ -95,7 +95,7 @@ function HorizontalLegend({
           style={referenceLabelsStyle(reference)}
         />
       )}
-    </React.Fragment>
+    </>
   );
 }
 

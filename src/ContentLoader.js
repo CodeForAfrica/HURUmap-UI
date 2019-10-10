@@ -10,7 +10,7 @@ export default function CustomContentLoader({
   width,
   ...props
 }) {
-  const [dimmension, setDimension] = useState({
+  const [dimension, setDimension] = useState({
     width: width === undefined ? 0 : width,
     height: height === undefined ? 0 : height
   });
@@ -29,9 +29,9 @@ export default function CustomContentLoader({
       id={id}
       primaryOpacity={0.01}
       secondaryOpacity={0.1}
-      width={dimmension.width}
-      height={dimmension.height}
-      viewBox={`0 0 ${dimmension.width} ${dimmension.height}`}
+      width={dimension.width}
+      height={dimension.height}
+      viewBox={`0 0 ${dimension.width} ${dimension.height}`}
       style={{ width, height }}
       {...props}
     >

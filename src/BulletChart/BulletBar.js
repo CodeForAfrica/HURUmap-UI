@@ -19,7 +19,7 @@ function BulletBar({
   const comparativeMeasure = (width * reference.data[0].x) / total;
 
   return (
-    <React.Fragment>
+    <>
       {/* Qualitative scale */}
       {qualitativeMeasure && (
         <VictoryLabel
@@ -63,7 +63,7 @@ function BulletBar({
         height={barWidth}
         style={reference.style && reference.style.data}
       />
-    </React.Fragment>
+    </>
   );
 }
 

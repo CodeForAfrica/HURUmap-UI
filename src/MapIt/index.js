@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useRef,
-  useCallback,
-  useState,
-  Fragment
-} from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import leaflet from 'leaflet';
@@ -147,7 +141,7 @@ function MapIt({
                 return filterCountriesMemoized.includes(area[1].country);
               })
               .reduce((accum, [k, v]) => {
-                return Object.assign({}, accum, { [k]: v });
+                return { ...accum, [k]: v };
               }, {});
           }
           const areaKeys = Object.keys(areaData).join();
@@ -301,7 +295,7 @@ function MapIt({
   const classes = useStyles();
 
   return (
-    <Fragment>
+    <>
       {!featuresToDraw && (
         <div className={classes.root}>
           <BlockLoader loading />
@@ -312,7 +306,7 @@ function MapIt({
         className={classes.root}
         style={{ display: !featuresToDraw ? 'hidden' : 'block' }}
       />
-    </Fragment>
+    </>
   );
 }
 

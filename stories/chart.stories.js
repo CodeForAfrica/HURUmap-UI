@@ -26,13 +26,15 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
   .add('Default', () => {
     const horizontal = boolean('horizontal', false);
     const data = Array(number('data', 3)).fill(null);
+    const height = number('height', undefined) || 350;
+    const width = number('width', undefined) || 350;
 
     return (
-      <div>
+      <div style={{ height, width }}>
         <BarChart
           horizontal={horizontal}
-          width={number('width', undefined)}
-          height={number('height', undefined)}
+          width={width}
+          height={height}
           data={data.map((_, index) => {
             const y = rand();
             return {
@@ -98,13 +100,15 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
         y: rand()
       }))
     );
+    const height = number('height', undefined) || 350;
+    const width = number('width', undefined) || 350;
 
     return (
-      <div style={{ overflow: 'hidden' }}>
+      <div style={{ height, width, overflow: 'hidden' }}>
         <BarChart
           horizontal={horizontal}
-          width={number('width', 500)}
-          height={number('height', 500)}
+          width={width}
+          height={height}
           /*
             Victory requires data to be in the following format:
             [
@@ -153,13 +157,6 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
                   }
                 }
               }
-            },
-            group: {
-              // labels: datum =>
-              //   `Group ${datum.tick} Label\n${datum.x} ${datum.y}${text(
-              //     'dataUnit',
-              //     '%'
-              //   )}`
             },
             tooltip: { style: { textAnchor: 'start' } }
           }}
@@ -220,7 +217,7 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
         ])}
         parts={{
           group: {
-            labels: d => `y: ${d.y}`
+            labels: ({ datum }) => `y: ${datum.y}`
           },
           axis: {
             style: {
@@ -274,7 +271,7 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
           group: {
             // Line chart combines line and scatter hence best to define
             // labels at group level
-            labels: datum => `${datum.x}\n${datum.geo} ${datum.y}`
+            labels: ({ datum }) => `${datum.x}\n${datum.geo} ${datum.y}`
           },
           scatter: [{ size: 5, symbol: 'circle' }, { size: 5, symbol: 'plus' }],
           tooltip: { style: { textAnchor: 'start' } }
