@@ -15,23 +15,23 @@ const useStyles = makeStyles(({ breakpoints }) => ({
   root: {
     backgroundColor: 'white',
     borderRadius: '0.625rem',
-    width: 'fit-content',
-    clear: 'both',
-    display: 'flex',
-    height: '3.563rem',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '0.6rem'
+    marginTop: '0.6rem',
+    width: '100%',
+    maxWidth: '21.75rem',
+    [breakpoints.up('md')]: {
+      width: '16.3125rem' // .75 of lg
+    },
+    [breakpoints.up('lg')]: {
+      width: '21.75rem'
+    }
   },
   button: {
-    height: '100%',
     borderRadius: '0',
     '&:hover': {
       backgroundColor: 'transparent'
     },
     [breakpoints.up('md')]: {
-      padding: '0.25rem'
+      padding: '0.625rem 0.25rem'
     },
     [breakpoints.up('lg')]: {
       padding: '0.625rem'
@@ -46,6 +46,7 @@ const useStyles = makeStyles(({ breakpoints }) => ({
     letterSpacing: '0.019rem'
   },
   verticalDivider: {
+    margin: 'auto 0',
     width: '0.07rem',
     height: '1.913rem',
     backgroundColor: '#eaeaea'
@@ -133,6 +134,7 @@ const EmbedCodeTextArea = ({ code }) => {
       textArea.style.height = `${height}px`;
     }
   }, [ref]);
+
   return (
     <textarea
       ref={ref}
@@ -169,7 +171,7 @@ function Actions({
     setAnchorEl(event.currentTarget);
   };
   return (
-    <div container className={classes.root}>
+    <Grid container justify="center" className={classes.root}>
       {onShare && (
         <ActionButton
           gaEvents={share}
@@ -274,7 +276,7 @@ function Actions({
       >
         <EmbedCodeTextArea code={embedCode} />
       </Popover>
-    </div>
+    </Grid>
   );
 }
 
