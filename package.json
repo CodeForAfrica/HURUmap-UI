@@ -38,7 +38,7 @@
   "main": "dist/index.js",
   "scripts": {
     "preversion": "yarn lint && yarn build",
-    "postversion": "git push --tags && yarn publish --access public --new-version $npm_package_version . && git push && echo \"Successfully released version $npm_package_version!\"",
+    "postversion": "yarn publish --access public --new-version $npm_package_version . && git push --tags && (git diff-index --quiet HEAD || git push) && echo \"Successfully released version $npm_package_version!\"",
     "postpublish": "yarn deploy",
     "lint": "yarn eslint --fix --ignore-path './.gitignore' --ext '.js,.json,.md' './'",
     "lint-staged": "yarn eslint --fix --ignore-path './.gitignore' --ext '.js,.json,.md'",
