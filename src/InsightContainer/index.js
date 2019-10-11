@@ -19,8 +19,10 @@ const useStyles = makeStyles(({ breakpoints, variant }) => ({
   },
   content: {
     height: '100%',
+    padding: '0 1.25rem',
     width: '100%',
     [breakpoints.up('md')]: {
+      padding: 0,
       width: variant === 'data' ? '28.975rem' : '25.03125rem' // .75 of lg
     },
     [breakpoints.up('lg')]: {
@@ -46,7 +48,7 @@ const useStyles = makeStyles(({ breakpoints, variant }) => ({
   sourceGrid: {
     display: 'flex',
     alignItems: 'flex-end',
-    marginLeft: '1rem'
+    marginLeft: '1.25rem'
   },
   insight: {
     height: '100%'

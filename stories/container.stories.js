@@ -309,8 +309,11 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
   .add('Default', () =>
     React.createElement(() => {
       const useStyles = makeStyles(() => ({
-        highlight: {
-          backgroundColor: 'whitesmoke'
+        root: {
+          backgroundColor: '#f6f6f6'
+        },
+        numberVisuals: {
+          margin: '1.25rem'
         }
       }));
       const classes = useStyles();
@@ -336,6 +339,7 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
             variant={select('variant', ['data', 'analysis'], 'data')}
           >
             <NumberVisuals
+              classes={{ root: classes.numberVisuals }}
               subtitle={text('Subtitle', 'Income')}
               statistic={text('Statistic', '$60,336')}
               statisticDeviation={text(
