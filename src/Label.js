@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import { VictoryLabel } from 'victory';
-
-const canvas = document.createElement('canvas');
 
 const getFont = (style = {}) => {
   const { font, fontFamily, fontSize } = style;
@@ -27,6 +25,7 @@ const getFont = (style = {}) => {
  */
 function Label({ text: originalText, width, style, ...props }) {
   const [text, setText] = useState(originalText);
+  const canvas = useMemo(() => document.createElement('canvas'), []);
   useEffect(() => {
     const wrap = textToWrap => {
       const words = textToWrap.split(/\s+/).reverse();
@@ -35,15 +34,15 @@ function Label({ text: originalText, width, style, ...props }) {
       let line = [];
       const font = getFont(style);
       if (font) {
-        Label.canvasContext.font = font;
+        canvas.getContext('2d').font = font;
       }
 
       while (word) {
         line.push(word);
         const textContent = line.join(' ');
-        const { width: measuredWidth } = Label.canvasContext.measureText(
-          textContent
-        );
+        const { width: measuredWidth } = canvas
+          .getContext('2d')
+          .measureText(textContent);
         if (measuredWidth > width) {
           line.pop();
           if (line.length > 0) {
@@ -69,13 +68,10 @@ function Label({ text: originalText, width, style, ...props }) {
         : originalText.split('\n');
       setText(textToWrap.map(wrap).join('\n'));
     }
-  }, [originalText, style, width]);
+  }, [canvas, originalText, style, width]);
 
   return <VictoryLabel style={style} text={text} {...props} />;
 }
-
-// Lets reuse canvas context.
-Label.canvasContext = canvas.getContext('2d');
 
 Label.propTypes = {
   style: PropTypes.shape({}),

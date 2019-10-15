@@ -29,6 +29,19 @@ export default function createVictoryTheme(chartOptions) {
             display: 'none'
           }
         }
+      },
+      bar: {
+        barWidth: 25,
+        domainPadding: { x: [25, 25] },
+        height: 300,
+        offset: 50
+      },
+      pie: {
+        height: 250,
+        legendWidth: 150,
+        origin: { x: 150, y: 125 },
+        padding: 0,
+        width: 450
       }
     },
     VictoryTheme.material
