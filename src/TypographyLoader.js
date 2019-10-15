@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import ContentLoader from './ContentLoader';
@@ -10,18 +10,34 @@ export default function TypographyLoader({
   ...props
 }) {
   const ref = useRef();
-  const [height, setHeight] = useState();
-  useEffect(() => {
+  const height = useMemo(() => {
+    if (loader && loader.height) {
+      return loader.height;
+    }
+
     if (ref.current) {
       const typography = ref.current;
       const style = window.getComputedStyle(typography);
-      setHeight(style.lineHeight);
+
+      return style.lineHeight;
     }
-  }, []);
+
+    return 20;
+  }, [loader]);
+
   return (
-    <Typography ref={ref} {...props}>
+    <Typography
+      ref={ref}
+      style={{ width: '100%', height: 'fit-content' }}
+      {...props}
+    >
       {loading ? (
-        <ContentLoader style={{ height, width: '100%' }} {...loader}>
+        <ContentLoader
+          primaryOpacity={0.5}
+          secondaryOpacity={1}
+          height={height}
+          {...loader}
+        >
           <rect x="0" y="0" width="100%" height="100%" />
         </ContentLoader>
       ) : (
@@ -38,16 +54,13 @@ TypographyLoader.propTypes = {
   ]),
   loading: PropTypes.bool,
   loader: PropTypes.shape({
-    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+    width: PropTypes.number,
+    height: PropTypes.number
   })
 };
 
 TypographyLoader.defaultProps = {
   loading: false,
   children: null,
-  loader: {
-    width: '100%',
-    height: '20px'
-  }
+  loader: {}
 };

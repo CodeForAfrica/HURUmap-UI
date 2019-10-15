@@ -10,9 +10,11 @@ import embedIcon from '../assets/icons/code.svg';
 import downloadIcon from '../assets/icons/download.svg';
 import compareIcon from '../assets/icons/compare.svg';
 import showIcon from '../assets/icons/tablet-reader.svg';
+import BlockLoader from '../BlockLoader';
 
 const useStyles = makeStyles(({ breakpoints }) => ({
   root: {
+    overflow: 'hidden',
     backgroundColor: 'white',
     borderRadius: '0.625rem',
     marginTop: '0.6rem',
@@ -156,6 +158,7 @@ EmbedCodeTextArea.propTypes = {
 };
 
 function Actions({
+  loading,
   onShare,
   onDownload,
   onShowData,
@@ -172,115 +175,120 @@ function Actions({
   };
   return (
     <Grid container justify="center" className={classes.root}>
-      {onShare && (
-        <ActionButton
-          gaEvents={share}
-          onClick={onShare}
-          classes={{
-            button: classes.shareButton,
-            iconGrid: classes.actionButtonIconGrid
+      <BlockLoader loading={loading} height={40}>
+        {onShare && (
+          <ActionButton
+            gaEvents={share}
+            onClick={onShare}
+            classes={{
+              button: classes.shareButton,
+              iconGrid: classes.actionButtonIconGrid
+            }}
+          >
+            <img alt="" src={shareIcon} />
+            <Typography className={classes.actionButtonText}>Share</Typography>
+          </ActionButton>
+        )}
+
+        {onDownload && (
+          <>
+            <div className={classes.verticalDivider} />
+            <ActionButton
+              gaEvents={download}
+              onClick={onDownload}
+              classes={{
+                button: classes.downloadButton,
+                iconGrid: classes.actionButtonIconGrid
+              }}
+            >
+              <img alt="" src={downloadIcon} />
+              <Typography className={classes.actionButtonText}>
+                Download
+              </Typography>
+            </ActionButton>
+          </>
+        )}
+
+        {embedCode && (
+          <>
+            <div className={classes.verticalDivider} />
+            <ActionButton
+              gaEvents={embed}
+              onClick={handleEmbed}
+              classes={{
+                button: classes.embedButton,
+                iconGrid: classes.actionButtonIconGrid
+              }}
+            >
+              <img alt="" src={embedIcon} />
+              <Typography className={classes.actionButtonText}>
+                Embed
+              </Typography>
+            </ActionButton>
+          </>
+        )}
+
+        {onCompare && (
+          <>
+            <div className={classes.verticalDivider} />
+
+            <ActionButton
+              gaEvents={compare}
+              onClick={onCompare}
+              classes={{
+                button: classes.compareButton,
+                iconGrid: classes.actionButtonIconGrid
+              }}
+            >
+              <img alt="" src={compareIcon} />
+              <Typography className={classes.actionButtonText}>
+                Compare
+              </Typography>
+            </ActionButton>
+          </>
+        )}
+
+        {onShowData && (
+          <>
+            <div className={classes.verticalDivider} />
+            <ActionButton
+              gaEvents={showData}
+              onClick={onShowData}
+              classes={{
+                button: classes.showDataButton,
+                iconGrid: classes.actionButtonIconGrid
+              }}
+            >
+              <img alt="" src={showIcon} />
+              <Typography className={classes.actionButtonText}>
+                Show Data
+              </Typography>
+            </ActionButton>
+          </>
+        )}
+
+        <Popover
+          open={Boolean(anchorEl)}
+          onClose={() => setAnchorEl(null)}
+          anchorEl={anchorEl}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center'
+          }}
+          transformOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center'
           }}
         >
-          <img alt="" src={shareIcon} />
-          <Typography className={classes.actionButtonText}>Share</Typography>
-        </ActionButton>
-      )}
-
-      {onDownload && (
-        <>
-          <div className={classes.verticalDivider} />
-          <ActionButton
-            gaEvents={download}
-            onClick={onDownload}
-            classes={{
-              button: classes.downloadButton,
-              iconGrid: classes.actionButtonIconGrid
-            }}
-          >
-            <img alt="" src={downloadIcon} />
-            <Typography className={classes.actionButtonText}>
-              Download
-            </Typography>
-          </ActionButton>
-        </>
-      )}
-
-      {embedCode && (
-        <>
-          <div className={classes.verticalDivider} />
-          <ActionButton
-            gaEvents={embed}
-            onClick={handleEmbed}
-            classes={{
-              button: classes.embedButton,
-              iconGrid: classes.actionButtonIconGrid
-            }}
-          >
-            <img alt="" src={embedIcon} />
-            <Typography className={classes.actionButtonText}>Embed</Typography>
-          </ActionButton>
-        </>
-      )}
-
-      {onCompare && (
-        <>
-          <div className={classes.verticalDivider} />
-
-          <ActionButton
-            gaEvents={compare}
-            onClick={onCompare}
-            classes={{
-              button: classes.compareButton,
-              iconGrid: classes.actionButtonIconGrid
-            }}
-          >
-            <img alt="" src={compareIcon} />
-            <Typography className={classes.actionButtonText}>
-              Compare
-            </Typography>
-          </ActionButton>
-        </>
-      )}
-
-      {onShowData && (
-        <>
-          <div className={classes.verticalDivider} />
-          <ActionButton
-            gaEvents={showData}
-            onClick={onShowData}
-            classes={{
-              button: classes.showDataButton,
-              iconGrid: classes.actionButtonIconGrid
-            }}
-          >
-            <img alt="" src={showIcon} />
-            <Typography className={classes.actionButtonText}>
-              Show Data
-            </Typography>
-          </ActionButton>
-        </>
-      )}
-
-      <Popover
-        open={Boolean(anchorEl)}
-        onClose={() => setAnchorEl(null)}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center'
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center'
-        }}
-      >
-        <EmbedCodeTextArea code={embedCode} />
-      </Popover>
+          <EmbedCodeTextArea code={embedCode} />
+        </Popover>
+      </BlockLoader>
     </Grid>
   );
 }
 
 Actions.propTypes = {
+  loading: PropTypes.bool,
   onDownload: PropTypes.func,
   onShare: PropTypes.func,
   onShowData: PropTypes.func,
@@ -296,6 +304,7 @@ Actions.propTypes = {
 };
 
 Actions.defaultProps = {
+  loading: false,
   onDownload: null,
   onShare: null,
   onShowData: null,

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import domToImage from 'dom-to-image';
 
-import { makeStyles, Grid, Typography } from '@material-ui/core';
+import { makeStyles, Grid } from '@material-ui/core';
 
 import BlockLoader from '../BlockLoader';
 import TypographyLoader from '../TypographyLoader';
@@ -11,6 +11,7 @@ import TypographyLoader from '../TypographyLoader';
 import A from '../A';
 import Actions from './Actions';
 import Insight from './Insight';
+import propTypes from '../propTypes';
 
 const useStyles = makeStyles(({ breakpoints, variant }) => ({
   root: {
@@ -35,8 +36,8 @@ const useStyles = makeStyles(({ breakpoints, variant }) => ({
     marginTop: '1rem'
   },
   highlight: {
-    height: '100%',
     width: '100%',
+    overflow: 'hidden',
     [breakpoints.up('md')]: {
       width: '11.71875rem' // .75 of lg
     },
@@ -121,48 +122,50 @@ function InsightContainer({
 
   const handleDownload = handleDownloadProp || defaultHandleDownload;
   const actionsChildren = (
-    <BlockLoader loading={loading} height={40} width="100%">
-      <Actions
-        onShare={handleShare && (e => toPng().then(handleShare.bind(null, e)))}
-        onDownload={
-          handleDownload && (e => toPng().then(handleDownload.bind(null, e)))
-        }
-        onShowData={handleShowData}
-        onCompare={handleCompare}
-        gaEvents={gaEvents}
-        embedCode={embedCode}
-        classes={{
-          root: classes.actions,
-          shareButton: classes.actionsShareButton,
-          embedButton: classes.actionsEmbedButton,
-          showDataButton: classes.actionsShowDataButton,
-          compareButton: classes.actionsCompareButton,
-          downloadButton: classes.actionsDownloadButton,
-          actionButtonIconGrid: classes.actionsButtonIconGrid,
-          actionButtonText: classes.actionsActionButtonText,
-          verticalDivider: classes.actionsActionButtonVerticalDivider
-        }}
-      />
-    </BlockLoader>
+    <Actions
+      loading={loading}
+      onShare={handleShare && (e => toPng().then(handleShare.bind(null, e)))}
+      onDownload={
+        handleDownload && (e => toPng().then(handleDownload.bind(null, e)))
+      }
+      onShowData={handleShowData}
+      onCompare={handleCompare}
+      gaEvents={gaEvents}
+      embedCode={embedCode}
+      classes={{
+        root: classes.actions,
+        shareButton: classes.actionsShareButton,
+        embedButton: classes.actionsEmbedButton,
+        showDataButton: classes.actionsShowDataButton,
+        compareButton: classes.actionsCompareButton,
+        downloadButton: classes.actionsDownloadButton,
+        actionButtonIconGrid: classes.actionsButtonIconGrid,
+        actionButtonText: classes.actionsActionButtonText,
+        verticalDivider: classes.actionsActionButtonVerticalDivider
+      }}
+    />
   );
   const insight = insightProp || {};
 
   return (
     <Grid container className={classes.root}>
       {variant === 'data' && (
-        <Grid item>
-          <Grid
-            container
-            alignItems="space-between"
-            className={classes.highlight}
-          >
-            <BlockLoader loading={loading}>{highlightChild}</BlockLoader>
+        <Grid
+          item
+          container
+          alignItems="space-between"
+          className={classes.highlight}
+        >
+          <Grid item xs={12}>
+            <BlockLoader loading={loading} height={300}>
+              {highlightChild}
+            </BlockLoader>
+          </Grid>
+          <Grid item xs={12}>
             <TypographyLoader
-              height={20}
               loading={loading}
               loader={{
-                primaryOpacity: 0.5,
-                secondaryOpacity: 1
+                height: 20
               }}
               component="span"
               className={classes.sourceGrid}
@@ -180,13 +183,18 @@ function InsightContainer({
       <Grid item ref={chartRef}>
         <Grid container justify="center" className={classes.content}>
           <Grid item xs={12}>
-            <BlockLoader loading={loading} height={20} width="80%">
-              <Typography variant="h5" className={classes.title}>
-                {title}
-              </Typography>
-            </BlockLoader>
+            <TypographyLoader
+              variant="h5"
+              loading={loading}
+              className={classes.title}
+              loader={{
+                height: 20
+              }}
+            >
+              {title}
+            </TypographyLoader>
           </Grid>
-          <BlockLoader loading={loading} height={300} width="100%">
+          <BlockLoader loading={loading} height={300}>
             {contentChild}
           </BlockLoader>
           {variant === 'analysis' ? actionsChildren : null}
@@ -217,38 +225,6 @@ function InsightContainer({
   );
 }
 
-// This is a factory function (also called a higher-order function)
-const createTwoNodeArrayType = isRequired => {
-  // The factory returns a custom prop type
-  return (props, propName, componentName) => {
-    const childrenNodes = {
-      children: PropTypes.arrayOf(PropTypes.node)
-    };
-    const { [propName]: prop } = props;
-    if (prop == null && isRequired) {
-      // Prop is required but wasn't specified. Throw an error.
-      return new Error(`${propName} in ${componentName} isRequired`);
-    }
-    // check if not node types or not length == 2 return error
-    const notNode = !PropTypes.checkPropTypes(
-      childrenNodes,
-      props,
-      propName,
-      componentName
-    );
-    if (prop.length !== 2 || notNode) {
-      return new Error(
-        `${propName} in ${componentName} needs to be an array of two node`
-      );
-    }
-    return null;
-  };
-};
-
-// Using the factory, create two different versions of your prop type
-const twoNodeArrayType = createTwoNodeArrayType(false);
-twoNodeArrayType.isRequired = createTwoNodeArrayType(true);
-
 InsightContainer.propTypes = {
   actions: PropTypes.shape({
     handleShare: PropTypes.func,
@@ -256,7 +232,7 @@ InsightContainer.propTypes = {
     handleShowData: PropTypes.func,
     handleCompare: PropTypes.func
   }),
-  children: twoNodeArrayType.isRequired,
+  children: propTypes.twoNodeArrayType.isRequired,
   embedCode: PropTypes.string,
   gaEvents: PropTypes.shape({}),
   insight: PropTypes.shape({

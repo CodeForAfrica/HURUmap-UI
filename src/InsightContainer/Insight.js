@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { makeStyles, Button, Grid, Typography } from '@material-ui/core';
+import { makeStyles, Button, Grid } from '@material-ui/core';
 
 import BlockLoader from '../BlockLoader';
+import TypographyLoader from '../TypographyLoader';
 
 const useStyles = makeStyles(({ breakpoints, variant }) => ({
   root: {
-    backgroundColor: '#eeebeb',
     width: '100%',
+    backgroundColor: '#eeebeb',
     [breakpoints.up('md')]: {
       width: variant === 'data' ? '17,765625rem' : '18.890625rem' // .75 of lg
     },
@@ -17,6 +18,7 @@ const useStyles = makeStyles(({ breakpoints, variant }) => ({
     }
   },
   insight: {
+    width: '100%',
     padding: '0 1.25rem',
     [breakpoints.up('md')]: {
       width: variant === 'data' ? '14.8125rem' : '15.609375rem' // .75 of lg
@@ -116,50 +118,49 @@ function Insight({
 
       <div className={classes.insight}>
         {title && (
-          <BlockLoader loading={loading} height={20} width="100%">
-            <Typography variant="subtitle2" className={classes.title}>
-              {title}
-            </Typography>
-          </BlockLoader>
+          <TypographyLoader
+            variant="subtitle2"
+            loading={loading}
+            loader={{ width: 150 }}
+            className={classes.title}
+          >
+            {title}
+          </TypographyLoader>
         )}
         {description && (
-          <BlockLoader loading={loading} height={80} width="100%">
-            <Typography
-              variant="caption"
-              className={classes.description}
-              component="p"
-            >
-              {description}
-            </Typography>
-          </BlockLoader>
+          <TypographyLoader
+            component="p"
+            variant="caption"
+            loading={loading}
+            loader={{ height: 80 }}
+            className={classes.description}
+          >
+            {description}
+          </TypographyLoader>
         )}
         {analysisLink && (
-          <Grid item xs={12} container justify="center">
-            <BlockLoader loading={loading} height={53} width="100%">
-              <Button
-                color="primary"
-                variant={analysisLink.variant}
-                className={classes.analysisLink}
-                href={analysisLink.href}
-              >
-                {analysisLink.title}
-              </Button>
-            </BlockLoader>
-          </Grid>
+          <BlockLoader loading={loading} height={40}>
+            <Button
+              color="primary"
+              variant={analysisLink.variant}
+              className={classes.analysisLink}
+              href={analysisLink.href}
+            >
+              {analysisLink.title}
+            </Button>
+          </BlockLoader>
         )}
         {dataLink && (
-          <Grid item xs={12} container justify="center">
-            <BlockLoader loading={loading} height={53} width="100%">
-              <Button
-                color="primary"
-                variant={dataLink.variant}
-                className={classes.dataLink}
-                href={dataLink.href}
-              >
-                {dataLink.title}
-              </Button>
-            </BlockLoader>
-          </Grid>
+          <BlockLoader loading={loading} height={40}>
+            <Button
+              color="primary"
+              variant={dataLink.variant}
+              className={classes.dataLink}
+              href={dataLink.href}
+            >
+              {dataLink.title}
+            </Button>
+          </BlockLoader>
         )}
       </div>
     </Grid>
