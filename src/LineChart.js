@@ -12,6 +12,7 @@ import {
 import withVictoryTheme from './styles/withVictoryTheme';
 import Chart, { toChartAxisProps } from './Chart';
 import Tooltip from './Tooltip';
+import propTypes from './propTypes';
 
 /**
  * HURUmap UI Line chart is made up of VictoryChart, VictoryVoronoiContainer,
@@ -57,6 +58,7 @@ function LineChart({ data, parts, theme, ...props }) {
       <VictoryGroup>
         {groupData.map((gd, i) => (
           <VictoryGroup
+            key={JSON.stringify(gd)}
             labelComponent={
               <Tooltip
                 {...tooltipProps}
@@ -80,17 +82,16 @@ function LineChart({ data, parts, theme, ...props }) {
 }
 
 LineChart.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      x: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-    })
-  ),
+  data: propTypes.groupedData,
   parts: PropTypes.shape({
     axis: PropTypes.shape({}),
     container: PropTypes.shape({}),
     group: PropTypes.shape({}),
     parent: PropTypes.shape({}),
-    scatter: PropTypes.shape({}),
+    scatter: PropTypes.oneOfType([
+      PropTypes.shape({}),
+      PropTypes.arrayOf(PropTypes.shape({}))
+    ]),
     tooltip: PropTypes.shape({})
   }),
   theme: PropTypes.shape({

@@ -7,6 +7,7 @@ import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
 import ScaledCircle from './ScaledCircle';
 import ScaledSquare from './ScaledSquare';
+import propTypes from '../propTypes';
 
 /**
  * Data value represents **area**. We need to find length/radius in order to
@@ -101,23 +102,15 @@ function NestedProportionalAreaChart({
 
 NestedProportionalAreaChart.propTypes = {
   formatNumberForLabel: PropTypes.func,
-  data: PropTypes.arrayOf(PropTypes.shape({})),
+  data: propTypes.groupedData,
   groupSpacing: PropTypes.number,
   height: PropTypes.number,
-  reference: PropTypes.shape({
-    data: PropTypes.arrayOf(PropTypes.shape({})),
-    style: PropTypes.arrayOf(PropTypes.shape({}))
-  }),
+  reference: propTypes.reference,
   square: PropTypes.bool,
   style: PropTypes.shape({
     labels: PropTypes.shape({})
   }),
-  theme: PropTypes.shape({
-    proportionalArea: PropTypes.shape({}),
-    breakpoints: PropTypes.shape({
-      sm: PropTypes.number
-    })
-  }),
+  theme: propTypes.theme,
   width: PropTypes.number
 };
 

@@ -9,6 +9,7 @@ import CustomContainer from '../CustomContainer';
 import DonutLabel from './DonutLabel';
 import LegendLabel from './LegendLabel';
 import PieLabel from './PieLabel';
+import propTypes from '../propTypes';
 
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
   const radius = Helpers.getRadius({ width, height, padding });
@@ -74,10 +75,9 @@ function PieChart({
     legend ||
     (data1 && data1[0].name && data1) ||
     (data2 && data2[0].name && data2);
-
   const legendProps = legendData && {
     colorScale: colorScale1,
-    data: legendData,
+    data: legendData.map(d => ({ name: d.name, label: { text: d.label } })),
     orientation: 'vertical',
     ...(parts && parts.legend)
   };
@@ -128,6 +128,7 @@ function PieChart({
   const labelComponent1 = donut ? (
     <VictoryTooltip
       {...tooltipProps}
+      renderInPortal={false}
       colorScale={colorScale1}
       cornerRadius={chartInnerRadius}
       flyoutStyle={{ fill: 'white', stroke: 'none' }}
@@ -137,6 +138,7 @@ function PieChart({
           colorScale={colorScale1}
           style={tooltipStyle}
           width={chartInnerRadius * 2}
+          renderInPortal={false}
         />
       }
       orientation="top"
@@ -149,8 +151,11 @@ function PieChart({
     <VictoryTooltip
       constrainToVisibleArea
       {...tooltipProps}
+      renderInPortal={false}
       orientation={data2 && data2.length > 0 ? 'left' : undefined}
-      labelComponent={<PieLabel colorScale={colorScale1} />}
+      labelComponent={
+        <PieLabel colorScale={colorScale1} renderInPortal={false} />
+      }
     />
   );
   let labelComponent2 = labelComponent1;
@@ -159,7 +164,10 @@ function PieChart({
       <VictoryTooltip
         {...tooltipProps}
         orientation="right"
-        labelComponent={<PieLabel colorScale={colorScale1} />}
+        renderInPortal={false}
+        labelComponent={
+          <PieLabel colorScale={colorScale1} renderInPortal={false} />
+        }
       />
     );
   }
@@ -241,19 +249,8 @@ function PieChart({
 }
 
 PieChart.propTypes = {
-  colorScale: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        x: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-      })
-    )
-  ]),
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      x: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-    })
-  ),
+  colorScale: propTypes.colorScale,
+  data: propTypes.groupedData,
   donut: PropTypes.bool,
   donutLabelKey: PropTypes.shape({
     dataIndex: PropTypes.number.isRequired,
@@ -262,7 +259,12 @@ PieChart.propTypes = {
   groupSpacing: PropTypes.number,
   height: PropTypes.number,
   innerRadius: PropTypes.number,
-  legend: PropTypes.arrayOf(PropTypes.shape({})),
+  legend: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      label: PropTypes.string
+    })
+  ),
   legendWidth: PropTypes.number,
   origin: PropTypes.shape({
     x: PropTypes.number,
@@ -288,9 +290,7 @@ PieChart.propTypes = {
     labels: PropTypes.shape({})
   }),
   standalone: PropTypes.bool,
-  theme: PropTypes.shape({
-    pie: PropTypes.shape({})
-  }),
+  theme: propTypes.theme,
   width: PropTypes.number
 };
 

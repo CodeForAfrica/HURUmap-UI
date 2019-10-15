@@ -10,6 +10,7 @@ import {
   MOBILE_HEIGHT
 } from './ScaledArea';
 import withVictoryTheme from '../styles/withVictoryTheme';
+import propTypes from '../propTypes';
 
 /**
  *
@@ -36,12 +37,13 @@ function VerticalLegend({
       {/* Data values at the top of the chart */}
       {data.map((d, i) => (
         <VictoryLabel
+          key={d.x}
           capHeight={0}
           lineHeight={0}
           x={x}
           dx={0}
           y={90} // 100 - 10
-          text={formatNumberForLabel(data[i].x)}
+          text={formatNumberForLabel(d.x)}
           style={dataLabelsStyle(i, colorScale, style)}
           dy={-i * 36}
         />
@@ -72,28 +74,9 @@ function VerticalLegend({
 
 VerticalLegend.propTypes = {
   formatNumberForLabel: PropTypes.func,
-  colorScale: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        x: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-      })
-    )
-  ]),
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-      label: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-    })
-  ),
-  reference: PropTypes.shape({
-    data: PropTypes.arrayOf(
-      PropTypes.shape({
-        x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        label: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-      })
-    )
-  }),
+  colorScale: propTypes.colorScale,
+  data: propTypes.data,
+  reference: propTypes.reference,
   style: PropTypes.shape({
     labels: PropTypes.shape({})
   })

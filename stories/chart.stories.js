@@ -287,7 +287,7 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
     <div>
       <PieChart
         donut={boolean('donut', true)}
-        donutLabelKey={object('donutLabelKey', { dataIndex: 0, sortKey: '' })}
+        donutLabelKey={object('donutLabelKey', { dataIndex: 0 })}
         data={object('data', [
           { x: 'Female', y: 22, label: 'Female\n22%' },
           { x: 'Male', y: 78, label: 'Male\n78%' }
@@ -340,7 +340,7 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
     <div>
       <PieChart
         donut={boolean('donut', true)}
-        donutLabelKey={object('donutLabelKey', { dataIndex: 0, sortKey: '' })}
+        donutLabelKey={object('donutLabelKey', { dataIndex: 0 })}
         groupSpacing={number('groupSpacing', 4)}
         data={object('data', [
           [

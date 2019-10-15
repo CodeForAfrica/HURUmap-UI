@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { VictoryLabel } from 'victory';
@@ -9,6 +9,7 @@ import {
   referenceDataStyle,
   referenceLabelsStyle
 } from './ScaledArea';
+import propTypes from '../propTypes';
 
 /**
  *
@@ -36,7 +37,7 @@ function HorizontalLegend({
   return (
     <>
       {radii.map((r, i) => (
-        <>
+        <Fragment key={data[i].x}>
           <line
             // -1 => left; 1 => right
             x1={cx - (i < 1 ? 1 : -1) * 190}
@@ -74,7 +75,7 @@ function HorizontalLegend({
               text={data[i].label}
             />
           )}
-        </>
+        </Fragment>
       ))}
 
       <VictoryLabel
@@ -101,31 +102,12 @@ function HorizontalLegend({
 
 HorizontalLegend.propTypes = {
   formatNumberForLabel: PropTypes.func,
-  colorScale: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        x: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-      })
-    )
-  ]),
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-      label: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-    })
-  ),
+  colorScale: propTypes.colorScale,
+  data: propTypes.data,
   cx: PropTypes.number.isRequired,
   cy: PropTypes.number.isRequired,
   radii: PropTypes.arrayOf(PropTypes.number),
-  reference: PropTypes.shape({
-    data: PropTypes.arrayOf(
-      PropTypes.shape({
-        x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-        label: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-      })
-    )
-  }),
+  reference: propTypes.reference,
   style: PropTypes.shape({
     labels: PropTypes.shape({})
   })

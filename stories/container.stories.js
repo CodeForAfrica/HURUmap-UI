@@ -94,8 +94,7 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                   <PieChart
                     donut={boolean('donut', true)}
                     donutLabelKey={object('donutLabelKey', {
-                      dataIndex: 0,
-                      sortKey: ''
+                      dataIndex: 0
                     })}
                     data={object('data', [
                       { x: 'Female', y: 22, label: 'Female\n22%' },

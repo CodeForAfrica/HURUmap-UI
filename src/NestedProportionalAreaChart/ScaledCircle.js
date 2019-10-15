@@ -10,6 +10,7 @@ import {
 import HorizontalLegend from './HorizontalLegend';
 import PieChart from '../PieChart';
 import VerticalLegend from './VerticalLegend';
+import propTypes from '../propTypes';
 
 /**
  *
@@ -92,26 +93,11 @@ function ScaledCircle({
 
 ScaledCircle.propTypes = {
   formatNumberForLabel: PropTypes.func,
-  colorScale: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        x: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-      })
-    )
-  ]),
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-      label: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-    })
-  ),
+  colorScale: propTypes.colorScale,
+  data: propTypes.data,
   groupSpacing: PropTypes.number.isRequired,
   mobile: PropTypes.bool,
-  reference: PropTypes.shape({
-    data: PropTypes.arrayOf(PropTypes.shape({})),
-    style: PropTypes.arrayOf(PropTypes.shape({}))
-  }),
+  reference: propTypes.reference,
   style: PropTypes.shape({
     labels: PropTypes.shape({})
   })

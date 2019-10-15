@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import withVictoryTheme from '../styles/withVictoryTheme';
 import Label from '../Label';
+import propTypes from '../propTypes';
 
 function PieLabel({
   colorScale = [],
@@ -22,7 +23,7 @@ function PieLabel({
 }
 
 PieLabel.propTypes = {
-  colorScale: PropTypes.arrayOf(PropTypes.shape({})),
+  colorScale: propTypes.colorScale,
   // TODO(kilemensi): Seems like datum has _x variable that tracks the
   //                  data index (but it starts from 1).
   datum: PropTypes.shape({ _x: PropTypes.number }),

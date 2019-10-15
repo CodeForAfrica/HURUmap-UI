@@ -5,6 +5,7 @@ import { VictoryBar, VictoryLabel, VictoryAxis } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
 import Chart, { toReferenceProps } from './ReferableChart';
+import propTypes from './propTypes';
 
 function ComparisonBarChart({
   theme,
@@ -91,15 +92,8 @@ ComparisonBarChart.propTypes = {
   ).isRequired,
   height: PropTypes.number,
   horizontal: PropTypes.bool,
-  reference: PropTypes.shape({}),
-  theme: PropTypes.shape({
-    group: PropTypes.shape({
-      colorScale: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.shape({}))
-      ])
-    })
-  }),
+  reference: propTypes.reference,
+  theme: propTypes.theme,
   width: PropTypes.number
 };
 

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Rect, VictoryLabel } from 'victory';
+import propTypes from '../propTypes';
 
 function BulletBar({
   barWidth,
@@ -68,25 +69,13 @@ function BulletBar({
 }
 
 BulletBar.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape({ x: PropTypes.number })).isRequired,
+  data: propTypes.data.isRequired,
   barWidth: PropTypes.number,
   labels: PropTypes.func.isRequired,
-  reference: PropTypes.oneOfType([
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        data: PropTypes.shape({})
-      })
-    ),
-    PropTypes.shape({
-      data: PropTypes.shape({})
-    })
-  ]),
+  reference: propTypes.reference,
   style: PropTypes.shape({
     data: PropTypes.shape({}),
     labels: PropTypes.shape({})
-  }),
-  theme: PropTypes.shape({
-    group: PropTypes.shape({})
   }),
   total: PropTypes.number.isRequired,
   width: PropTypes.number,
@@ -98,7 +87,6 @@ BulletBar.defaultProps = {
   barWidth: undefined,
   reference: undefined,
   style: undefined,
-  theme: undefined,
   width: undefined,
   x: undefined,
   y: undefined

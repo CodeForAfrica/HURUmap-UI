@@ -5,6 +5,7 @@ import { toReferenceProps } from '../ReferableChart';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import BulletBar from './BulletBar';
 import CustomContainer from '../CustomContainer';
+import propTypes from '../propTypes';
 
 const toOffset = (prop, { offset }) => {
   if (prop) {
@@ -61,7 +62,7 @@ function BulletChart({
     <CustomContainer width={width} height={height}>
       {/* We're plotting from bottom up so start with last item */}
       {computedData.reverse().map((d, i) => (
-        <g>
+        <g key={JSON.stringify(d)}>
           <BulletBar
             barWidth={computedBarWidth}
             data={d}
@@ -93,19 +94,13 @@ function BulletChart({
 }
 
 BulletChart.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape({})),
+  data: propTypes.groupedData,
   barWidth: PropTypes.number,
   height: PropTypes.number,
   labels: PropTypes.func,
   offset: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
-  reference: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.shape({})),
-    PropTypes.shape({})
-  ]),
-  theme: PropTypes.shape({
-    bullet: PropTypes.shape({}),
-    breakpoints: PropTypes.shape({ sm: PropTypes.number })
-  }),
+  reference: propTypes.reference,
+  theme: propTypes.theme,
   total: PropTypes.number.isRequired,
   width: PropTypes.number
 };

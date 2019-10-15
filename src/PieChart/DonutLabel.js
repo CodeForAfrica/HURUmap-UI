@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { VictoryTooltip } from 'victory';
 
 import PieLabel from './PieLabel';
+import propTypes from '../propTypes';
 
 const sortData = (data, sortKey) => {
   let sortedData = data;
@@ -47,8 +48,8 @@ function DonutLabel({ colorScale, data, sortKey, x, y, ...props }) {
 DonutLabel.defaultEvents = VictoryTooltip.defaultEvents;
 
 DonutLabel.propTypes = {
-  colorScale: PropTypes.arrayOf(PropTypes.shape({})),
-  data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  colorScale: propTypes.colorScale,
+  data: propTypes.data.isRequired,
   sortKey: PropTypes.oneOf(['value', '-value']),
   x: PropTypes.number,
   y: PropTypes.number

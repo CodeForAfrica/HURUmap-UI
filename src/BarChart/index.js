@@ -7,6 +7,7 @@ import withVictoryTheme from '../styles/withVictoryTheme';
 import Chart, { toChartAxisProps } from '../Chart';
 import WrapLabel from '../WrapLabel';
 import BarLabel from './BarLabel';
+import propTypes from '../propTypes';
 
 function BarChart({
   barWidth,
@@ -111,11 +112,7 @@ function BarChart({
 }
 
 BarChart.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      x: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-    })
-  ),
+  data: propTypes.groupedData,
   barWidth: PropTypes.number,
   labelWidth: PropTypes.number,
   domain: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
@@ -130,13 +127,7 @@ BarChart.propTypes = {
     tooltip: PropTypes.shape({})
   }),
   responsive: PropTypes.bool,
-  theme: PropTypes.shape({
-    axis: PropTypes.shape({
-      labelWidth: PropTypes.number
-    }),
-    bar: PropTypes.shape({}),
-    group: PropTypes.shape({})
-  }),
+  theme: propTypes.theme,
   width: PropTypes.number
 };
 

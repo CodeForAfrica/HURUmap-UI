@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { VictoryTooltip } from 'victory';
 
 import PieLabel from './PieLabel';
+import propTypes from '../propTypes';
 
 /**
  * VictoryLegend only uses `name` for displaying the key. This component
@@ -21,9 +22,12 @@ function LegendLabel({ width, ...props }) {
       <VictoryTooltip
         constrainToVisibleArea
         {...props}
+        renderInPortal={false}
         datum={{ _x: index + 1, ...datum }}
-        text={data[index].label}
-        labelComponent={<PieLabel colorScale={colorScale} />}
+        text={data[index].label.text}
+        labelComponent={
+          <PieLabel colorScale={colorScale} renderInPortal={false} />
+        }
       />
     </g>
   );
@@ -32,13 +36,9 @@ function LegendLabel({ width, ...props }) {
 LegendLabel.defaultEvents = VictoryTooltip.defaultEvents;
 
 LegendLabel.propTypes = {
-  colorScale: PropTypes.arrayOf(PropTypes.shape({})),
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string
-    })
-  ),
-  datum: PropTypes.arrayOf(PropTypes.shape({})),
+  colorScale: propTypes.colorScale,
+  data: propTypes.data,
+  datum: PropTypes.shape({}),
   index: PropTypes.number,
   width: PropTypes.number
 };
