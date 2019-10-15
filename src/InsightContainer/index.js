@@ -153,7 +153,8 @@ function InsightContainer({
         <Grid
           item
           container
-          alignItems="space-between"
+          alignContent="space-between"
+          alignItems="stretch"
           className={classes.highlight}
         >
           <Grid item xs={12}>
