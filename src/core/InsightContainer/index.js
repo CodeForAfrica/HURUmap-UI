@@ -35,6 +35,15 @@ const useStyles = makeStyles(({ breakpoints, variant }) => ({
     fontWeight: 'bold',
     marginTop: '1rem'
   },
+  highlight: {
+    width: '100%',
+    [breakpoints.up('md')]: {
+      width: '11.71875rem' // .75 of lg
+    },
+    [breakpoints.up('lg')]: {
+      width: '15.625rem'
+    }
+  },
   sourceLink: {},
   sourceGrid: {
     display: 'flex',
@@ -142,11 +151,10 @@ function InsightContainer({
       {variant === 'data' && (
         <Grid
           item
-          xs={12}
-          md={3}
           container
           alignContent="space-between"
           alignItems="stretch"
+          className={classes.highlight}
         >
           <Grid item xs={12}>
             <BlockLoader loading={loading} height={300}>
@@ -172,7 +180,7 @@ function InsightContainer({
         </Grid>
       )}
 
-      <Grid item ref={chartRef} xs={12} md={5}>
+      <Grid item ref={chartRef}>
         <Grid container justify="center" className={classes.content}>
           <Grid item xs={12}>
             <TypographyLoader
@@ -193,7 +201,7 @@ function InsightContainer({
         </Grid>
       </Grid>
 
-      <Grid item xs={12} md={4}>
+      <Grid item>
         <Insight
           analysisLink={insight.analysisLink}
           classes={{
