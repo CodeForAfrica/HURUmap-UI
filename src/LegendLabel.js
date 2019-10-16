@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { VictoryTooltip } from 'victory';
 
-import Label from '../Label';
+import Label from './Label';
 
 /**
  * VictoryLegend only uses `name` for displaying the key. This component

@@ -7,7 +7,7 @@ import withVictoryTheme from '../styles/withVictoryTheme';
 
 import CustomContainer from '../CustomContainer';
 import DonutLabel from './DonutLabel';
-import LegendLabel from './LegendLabel';
+import LegendLabel from '../LegendLabel';
 import Label from '../Label';
 
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
