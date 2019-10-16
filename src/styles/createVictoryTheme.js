@@ -71,7 +71,7 @@ export default function createVictoryTheme(chartOptions) {
     donut: true,
     donutRatio: 0.6,
     groupSpacing: 4,
-    legendWidth: 100,
+    legend: { align: 'right', size: 100, orientation: 'vertical' },
     ...chart.pie
   };
   // Customize chart proportionalArea props off of chart area props
