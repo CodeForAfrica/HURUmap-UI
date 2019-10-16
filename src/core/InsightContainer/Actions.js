@@ -67,9 +67,10 @@ function ActionButton({
   children,
   onClick,
   gaEvents: { gaOn, gaEventAction, gaEventCategory, gaEventLabel },
+  classes: propClasses,
   ...props
 }) {
-  const classes = useStyles(props);
+  const classes = useStyles({ ...propClasses, props });
   return (
     <IconButton
       className={classes.actionButton}
@@ -96,6 +97,10 @@ function ActionButton({
 
 ActionButton.propTypes = {
   onClick: PropTypes.func,
+  classes: PropTypes.shape({
+    actionButton: PropTypes.string,
+    iconGrid: PropTypes.string
+  }),
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
@@ -109,6 +114,7 @@ ActionButton.propTypes = {
 };
 
 ActionButton.defaultProps = {
+  classes: undefined,
   onClick: null,
   gaEvents: {
     gaOn: undefined,
@@ -185,7 +191,7 @@ function Actions({
             gaEvents={share}
             onClick={onShare}
             classes={{
-              button: classes.shareButton,
+              actionButton: classes.shareButton,
               iconGrid: classes.actionButtonIconGrid
             }}
           >
@@ -201,7 +207,7 @@ function Actions({
               gaEvents={download}
               onClick={onDownload}
               classes={{
-                button: classes.downloadButton,
+                actionButton: classes.downloadButton,
                 iconGrid: classes.actionButtonIconGrid
               }}
             >
@@ -220,7 +226,7 @@ function Actions({
               gaEvents={embed}
               onClick={handleEmbed}
               classes={{
-                button: classes.embedButton,
+                actionButton: classes.embedButton,
                 iconGrid: classes.actionButtonIconGrid
               }}
             >
@@ -240,7 +246,7 @@ function Actions({
               gaEvents={compare}
               onClick={onCompare}
               classes={{
-                button: classes.compareButton,
+                actionButton: classes.compareButton,
                 iconGrid: classes.actionButtonIconGrid
               }}
             >
@@ -259,7 +265,7 @@ function Actions({
               gaEvents={showData}
               onClick={onShowData}
               classes={{
-                button: classes.showDataButton,
+                actionButton: classes.showDataButton,
                 iconGrid: classes.actionButtonIconGrid
               }}
             >
