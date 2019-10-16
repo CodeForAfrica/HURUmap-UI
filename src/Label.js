@@ -20,12 +20,25 @@ const getFont = (style = {}) => {
 
 /**
  * While VictoryLabel can handle array of strings, it can not handle wrapping
- * for a long string. We need this component to help breakdown long strings
- * but yet, reuse everything VictoryLabel offers: styling, etc.
+ * of a long string or color text based on `colorScale`.
  *
  * @param {*} param0 .
  */
-function Label({ text: originalText, width, style, ...props }) {
+function Label({
+  colorScale,
+  datum,
+  style: originalStyle,
+  text: originalText,
+  width,
+  ...props
+}) {
+  const style = Array.isArray(colorScale)
+    ? {
+        // eslint-disable-next-line no-underscore-dangle
+        fill: colorScale[(datum._x - 1) % colorScale.length],
+        ...originalStyle
+      }
+    : originalStyle;
   const [text, setText] = useState(originalText);
   useEffect(() => {
     const wrap = textToWrap => {
@@ -78,12 +91,18 @@ function Label({ text: originalText, width, style, ...props }) {
 Label.canvasContext = canvas.getContext('2d');
 
 Label.propTypes = {
+  colorScale: PropTypes.arrayOf(PropTypes.shape({})),
+  // TSeems like datum has _x variable that tracks the data index (but it
+  // starts from 1).
+  datum: PropTypes.shape({ _x: PropTypes.number }),
   style: PropTypes.shape({}),
   text: PropTypes.string,
   width: PropTypes.number
 };
 
 Label.defaultProps = {
+  colorScale: undefined,
+  datum: undefined,
   style: undefined,
   text: undefined,
   width: undefined

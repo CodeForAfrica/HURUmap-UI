@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { VictoryTooltip } from 'victory';
 
-import PieLabel from './PieLabel';
+import Label from '../Label';
 
 const sortData = (data, sortKey) => {
   let sortedData = data;
@@ -33,7 +33,7 @@ function DonutLabel({ colorScale, data, sortKey, x, y, ...props }) {
   const textIndex = data.findIndex(d => d.x === textData.x) + 1;
 
   return (
-    <PieLabel
+    <Label
       colorScale={colorScale}
       datum={{ _x: textIndex }}
       text={textData.label}

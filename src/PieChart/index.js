@@ -8,7 +8,7 @@ import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
 import DonutLabel from './DonutLabel';
 import LegendLabel from './LegendLabel';
-import PieLabel from './PieLabel';
+import Label from '../Label';
 
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
   const radius = Helpers.getRadius({ width, height, padding });
@@ -133,7 +133,7 @@ function PieChart({
       flyoutStyle={{ fill: 'white', stroke: 'none' }}
       height={chartInnerRadius * 2}
       labelComponent={
-        <PieLabel
+        <Label
           colorScale={colorScale1}
           style={tooltipStyle}
           width={chartInnerRadius * 2}
@@ -150,7 +150,7 @@ function PieChart({
       constrainToVisibleArea
       {...tooltipProps}
       orientation={data2 && data2.length > 0 ? 'left' : undefined}
-      labelComponent={<PieLabel colorScale={colorScale1} />}
+      labelComponent={<Label colorScale={colorScale1} />}
     />
   );
   let labelComponent2 = labelComponent1;
@@ -159,7 +159,7 @@ function PieChart({
       <VictoryTooltip
         {...tooltipProps}
         orientation="right"
-        labelComponent={<PieLabel colorScale={colorScale1} />}
+        labelComponent={<Label colorScale={colorScale1} />}
       />
     );
   }

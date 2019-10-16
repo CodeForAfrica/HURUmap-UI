@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { VictoryTooltip } from 'victory';
 
-import PieLabel from './PieLabel';
+import Label from '../Label';
 
 /**
  * VictoryLegend only uses `name` for displaying the key. This component
@@ -17,13 +17,13 @@ function LegendLabel({ width, ...props }) {
 
   return (
     <g>
-      <PieLabel width={width} {...props} />
+      <Label width={width} {...props} />
       <VictoryTooltip
         constrainToVisibleArea
         {...props}
         datum={{ _x: index + 1, ...datum }}
         text={data[index].label}
-        labelComponent={<PieLabel colorScale={colorScale} />}
+        labelComponent={<Label colorScale={colorScale} />}
       />
     </g>
   );
