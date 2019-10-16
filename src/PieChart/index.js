@@ -9,6 +9,7 @@ import CustomContainer from '../CustomContainer';
 import DonutLabel from './DonutLabel';
 import LegendLabel from '../LegendLabel';
 import Label from '../Label';
+import { getLegendProps } from '../utils';
 
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
   const radius = Helpers.getRadius({ width, height, padding });
@@ -16,14 +17,13 @@ const computeRadii = (width, height, padding, groupSpacing = 0) => {
 };
 
 function PieChart({
-  colorScale,
+  colorScale: suggestedColorScale,
   data,
   donut,
   donutLabelKey,
   groupSpacing,
   innerRadius: suggestedInnerRadius,
-  legend,
-  legendWidth: suggestedLegendWidth,
+  legend: suggestedLegendProps,
   origin: suggestedOrigin,
   padding: suggestedPadding,
   parts,
@@ -32,8 +32,8 @@ function PieChart({
   responsive,
   standalone,
   theme,
-  height: suggestedHeight,
-  width: suggestedWidth,
+  height,
+  width,
   ...props
 }) {
   const { pie: chart } = theme;
@@ -42,21 +42,11 @@ function PieChart({
   }
 
   // If colorScale is null, the one from theme will be used.
-  const colorScale1 = colorScale || chart.colorScale;
-  let colorScale2 = colorScale1;
+  const colorScale = suggestedColorScale || chart.colorScale;
+  let colorScale2 = colorScale;
   if (radii && colorScale && colorScale.length > 1) {
     colorScale2 = colorScale.slice(1);
   }
-  const height = suggestedHeight || chart.height;
-  const width = suggestedWidth || chart.width;
-  const containerProps = {
-    height,
-    responsive,
-    standalone,
-    width,
-    ...(parts && parts.container)
-  };
-
   const startAngle1 = 0;
   let endAngle1 = 360; // Full circle
   const startAngle2 = 0;
@@ -70,30 +60,37 @@ function PieChart({
   // Show legend if a legend prop is provided or data contains objects with
   // `name` attribute.
   // https://formidable.com/open-source/victory/docs/victory-legend/#data
-  const legendData =
-    legend ||
-    (data1 && data1[0].name && data1) ||
-    (data2 && data2[0].name && data2);
 
-  const legendProps = legendData && {
-    colorScale: colorScale1,
-    data: legendData,
-    orientation: 'vertical',
+  const initialLegendProps = {
+    ...chart.legend,
+    ...suggestedLegendProps,
+    colorScale,
     ...(parts && parts.legend)
   };
-
-  const legendWidth = suggestedLegendWidth || chart.legendWidth;
-  const chartWidth = legendProps ? width - legendWidth : width;
-  // Only include groupSpacing if in comparison mode
-  const computedGroupSpacing = data2 ? groupSpacing || chart.groupSpacing : 0;
   const padding = Helpers.getPadding({
     padding: suggestedPadding || chart.padding
   });
+  const {
+    height: chartHeight,
+    width: chartWidth,
+    legend,
+    x,
+    y
+  } = getLegendProps(height, width, chart, initialLegendProps, data1, padding);
+  const containerProps = {
+    height,
+    responsive,
+    standalone,
+    width,
+    ...(parts && parts.container)
+  };
+  // Only include groupSpacing if in comparison mode
+  const computedGroupSpacing = data2 ? groupSpacing || chart.groupSpacing : 0;
   const computedRadii =
     radii ||
     (radius
       ? [radius]
-      : computeRadii(chartWidth, height, padding, computedGroupSpacing));
+      : computeRadii(chartWidth, chartHeight, padding, computedGroupSpacing));
   const chartRadius = Math.max.apply(null, computedRadii);
   let chartInnerRadius = 0;
   if (donut || (typeof donut === 'undefined' && chart.donut)) {
@@ -128,13 +125,13 @@ function PieChart({
   const labelComponent1 = donut ? (
     <VictoryTooltip
       {...tooltipProps}
-      colorScale={colorScale1}
+      colorScale={colorScale}
       cornerRadius={chartInnerRadius}
       flyoutStyle={{ fill: 'white', stroke: 'none' }}
       height={chartInnerRadius * 2}
       labelComponent={
         <Label
-          colorScale={colorScale1}
+          colorScale={colorScale}
           style={tooltipStyle}
           width={chartInnerRadius * 2}
         />
@@ -150,7 +147,7 @@ function PieChart({
       constrainToVisibleArea
       {...tooltipProps}
       orientation={data2 && data2.length > 0 ? 'left' : undefined}
-      labelComponent={<Label colorScale={colorScale1} />}
+      labelComponent={<Label colorScale={colorScale} />}
     />
   );
   let labelComponent2 = labelComponent1;
@@ -159,7 +156,7 @@ function PieChart({
       <VictoryTooltip
         {...tooltipProps}
         orientation="right"
-        labelComponent={<Label colorScale={colorScale1} />}
+        labelComponent={<Label colorScale={colorScale2} />}
       />
     );
   }
@@ -167,73 +164,74 @@ function PieChart({
 
   return (
     <CustomContainer {...containerProps}>
-      {donut && (
-        <DonutLabel
-          data={donutLabelData}
-          colorScale={colorScale1}
-          sortKey={donutLabelKey.sortKey}
-          style={donutLabelStyle}
-          text={data1[0].label}
-          width={chartInnerRadius * 2}
-          x={origin.x}
-          y={origin.y}
-        />
-      )}
-      <VictoryPie
-        standalone={false}
-        groupComponent={
-          <g
-            role="presentation"
-            transform={`translate(${-computedGroupSpacing / 2}, 0)`}
+      <g role="presentation" transform={`translate(${x}, ${y})`}>
+        {donut && (
+          <DonutLabel
+            data={donutLabelData}
+            colorScale={colorScale}
+            sortKey={donutLabelKey.sortKey}
+            style={donutLabelStyle}
+            text={data1[0].label}
+            width={chartInnerRadius * 2}
+            x={origin.x}
+            y={origin.y}
           />
-        }
-        colorScale={colorScale1}
-        data={data1}
-        endAngle={endAngle1}
-        innerRadius={chartInnerRadius}
-        labelRadius={labelRadius}
-        origin={origin}
-        radius={computedRadii[0]}
-        startAngle={startAngle1}
-        theme={theme}
-        height={chartWidth}
-        width={chartWidth}
-        labelComponent={labelComponent1}
-        {...props}
-      />
-      {data2 && data2.length > 0 && (
+        )}
         <VictoryPie
           standalone={false}
-          colorScale={colorScale2}
-          data={data2}
-          endAngle={endAngle2}
           groupComponent={
             <g
               role="presentation"
-              transform={`translate(${computedGroupSpacing / 2}, 0)`}
+              transform={`translate(${-computedGroupSpacing / 2}, 0)`}
             />
           }
+          colorScale={colorScale}
+          data={data1}
+          endAngle={endAngle1}
           innerRadius={chartInnerRadius}
           labelRadius={labelRadius}
           origin={origin}
-          radius={computedRadii[1 % computedRadii.length]}
-          startAngle={startAngle2}
+          radius={computedRadii[0]}
+          startAngle={startAngle1}
           theme={theme}
-          height={height}
-          width={width}
-          labelComponent={labelComponent2}
+          height={chartWidth}
+          width={chartWidth}
+          labelComponent={labelComponent1}
+          x={x}
           {...props}
         />
-      )}
-      {legendProps && (
+        {data2 && data2.length > 0 && (
+          <VictoryPie
+            standalone={false}
+            colorScale={colorScale2}
+            data={data2}
+            endAngle={endAngle2}
+            groupComponent={
+              <g
+                role="presentation"
+                transform={`translate(${computedGroupSpacing / 2}, 0)`}
+              />
+            }
+            innerRadius={chartInnerRadius}
+            labelRadius={labelRadius}
+            origin={origin}
+            radius={computedRadii[1 % computedRadii.length]}
+            startAngle={startAngle2}
+            theme={theme}
+            height={chartHeight}
+            width={chartWidth}
+            labelComponent={labelComponent2}
+            {...props}
+          />
+        )}
+      </g>
+      {legend && (
         <VictoryLegend
           standalone={false}
           labelComponent={
-            <LegendLabel colorScale={colorScale1} width={legendWidth} />
+            <LegendLabel colorScale={colorScale} width={legend.width} />
           }
-          {...legendProps}
-          x={chartWidth}
-          y={paddingTop}
+          {...legend}
         />
       )}
     </CustomContainer>
@@ -262,8 +260,9 @@ PieChart.propTypes = {
   groupSpacing: PropTypes.number,
   height: PropTypes.number,
   innerRadius: PropTypes.number,
-  legend: PropTypes.arrayOf(PropTypes.shape({})),
-  legendWidth: PropTypes.number,
+  legend: PropTypes.shape({
+    width: PropTypes.number
+  }),
   origin: PropTypes.shape({
     x: PropTypes.number,
     y: PropTypes.number
@@ -303,7 +302,6 @@ PieChart.defaultProps = {
   height: undefined,
   innerRadius: undefined,
   legend: undefined,
-  legendWidth: undefined,
   origin: undefined,
   padding: undefined,
   parts: undefined,
