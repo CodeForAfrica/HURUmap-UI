@@ -27,7 +27,7 @@ const useStyles = makeStyles(({ breakpoints }) => ({
       width: '21.75rem'
     }
   },
-  button: {
+  actionButton: {
     borderRadius: '0',
     '&:hover': {
       backgroundColor: 'transparent'
@@ -72,7 +72,7 @@ function ActionButton({
   const classes = useStyles(props);
   return (
     <IconButton
-      className={classes.button}
+      className={classes.actionButton}
       onClick={onClick}
       ga-on={gaOn}
       ga-event-category={gaEventCategory}
@@ -154,7 +154,11 @@ const EmbedCodeTextArea = ({ code }) => {
 };
 
 EmbedCodeTextArea.propTypes = {
-  code: PropTypes.string.isRequired
+  code: PropTypes.string
+};
+
+EmbedCodeTextArea.defaultProps = {
+  code: undefined
 };
 
 function Actions({

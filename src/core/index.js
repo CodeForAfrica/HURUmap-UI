@@ -18,6 +18,3 @@ export { default as NumberVisuals } from './NumberVisuals';
 export { default as PieChart } from './PieChart';
 export { default as ShareDropDown } from './ChartContainer/ShareDropDown';
 export { default as TypographyLoader } from './TypographyLoader';
-export { default as ChartFactory } from './factory/ChartFactory';
-export { default as useProfileLoader } from './hooks/useProfileLoader';
-export { default as useChartDefinitions } from './hooks/useChartDefinitions';

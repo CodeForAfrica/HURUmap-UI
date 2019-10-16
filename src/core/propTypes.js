@@ -41,7 +41,9 @@ const data = PropTypes.oneOfType([
   PropTypes.arrayOf(
     PropTypes.shape({
       x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-      y: PropTypes.number
+      y: PropTypes.number,
+      label: PropTypes.string,
+      tooltip: PropTypes.string
     })
   ),
   PropTypes.arrayOf(PropTypes.number)
@@ -49,6 +51,14 @@ const data = PropTypes.oneOfType([
 
 export default {
   ...PropTypes,
+  graphQlData: PropTypes.arrayOf(
+    PropTypes.shape({
+      x: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      y: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      label: PropTypes.string,
+      groupBy: PropTypes.string
+    })
+  ),
   twoNodeArrayType,
   data,
   groupedData: PropTypes.oneOfType([data, PropTypes.arrayOf(data)]),

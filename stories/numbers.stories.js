@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text, object } from '@storybook/addon-knobs';
 import { CenterDecorator } from './common';
-import { NumberVisuals } from '../src';
+import { NumberVisuals } from '../src/core';
 
 storiesOf('HURUmap UI/NumberVisuals', module)
   .addDecorator(CenterDecorator)

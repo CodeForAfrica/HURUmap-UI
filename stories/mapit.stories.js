@@ -12,7 +12,7 @@ import { action } from '@storybook/addon-actions';
 
 import { TileLayer } from 'leaflet';
 import { Grid } from '@material-ui/core';
-import { MapIt } from '../src';
+import { MapIt } from '../src/core';
 import { CenterDecorator } from './common';
 
 storiesOf('HURUmap UI|MapIt/Geography', module)

@@ -8,7 +8,7 @@ import {
   text
 } from '@storybook/addon-knobs';
 
-import { ChartFactory } from '../src';
+import { ChartFactory } from '../src/factory';
 import { CenterDecorator } from './common';
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
@@ -36,7 +36,7 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     return (
       <div style={{ height: props.height, width: props.width }}>
         <ChartFactory
-          visual={{
+          definition={{
             type,
             aggregate,
             unit,
@@ -81,7 +81,7 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     return (
       <div style={{ height: props.height, width: props.width }}>
         <ChartFactory
-          visual={{
+          definition={{
             type,
             aggregate,
             unit,
@@ -131,7 +131,7 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     return (
       <div style={{ height: props.height, width: props.width }}>
         <ChartFactory
-          visual={{
+          definition={{
             type,
             aggregate,
             unit,
@@ -157,49 +157,3 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
       </div>
     );
   });
-/**
- * Not worrying about comparison atm the moment
- */
-//   .add('Comparison', () => {
-//     const type = select('type', ['column', 'grouped_column'], 'grouped_column');
-//     const aggregate = select('aggregate', ['sum', 'avg', 'sum:percent'], 'sum');
-//     const unit = text('unit', '');
-//     const subtitle = text('subtitle', '');
-//     const description = text('description', '');
-//     const props = object('props', {
-//       horizontal: false
-//     });
-//     const data = Array(number('data', 3)).fill(null);
-//     const comparisonData = Array(number('comparisonData', 3)).fill(null);
-
-//     return (
-//       <div style={{ height: props.height, width: props.width }}>
-//         <ChartFactory
-//           visual={{
-//             type,
-//             aggregate,
-//             unit,
-//             subtitle,
-//             description,
-//             props
-//           }}
-//           data={data.map((_, index) => {
-//             const y = rand();
-//             return {
-//               tooltip: `${index} Primary Data`,
-//               x: `${index} Primary Data`,
-//               y
-//             };
-//           })}
-//           comparisonData={comparisonData.map((_, index) => {
-//             const y = rand();
-//             return {
-//               tooltip: `${index} Comparison Data`,
-//               x: `${index} Comparison Data`,
-//               y
-//             };
-//           })}
-//         />
-//       </div>
-//     );
-//   });

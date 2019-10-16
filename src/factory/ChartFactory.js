@@ -1,17 +1,18 @@
 import React, { useMemo } from 'react';
 
-import BarChart from '../BarChart';
-import PieChart from '../PieChart';
-import NestedProportionalAreaChart from '../NestedProportionalAreaChart';
-import NumberVisuals from '../NumberVisuals';
+import BarChart from '../core/BarChart';
+import PieChart from '../core/PieChart';
+import NestedProportionalAreaChart from '../core/NestedProportionalAreaChart';
+import NumberVisuals from '../core/NumberVisuals';
 
 import aggregateData from './utils/aggregateData';
-import propTypes from '../propTypes';
-import withVictoryTheme from '../styles/withVictoryTheme';
+import propTypes from '../core/propTypes';
+import withVictoryTheme from '../core/styles/withVictoryTheme';
 
 function ChartFactory({
   theme,
-  visual: {
+  definition: {
+    id,
     type: visualType,
     label,
     reference: { label: referenceLabel } = {},
@@ -30,6 +31,7 @@ function ChartFactory({
   profiles
 }) {
   const key =
+    id ||
     Math.random()
       .toString(36)
       .substring(2) + Date.now().toString(36);
@@ -340,7 +342,8 @@ function ChartFactory({
 
 ChartFactory.propTypes = {
   theme: propTypes.theme.isRequired,
-  visual: propTypes.shape({
+  definition: propTypes.shape({
+    id: propTypes.string,
     type: propTypes.string,
     label: propTypes.string,
     reference: propTypes.shape({ label: propTypes.string }),
@@ -359,13 +362,13 @@ ChartFactory.propTypes = {
       offset: propTypes.number
     })
   }).isRequired,
-  data: propTypes.groupedData.isRequired,
+  data: propTypes.graphQlData.isRequired,
   isComparison: propTypes.bool,
-  comparisonData: propTypes.data,
+  comparisonData: propTypes.graphQlData,
   refrence: propTypes.shape({
     label: propTypes.string
   }),
-  refrenceData: propTypes.data,
+  refrenceData: propTypes.graphQlData,
   /*
    * Profiles are needed in the chart builder
    * since we have no relationships in the database

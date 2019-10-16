@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'center'
   },
-  button: {
+  actionButton: {
     border: '0.0625rem solid #d8d8d8',
     marginLeft: '-0.0625rem',
     height: '2.5rem',
@@ -221,7 +221,7 @@ function ChartContainer({
           {onClickShare && (
             <BlockLoader loading={loading} width={40} height={40}>
               <ButtonBase
-                className={classes.button}
+                className={classes.actionButton}
                 onClick={() => onClickShare(getReferenceObject(shareButtonRef))}
                 ref={shareButtonRef}
               >
@@ -233,7 +233,7 @@ function ChartContainer({
           {onClickDownload && (
             <BlockLoader loading={loading} width={40} height={40}>
               <ButtonBase
-                className={classes.button}
+                className={classes.actionButton}
                 onClick={() =>
                   onClickDownload(getReferenceObject(downloadButtonRef))
                 }
@@ -247,7 +247,7 @@ function ChartContainer({
           {onClickEmbed && (
             <BlockLoader loading={loading} width={40} height={40}>
               <ButtonBase
-                className={classes.button}
+                className={classes.actionButton}
                 onClick={() => onClickEmbed(getReferenceObject(embedButtonRef))}
                 ref={embedButtonRef}
               >
@@ -259,7 +259,7 @@ function ChartContainer({
           {onClickCompare && (
             <BlockLoader loading={loading} width={40} height={40}>
               <ButtonBase
-                className={classes.button}
+                className={classes.actionButton}
                 onClick={() =>
                   onClickCompare(getReferenceObject(compareButtonRef))
                 }
@@ -273,7 +273,7 @@ function ChartContainer({
           {onClickData && (
             <BlockLoader loading={loading} width={40} height={40}>
               <ButtonBase
-                className={classes.button}
+                className={classes.actionButton}
                 onClick={() => onClickData(getReferenceObject(dataButtonRef))}
                 ref={dataButtonRef}
               >

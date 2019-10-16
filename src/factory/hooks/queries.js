@@ -16,14 +16,77 @@ export const GET_PROFILE = gql`
       longName
       name
     }
-    populationGroup: allPopulationGroup2016S(
+    population0: allPopulationSex2006S(
       condition: { geoCode: $geoCode, geoLevel: $geoLevel }
     ) {
       nodes {
         total
       }
     }
-    populationResidence: allPopulationResidence2009S(
+    population1: allPopulationSex2007S(
+      condition: { geoCode: $geoCode, geoLevel: $geoLevel }
+    ) {
+      nodes {
+        total
+      }
+    }
+    population2: allPopulationSex2009S(
+      condition: { geoCode: $geoCode, geoLevel: $geoLevel }
+    ) {
+      nodes {
+        total
+      }
+    }
+    population3: allPopulationSex2011S(
+      condition: { geoCode: $geoCode, geoLevel: $geoLevel }
+    ) {
+      nodes {
+        total
+      }
+    }
+    population4: allPopulationSex2012S(
+      condition: { geoCode: $geoCode, geoLevel: $geoLevel }
+    ) {
+      nodes {
+        total
+      }
+    }
+    population5: allPopulationSex2013S(
+      condition: { geoCode: $geoCode, geoLevel: $geoLevel }
+    ) {
+      nodes {
+        total
+      }
+    }
+    population6: allPopulationSexYears(
+      condition: { geoCode: $geoCode, geoLevel: $geoLevel }
+    ) {
+      nodes {
+        total
+      }
+    }
+    population7: allPopulationResidence2009S(
+      condition: { geoCode: $geoCode, geoLevel: $geoLevel }
+    ) {
+      nodes {
+        total
+      }
+    }
+    population8: allPopulationResidence2012S(
+      condition: { geoCode: $geoCode, geoLevel: $geoLevel }
+    ) {
+      nodes {
+        total
+      }
+    }
+    population9: allPopulationResidence2013S(
+      condition: { geoCode: $geoCode, geoLevel: $geoLevel }
+    ) {
+      nodes {
+        total
+      }
+    }
+    population10: allTotalPopulations(
       condition: { geoCode: $geoCode, geoLevel: $geoLevel }
     ) {
       nodes {
@@ -32,6 +95,15 @@ export const GET_PROFILE = gql`
     }
   }
 `;
+/**
+    population11: allPopulationGroup2016S(
+      condition: { geoCode: $geoCode, geoLevel: $geoLevel }
+    ) {
+      nodes {
+        total
+      }
+    }
+ */
 
 export const buildVisualsQuery = (visuals, parent) => gql`
 query charts($geoCode: String!, $geoLevel: String!) {

@@ -9,13 +9,7 @@ import TypographyLoader from '../TypographyLoader';
 const useStyles = makeStyles(({ breakpoints, variant }) => ({
   root: {
     width: '100%',
-    backgroundColor: '#eeebeb',
-    [breakpoints.up('md')]: {
-      width: variant === 'data' ? '17,765625rem' : '18.890625rem' // .75 of lg
-    },
-    [breakpoints.up('lg')]: {
-      width: variant === 'data' ? '23.6875rem' : '25.1875rem'
-    }
+    backgroundColor: '#eeebeb'
   },
   insight: {
     width: '100%',

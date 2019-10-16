@@ -15,7 +15,7 @@ import {
   PieChart,
   NestedProportionalAreaChart,
   ComparisonBarChart
-} from '../src';
+} from '../src/core';
 import { CenterDecorator } from './common';
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
