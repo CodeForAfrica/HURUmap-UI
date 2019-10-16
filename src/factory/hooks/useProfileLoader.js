@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useApolloClient } from '@apollo/react-hooks';
-import { buildVisualsQuery, GET_PROFILE } from './queries';
+import { buildVisualsQuery, buildProfileQuery } from './queries';
 
-export default ({ geoId, comparisonGeoId, visuals }) => {
+export default ({ geoId, comparisonGeoId, visuals, populationTables = [] }) => {
   const client = useApolloClient();
   const [chartData, setChartsData] = useState({
     isLoading: true
@@ -17,10 +17,12 @@ export default ({ geoId, comparisonGeoId, visuals }) => {
         isLoading: true
       });
 
+      const query = buildProfileQuery(populationTables);
+
       const {
         data: { geo: profile, ...populations }
       } = await client.query({
-        query: GET_PROFILE,
+        query,
         variables: {
           geoCode: geoId.split('-')[1],
           geoLevel: geoId.split('-')[0]
@@ -37,7 +39,7 @@ export default ({ geoId, comparisonGeoId, visuals }) => {
       const {
         data: { geo: parent }
       } = await client.query({
-        query: GET_PROFILE,
+        query,
         variables: {
           geoCode: profile.parentCode,
           geoLevel: profile.parentLevel
@@ -49,7 +51,7 @@ export default ({ geoId, comparisonGeoId, visuals }) => {
         const {
           data: { geo: g, ...pps }
         } = await client.query({
-          query: GET_PROFILE,
+          query,
           variables: {
             geoCode: comparisonGeoId.split('-')[1],
             geoLevel: comparisonGeoId.split('-')[0]
@@ -71,7 +73,7 @@ export default ({ geoId, comparisonGeoId, visuals }) => {
         comparison
       });
     })();
-  }, [client, geoId, comparisonGeoId]);
+  }, [client, geoId, comparisonGeoId, populationTables]);
 
   useEffect(() => {
     if (!profiles.isLoading && visuals && visuals.length) {
