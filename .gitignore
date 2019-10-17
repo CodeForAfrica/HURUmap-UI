@@ -192,5 +192,6 @@ $RECYCLE.BIN/
 
 ### Storybook ###
 
-# Build folder
-dist/
+# Build folders
+/core
+/factory
