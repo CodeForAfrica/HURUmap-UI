@@ -85,7 +85,6 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
               content={object('content', { height: 400, width: '100%' })}
               classes={{
                 title: classes.title,
-                shareExplore: classes.explore,
                 embedDropDownRoot: classes.embedModal
               }}
             >
