@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { VictoryLabel } from 'victory';
 
+import propTypes from './propTypes';
+
 const getFont = (style = {}) => {
   const { font, fontFamily, fontSize } = style;
   if (font) {
@@ -87,7 +89,7 @@ function Label({
 }
 
 Label.propTypes = {
-  colorScale: PropTypes.arrayOf(PropTypes.shape({})),
+  colorScale: propTypes.colorScale,
   // TSeems like datum has _x variable that tracks the data index (but it
   // starts from 1).
   datum: PropTypes.shape({ _x: PropTypes.number }),

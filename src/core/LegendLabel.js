@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { VictoryTooltip } from 'victory';
 
+import propTypes from './propTypes';
 import Label from './Label';
 
 /**
@@ -32,20 +33,20 @@ function LegendLabel({ width, ...props }) {
 LegendLabel.defaultEvents = VictoryTooltip.defaultEvents;
 
 LegendLabel.propTypes = {
-  colorScale: PropTypes.arrayOf(PropTypes.shape({})),
+  colorScale: propTypes.colorScale,
   data: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string
     })
   ),
-  datum: PropTypes.arrayOf(PropTypes.shape({})),
+  datum: PropTypes.shape({}),
   index: PropTypes.number,
   width: PropTypes.number
 };
 
 LegendLabel.defaultProps = {
-  data: undefined,
   colorScale: undefined,
+  data: undefined,
   datum: undefined,
   index: undefined,
   width: undefined
