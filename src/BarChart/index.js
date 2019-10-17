@@ -104,7 +104,6 @@ function BarChart({
     ...(parts && parts.parent),
     padding
   };
-  console.log('BOOM', { legend, chartProps });
 
   const numberFormatter = new Intl.NumberFormat('en-GB');
 
