@@ -20,8 +20,7 @@ function ChartFactory({
     unit = '',
     subtitle,
     description,
-    horizontal = true,
-    props: visualProps = {},
+    horizontal,
     statistic = {}
   },
   data,
@@ -29,7 +28,8 @@ function ChartFactory({
   isComparison,
   comparisonData,
   refrenceData,
-  profiles
+  profiles,
+  ...visualProps
 }) {
   const key =
     id ||
@@ -136,7 +136,6 @@ function ChartFactory({
                 label: refrenceLabel
               }
             ]}
-            {...visualProps}
           />
         </div>
       );
@@ -152,7 +151,6 @@ function ChartFactory({
             data={primaryData}
             donutLabelKey={{ dataIndex: 0 }}
             theme={theme}
-            {...visualProps}
           />
         </div>
       );
@@ -188,7 +186,6 @@ function ChartFactory({
           description={`${description} ${xDesc}`}
           comparisonData={[]} // TODO: pending NumberVisuals components (HURUmap-UI) fix on this propTypes
           classes={{}} // TODO: pending NumberVisuals style configurations - update root margin
-          {...visualProps}
         />
       );
     }
@@ -209,11 +206,12 @@ function ChartFactory({
           <BarChart
             key={key}
             data={primaryData}
+            offset={offset}
+            width={computedWidth}
             height={computedHeight}
             horizontal={horizontal}
             domainPadding={domainPadding}
             labels={({ datum }) => formatLabelValue(datum.y)}
-            offset={offset}
             parts={{
               axis: {
                 independent: {
@@ -236,8 +234,6 @@ function ChartFactory({
               }
             }}
             theme={theme}
-            width={computedWidth}
-            {...visualProps}
           />
         </div>
       );
@@ -251,7 +247,8 @@ function ChartFactory({
         domainPadding.x[0] +
         domainPadding.x[1];
       const height = visualProps.height || theme.bar.height;
-      const computedWidth = horizontal ? height : computedSize;
+      const computedWidth =
+        horizontal || computedSize < height ? height : computedSize;
       const computedHeight = horizontal ? computedSize : height;
       if (isComparison) {
         const processedComparisonData = aggregate
@@ -262,10 +259,12 @@ function ChartFactory({
           <div style={{ width: computedWidth, height: computedHeight }}>
             <BarChart
               data={[primaryData, processedComparisonData]}
-              domainPadding={domainPadding}
               key={key}
-              height={computedHeight}
+              offset={offset}
+              height={computedWidth}
+              width={computedHeight}
               horizontal={horizontal}
+              domainPadding={domainPadding}
               labels={({ datum }) => formatLabelValue(datum.y)}
               parts={{
                 axis: {
@@ -289,21 +288,20 @@ function ChartFactory({
                 }
               }}
               theme={theme}
-              width={computedWidth}
-              {...visualProps}
             />
           </div>
         );
       }
-
       return (
         <div style={{ width: computedWidth, height: computedHeight }}>
           <BarChart
             key={key}
             data={primaryData}
-            domainPadding={domainPadding}
+            offset={offset}
             height={computedHeight}
+            width={computedWidth}
             horizontal={horizontal}
+            domainPadding={domainPadding}
             labels={({ datum }) => {
               return formatLabelValue(datum.y);
             }}
@@ -329,8 +327,6 @@ function ChartFactory({
               }
             }}
             theme={theme}
-            width={computedWidth}
-            {...visualProps}
           />
         </div>
       );
@@ -356,10 +352,6 @@ ChartFactory.propTypes = {
       unit: propTypes.string,
       unique: propTypes.bool
     }),
-    props: propTypes.shape({
-      height: propTypes.number,
-      offset: propTypes.number
-    }),
     horizontal: propTypes.bool
   }).isRequired,
   data: propTypes.graphQlData.isRequired,
@@ -382,10 +374,17 @@ ChartFactory.propTypes = {
     parent: propTypes.shape({}),
     profile: propTypes.shape({}),
     comparison: propTypes.shape({})
-  })
+  }),
+  /**
+   * Other props ...
+   */
+  height: propTypes.number,
+  offset: propTypes.number
 };
 
 ChartFactory.defaultProps = {
+  height: undefined,
+  offset: undefined,
   isComparison: false,
   comparisonData: [],
   refrence: {},
