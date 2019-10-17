@@ -1,69 +1,70 @@
 /* eslint-disable import/prefer-default-export */
 
 export function getLegendProps(
-  height,
-  width,
-  chart,
+  { height, width },
   initialLegendProps,
   data = undefined,
-  padding = {}
+  originalPadding = {}
 ) {
   const {
-    align: legendAlign,
+    align,
     data: legendDataProp,
-    size: legendSize,
+    size,
     ...otherLegendProps
   } = initialLegendProps;
+
   // Show legend if a legend prop is provided or data contains objects with
   // `name` attribute.
   // https://formidable.com/open-source/victory/docs/victory-legend/#data
-  const { align: defaultAlign, size: defaultSize } = chart.legend;
-  const align = legendAlign || defaultAlign;
   const legendData = legendDataProp || (data && data[0].name && data);
-  let chartHeight = height || chart.height;
-  let chartWidth = width || chart.width;
-  console.log('boom', { chartHeight, chartWidth, legendSize });
-  let legendWidth;
-  let legendX;
-  let legendY;
-  const size = legendSize || defaultSize;
-  let x = 0;
-  let y = 0;
+  let chartHeight = height;
+  let chartWidth = width;
+  let legendHeight = height;
+  let legendWidth = width;
+  let legendX = originalPadding.left || 0;
+  let legendY = originalPadding.top || 0;
+  const padding = { ...originalPadding };
   if (legendData && size) {
     switch (align) {
       case 'left':
       case 'right': // fall-through
         chartWidth -= size;
         legendWidth = size;
-        legendX = legendAlign === 'left' ? padding.left || 0 : chartWidth;
-        legendY = padding.top || 0;
-        x = legendAlign === 'left' ? size : x;
+        if (align === 'left') {
+          padding.left += size;
+        } else {
+          legendX = chartWidth;
+          padding.right += size;
+        }
         break;
       case 'top':
       case 'bottom': // fall-through
       default:
         // fall-through
         chartHeight -= size;
-        legendX = padding.left || 0;
-        legendY = legendAlign === 'top' ? padding.top || 0 : chartHeight;
-        y = legendAlign === 'top' ? size : y;
+        legendHeight = size;
+        if (align === 'top') {
+          padding.top += size;
+        } else {
+          legendY = chartHeight;
+          padding.bottom += size;
+        }
         break;
     }
   }
   const legend = legendData && {
     data: legendData,
+    height: legendHeight,
     orientation: 'horizontal',
     width: legendWidth,
     x: legendX,
     y: legendY,
     ...otherLegendProps
   };
-  console.log('boom', legend);
   return {
     height: chartHeight,
     legend,
-    width: chartWidth,
-    x,
-    y
+    padding,
+    width: chartWidth
   };
 }
