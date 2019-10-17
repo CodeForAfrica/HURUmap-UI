@@ -20,6 +20,7 @@ function ChartFactory({
     unit = '',
     subtitle,
     description,
+    horizontal = true,
     props: visualProps = {},
     statistic = {}
   },
@@ -69,7 +70,6 @@ function ChartFactory({
   const numberFormatter = new Intl.NumberFormat('en-GB', {
     maximumFractionDigits: 2
   });
-  const { horizontal } = visualProps;
 
   const formatLabelValue = value => {
     if (aggregate) {
@@ -357,10 +357,10 @@ ChartFactory.propTypes = {
       unique: propTypes.bool
     }),
     props: propTypes.shape({
-      horizontal: propTypes.bool,
       height: propTypes.number,
       offset: propTypes.number
-    })
+    }),
+    horizontal: propTypes.bool
   }).isRequired,
   data: propTypes.graphQlData.isRequired,
   isComparison: propTypes.bool,
