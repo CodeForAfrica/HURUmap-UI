@@ -1,3 +1,3 @@
-import createTheme from '../src/styles/createTheme';
+import createTheme from '../src/core/styles/createTheme';
 
 export default createTheme();

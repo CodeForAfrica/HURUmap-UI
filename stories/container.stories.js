@@ -22,7 +22,7 @@ import {
   InsightContainer,
   NumberVisuals,
   PieChart
-} from '../src';
+} from '../src/core';
 import { CenterDecorator } from './common';
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
@@ -85,7 +85,6 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
               content={object('content', { height: 400, width: '100%' })}
               classes={{
                 title: classes.title,
-                shareExplore: classes.explore,
                 embedDropDownRoot: classes.embedModal
               }}
             >
@@ -94,8 +93,7 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                   <PieChart
                     donut={boolean('donut', true)}
                     donutLabelKey={object('donutLabelKey', {
-                      dataIndex: 0,
-                      sortKey: ''
+                      dataIndex: 0
                     })}
                     data={object('data', [
                       { x: 'Female', y: 22, label: 'Female\n22%' },
