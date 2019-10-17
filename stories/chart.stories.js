@@ -90,18 +90,20 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
   })
   .add('Grouped', () => {
     const groups = Array(number('groups', 3)).fill(null);
-    const dataCount = Array(number('data', 4)).fill(null);
+    const dataCount = Array(number('data', 3)).fill(null);
     const horizontal = boolean('horizontal', false);
     const offset = number('offset', 12);
     const data = dataCount.map(() =>
       groups.map((_g, groupIndex) => ({
         // Starting with 0 seems to trigger domainPadding coercion. See the comment below.
         x: `Group ${groupIndex + 1} TickLabel`,
+        name: `Bar ${groupIndex + 1}`,
         y: rand()
       }))
     );
-    const height = number('height', undefined) || 350;
-    const width = number('width', undefined) || 350;
+    // Include bottom legend
+    const height = number('height', 400) || 350;
+    const width = number('width', 350) || 450;
 
     return (
       <div style={{ height, width, overflow: 'hidden' }}>
@@ -125,7 +127,7 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           domainPadding={object('domainPadding', { x: offset * data.length })}
           parts={{
             parent: {
-              padding: { top: 0, left: 150, bottom: 150, right: 0 }
+              padding: { top: 50, left: 50, bottom: 50, right: 50 }
             },
             axis: {
               independent: {
@@ -158,6 +160,7 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
                 }
               }
             },
+            legend: { x: 70, rowGutter: { top: 20 } },
             tooltip: { style: { textAnchor: 'start' } }
           }}
         />
@@ -273,6 +276,31 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
             // labels at group level
             labels: ({ datum }) => `${datum.x}\n${datum.geo} ${datum.y}`
           },
+          legend: {
+            data: [
+              {
+                name: 'A',
+                label: 'A\n \nDar es Salaam 6\n \nKagera 3'
+              },
+              {
+                name: 'B',
+                label: 'B\n \nDar es Salaam 1\n \nKagera 1'
+              },
+              {
+                name: 'C',
+                label: 'C\n \nDar es Salaam 3\n \nKagera 2'
+              },
+              {
+                name: 'D',
+                label: 'D\n \nDar es Salaam 1\n \nKagera 2'
+              },
+              {
+                name: 'E',
+                label: 'E\n \nDar es Salaam 12\n \nKagera 5'
+              }
+            ],
+            x: number('Legend x', 90)
+          },
           scatter: [{ size: 5, symbol: 'circle' }, { size: 5, symbol: 'plus' }],
           tooltip: { style: { textAnchor: 'start' } }
         }}
@@ -303,27 +331,37 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
             }
           },
           legend: {
+            align: select(
+              'Legend align',
+              ['top', 'right', 'bottom', 'left'],
+              'right'
+            ),
+            data: object('Legend data', [
+              {
+                name: 'A very, very, very, very long legend name',
+                label: 'Female: 22%'
+              },
+              {
+                name: 'Short one',
+                label: 'Long tooltip label should appear above chart: 78%'
+              }
+            ]),
+            gutter: number('Legend column spacing', 10),
+            orientation: select(
+              'Legend orientation',
+              ['horizontal', 'vertical'],
+              'vertical'
+            ),
             rowGutter: number('Legend row spacing', 20),
+            size: number('Legend size', 100),
             style: {
               labels: object('Legend style', {
-                fontFamily: 'Arial',
-                fontSize: 20,
-                fontWeight: 'bold'
+                fontSize: 15
               })
-            }
+            },
+            labelWidth: number('Legend label width', 100)
           }
         }}
-        legend={[
-          {
-            name: 'A very, very, very, very long legend name',
-            label: 'Female: 22%'
-          },
-          {
-            name: 'Short one',
-            label: 'Long tooltip label should appear above chart: 78%'
-          }
-        ]}
-        legendWidth={number('Legend width', 100)}
         responsive={boolean('responsive', true)}
         standalone={boolean('standalone', true)}
         style={{
@@ -344,11 +382,11 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
         groupSpacing={number('groupSpacing', 4)}
         data={object('data', [
           [
-            { x: 'A', y: 6, name: 'A', label: 'A\n \nDar es Salaam 1' },
-            { x: 'B', y: 1, name: 'B', label: 'B\n \nDar es Salaam 2' },
-            { x: 'C', y: 3, name: 'C', label: 'C\n \nDar es Salaam 3' },
-            { x: 'D', y: 1, name: 'D', label: 'D\n \nDar es Salaam 1' },
-            { x: 'E', y: 12, name: 'E', label: 'E\n \nDar es Salaam 2' }
+            { x: 'A', y: 6, label: 'A\n \nDar es Salaam 1' },
+            { x: 'B', y: 1, label: 'B\n \nDar es Salaam 2' },
+            { x: 'C', y: 3, label: 'C\n \nDar es Salaam 3' },
+            { x: 'D', y: 1, label: 'D\n \nDar es Salaam 1' },
+            { x: 'E', y: 12, label: 'E\n \nDar es Salaam 2' }
           ],
           [
             { x: 'A', y: 3, label: 'A\n \nKagera 2' },
@@ -358,6 +396,32 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
             { x: 'E', y: 5, label: 'E\n \nKagera 5' }
           ]
         ])}
+        parts={{
+          legend: {
+            data: [
+              {
+                name: 'A',
+                label: 'A\n \nDar es Salaam 6\n \nKagera 3'
+              },
+              {
+                name: 'B',
+                label: 'B\n \nDar es Salaam 1\n \nKagera 1'
+              },
+              {
+                name: 'C',
+                label: 'C\n \nDar es Salaam 3\n \nKagera 2'
+              },
+              {
+                name: 'D',
+                label: 'D\n \nDar es Salaam 1\n \nKagera 2'
+              },
+              {
+                name: 'E',
+                label: 'E\n \nDar es Salaam 12\n \nKagera 5'
+              }
+            ]
+          }
+        }}
         width={number('width', 500)}
         height={number('height', 500)}
         padding={number('padding', 0)}
