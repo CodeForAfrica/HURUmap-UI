@@ -140,26 +140,32 @@ function Insight({
         )}
         {analysisLink && (
           <BlockLoader loading={loading} height={40}>
-            <Button
-              color="primary"
-              variant={analysisLink.variant}
-              className={classes.analysisLink}
-              href={analysisLink.href}
-            >
-              {analysisLink.title}
-            </Button>
+            <Grid item xs={12} container justify="center">
+              <Button
+                fullWidth
+                color="primary"
+                variant={analysisLink.variant}
+                className={classes.analysisLink}
+                href={analysisLink.href}
+              >
+                {analysisLink.title}
+              </Button>
+            </Grid>
           </BlockLoader>
         )}
         {dataLink && (
           <BlockLoader loading={loading} height={40}>
-            <Button
-              color="primary"
-              variant={dataLink.variant}
-              className={classes.dataLink}
-              href={dataLink.href}
-            >
-              {dataLink.title}
-            </Button>
+            <Grid item xs={12} container justify="center">
+              <Button
+                fullWidth
+                color="primary"
+                variant={dataLink.variant}
+                className={classes.dataLink}
+                href={dataLink.href}
+              >
+                {dataLink.title}
+              </Button>
+            </Grid>
           </BlockLoader>
         )}
       </div>
