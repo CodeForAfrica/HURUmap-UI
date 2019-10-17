@@ -1,12 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { VictoryBar, VictoryGroup, VictoryAxis } from 'victory';
+import {
+  Helpers,
+  VictoryAxis,
+  VictoryBar,
+  VictoryGroup,
+  VictoryLegend
+} from 'victory';
 
+import { getLegendProps } from '../utils';
 import withVictoryTheme from '../styles/withVictoryTheme';
-import Chart, { toChartAxisProps } from '../Chart';
-import WrapLabel from '../WrapLabel';
 import BarLabel from './BarLabel';
+import Chart, { toChartAxisProps } from '../Chart';
+import LegendLabel from '../LegendLabel';
+import WrapLabel from '../WrapLabel';
 
 function BarChart({
   barWidth,
@@ -14,13 +22,14 @@ function BarChart({
   data: d,
   domain,
   domainPadding,
-  height,
+  height: suggestedHeight,
   horizontal,
   offset,
+  padding: suggestedPadding,
   parts,
   responsive,
   theme,
-  width,
+  width: suggestedWidth,
   ...props
 }) {
   const {
@@ -31,6 +40,13 @@ function BarChart({
   if (!d || !groupChart) {
     return null;
   }
+
+  const height = suggestedHeight || chart.height;
+  const width = suggestedWidth || chart.width;
+
+  const groupProps = parts && parts.group ? [].concat(parts.group) : [];
+  const tooltipProps = (parts && parts.tooltip) || { style: {} };
+  const { colorScale } = groupChart;
 
   const groupData = Array.isArray(d[0]) ? d : [d];
   let labelWidth = propLabelWidth || themeLabelWidth;
@@ -57,19 +73,38 @@ function BarChart({
       );
       return tickLabel;
     });
+
+  const originalPadding = Helpers.getPadding({
+    padding:
+      suggestedPadding ||
+      (parts.parent && parts.parent.padding) ||
+      chart.padding
+  });
+
+  const initialLegendProps = {
+    ...chart.legend,
+    colorScale,
+    ...(parts && parts.legend)
+  };
+  const { padding, legend } = getLegendProps(
+    { height, width },
+    initialLegendProps,
+    groupData[0],
+    originalPadding
+  );
+
   const chartProps = {
     domain,
     domainPadding,
-    height: height || chart.height,
+    height,
     horizontal,
     responsive,
     theme,
-    width: width || chart.width,
-    ...(parts && parts.parent)
+    width,
+    ...(parts && parts.parent),
+    padding
   };
-  const groupProps = parts && parts.group ? [].concat(parts.group) : [];
-  const tooltipProps = (parts && parts.tooltip) || { style: {} };
-  const { colorScale } = groupChart;
+  console.log('BOOM', { legend, chartProps });
 
   const numberFormatter = new Intl.NumberFormat('en-GB');
 
@@ -106,6 +141,15 @@ function BarChart({
         {...axisProps.independent}
       />
       <VictoryAxis dependentAxis {...axisProps.dependent} />
+      {legend && (
+        <VictoryLegend
+          standalone={false}
+          labelComponent={
+            <LegendLabel colorScale={colorScale} width={legend.labelWidth} />
+          }
+          {...legend}
+        />
+      )}
     </Chart>
   );
 }
@@ -123,10 +167,14 @@ BarChart.propTypes = {
   height: PropTypes.number,
   horizontal: PropTypes.bool,
   offset: PropTypes.number,
+  padding: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
   parts: PropTypes.shape({
     axis: PropTypes.shape({}),
     group: PropTypes.shape({}),
-    parent: PropTypes.shape({}),
+    legend: PropTypes.shape({}),
+    parent: PropTypes.shape({
+      padding: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})])
+    }),
     tooltip: PropTypes.shape({})
   }),
   responsive: PropTypes.bool,
@@ -149,6 +197,7 @@ BarChart.defaultProps = {
   height: undefined,
   horizontal: undefined,
   offset: undefined,
+  padding: undefined,
   parts: undefined,
   responsive: true,
   theme: undefined,
