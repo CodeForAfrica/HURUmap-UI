@@ -24,7 +24,7 @@ function LegendLabel({ width, ...props }) {
         {...props}
         renderInPortal={false}
         datum={{ _x: index + 1, ...datum }}
-        text={data[index].label.text}
+        text={data[index].label}
         labelComponent={
           <PieLabel colorScale={colorScale} renderInPortal={false} />
         }

@@ -77,7 +77,7 @@ function PieChart({
     (data2 && data2[0].name && data2);
   const legendProps = legendData && {
     colorScale: colorScale1,
-    data: legendData.map(d => ({ name: d.name, label: { text: d.label } })),
+    data: legendData,
     orientation: 'vertical',
     ...(parts && parts.legend)
   };
