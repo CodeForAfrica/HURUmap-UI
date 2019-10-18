@@ -13,7 +13,7 @@ import Actions from './Actions';
 import Insight from './Insight';
 import propTypes from '../propTypes';
 
-const useStyles = makeStyles(({ breakpoints }) => ({
+const useStyles = makeStyles({
   root: {
     height: 'auto',
     backgroundColor: '#f6f6f6'
@@ -27,12 +27,7 @@ const useStyles = makeStyles(({ breakpoints }) => ({
   highlightGrid: {
     flexGrow: 1,
     flexShrink: 1,
-    [breakpoints.up('md')]: {
-      flexBasis: '11.71875rem' // .75 of lg
-    },
-    [breakpoints.up('lg')]: {
-      flexBasis: '15.625rem'
-    }
+    flexBasis: '11.71875rem'
   },
   contentGrid: ({ variant }) => ({
     flexGrow: 1,
@@ -40,22 +35,12 @@ const useStyles = makeStyles(({ breakpoints }) => ({
     height: '100%',
     padding: '0 1.25rem',
     width: '100%',
-    [breakpoints.up('md')]: {
-      flexBasis: variant === 'data' ? '28.975rem' : '25.03125rem' // .75 of lg
-    },
-    [breakpoints.up('lg')]: {
-      flexBasis: variant === 'data' ? '38.5rem' : '33.375rem'
-    }
+    flexBasis: variant === 'data' ? '28.975rem' : '25.03125rem'
   }),
   insightGrid: ({ variant }) => ({
     flexGrow: 1,
     flexShrink: 1,
-    [breakpoints.up('md')]: {
-      flexBasis: variant === 'data' ? '17.765625rem' : '18.890625rem' // .75 of lg
-    },
-    [breakpoints.up('lg')]: {
-      flexBasis: variant === 'data' ? '23.6875rem' : '25.1875rem'
-    }
+    flexBasis: variant === 'data' ? '17.765625rem' : '18.890625rem'
   }),
   sourceLink: {},
   sourceGrid: {
@@ -81,7 +66,7 @@ const useStyles = makeStyles(({ breakpoints }) => ({
   actionsActionButtonIconGrid: {},
   actionsActionButtonVerticalDivider: {},
   actionsActionButtonText: {}
-}));
+});
 
 function InsightContainer({
   hideInsight,
