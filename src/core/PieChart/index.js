@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Helpers, VictoryPie, VictoryTooltip, VictoryLegend } from 'victory';
-
-import withVictoryTheme from '../styles/withVictoryTheme';
+import { Helpers, VictoryPie, VictoryLegend } from 'victory';
 
 import { getLegendProps } from '../utils';
+import propTypes from '../propTypes';
+import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
 import DonutLabel from './DonutLabel';
-import LegendLabel from '../LegendLabel';
+import LegendLabel from './LegendLabel';
 import Label from '../Label';
-import propTypes from '../propTypes';
+import SharedEvents from './SharedEvents';
+import Tooltip from './Tooltip';
 
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
   const radius = Helpers.getRadius({ width, height, padding });
@@ -133,7 +134,7 @@ function PieChart({
   // due to svg rendering components in the provided order and we don't have
   // z-index property to reorder them.
   const labelComponent1 = donut ? (
-    <VictoryTooltip
+    <Tooltip
       {...tooltipProps}
       colorScale={colorScale}
       cornerRadius={chartInnerRadius}
@@ -155,24 +156,22 @@ function PieChart({
       y={origin.y + chartInnerRadius}
     />
   ) : (
-    <VictoryTooltip
+    <Tooltip
       constrainToVisibleArea
       {...tooltipProps}
-      renderInPortal={false}
+      labelComponent={<Label colorScale={colorScale} />}
       orientation={data2 && data2.length > 0 ? 'left' : undefined}
-      labelComponent={<Label colorScale={colorScale} renderInPortal={false} />}
+      renderInPortal={false}
     />
   );
   let labelComponent2 = labelComponent1;
   if (data2 && data2.length > 0 && !donut) {
     labelComponent2 = (
-      <VictoryTooltip
+      <Tooltip
         {...tooltipProps}
+        labelComponent={<Label colorScale={colorScale} />}
         orientation="right"
         renderInPortal={false}
-        labelComponent={
-          <Label colorScale={colorScale} renderInPortal={false} />
-        }
       />
     );
   }
@@ -185,78 +184,80 @@ function PieChart({
 
   return (
     <CustomContainer {...containerProps}>
-      <g
-        role="presentation"
-        transform={`translate(${translate.x}, ${translate.y})`}
+      <SharedEvents
+        childName={['pie1', 'pie2', 'legend']}
+        emphasisCoefficient={0.3}
       >
-        {donut && (
-          <DonutLabel
-            data={donutLabelData}
-            colorScale={colorScale}
-            sortKey={donutLabelKey.sortKey}
-            style={donutLabelStyle}
-            text={data1[0].label}
-            width={chartInnerRadius * 2}
-            x={origin.x}
-            y={origin.y}
-          />
-        )}
-        <VictoryPie
-          standalone={false}
-          groupComponent={
-            <g
-              role="presentation"
-              transform={`translate(${-computedGroupSpacing / 2}, 0)`}
+        <g
+          role="presentation"
+          transform={`translate(${translate.x}, ${translate.y})`}
+        >
+          {donut && (
+            <DonutLabel
+              data={donutLabelData}
+              colorScale={colorScale}
+              sortKey={donutLabelKey.sortKey}
+              style={donutLabelStyle}
+              text={data1[0].label}
+              width={chartInnerRadius * 2}
+              x={origin.x}
+              y={origin.y}
             />
-          }
-          colorScale={colorScale}
-          data={data1}
-          endAngle={endAngle1}
-          innerRadius={chartInnerRadius}
-          labelRadius={labelRadius}
-          origin={origin}
-          radius={computedRadii[0]}
-          startAngle={startAngle1}
-          theme={theme}
-          height={chartWidth}
-          width={chartWidth}
-          labelComponent={labelComponent1}
-          {...props}
-        />
-        {data2 && data2.length > 0 && (
+          )}
           <VictoryPie
-            standalone={false}
-            colorScale={colorScale2}
-            data={data2}
-            endAngle={endAngle2}
-            groupComponent={
-              <g
-                role="presentation"
-                transform={`translate(${computedGroupSpacing / 2}, 0)`}
-              />
-            }
+            colorScale={colorScale}
+            data={data1}
+            endAngle={endAngle1}
+            height={chartWidth}
             innerRadius={chartInnerRadius}
+            labelComponent={labelComponent1}
             labelRadius={labelRadius}
+            name="pie1"
             origin={origin}
-            radius={computedRadii[1 % computedRadii.length]}
-            startAngle={startAngle2}
+            radius={computedRadii[0]}
+            standalone={false}
+            startAngle={startAngle1}
             theme={theme}
-            height={chartHeight}
             width={chartWidth}
-            labelComponent={labelComponent2}
             {...props}
           />
+          {data2 && data2.length > 0 && (
+            <VictoryPie
+              colorScale={colorScale2}
+              data={data2}
+              endAngle={endAngle2}
+              groupComponent={
+                <g
+                  role="presentation"
+                  transform={`translate(${computedGroupSpacing / 2}, 0)`}
+                />
+              }
+              height={chartHeight}
+              innerRadius={chartInnerRadius}
+              labelRadius={labelRadius}
+              labelComponent={labelComponent2}
+              name="pie2"
+              origin={origin}
+              radius={computedRadii[1 % computedRadii.length]}
+              standalone={false}
+              startAngle={startAngle2}
+              theme={theme}
+              width={chartWidth}
+              {...props}
+            />
+          )}
+        </g>
+        {legend && (
+          <VictoryLegend
+            labelComponent={
+              <LegendLabel colorScale={colorScale} width={legend.labelWidth} />
+            }
+            name="legend"
+            standalone={false}
+            {...legend}
+          />
         )}
-      </g>
-      {legend && (
-        <VictoryLegend
-          standalone={false}
-          labelComponent={
-            <LegendLabel colorScale={colorScale} width={legend.labelWidth} />
-          }
-          {...legend}
-        />
-      )}
+      </SharedEvents>
     </CustomContainer>
   );
 }

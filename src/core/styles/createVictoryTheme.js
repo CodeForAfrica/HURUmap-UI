@@ -37,6 +37,7 @@ export default function createVictoryTheme(chartOptions) {
         offset: 50
       },
       pie: {
+        emphasisCoefficient: 0.15,
         height: 250,
         legendWidth: 150,
         origin: { x: 150, y: 125 },
