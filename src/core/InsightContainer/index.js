@@ -13,37 +13,50 @@ import Actions from './Actions';
 import Insight from './Insight';
 import propTypes from '../propTypes';
 
-const useStyles = makeStyles(({ breakpoints, variant }) => ({
+const useStyles = makeStyles(({ breakpoints }) => ({
   root: {
     height: 'auto',
     backgroundColor: '#f6f6f6'
   },
-  content: {
+  title: ({ variant }) => ({
+    fontSize: '1.25rem',
+    fontWeight: 'bold',
+    marginTop: '1rem',
+    textAlign: variant === 'analysis' && 'center'
+  }),
+  highlightGrid: {
+    flexGrow: 1,
+    flexShrink: 1,
+    [breakpoints.up('md')]: {
+      flexBasis: '11.71875rem' // .75 of lg
+    },
+    [breakpoints.up('lg')]: {
+      flexBasis: '15.625rem'
+    }
+  },
+  contentGrid: ({ variant }) => ({
+    flexGrow: 1,
+    flexShrink: 1,
     height: '100%',
     padding: '0 1.25rem',
     width: '100%',
     [breakpoints.up('md')]: {
-      padding: 0,
-      width: variant === 'data' ? '28.975rem' : '25.03125rem' // .75 of lg
+      flexBasis: variant === 'data' ? '28.975rem' : '25.03125rem' // .75 of lg
     },
     [breakpoints.up('lg')]: {
-      width: variant === 'data' ? '38.5rem' : '33.375rem'
+      flexBasis: variant === 'data' ? '38.5rem' : '33.375rem'
     }
-  },
-  title: {
-    fontSize: '1.25rem',
-    fontWeight: 'bold',
-    marginTop: '1rem'
-  },
-  highlight: {
-    width: '100%',
+  }),
+  insightGrid: ({ variant }) => ({
+    flexGrow: 1,
+    flexShrink: 1,
     [breakpoints.up('md')]: {
-      width: '11.71875rem' // .75 of lg
+      flexBasis: variant === 'data' ? '17.765625rem' : '18.890625rem' // .75 of lg
     },
     [breakpoints.up('lg')]: {
-      width: '15.625rem'
+      flexBasis: variant === 'data' ? '23.6875rem' : '25.1875rem'
     }
-  },
+  }),
   sourceLink: {},
   sourceGrid: {
     display: 'flex',
@@ -71,6 +84,7 @@ const useStyles = makeStyles(({ breakpoints, variant }) => ({
 }));
 
 function InsightContainer({
+  hideInsight,
   actions,
   children,
   embedCode,
@@ -83,8 +97,8 @@ function InsightContainer({
 }) {
   const classes = useStyles(props);
   const { variant } = props;
-  const highlightChild = variant === 'data' && children[0];
-  const contentChild = variant === 'data' ? children[1] : children;
+  const highlightChild = children[0];
+  const contentChild = children[1];
   const {
     handleShare,
     handleCompare,
@@ -95,12 +109,7 @@ function InsightContainer({
 
   const toPng = () => {
     if (chartRef.current) {
-      // We need to remove `md` classes to make sure we screenshot the chart
-      // at it's natural/maximum size
-      chartRef.current.classList.remove('MuiGrid-grid-md-5');
       return domToImage.toPng(chartRef.current).then(dataUrl => {
-        chartRef.current.classList.add('MuiGrid-grid-md-5');
-
         return dataUrl;
       });
     }
@@ -149,39 +158,35 @@ function InsightContainer({
   return (
     <Grid container className={classes.root}>
       {variant === 'data' && (
-        <Grid
-          item
-          container
-          alignContent="space-between"
-          alignItems="stretch"
-          className={classes.highlight}
-        >
-          <Grid item xs={12}>
-            <BlockLoader loading={loading} height={300}>
-              {highlightChild}
-            </BlockLoader>
-          </Grid>
-          <Grid item xs={12}>
-            <TypographyLoader
-              loading={loading}
-              loader={{
-                height: 20
-              }}
-              component="span"
-              className={classes.sourceGrid}
-            >
-              {source && (
-                <A className={classes.sourceLink} href={source.href}>
-                  {`Source: ${source.title || source.href}`}
-                </A>
-              )}
-            </TypographyLoader>
+        <Grid item className={classes.highlightGrid}>
+          <Grid container alignItems="stretch" alignContent="space-between">
+            <Grid item xs={12}>
+              <BlockLoader loading={loading} height={300}>
+                {highlightChild}
+              </BlockLoader>
+            </Grid>
+            <Grid item xs={12}>
+              <TypographyLoader
+                loading={loading}
+                loader={{
+                  height: 20
+                }}
+                component="span"
+                className={classes.sourceGrid}
+              >
+                {source && (
+                  <A className={classes.sourceLink} href={source.href}>
+                    {`Source: ${source.title || source.href}`}
+                  </A>
+                )}
+              </TypographyLoader>
+            </Grid>
           </Grid>
         </Grid>
       )}
 
-      <Grid item ref={chartRef}>
-        <Grid container justify="center" className={classes.content}>
+      <Grid item ref={chartRef} className={classes.contentGrid}>
+        <Grid container>
           <Grid item xs={12}>
             <TypographyLoader
               variant="h5"
@@ -195,37 +200,50 @@ function InsightContainer({
             </TypographyLoader>
           </Grid>
           <BlockLoader loading={loading} height={300}>
-            {contentChild}
+            {variant === 'analysis' && <Grid item>{highlightChild}</Grid>}
+            <Grid item xs={12}>
+              <Grid container justify="center">
+                {contentChild}
+              </Grid>
+            </Grid>
           </BlockLoader>
-          {variant === 'analysis' ? actionsChildren : null}
+
+          <Grid item xs={12}>
+            <Grid container justify="center">
+              {variant === 'analysis' ? actionsChildren : null}
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
 
-      <Grid item>
-        <Insight
-          analysisLink={insight.analysisLink}
-          classes={{
-            root: classes.insight,
-            analysisLink: classes.insightAnalysis,
-            dataLink: classes.insightDataLink,
-            description: classes.insightDescription,
-            insight: classes.insightContent,
-            title: classes.insightTitle
-          }}
-          dataLink={insight.dataLink}
-          description={insight.description}
-          title={insight.title}
-          variant={variant}
-          loading={loading}
-        >
-          {variant === 'data' ? actionsChildren : null}
-        </Insight>
-      </Grid>
+      {!hideInsight && (
+        <Grid item className={classes.insightGrid}>
+          <Insight
+            analysisLink={insight.analysisLink}
+            classes={{
+              root: classes.insight,
+              analysisLink: classes.insightAnalysis,
+              dataLink: classes.insightDataLink,
+              description: classes.insightDescription,
+              insight: classes.insightContent,
+              title: classes.insightTitle
+            }}
+            dataLink={insight.dataLink}
+            description={insight.description}
+            title={insight.title}
+            variant={variant}
+            loading={loading}
+          >
+            {variant === 'data' && actionsChildren}
+          </Insight>
+        </Grid>
+      )}
     </Grid>
   );
 }
 
 InsightContainer.propTypes = {
+  hideInsight: propTypes.bool,
   actions: PropTypes.shape({
     handleShare: PropTypes.func,
     handleDownload: PropTypes.func,
@@ -265,6 +283,7 @@ InsightContainer.propTypes = {
 };
 
 InsightContainer.defaultProps = {
+  hideInsight: false,
   actions: {
     handleShare: () => {},
     handleDownload: undefined,

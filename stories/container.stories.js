@@ -24,6 +24,7 @@ import {
   PieChart
 } from '../src/core';
 import { CenterDecorator } from './common';
+import { ChartFactory } from '../src/factory';
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
 
@@ -316,9 +317,19 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
       }));
       const classes = useStyles();
 
+      const containerWidth = number('containerWidth', 1000);
+      const hideInsight = boolean('hideInsight');
+      const variant = select('variant', ['data', 'analysis'], 'data');
+      const data = number('data', 10);
+      const definition = object('visual', {
+        type: 'column',
+        horizontal: false
+      });
+
       return (
-        <div>
+        <div style={{ width: containerWidth }}>
           <InsightContainer
+            hideInsight={hideInsight}
             classes={{ root: classes.root }}
             embedCode={text('embedCode', 'Embed Chart Code')}
             insight={object('insight', {
@@ -334,7 +345,7 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
               href: 'http://dev.dominion.africa'
             })}
             title="Lorem ipsum dolor sit amet"
-            variant={select('variant', ['data', 'analysis'], 'data')}
+            variant={variant}
           >
             <NumberVisuals
               classes={{ root: classes.numberVisuals }}
@@ -358,55 +369,16 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
                 }
               ])}
             />
-            <div style={{ height: 300, width: 500 }}>
-              <BarChart
-                horizontal={boolean('horizontal', false)}
-                width={500}
-                height={300}
-                data={Array(number('data', 10))
-                  .fill(null)
-                  .map((_, index) => ({
-                    x: `${index}-${index}`,
-                    y: rand()
-                  }))}
-                domainPadding={{ x: 20 }}
-                parts={{
-                  axis: {
-                    independent: {
-                      style: {
-                        axis: {
-                          display: 'block'
-                        },
-                        grid: {
-                          display: 'block'
-                        },
-                        ticks: {
-                          display: 'block'
-                        },
-                        tickLabels: {
-                          display: 'block'
-                        }
-                      }
-                    },
-                    dependent: {
-                      style: {
-                        axis: {
-                          display: 'block'
-                        },
-                        grid: {
-                          display: 'block'
-                        },
-                        tickLabels: {
-                          display: 'block'
-                        }
-                      },
-                      tickValues: [10, 50, 90],
-                      tickFormat: ['10%', '50%', '90%']
-                    }
-                  }
-                }}
-              />
-            </div>
+            <ChartFactory
+              definition={definition}
+              data={Array(data)
+                .fill(null)
+                .map((_, index) => ({
+                  x: `${index}-${index}`,
+                  y: rand()
+                }))}
+              width={variant === 'analysis' && containerWidth}
+            />
           </InsightContainer>
         </div>
       );

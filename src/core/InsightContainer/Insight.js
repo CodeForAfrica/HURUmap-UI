@@ -8,23 +8,15 @@ import TypographyLoader from '../TypographyLoader';
 
 const useStyles = makeStyles(({ breakpoints, variant }) => ({
   root: {
-    width: '100%',
-    backgroundColor: '#eeebeb',
-    [breakpoints.up('md')]: {
-      width: variant === 'data' ? '17,765625rem' : '18.890625rem' // .75 of lg
-    },
-    [breakpoints.up('lg')]: {
-      width: variant === 'data' ? '23.6875rem' : '25.1875rem'
-    }
+    backgroundColor: '#eeebeb'
   },
   insight: {
-    width: '100%',
     padding: '0 1.25rem',
     [breakpoints.up('md')]: {
-      width: variant === 'data' ? '14.8125rem' : '15.609375rem' // .75 of lg
+      minWidth: variant === 'data' ? '14.8125rem' : '15.609375rem' // .75 of lg
     },
     [breakpoints.up('lg')]: {
-      width: variant === 'data' ? '19.75rem' : '20.8125rem'
+      minWidth: variant === 'data' ? '19.75rem' : '20.8125rem'
     }
   },
   title: {
