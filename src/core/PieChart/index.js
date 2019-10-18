@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Helpers, VictoryPie, VictoryLegend } from 'victory';
+import { Helpers, VictoryPie, VictoryLegend, VictoryTooltip } from 'victory';
 
 import { getLegendProps } from '../utils';
 import propTypes from '../propTypes';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
+import DefaultLegendLabel from '../LegendLabel';
 import DonutLabel from './DonutLabel';
-import LegendLabel from './LegendLabel';
 import Label from '../Label';
 import SharedEvents from './SharedEvents';
-import Tooltip from './Tooltip';
+import SharedEventsLegendLabel from './LegendLabel';
+import SharedEventTooltip from './Tooltip';
 
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
   const radius = Helpers.getRadius({ width, height, padding });
@@ -19,48 +20,53 @@ const computeRadii = (width, height, padding, groupSpacing = 0) => {
 };
 
 function PieChart({
-  colorScale: suggestedColorScale,
+  colorScale: colorScaleProp,
   data,
   donut,
   donutLabelKey,
   groupSpacing,
-  height: suggestedHeight,
-  innerRadius: suggestedInnerRadius,
-  origin: suggestedOrigin,
-  padding: suggestedPadding,
+  height: heightProp,
+  innerRadius: innerRadiusProp,
+  origin: originProp,
+  padding: paddingProp,
   parts,
   radius,
   radii,
   responsive,
   standalone,
   theme,
-  width: suggestedWidth,
+  width: widthProp,
   ...props
 }) {
   const { pie: chart } = theme;
   if (!data || !chart) {
     return null;
   }
-  const height = suggestedHeight || chart.height;
-  const width = suggestedWidth || chart.width;
+  const height = heightProp || chart.height;
+  const width = widthProp || chart.width;
 
-  // If colorScale is null, the one from theme will be used.
-  const colorScale = suggestedColorScale || chart.colorScale;
+  // Color scale
+  const colorScale = colorScaleProp || chart.colorScale;
   let colorScale2 = colorScale;
   if (radii && colorScale && colorScale.length > 1) {
     colorScale2 = colorScale.slice(1);
   }
+
+  // Data
   const startAngle1 = 0;
   let endAngle1 = 360; // Full circle
   const startAngle2 = 0;
   const endAngle2 = 180; // Half circle clockwise
   let data1 = data;
   let data2;
+  let isComparisonMode = false;
   if (data.length > 1 && Array.isArray(data[0])) {
     endAngle1 = -180; // Half circle, counter-clockwise
-    [data1, data2] = data; // Assume data[2] is also Array
+    [data1, data2] = data;
+    isComparisonMode = data2 && data2.length > 0;
   }
 
+  // Chart dimensions & Legend
   const initialLegendProps = {
     ...chart.legend,
     colorScale,
@@ -68,7 +74,7 @@ function PieChart({
   };
   const originalPadding = Helpers.getPadding({
     padding:
-      suggestedPadding ||
+      paddingProp ||
       (parts && parts.parent && parts.parent.padding) ||
       chart.padding
   });
@@ -83,15 +89,11 @@ function PieChart({
     data1,
     originalPadding
   );
-  const containerProps = {
-    height,
-    responsive,
-    standalone,
-    width,
-    ...(parts && parts.container)
-  };
-  // Only include groupSpacing if in comparison mode
-  const computedGroupSpacing = data2 ? groupSpacing || chart.groupSpacing : 0;
+
+  // Pie size & spacing
+  const computedGroupSpacing = isComparisonMode
+    ? groupSpacing || chart.groupSpacing
+    : 0;
   const computedRadii =
     radii ||
     (radius
@@ -106,15 +108,17 @@ function PieChart({
   let chartInnerRadius = 0;
   if (donut || (typeof donut === 'undefined' && chart.donut)) {
     chartInnerRadius =
-      suggestedInnerRadius && suggestedInnerRadius > 0
-        ? suggestedInnerRadius
+      innerRadiusProp && innerRadiusProp > 0
+        ? innerRadiusProp
         : Math.min.apply(null, computedRadii) * chart.donutRatio;
   }
   const paddingTop = originalPadding.top || 0;
-  const origin = suggestedOrigin || {
+  const origin = originProp || {
     x: chartWidth / 2,
     y: paddingTop + chartRadius
   };
+
+  // Label & tooltip
   const donutLabelData = data2 ? data[donutLabelKey.dataIndex] : data1;
   const { style: suggestedHeightStyle } = props;
   const donutLabelStyle = {
@@ -130,6 +134,7 @@ function PieChart({
     ...donutLabelStyle,
     ...tooltipProps.style.labels
   };
+  const Tooltip = isComparisonMode ? VictoryTooltip : SharedEventTooltip;
   // We define tooltip for donut label component here than using a separate
   // due to svg rendering components in the provided order and we don't have
   // z-index property to reorder them.
@@ -176,6 +181,19 @@ function PieChart({
     );
   }
   const labelRadius = donut ? chartInnerRadius : undefined;
+  const LegendLabel = isComparisonMode
+    ? DefaultLegendLabel
+    : SharedEventsLegendLabel;
+
+  // Container
+  const containerProps = {
+    height,
+    responsive,
+    standalone,
+    width,
+    ...(parts && parts.container)
+  };
+
   // Since we are using custom container, we need to do the translate ourselves
   const translate = {
     x: padding.left - originalPadding.left,

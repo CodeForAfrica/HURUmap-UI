@@ -48,27 +48,6 @@ function SharedEvents({ childName, children, emphasisCoefficient }) {
                 activateLabels(childName)
               ];
             },
-            // onMouseMove: () => {
-            //   return [activateLabels(childName)];
-            // },
-            // onTouchStart: () => {
-            //   return [
-            //     activateData(childName, emphasisCoefficient),
-            //     activateLabels(childName)
-            //   ];
-            // },
-            // onMouseOut: () => {
-            //   return [
-            //     {
-            //       childName,
-            //       target: 'data',
-            //       mutation: () => {
-            //         return null;
-            //       }
-            //     },
-            //     deactivateLabels(childName)
-            //   ];
-            // },
             onMouseOut: () => {
               return [
                 {

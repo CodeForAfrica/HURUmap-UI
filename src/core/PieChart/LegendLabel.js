@@ -1,52 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import propTypes from '../propTypes';
-import Label from '../Label';
-import Tooltip from '../Tooltip';
+import LegendLabel from '../LegendLabel';
 
 /**
- * VictoryLegend only uses `name` for displaying the key. This component
- * adds label recognition to legend via tooltip.
- *
- * @param {*} props .
+ * LegendLabel *without* any events is needed for shared events on the pie chart
+ * to work.
+ * see: https://formidable.com/open-source/victory/guides/tooltips/#tooltips-with-other-events
  */
-// while we need `width` for the label, we don't need it for tooltip
-function LegendLabel({ width, ...props }) {
-  const { colorScale, data, datum, index } = props;
-
-  return (
-    <g>
-      <Label width={width} {...props} />
-      <Tooltip
-        constrainToVisibleArea
-        {...props}
-        datum={{ _x: index + 1, ...datum }}
-        text={data[index].label}
-        labelComponent={<Label colorScale={colorScale} />}
-      />
-    </g>
-  );
+function Label(props) {
+  return <LegendLabel {...props} />;
 }
 
-LegendLabel.propTypes = {
-  colorScale: propTypes.colorScale,
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string
-    })
-  ),
-  datum: PropTypes.shape({}),
-  index: PropTypes.number,
-  width: PropTypes.number
-};
-
-LegendLabel.defaultProps = {
-  colorScale: undefined,
-  data: undefined,
-  datum: undefined,
-  index: undefined,
-  width: undefined
-};
-
-export default LegendLabel;
+export default Label;
