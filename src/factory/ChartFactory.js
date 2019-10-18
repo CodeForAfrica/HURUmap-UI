@@ -15,7 +15,7 @@ function ChartFactory({
     id,
     type: visualType,
     label,
-    reference: { label: referenceLabel } = {},
+    reference: { label: propReferenceLabel } = {},
     aggregate,
     unit = '',
     subtitle,
@@ -24,10 +24,9 @@ function ChartFactory({
     statistic = {}
   },
   data,
-  refrence: { label: propRefrenceLabel },
   isComparison,
   comparisonData,
-  refrenceData,
+  referenceData,
   profiles,
   ...visualProps
 }) {
@@ -86,17 +85,17 @@ function ChartFactory({
     case 'circle_nested_proportional_area': {
       const dataLabel = data[0].label || profiles.profile[label];
       const summedData = aggregateData('sum', data, false)[0].y;
-      let summedReferenceData = refrenceData.reduce((a, b) => a + b.y, 0);
-      const refrenceLabel =
-        (refrenceData.length && summedReferenceData
-          ? refrenceData[0].label
+      let summedReferenceData = referenceData.reduce((a, b) => a + b.y, 0);
+      const referenceLabel =
+        (referenceData.length && summedReferenceData
+          ? referenceData[0].label
           : dataLabel) ||
         // Default refrence label is the chart label
-        profiles.parent[propRefrenceLabel || label] ||
-        referenceLabel ||
+        profiles.parent[propReferenceLabel || label] ||
+        propReferenceLabel ||
         label;
       summedReferenceData =
-        refrenceData.length && summedReferenceData
+        referenceData.length && summedReferenceData
           ? summedReferenceData
           : summedData;
       return (
@@ -133,7 +132,7 @@ function ChartFactory({
             reference={[
               {
                 x: summedReferenceData,
-                label: refrenceLabel
+                label: referenceLabel
               }
             ]}
           />
@@ -364,10 +363,7 @@ ChartFactory.propTypes = {
   data: propTypes.graphQlData.isRequired,
   isComparison: propTypes.bool,
   comparisonData: propTypes.graphQlData,
-  refrence: propTypes.shape({
-    label: propTypes.string
-  }),
-  refrenceData: propTypes.graphQlData,
+  referenceData: propTypes.graphQlData,
   /*
    * Profiles are needed in the chart builder
    * since we have no relationships in the database
@@ -394,8 +390,7 @@ ChartFactory.defaultProps = {
   offset: undefined,
   isComparison: false,
   comparisonData: [],
-  refrence: {},
-  refrenceData: [],
+  referenceData: [],
   profiles: {
     parent: {},
     profile: {},

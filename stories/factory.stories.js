@@ -104,14 +104,14 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
       />
     );
   })
-  .add('Refrenced', () => {
+  .add('Referenced', () => {
     const type = select(
       'type',
       ['square_nested_proportional_area', 'circle_nested_proportional_area'],
       'circle_nested_proportional_area'
     );
     const data = Array(number('data', 3)).fill(null);
-    const refrence = Array(number('refrence', 5)).fill(null);
+    const reference = Array(number('reference', 5)).fill(null);
     const aggregate = select(
       'aggregate',
       ['sum', 'avg', 'sum:percent', ''],
@@ -148,8 +148,8 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
             y
           };
         })}
-        refrenceData={refrence.map((_, index) => ({
-          label: 'Refrence',
+        referenceData={reference.map((_, index) => ({
+          label: 'Reference',
           x: index,
           y: rand()
         }))}
