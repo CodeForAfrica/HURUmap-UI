@@ -191,13 +191,18 @@ function ChartFactory({
     case 'grouped_column': {
       const barCount = primaryData[0].length;
       const offset = visualProps.offset || theme.bar.offset;
-      const { domainPadding } = theme.bar;
+      const {
+        domainPadding: {
+          x: [x0, x1]
+        }
+      } = theme.bar;
+      const domainPadding = {
+        x: [x0 * primaryData.length, x1 * primaryData.length]
+      };
       const computedSize =
         primaryData.length * barCount * offset +
         domainPadding.x[0] +
-        domainPadding.x[1] +
-        // Bug when 2 columns
-        (primaryData.length === 2 ? 50 : 0);
+        domainPadding.x[1];
       const height = visualProps.height || theme.bar.height;
       const width = visualProps.width || theme.bar.width;
       const computedWidth =
@@ -244,13 +249,18 @@ function ChartFactory({
     case 'column': {
       const barCount = isComparison ? 2 : 1;
       const offset = visualProps.offset || theme.bar.offset;
-      const { domainPadding } = theme.bar;
+      const {
+        domainPadding: {
+          x: [x0, x1]
+        }
+      } = theme.bar;
+      const domainPadding = { x: [x0 * barCount, x1 * barCount] };
       const computedSize =
         primaryData.length * barCount * offset +
         domainPadding.x[0] +
         domainPadding.x[1] +
-        // Bug when 2 columns
-        (primaryData.length === 2 ? 50 : 0);
+        // Bug when 2 bars only
+        (primaryData.length === 2 ? offset : 0);
       const height = visualProps.height || theme.bar.height;
       const width = visualProps.width || theme.bar.width;
       const computedWidth =
