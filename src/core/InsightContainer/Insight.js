@@ -1,68 +1,48 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { makeStyles, Button, Grid } from '@material-ui/core';
+import { makeStyles, Button, Grid, Box } from '@material-ui/core';
 
 import BlockLoader from '../BlockLoader';
 import TypographyLoader from '../TypographyLoader';
 
-const useStyles = makeStyles(({ breakpoints, variant }) => ({
+const useStyles = makeStyles({
   root: {
     backgroundColor: '#eeebeb'
   },
   insight: {
-    padding: '0 1.25rem',
-    [breakpoints.up('md')]: {
-      minWidth: variant === 'data' ? '14.8125rem' : '15.609375rem' // .75 of lg
-    },
-    [breakpoints.up('lg')]: {
-      minWidth: variant === 'data' ? '19.75rem' : '20.8125rem'
-    }
+    padding: '0 1.25rem'
   },
-  title: {
+  title: ({ variant }) => ({
     fontWeight: 'bold',
     marginTop: variant === 'data' ? '2.75rem' : '2.2125rem'
-  },
-  description: {
+  }),
+  description: ({ variant }) => ({
     backgroundColor: '#eeebeb',
     marginTop: variant === 'data' ? '0.8125rem' : '1.1875rem',
     marginBottom: '1rem'
-  },
+  }),
   analysisLink: {
     borderRadius: '0.75rem',
     fontWeight: 'bold',
     padding: '1rem 0',
-    marginTop: '1rem',
-    maxWidth: variant === 'data' ? '19.75rem' : '20.8125rem',
-    textTransform: 'none',
-    width: '100%',
-    [breakpoints.up('md')]: {
-      width: variant === 'data' ? '14.8125rem' : '15.609375rem' // .75 of lg
-    },
-    [breakpoints.up('lg')]: {
-      width: variant === 'data' ? '19.75rem' : '20.8125rem'
-    }
+    marginBottom: '1rem',
+    maxWidth: '333px',
+    textTransform: 'none'
   },
   dataLink: {
     borderRadius: '0.75rem',
     borderWidth: '0.125rem',
     fontWeight: 'bold',
     padding: '1rem 0',
-    margin: '1rem 0',
-    maxWidth: variant === 'data' ? '19.75rem' : '20.8125rem',
+    marginBottom: '1rem',
+    maxWidth: '333px',
     textTransform: 'none',
-    width: '100%',
-    [breakpoints.up('md')]: {
-      width: variant === 'data' ? '14.8125rem' : '15.609375rem' // .75 of lg
-    },
-    [breakpoints.up('lg')]: {
-      width: variant === 'data' ? '19.75rem' : '20.8125rem'
-    },
     '&:hover': {
       borderWidth: '0.125rem'
     }
   }
-}));
+});
 
 function Insight({
   analysisLink: analysisLinkProp,
@@ -106,61 +86,73 @@ function Insight({
       alignItems="center"
       className={classes.root}
     >
-      {children}
+      <Grid item>{children}</Grid>
+      <Grid item>
+        <Grid container spacing={1} className={classes.insight}>
+          <Grid item>
+            {title && (
+              <TypographyLoader
+                variant="subtitle2"
+                loading={loading}
+                loader={{ width: 150 }}
+                className={classes.title}
+              >
+                {title}
+              </TypographyLoader>
+            )}
+            {description && (
+              <TypographyLoader
+                component="p"
+                variant="caption"
+                loading={loading}
+                loader={{ height: 80 }}
+                className={classes.description}
+              >
+                {description}
+              </TypographyLoader>
+            )}
+          </Grid>
 
-      <div className={classes.insight}>
-        {title && (
-          <TypographyLoader
-            variant="subtitle2"
-            loading={loading}
-            loader={{ width: 150 }}
-            className={classes.title}
-          >
-            {title}
-          </TypographyLoader>
-        )}
-        {description && (
-          <TypographyLoader
-            component="p"
-            variant="caption"
-            loading={loading}
-            loader={{ height: 80 }}
-            className={classes.description}
-          >
-            {description}
-          </TypographyLoader>
-        )}
-        {analysisLink && (
-          <BlockLoader loading={loading} height={40}>
-            <Grid item xs={12} container justify="center">
-              <Button
-                fullWidth
-                color="primary"
-                variant={analysisLink.variant}
-                className={classes.analysisLink}
-                href={analysisLink.href}
-              >
-                {analysisLink.title}
-              </Button>
+          <Grid item xs={12}>
+            <Grid container spacing={1} justify="center">
+              {analysisLink && (
+                <BlockLoader loading={loading} height={40}>
+                  <Grid item component={Box} flexGrow={1} flexBasis={333}>
+                    <Grid container justify="center">
+                      <Button
+                        fullWidth
+                        color="primary"
+                        variant={analysisLink.variant}
+                        className={classes.analysisLink}
+                        href={analysisLink.href}
+                      >
+                        {analysisLink.title}
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </BlockLoader>
+              )}
+              {dataLink && (
+                <BlockLoader loading={loading} height={40}>
+                  <Grid item component={Box} flexGrow={1} flexBasis={333}>
+                    <Grid container justify="center">
+                      <Button
+                        fullWidth
+                        color="primary"
+                        variant={dataLink.variant}
+                        className={classes.dataLink}
+                        href={dataLink.href}
+                      >
+                        {dataLink.title}
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </BlockLoader>
+              )}
             </Grid>
-          </BlockLoader>
-        )}
-        {dataLink && (
-          <BlockLoader loading={loading} height={40}>
-            <Grid item xs={12} container justify="center">
-              <Button
-                fullWidth
-                color="primary"
-                variant={dataLink.variant}
-                className={classes.dataLink}
-                href={dataLink.href}
-              >
-                {dataLink.title}
-              </Button>
-            </Grid>
-          </BlockLoader>
-        )}
-      </div>
+          </Grid>
+        </Grid>
+      </Grid>
     </Grid>
   );
 }
