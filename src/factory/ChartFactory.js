@@ -15,21 +15,20 @@ function ChartFactory({
     id,
     type: visualType,
     label,
-    reference: { label: referenceLabel } = {},
+    reference: { label: propReferenceLabel } = {},
     aggregate,
     unit = '',
     subtitle,
     description,
-    horizontal = true,
-    props: visualProps = {},
+    horizontal,
     statistic = {}
   },
   data,
-  refrence: { label: propRefrenceLabel },
   isComparison,
   comparisonData,
-  refrenceData,
-  profiles
+  referenceData,
+  profiles,
+  ...visualProps
 }) {
   const key =
     id ||
@@ -86,17 +85,17 @@ function ChartFactory({
     case 'circle_nested_proportional_area': {
       const dataLabel = data[0].label || profiles.profile[label];
       const summedData = aggregateData('sum', data, false)[0].y;
-      let summedReferenceData = refrenceData.reduce((a, b) => a + b.y, 0);
-      const refrenceLabel =
-        (refrenceData.length && summedReferenceData
-          ? refrenceData[0].label
+      let summedReferenceData = referenceData.reduce((a, b) => a + b.y, 0);
+      const referenceLabel =
+        (referenceData.length && summedReferenceData
+          ? referenceData[0].label
           : dataLabel) ||
         // Default refrence label is the chart label
-        profiles.parent[propRefrenceLabel || label] ||
-        referenceLabel ||
+        profiles.parent[propReferenceLabel || label] ||
+        propReferenceLabel ||
         label;
       summedReferenceData =
-        refrenceData.length && summedReferenceData
+        referenceData.length && summedReferenceData
           ? summedReferenceData
           : summedData;
       return (
@@ -133,10 +132,9 @@ function ChartFactory({
             reference={[
               {
                 x: summedReferenceData,
-                label: refrenceLabel
+                label: referenceLabel
               }
             ]}
-            {...visualProps}
           />
         </div>
       );
@@ -152,7 +150,6 @@ function ChartFactory({
             data={primaryData}
             donutLabelKey={{ dataIndex: 0 }}
             theme={theme}
-            {...visualProps}
           />
         </div>
       );
@@ -188,32 +185,41 @@ function ChartFactory({
           description={`${description} ${xDesc}`}
           comparisonData={[]} // TODO: pending NumberVisuals components (HURUmap-UI) fix on this propTypes
           classes={{}} // TODO: pending NumberVisuals style configurations - update root margin
-          {...visualProps}
         />
       );
     }
     case 'grouped_column': {
       const barCount = primaryData[0].length;
       const offset = visualProps.offset || theme.bar.offset;
-      const { domainPadding } = theme.bar;
+      const {
+        domainPadding: {
+          x: [x0, x1]
+        }
+      } = theme.bar;
+      const domainPadding = {
+        x: [x0 * primaryData.length, x1 * primaryData.length]
+      };
       const computedSize =
         primaryData.length * barCount * offset +
         domainPadding.x[0] +
         domainPadding.x[1];
       const height = visualProps.height || theme.bar.height;
-      const computedWidth = horizontal ? height : computedSize;
-      const computedHeight = horizontal ? computedSize : height;
+      const width = visualProps.width || theme.bar.width;
+      const computedHorizontal = computedSize > width || horizontal;
+      const computedWidth = computedHorizontal ? width : computedSize;
+      const computedHeight = computedHorizontal ? computedSize : height;
 
       return (
         <div style={{ width: computedWidth, height: computedHeight }}>
           <BarChart
             key={key}
             data={primaryData}
+            offset={offset}
+            width={computedWidth}
             height={computedHeight}
-            horizontal={horizontal}
+            horizontal={computedHorizontal}
             domainPadding={domainPadding}
             labels={({ datum }) => formatLabelValue(datum.y)}
-            offset={offset}
             parts={{
               axis: {
                 independent: {
@@ -236,8 +242,6 @@ function ChartFactory({
               }
             }}
             theme={theme}
-            width={computedWidth}
-            {...visualProps}
           />
         </div>
       );
@@ -245,14 +249,23 @@ function ChartFactory({
     case 'column': {
       const barCount = isComparison ? 2 : 1;
       const offset = visualProps.offset || theme.bar.offset;
-      const { domainPadding } = theme.bar;
+      const {
+        domainPadding: {
+          x: [x0, x1]
+        }
+      } = theme.bar;
+      const domainPadding = { x: [x0 * barCount, x1 * barCount] };
       const computedSize =
         primaryData.length * barCount * offset +
         domainPadding.x[0] +
-        domainPadding.x[1];
+        domainPadding.x[1] +
+        // Bug when 2 bars only
+        (primaryData.length === 2 ? offset : 0);
       const height = visualProps.height || theme.bar.height;
-      const computedWidth = horizontal ? height : computedSize;
-      const computedHeight = horizontal ? computedSize : height;
+      const width = visualProps.width || theme.bar.width;
+      const computedHorizontal = computedSize > width || horizontal;
+      const computedWidth = computedHorizontal ? width : computedSize;
+      const computedHeight = computedHorizontal ? computedSize : height;
       if (isComparison) {
         const processedComparisonData = aggregate
           ? aggregateData(aggregate, comparisonData)
@@ -262,10 +275,12 @@ function ChartFactory({
           <div style={{ width: computedWidth, height: computedHeight }}>
             <BarChart
               data={[primaryData, processedComparisonData]}
-              domainPadding={domainPadding}
               key={key}
-              height={computedHeight}
-              horizontal={horizontal}
+              offset={offset}
+              height={computedWidth}
+              width={computedHeight}
+              horizontal={computedHorizontal}
+              domainPadding={domainPadding}
               labels={({ datum }) => formatLabelValue(datum.y)}
               parts={{
                 axis: {
@@ -289,21 +304,20 @@ function ChartFactory({
                 }
               }}
               theme={theme}
-              width={computedWidth}
-              {...visualProps}
             />
           </div>
         );
       }
-
       return (
         <div style={{ width: computedWidth, height: computedHeight }}>
           <BarChart
             key={key}
             data={primaryData}
-            domainPadding={domainPadding}
+            offset={offset}
             height={computedHeight}
-            horizontal={horizontal}
+            width={computedWidth}
+            horizontal={computedHorizontal}
+            domainPadding={domainPadding}
             labels={({ datum }) => {
               return formatLabelValue(datum.y);
             }}
@@ -329,8 +343,6 @@ function ChartFactory({
               }
             }}
             theme={theme}
-            width={computedWidth}
-            {...visualProps}
           />
         </div>
       );
@@ -356,19 +368,12 @@ ChartFactory.propTypes = {
       unit: propTypes.string,
       unique: propTypes.bool
     }),
-    props: propTypes.shape({
-      height: propTypes.number,
-      offset: propTypes.number
-    }),
     horizontal: propTypes.bool
   }).isRequired,
   data: propTypes.graphQlData.isRequired,
   isComparison: propTypes.bool,
   comparisonData: propTypes.graphQlData,
-  refrence: propTypes.shape({
-    label: propTypes.string
-  }),
-  refrenceData: propTypes.graphQlData,
+  referenceData: propTypes.graphQlData,
   /*
    * Profiles are needed in the chart builder
    * since we have no relationships in the database
@@ -382,14 +387,20 @@ ChartFactory.propTypes = {
     parent: propTypes.shape({}),
     profile: propTypes.shape({}),
     comparison: propTypes.shape({})
-  })
+  }),
+  /**
+   * Other props ...
+   */
+  height: propTypes.number,
+  offset: propTypes.number
 };
 
 ChartFactory.defaultProps = {
+  height: undefined,
+  offset: undefined,
   isComparison: false,
   comparisonData: [],
-  refrence: {},
-  refrenceData: [],
+  referenceData: [],
   profiles: {
     parent: {},
     profile: {},

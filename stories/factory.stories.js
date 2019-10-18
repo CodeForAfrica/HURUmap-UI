@@ -5,7 +5,8 @@ import {
   object,
   select,
   number,
-  text
+  text,
+  boolean
 } from '@storybook/addon-knobs';
 
 import { ChartFactory } from '../src/factory';
@@ -18,13 +19,13 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
   .addDecorator(withKnobs)
   .add('Default', () => {
     const type = select('type', ['column', 'number', 'pie'], 'column');
+    const horizontal = boolean('horizontal');
     const data = Array(number('data', 3)).fill(null);
     const aggregate = select('aggregate', ['sum', 'avg', 'sum:percent'], 'sum');
     const unit = text('unit', 'u');
     const subtitle = text('subtitle', 'Subtitle');
     const description = text('description', 'Description');
     const props = object('props', {
-      horizontal: false,
       height: 350
     });
     const statistic = object('statistic', {
@@ -34,31 +35,31 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     });
 
     return (
-      <div style={{ height: props.height, width: props.width }}>
-        <ChartFactory
-          definition={{
-            type,
-            aggregate,
-            unit,
-            subtitle,
-            description,
-            statistic,
-            props
-          }}
-          data={data.map((_, index) => {
-            const y = rand();
-            return {
-              tooltip: `${index} Dummy Data`,
-              x: `${index} Dummy Data`,
-              y
-            };
-          })}
-        />
-      </div>
+      <ChartFactory
+        definition={{
+          type,
+          aggregate,
+          unit,
+          subtitle,
+          description,
+          statistic,
+          horizontal
+        }}
+        data={data.map((_, index) => {
+          const y = rand();
+          return {
+            tooltip: `${index} Dummy Data`,
+            x: `${index} Dummy Data`,
+            y
+          };
+        })}
+        {...props}
+      />
     );
   })
   .add('Grouped', () => {
     const type = select('type', ['grouped_column', 'number'], 'grouped_column');
+    const horizontal = boolean('horizontal');
     const groups = number('groups', 3);
     const data = Array(number('data', 3) * groups).fill(null);
     const aggregate = select(
@@ -70,7 +71,8 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     const subtitle = text('subtitle', 'Subtitle');
     const description = text('description', 'Description');
     const props = object('props', {
-      horizontal: false
+      height: 350,
+      offset: 50
     });
     const statistic = object('statistic', {
       unit: '%',
@@ -79,38 +81,37 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     });
 
     return (
-      <div style={{ height: props.height, width: props.width }}>
-        <ChartFactory
-          definition={{
-            type,
-            aggregate,
-            unit,
-            subtitle,
-            description,
-            props,
-            statistic
-          }}
-          data={data.map((_, index) => {
-            const y = rand();
-            return {
-              groupBy: `Group ${index % groups}`,
-              tooltip: `Group ${index % groups} Data ${index}`,
-              x: `Group ${index % groups} Data ${index}`,
-              y
-            };
-          })}
-        />
-      </div>
+      <ChartFactory
+        definition={{
+          type,
+          aggregate,
+          unit,
+          subtitle,
+          description,
+          statistic,
+          horizontal
+        }}
+        data={data.map((_, index) => {
+          const y = rand();
+          return {
+            groupBy: `Group ${index % groups}`,
+            tooltip: `Group ${index % groups} Data ${index}`,
+            x: `Group ${index % groups} Data ${index}`,
+            y
+          };
+        })}
+        {...props}
+      />
     );
   })
-  .add('Refrenced', () => {
+  .add('Referenced', () => {
     const type = select(
       'type',
       ['square_nested_proportional_area', 'circle_nested_proportional_area'],
       'circle_nested_proportional_area'
     );
     const data = Array(number('data', 3)).fill(null);
-    const refrence = Array(number('refrence', 5)).fill(null);
+    const reference = Array(number('reference', 5)).fill(null);
     const aggregate = select(
       'aggregate',
       ['sum', 'avg', 'sum:percent', ''],
@@ -120,7 +121,7 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     const subtitle = text('subtitle', 'Subtitle');
     const description = text('description', 'Description');
     const props = object('props', {
-      horizontal: false
+      height: 350
     });
     const statistic = object('statistic', {
       unit: '%',
@@ -129,31 +130,30 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     });
 
     return (
-      <div style={{ height: props.height, width: props.width }}>
-        <ChartFactory
-          definition={{
-            type,
-            aggregate,
-            unit,
-            subtitle,
-            description,
-            props,
-            statistic
-          }}
-          data={data.map((_, index) => {
-            const y = rand();
-            return {
-              tooltip: `Data ${index}`,
-              x: `Data ${index}`,
-              y
-            };
-          })}
-          refrenceData={refrence.map((_, index) => ({
-            label: 'Refrence',
-            x: index,
-            y: rand()
-          }))}
-        />
-      </div>
+      <ChartFactory
+        definition={{
+          type,
+          aggregate,
+          unit,
+          subtitle,
+          description,
+          props,
+          statistic
+        }}
+        data={data.map((_, index) => {
+          const y = rand();
+          return {
+            tooltip: `Data ${index}`,
+            x: `Data ${index}`,
+            y
+          };
+        })}
+        referenceData={reference.map((_, index) => ({
+          label: 'Reference',
+          x: index,
+          y: rand()
+        }))}
+        {...props}
+      />
     );
   });
