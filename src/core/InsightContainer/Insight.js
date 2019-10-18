@@ -6,8 +6,8 @@ import { makeStyles, Button, Grid } from '@material-ui/core';
 import BlockLoader from '../BlockLoader';
 import TypographyLoader from '../TypographyLoader';
 
-const useStyles = makeStyles(({ breakpoints, variant }) => ({
-  root: {
+const useStyles = makeStyles(({ breakpoints }) => ({
+  root: ({ variant }) => ({
     width: '100%',
     backgroundColor: '#eeebeb',
     [breakpoints.up('md')]: {
@@ -16,27 +16,29 @@ const useStyles = makeStyles(({ breakpoints, variant }) => ({
     [breakpoints.up('lg')]: {
       width: variant === 'data' ? '23.6875rem' : '25.1875rem'
     }
-  },
+  }),
   insight: {
     width: '100%',
     padding: '0 1.25rem',
     [breakpoints.up('md')]: {
-      width: variant === 'data' ? '14.8125rem' : '15.609375rem' // .75 of lg
+      width: ({ variant }) =>
+        variant === 'data' ? '14.8125rem' : '15.609375rem' // .75 of lg
     },
     [breakpoints.up('lg')]: {
-      width: variant === 'data' ? '19.75rem' : '20.8125rem'
+      width: ({ variant }) => (variant === 'data' ? '19.75rem' : '20.8125rem')
     }
   },
   title: {
     fontWeight: 'bold',
-    marginTop: variant === 'data' ? '2.75rem' : '2.2125rem'
+    marginTop: ({ variant }) => (variant === 'data' ? '2.75rem' : '2.2125rem')
   },
   description: {
     backgroundColor: '#eeebeb',
-    marginTop: variant === 'data' ? '0.8125rem' : '1.1875rem',
+    marginTop: ({ variant }) =>
+      variant === 'data' ? '0.8125rem' : '1.1875rem',
     marginBottom: '1rem'
   },
-  analysisLink: {
+  analysisLink: ({ variant }) => ({
     borderRadius: '0.75rem',
     fontWeight: 'bold',
     padding: '1rem 0',
@@ -50,8 +52,8 @@ const useStyles = makeStyles(({ breakpoints, variant }) => ({
     [breakpoints.up('lg')]: {
       width: variant === 'data' ? '19.75rem' : '20.8125rem'
     }
-  },
-  dataLink: {
+  }),
+  dataLink: ({ variant }) => ({
     borderRadius: '0.75rem',
     borderWidth: '0.125rem',
     fontWeight: 'bold',
@@ -69,7 +71,7 @@ const useStyles = makeStyles(({ breakpoints, variant }) => ({
     '&:hover': {
       borderWidth: '0.125rem'
     }
-  }
+  })
 }));
 
 function Insight({

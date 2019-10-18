@@ -13,12 +13,12 @@ import Actions from './Actions';
 import Insight from './Insight';
 import propTypes from '../propTypes';
 
-const useStyles = makeStyles(({ breakpoints, variant }) => ({
+const useStyles = makeStyles(({ breakpoints }) => ({
   root: {
     height: 'auto',
     backgroundColor: '#f6f6f6'
   },
-  content: {
+  content: ({ variant }) => ({
     height: '100%',
     padding: '0 1.25rem',
     width: '100%',
@@ -29,7 +29,7 @@ const useStyles = makeStyles(({ breakpoints, variant }) => ({
     [breakpoints.up('lg')]: {
       width: variant === 'data' ? '38.5rem' : '33.375rem'
     }
-  },
+  }),
   title: {
     fontSize: '1.25rem',
     fontWeight: 'bold',
