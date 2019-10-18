@@ -196,9 +196,13 @@ function ChartFactory({
       const computedSize =
         primaryData.length * barCount * offset +
         domainPadding.x[0] +
-        domainPadding.x[1];
+        domainPadding.x[1] +
+        // Bug when 2 columns
+        (primaryData.length === 2 ? 50 : 0);
       const height = visualProps.height || theme.bar.height;
-      const computedWidth = horizontal ? height : computedSize;
+      const width = visualProps.width || theme.bar.width;
+      const computedWidth =
+        horizontal || computedSize > width ? width : computedSize;
       const computedHeight = horizontal ? computedSize : height;
 
       return (
@@ -245,10 +249,13 @@ function ChartFactory({
       const computedSize =
         primaryData.length * barCount * offset +
         domainPadding.x[0] +
-        domainPadding.x[1];
+        domainPadding.x[1] +
+        // Bug when 2 columns
+        (primaryData.length === 2 ? 50 : 0);
       const height = visualProps.height || theme.bar.height;
+      const width = visualProps.width || theme.bar.width;
       const computedWidth =
-        horizontal || computedSize < height ? height : computedSize;
+        horizontal || computedSize > width ? width : computedSize;
       const computedHeight = horizontal ? computedSize : height;
       if (isComparison) {
         const processedComparisonData = aggregate
