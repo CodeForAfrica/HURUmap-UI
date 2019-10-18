@@ -205,9 +205,9 @@ function ChartFactory({
         domainPadding.x[1];
       const height = visualProps.height || theme.bar.height;
       const width = visualProps.width || theme.bar.width;
-      const computedWidth =
-        horizontal || computedSize > width ? width : computedSize;
-      const computedHeight = horizontal ? computedSize : height;
+      const computedHorizontal = computedSize > width || horizontal;
+      const computedWidth = computedHorizontal ? width : computedSize;
+      const computedHeight = computedHorizontal ? computedSize : height;
 
       return (
         <div style={{ width: computedWidth, height: computedHeight }}>
@@ -217,7 +217,7 @@ function ChartFactory({
             offset={offset}
             width={computedWidth}
             height={computedHeight}
-            horizontal={horizontal}
+            horizontal={computedHorizontal}
             domainPadding={domainPadding}
             labels={({ datum }) => formatLabelValue(datum.y)}
             parts={{
@@ -263,9 +263,9 @@ function ChartFactory({
         (primaryData.length === 2 ? offset : 0);
       const height = visualProps.height || theme.bar.height;
       const width = visualProps.width || theme.bar.width;
-      const computedWidth =
-        horizontal || computedSize > width ? width : computedSize;
-      const computedHeight = horizontal ? computedSize : height;
+      const computedHorizontal = computedSize > width || horizontal;
+      const computedWidth = computedHorizontal ? width : computedSize;
+      const computedHeight = computedHorizontal ? computedSize : height;
       if (isComparison) {
         const processedComparisonData = aggregate
           ? aggregateData(aggregate, comparisonData)
@@ -279,7 +279,7 @@ function ChartFactory({
               offset={offset}
               height={computedWidth}
               width={computedHeight}
-              horizontal={horizontal}
+              horizontal={computedHorizontal}
               domainPadding={domainPadding}
               labels={({ datum }) => formatLabelValue(datum.y)}
               parts={{
@@ -316,7 +316,7 @@ function ChartFactory({
             offset={offset}
             height={computedHeight}
             width={computedWidth}
-            horizontal={horizontal}
+            horizontal={computedHorizontal}
             domainPadding={domainPadding}
             labels={({ datum }) => {
               return formatLabelValue(datum.y);
