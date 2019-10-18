@@ -9,7 +9,7 @@ import BlockLoader from '../BlockLoader';
 import TypographyLoader from '../TypographyLoader';
 
 import A from '../A';
-import Actions from './Actions';
+import Actions from './Action';
 import Insight from './Insight';
 import propTypes from '../propTypes';
 
