@@ -97,7 +97,6 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
       groups.map((_g, groupIndex) => ({
         // Starting with 0 seems to trigger domainPadding coercion. See the comment below.
         x: `Group ${groupIndex + 1} TickLabel`,
-        name: `Bar ${groupIndex + 1}`,
         y: rand()
       }))
     );
@@ -160,7 +159,14 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
                 }
               }
             },
-            legend: { x: 70, rowGutter: { top: 20 } },
+            legend: {
+              data: data.map((d, i) => ({
+                name: `Bar ${i + 1}`,
+                label: d.reduce((a, c) => `${a && `${a}\n`}${c.x}`, '')
+              })),
+              rowGutter: { top: 20 },
+              x: 70
+            },
             tooltip: { style: { textAnchor: 'start' } }
           }}
         />
