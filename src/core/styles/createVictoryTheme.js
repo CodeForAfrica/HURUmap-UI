@@ -30,6 +30,19 @@ export default function createVictoryTheme(chartOptions) {
           }
         }
       },
+      dependentAxis: {
+        orientation: 'right',
+        style: {
+          grid: {
+            display: 'block',
+            strokeDasharray: 'none',
+            strokeWidth: 2
+          },
+          tickLabels: {
+            display: 'block'
+          }
+        }
+      },
       bar: {
         barWidth: 25,
         domainPadding: { x: [25, 25] },
