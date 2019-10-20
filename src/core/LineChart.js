@@ -1,13 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  VictoryAxis,
-  VictoryLine,
-  VictoryGroup,
-  VictoryScatter,
-  VictoryVoronoiContainer
-} from 'victory';
+import { VictoryAxis, VictoryLine, VictoryVoronoiContainer } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
 import Chart, { toChartAxisProps } from './Chart';
@@ -30,7 +24,7 @@ import propTypes from './propTypes';
  *   }
  * }
  */
-function LineChart({ data, parts, theme, ...props }) {
+function LineChart({ data, parts, theme, style, ...props }) {
   const { group: groupChart } = theme;
   if (!data || !groupChart) {
     return null;
@@ -41,15 +35,18 @@ function LineChart({ data, parts, theme, ...props }) {
   const axisProps = (parts && toChartAxisProps(parts.axis)) || {};
   const chartProps = parts && parts.parent;
   const containerProps = parts && parts.container;
-  const groupProps = parts && parts.group ? [].concat(parts.group) : [];
-  const scatterProps = parts && parts.scatter ? [].concat(parts.scatter) : [];
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
   const { colorScale } = groupChart;
+  const { data: dataStyle, ...otherStyles } = style || {};
 
   return (
     <Chart
       containerComponent={
-        <VictoryVoronoiContainer mouseFollowTooltips {...containerProps} />
+        <VictoryVoronoiContainer
+          labelComponent={<Tooltip {...tooltipProps} />}
+          mouseFollowTooltips
+          {...containerProps}
+        />
       }
       theme={theme}
       {...chartProps}
@@ -57,26 +54,22 @@ function LineChart({ data, parts, theme, ...props }) {
       <VictoryAxis {...axisProps.independent} />
       <VictoryAxis dependentAxis orientation="right" {...axisProps.dependent} />
 
-      {/* We only need this outer group for colorScale of charts */}
-      <VictoryGroup>
-        {groupData.map((gd, i) => (
-          <VictoryGroup
-            key={JSON.stringify(gd)}
-            labelComponent={
-              <Tooltip
-                {...tooltipProps}
-                style={{ ...tooltipProps.style, fill: colorScale[i] }}
-              />
-            }
-            /* groupProps can override the above props */
-            {...groupProps[i % groupProps.length]}
-            data={gd}
-          >
-            <VictoryLine {...props} />
-            <VictoryScatter {...scatterProps[i % scatterProps.length]} />
-          </VictoryGroup>
-        ))}
-      </VictoryGroup>
+      {groupData.map((gd, i) => (
+        <VictoryLine
+          color={colorScale[i % colorScale.length]}
+          data={gd}
+          key={JSON.stringify(gd)}
+          style={{
+            data: {
+              ...{ stroke: colorScale[i % colorScale.length] },
+              ...dataStyle
+            },
+            ...otherStyles
+          }}
+          {...props}
+        />
+      ))}
+      {/* </VictoryGroup> */}
     </Chart>
   );
 }
@@ -86,13 +79,11 @@ LineChart.propTypes = {
   parts: PropTypes.shape({
     axis: PropTypes.shape({}),
     container: PropTypes.shape({}),
-    group: PropTypes.shape({}),
     parent: PropTypes.shape({}),
-    scatter: PropTypes.oneOfType([
-      PropTypes.shape({}),
-      PropTypes.arrayOf(PropTypes.shape({}))
-    ]),
     tooltip: PropTypes.shape({})
+  }),
+  style: PropTypes.shape({
+    data: PropTypes.shape({})
   }),
   theme: PropTypes.shape({
     group: PropTypes.shape({})
@@ -102,6 +93,7 @@ LineChart.propTypes = {
 LineChart.defaultProps = {
   data: undefined,
   parts: undefined,
+  style: undefined,
   theme: undefined
 };
 

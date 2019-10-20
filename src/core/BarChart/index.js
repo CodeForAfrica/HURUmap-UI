@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { VictoryBar, VictoryGroup, VictoryAxis } from 'victory';
+import { VictoryAxis, VictoryBar, VictoryGroup } from 'victory';
 
 import withVictoryTheme from '../styles/withVictoryTheme';
 import Chart, { toChartAxisProps } from '../Chart';
