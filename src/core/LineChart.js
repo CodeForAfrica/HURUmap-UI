@@ -54,6 +54,9 @@ function LineChart({ data, parts, theme, ...props }) {
       theme={theme}
       {...chartProps}
     >
+      <VictoryAxis {...axisProps.independent} />
+      <VictoryAxis dependentAxis orientation="right" {...axisProps.dependent} />
+
       {/* We only need this outer group for colorScale of charts */}
       <VictoryGroup>
         {groupData.map((gd, i) => (
@@ -74,9 +77,6 @@ function LineChart({ data, parts, theme, ...props }) {
           </VictoryGroup>
         ))}
       </VictoryGroup>
-
-      <VictoryAxis {...axisProps.independent} />
-      <VictoryAxis dependentAxis orientation="right" {...axisProps.dependent} />
     </Chart>
   );
 }
