@@ -94,6 +94,11 @@ export default function createVictoryTheme(chartOptions) {
     legendWidth: 100,
     ...chart.pie
   };
+  // Customize chart line props off of chart group props
+  chart.line = {
+    colorScale: chart.group.colorScale,
+    ...chart.line
+  };
   // Customize chart proportionalArea props off of chart area props
   chart.proportionalArea = {
     reference: defaultReference,

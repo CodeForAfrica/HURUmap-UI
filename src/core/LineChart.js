@@ -25,8 +25,8 @@ import propTypes from './propTypes';
  * }
  */
 function LineChart({ data, parts, theme, style, ...props }) {
-  const { group: groupChart } = theme;
-  if (!data || !groupChart) {
+  const { line: chart } = theme;
+  if (!data || !chart) {
     return null;
   }
 
@@ -36,7 +36,7 @@ function LineChart({ data, parts, theme, style, ...props }) {
   const chartProps = parts && parts.parent;
   const containerProps = parts && parts.container;
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
-  const { colorScale } = groupChart;
+  const { colorScale } = chart;
   const { data: dataStyle, ...otherStyles } = style || {};
 
   return (
@@ -86,7 +86,7 @@ LineChart.propTypes = {
     data: PropTypes.shape({})
   }),
   theme: PropTypes.shape({
-    group: PropTypes.shape({})
+    line: PropTypes.shape({})
   })
 };
 
