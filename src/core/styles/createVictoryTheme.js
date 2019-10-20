@@ -11,21 +11,11 @@ export default function createVictoryTheme(chartOptions) {
         sm: 600
       },
       axis: {
-        labelWidth: 20,
+        labelWidth: 20
+      },
+      independentAxis: {
         style: {
-          axisLabel: {
-            display: 'none'
-          },
-          tickLabels: {
-            display: 'none'
-          },
-          ticks: {
-            display: 'none'
-          },
           grid: {
-            display: 'none'
-          },
-          axis: {
             display: 'none'
           }
         }
@@ -33,12 +23,17 @@ export default function createVictoryTheme(chartOptions) {
       dependentAxis: {
         orientation: 'right',
         style: {
+          axis: {
+            display: 'none'
+          },
+          axisLabel: {
+            display: 'none'
+          },
           grid: {
-            display: 'block',
             strokeDasharray: 'none'
           },
-          tickLabels: {
-            display: 'block'
+          ticks: {
+            display: 'none'
           }
         }
       },
