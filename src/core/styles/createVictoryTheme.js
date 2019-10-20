@@ -35,8 +35,7 @@ export default function createVictoryTheme(chartOptions) {
         style: {
           grid: {
             display: 'block',
-            strokeDasharray: 'none',
-            strokeWidth: 2
+            strokeDasharray: 'none'
           },
           tickLabels: {
             display: 'block'

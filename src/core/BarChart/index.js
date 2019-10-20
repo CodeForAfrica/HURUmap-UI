@@ -106,7 +106,7 @@ function BarChart({
         tickLabelComponent={<WrapLabel width={labelWidth} />}
         {...axisProps.independent}
       />
-      <VictoryAxis dependentAxis {...axisProps.dependent} />
+      <VictoryAxis dependentAxis orientation="right" {...axisProps.dependent} />
     </Chart>
   );
 }

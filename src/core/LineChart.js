@@ -76,7 +76,7 @@ function LineChart({ data, parts, theme, ...props }) {
       </VictoryGroup>
 
       <VictoryAxis {...axisProps.independent} />
-      <VictoryAxis dependentAxis {...axisProps.dependent} />
+      <VictoryAxis dependentAxis orientation="right" {...axisProps.dependent} />
     </Chart>
   );
 }
