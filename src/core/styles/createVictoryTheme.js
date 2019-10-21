@@ -4,6 +4,7 @@ import { VictoryTheme } from 'victory';
 
 export default function createVictoryTheme(chartOptions) {
   const defaultTheme = _.merge(
+    // New props
     {
       breakpoints: {
         // Handsets: https://material.io/design/layout/responsive-layout-grid.html#breakpoints
@@ -12,7 +13,14 @@ export default function createVictoryTheme(chartOptions) {
       },
       axis: {
         labelWidth: 20
-      },
+      }
+    },
+
+    // Victory props
+    VictoryTheme.material,
+
+    // Overriding props,
+    {
       independentAxis: {
         style: {
           grid: {
@@ -49,9 +57,24 @@ export default function createVictoryTheme(chartOptions) {
         origin: { x: 150, y: 125 },
         padding: 0,
         width: 450
+      },
+      tooltip: {
+        style: {
+          fill: '#fff'
+        },
+        flyoutStyle: {
+          fill: '#fff'
+        },
+        pointerLength: 0
+      },
+      voronoi: {
+        style: {
+          flyout: {
+            fill: '#fff'
+          }
+        }
       }
-    },
-    VictoryTheme.material
+    }
   );
   const chart = _.merge(defaultTheme, chartOptions);
   const defaultReference = {
