@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
 
-import { Button, Box } from '@material-ui/core';
+import { Box, ButtonBase } from '@material-ui/core';
 import BarChart from '../core/BarChart';
 import PieChart from '../core/PieChart';
 import NestedProportionalAreaChart from '../core/NestedProportionalAreaChart';
@@ -45,6 +45,7 @@ function ChartFactory({
     ,
     aggregateUnit = numberFormat.unit === 'percent' ? 'percent' : undefined
   ] = aggregate ? aggregate.split(':') : [];
+  const [dataLength, setDataLength] = useState(-5);
   const [show, setShow] = useState(-5);
   const numberFormatter = useRef(
     (() => {
@@ -66,6 +67,7 @@ function ChartFactory({
   const primaryData = useMemo(() => {
     if (visualType === 'column') {
       const computedData = aggregate ? aggregateData(aggregate, data) : data;
+      setDataLength(computedData.length);
       return computedData.slice(show);
     }
 
@@ -86,6 +88,11 @@ function ChartFactory({
     );
 
     groupedData = groupedData[0].map((_c, i) => groupedData.map(r => r[i]));
+
+    if (visualType === 'grouped_column') {
+      setDataLength(groupedData[0].length);
+      return groupedData.map(gd => gd.slice(show));
+    }
     return groupedData;
   }, [visualType, data, aggregate, show, numberFormatter]);
 
@@ -374,10 +381,10 @@ function ChartFactory({
   return (
     <Box display="flex" flexDirection="column">
       {renderChart()}
-      {['column', 'grouped_column'].includes(visualType) && (
-        <Button onClick={() => setShow(show === 0 ? -5 : 0)}>
+      {['column', 'grouped_column'].includes(visualType) && dataLength > 5 && (
+        <ButtonBase onClick={() => setShow(show === 0 ? -5 : 0)}>
           {show === 0 ? 'Show Less' : 'Show More'}
-        </Button>
+        </ButtonBase>
       )}
     </Box>
   );
