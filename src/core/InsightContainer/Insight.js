@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     fontWeight: 'bold',
     padding: '1rem 0',
     marginBottom: '1rem',
-    maxWidth: '333px',
+    maxWidth: '20.8125rem',
     textTransform: 'none'
   },
   dataLink: {
@@ -36,7 +36,7 @@ const useStyles = makeStyles({
     fontWeight: 'bold',
     padding: '1rem 0',
     marginBottom: '1rem',
-    maxWidth: '333px',
+    maxWidth: '20.8125rem',
     textTransform: 'none',
     '&:hover': {
       borderWidth: '0.125rem'
@@ -86,11 +86,18 @@ function Insight({
       alignItems="center"
       className={classes.root}
     >
-      <Grid item>{children}</Grid>
-      <Grid item>
+      <Box display="flex" width="100%" justifyContent="center">
+        {children}
+      </Box>
+      <Box
+        display="flex"
+        width="100%"
+        flexGrow={1}
+        alignItems={!description ? 'center' : 'flex-start'}
+      >
         <Grid container spacing={1} className={classes.insight}>
-          <Grid item>
-            {title && (
+          <Grid item xs={12}>
+            {title && description && (
               <TypographyLoader
                 variant="subtitle2"
                 loading={loading}
@@ -152,7 +159,7 @@ function Insight({
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </Box>
     </Grid>
   );
 }

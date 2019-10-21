@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
 
 import { makeStyles } from '@material-ui/styles';
@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Typography, Grid, Popover } from '@material-ui/core';
 
 import ActionButton from './ActionButton';
+import EmbedCodeTextArea from './EmbedCodeTextArea';
 
 import shareIcon from '../../assets/icons/network-connection.svg';
 import embedIcon from '../../assets/icons/code.svg';
@@ -21,7 +22,9 @@ const useStyles = makeStyles({
     overflow: 'hidden',
     backgroundColor: 'white',
     borderRadius: '0.625rem',
-    marginTop: '0.6rem'
+    marginTop: '0.6rem',
+    marginLeft: '10px',
+    marginRight: '10px'
   },
   actionButton: {
     borderRadius: '0',
@@ -54,49 +57,6 @@ const useStyles = makeStyles({
   downloadButton: {}
 });
 
-const EmbedCodeTextArea = ({ code }) => {
-  const ref = createRef();
-  useEffect(() => {
-    if (ref.current) {
-      const { current: textArea } = ref;
-
-      textArea.style.height = 'inherit';
-      const computed = window.getComputedStyle(textArea);
-      const height =
-        parseInt(computed.getPropertyValue('border-top-width'), 10) +
-        parseInt(computed.getPropertyValue('padding-top'), 10) +
-        textArea.scrollHeight +
-        parseInt(computed.getPropertyValue('border-bottom-width'), 10) +
-        parseInt(computed.getPropertyValue('padding-bottom'), 10);
-
-      textArea.style.height = `${height}px`;
-    }
-  }, [ref]);
-
-  return (
-    <textarea
-      ref={ref}
-      readOnly
-      style={{
-        resize: 'none',
-        width: '25rem',
-        margin: '1.25rem',
-        border: 'none',
-        outline: 'none'
-      }}
-      value={code}
-    />
-  );
-};
-
-EmbedCodeTextArea.propTypes = {
-  code: PropTypes.string
-};
-
-EmbedCodeTextArea.defaultProps = {
-  code: undefined
-};
-
 function Actions({
   loading,
   onShare,
@@ -114,7 +74,7 @@ function Actions({
     setAnchorEl(event.currentTarget);
   };
   return (
-    <Grid container justify="center" className={classes.root}>
+    <Grid container justify="space-evenly" className={classes.root}>
       <BlockLoader loading={loading} height={40}>
         {onShare && (
           <ActionButton

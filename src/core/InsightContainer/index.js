@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import domToImage from 'dom-to-image';
 
-import { makeStyles, Grid } from '@material-ui/core';
+import { makeStyles, Grid, Box } from '@material-ui/core';
 
 import BlockLoader from '../BlockLoader';
 import TypographyLoader from '../TypographyLoader';
@@ -21,32 +21,35 @@ const useStyles = makeStyles({
   title: ({ variant }) => ({
     fontSize: '1.25rem',
     fontWeight: 'bold',
-    marginTop: '1rem',
     textAlign: variant === 'analysis' && 'center'
   }),
   highlightGrid: {
     flexGrow: 1,
-    flexShrink: 1,
-    flexBasis: '11.71875rem'
+    flexShrink: 0,
+    flexBasis: '11.71875rem',
+    display: 'flex'
   },
-  contentGrid: ({ variant }) => ({
+  contentGrid: {
     flexGrow: 1,
     flexShrink: 1,
+    width: '100%',
     height: '100%',
     padding: '0 1.25rem',
-    width: '100%',
-    flexBasis: variant === 'data' ? '28.975rem' : '25.03125rem'
-  }),
-  insightGrid: ({ variant }) => ({
+    flexBasis: '25.03125rem'
+  },
+  insightGrid: {
     flexGrow: 1,
     flexShrink: 1,
-    flexBasis: variant === 'data' ? '17.765625rem' : '18.890625rem'
-  }),
-  sourceLink: {},
+    flexBasis: '18rem',
+    minWidth: '18rem'
+  },
+  sourceLink: {
+    wordBreak: 'break-all',
+    whiteSpace: 'normal'
+  },
   sourceGrid: {
     display: 'flex',
-    alignItems: 'flex-end',
-    marginLeft: '1.25rem'
+    alignItems: 'flex-end'
   },
   insight: {
     height: '100%'
@@ -55,9 +58,7 @@ const useStyles = makeStyles({
   insightDataLink: {},
   insightDescription: {},
   insightTitle: {},
-  actions: {
-    margin: '1rem 0'
-  },
+  actionsRoot: {},
   actionsShareButton: {},
   actionsCompareButton: {},
   actionsEmbedButton: {},
@@ -126,7 +127,7 @@ function InsightContainer({
       gaEvents={gaEvents}
       embedCode={embedCode}
       classes={{
-        root: classes.actions,
+        root: classes.actionsRoot,
         shareButton: classes.actionsShareButton,
         embedButton: classes.actionsEmbedButton,
         showDataButton: classes.actionsShowDataButton,
@@ -142,64 +143,81 @@ function InsightContainer({
 
   return (
     <Grid container className={classes.root}>
-      {variant === 'data' && (
-        <Grid item className={classes.highlightGrid}>
-          <Grid container alignItems="stretch" alignContent="space-between">
-            <Grid item xs={12}>
-              <BlockLoader loading={loading} height={300}>
-                {highlightChild}
-              </BlockLoader>
-            </Grid>
-            <Grid item xs={12}>
-              <TypographyLoader
-                loading={loading}
-                loader={{
-                  height: 20
-                }}
-                component="span"
-                className={classes.sourceGrid}
-              >
-                {source && (
-                  <A className={classes.sourceLink} href={source.href}>
-                    {`Source: ${source.title || source.href}`}
-                  </A>
-                )}
-              </TypographyLoader>
-            </Grid>
-          </Grid>
-        </Grid>
-      )}
-
-      <Grid item ref={chartRef} className={classes.contentGrid}>
-        <Grid container>
-          <Grid item xs={12}>
-            <TypographyLoader
-              variant="h5"
-              loading={loading}
-              className={classes.title}
-              loader={{
-                height: 20
-              }}
-            >
-              {title}
-            </TypographyLoader>
-          </Grid>
-          <BlockLoader loading={loading} height={300}>
-            {variant === 'analysis' && <Grid item>{highlightChild}</Grid>}
-            <Grid item xs={12}>
-              <Grid container justify="center">
-                {contentChild}
+      <Box
+        display="flex"
+        flexGrow={1}
+        flexShrink={1}
+        flexDirection="column"
+        flexBasis="32.5rem"
+        padding="1.25rem"
+      >
+        <Box display="flex">
+          {variant === 'data' && (
+            <Grid item className={classes.highlightGrid}>
+              <Grid container alignItems="stretch" alignContent="space-between">
+                <Grid item xs={12}>
+                  <BlockLoader loading={loading} height={300}>
+                    {highlightChild}
+                  </BlockLoader>
+                </Grid>
               </Grid>
             </Grid>
-          </BlockLoader>
+          )}
 
-          <Grid item xs={12}>
-            <Grid container justify="center">
-              {variant === 'analysis' ? actionsChildren : null}
-            </Grid>
+          <Grid item ref={chartRef} className={classes.contentGrid}>
+            <Box
+              display="flex"
+              height="100%"
+              alignItems="flex-start"
+              flexDirection="column"
+            >
+              <TypographyLoader
+                variant="h5"
+                loading={loading}
+                className={classes.title}
+              >
+                {title}
+              </TypographyLoader>
+              <BlockLoader loading={loading} height={300}>
+                {variant === 'analysis' && <Box>{highlightChild}</Box>}
+                <Box
+                  width="100%"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  minHeight={300}
+                  flexGrow={1}
+                >
+                  {contentChild}
+                </Box>
+              </BlockLoader>
+            </Box>
           </Grid>
-        </Grid>
-      </Grid>
+        </Box>
+
+        <Box>
+          <TypographyLoader
+            loading={loading}
+            loader={{
+              height: 20
+            }}
+            component="span"
+            className={classes.sourceGrid}
+          >
+            {source && (
+              <A className={classes.sourceLink} href={source.href}>
+                {`Source: ${source.title || source.href}`}
+              </A>
+            )}
+          </TypographyLoader>
+        </Box>
+
+        <Box>
+          <Grid container justify="center">
+            {variant === 'analysis' ? actionsChildren : null}
+          </Grid>
+        </Box>
+      </Box>
 
       {!hideInsight && (
         <Grid item className={classes.insightGrid}>

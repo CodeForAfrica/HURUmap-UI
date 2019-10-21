@@ -20,7 +20,6 @@ import {
   ChartContainer,
   DropDown,
   InsightContainer,
-  NumberVisuals,
   PieChart
 } from '../src/core';
 import { CenterDecorator } from './common';
@@ -310,21 +309,35 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
       const useStyles = makeStyles(() => ({
         root: {
           backgroundColor: '#f6f6f6'
-        },
-        numberVisuals: {
-          margin: '1.25rem'
         }
       }));
       const classes = useStyles();
 
-      const containerWidth = number('containerWidth', 1000);
+      const containerWidth = number('containerWidth', 930);
       const hideInsight = boolean('hideInsight');
       const variant = select('variant', ['data', 'analysis'], 'data');
+      const chartHeight = number('chartHeight');
+      const chartWidth = number('chartWidth');
       const data = number('data', 10);
+      const dataExponent = number('Data value E+', 6);
+      const statisticDefinition = object('statisticDefinition', {
+        type: 'number',
+        subtitle: 'Lorem ipsum',
+        description: 'Lorem ipsum dolor sit amet',
+        unit: 'percent',
+        aggregate: 'last:percent'
+      });
       const definition = object('visual', {
         type: 'column',
         horizontal: false
       });
+
+      const dataArray = Array(data)
+        .fill(null)
+        .map((_, index) => ({
+          x: `${index}-${index}`,
+          y: rand() * 10 ** dataExponent
+        }));
 
       return (
         <div style={{ width: containerWidth }}>
@@ -347,37 +360,16 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
             title="Lorem ipsum dolor sit amet"
             variant={variant}
           >
-            <NumberVisuals
-              classes={{ root: classes.numberVisuals }}
-              subtitle={text('Subtitle', 'Income')}
-              statistic={text('Statistic', '$60,336')}
-              statisticDeviation={text(
-                'Statistic Deviation',
-                'https://dev.dominion.africa/profile/country-ZA±0.1% '
-              )}
-              secondaryDeviation={text(
-                'Secondary Deviation',
-                '(194, 667, 872 ±241, 381.6)'
-              )}
-              description={text('Description', 'Median household income')}
-              comparisonData={object('Comparison Data', [
-                {
-                  id: 0,
-                  parentComparison: 'about 90 percent',
-                  parentDescription: 'of the amount in United States: $32,397',
-                  parentDeviation: '±0.24%'
-                }
-              ])}
-            />
+            <ChartFactory definition={statisticDefinition} data={dataArray} />
             <ChartFactory
               definition={definition}
-              data={Array(data)
-                .fill(null)
-                .map((_, index) => ({
-                  x: `${index}-${index}`,
-                  y: rand()
-                }))}
-              width={variant === 'analysis' && containerWidth}
+              data={dataArray}
+              height={chartHeight}
+              width={
+                variant === 'analysis' && !chartWidth
+                  ? containerWidth
+                  : chartWidth
+              }
             />
           </InsightContainer>
         </div>
