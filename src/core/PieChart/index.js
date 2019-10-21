@@ -204,6 +204,7 @@ function PieChart({
     <CustomContainer {...containerProps}>
       <SharedEvents
         childName={['pie1', 'pie2', 'legend']}
+        donut={donut}
         emphasisCoefficient={0.3}
       >
         <g

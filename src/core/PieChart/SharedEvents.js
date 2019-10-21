@@ -19,23 +19,25 @@ const activateData = (childName, emphasisCoefficient) => {
   };
 };
 
-const activateLabels = childName => {
+// By not specifying the childName, the event will only affect the component
+// that triggered the event: https://formidable.com/open-source/victory/guides/events#single-component-events
+const activateLabels = (donut, childName) => {
   return {
-    childName,
+    childName: donut ? childName : undefined,
     target: 'labels',
     mutation: () => ({ active: true })
   };
 };
 
-const deactivateLabels = childName => {
+const deactivateLabels = (donut, childName) => {
   return {
-    childName,
+    childName: donut ? childName : undefined,
     target: 'labels',
     mutation: () => ({ active: false })
   };
 };
 
-function SharedEvents({ childName, children, emphasisCoefficient }) {
+function SharedEvents({ childName, children, donut, emphasisCoefficient }) {
   return (
     <VictorySharedEvents
       events={[
@@ -45,7 +47,7 @@ function SharedEvents({ childName, children, emphasisCoefficient }) {
             onMouseOver: () => {
               return [
                 activateData(childName, emphasisCoefficient),
-                activateLabels(childName)
+                activateLabels(donut, childName)
               ];
             },
             onMouseOut: () => {
@@ -57,7 +59,7 @@ function SharedEvents({ childName, children, emphasisCoefficient }) {
                     return null;
                   }
                 },
-                deactivateLabels(childName)
+                deactivateLabels(donut, childName)
               ];
             }
           }
@@ -75,7 +77,12 @@ SharedEvents.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]).isRequired,
+  donut: PropTypes.bool,
   emphasisCoefficient: PropTypes.number.isRequired
+};
+
+SharedEvents.defaultProps = {
+  donut: false
 };
 
 export default SharedEvents;
