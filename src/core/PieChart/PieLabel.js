@@ -3,39 +3,27 @@ import PropTypes from 'prop-types';
 
 import withVictoryTheme from '../styles/withVictoryTheme';
 import Label from '../Label';
-import propTypes from '../propTypes';
 
 function PieLabel({
-  // colorScale = [],
-  // datum = { _x: 1 },
+  highlightIndex,
+  highlightStyle,
   style: originalStyle,
   text,
   ...props
 }) {
-  // const style = Array.isArray(colorScale)
-  //   ? {
-  //       // eslint-disable-next-line no-underscore-dangle
-  //       fill: colorScale[(datum._x - 1) % colorScale.length],
-  //       ...originalStyle
-  //     }
-  //   : originalStyle;
-  const style =
-    originalStyle &&
-    (Array.isArray(originalStyle) ? originalStyle : [originalStyle]);
-  if (text && text.includes('\n')) {
-    if (style.length === 1) {
-      style.push(style[0]);
+  let style = originalStyle;
+  if (text && Number.isInteger(highlightIndex) && highlightStyle) {
+    style = text.split('\n').map(() => ({ ...originalStyle }));
+    if (highlightIndex < style.length) {
+      style[highlightIndex] = { ...highlightStyle, ...style[highlightIndex] };
     }
-    style[0] = { fontWeight: 'bold', ...style[0] };
   }
   return <Label style={style} text={text} {...props} />;
 }
 
 PieLabel.propTypes = {
-  colorScale: propTypes.colorScale,
-  // TODO(kilemensi): Seems like datum has _x variable that tracks the
-  //                  data index (but it starts from 1).
-  datum: PropTypes.shape({ _x: PropTypes.number }),
+  highlightIndex: PropTypes.number,
+  highlightStyle: PropTypes.shape({}),
   style: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.shape({})),
     PropTypes.shape({})
@@ -44,8 +32,8 @@ PieLabel.propTypes = {
 };
 
 PieLabel.defaultProps = {
-  colorScale: undefined,
-  datum: undefined,
+  highlightIndex: 1,
+  highlightStyle: { fontWeight: 'bold' },
   style: undefined,
   text: undefined
 };
