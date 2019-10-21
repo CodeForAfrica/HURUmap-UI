@@ -228,11 +228,7 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
             legend: {
               rowGutter: number('Legend row spacing', 20),
               style: {
-                labels: object('Legend style', {
-                  fontFamily: 'Arial',
-                  fontSize: 20,
-                  fontWeight: 'bold'
-                })
+                labels: object('Legend style', undefined)
               }
             }
           }}
@@ -249,13 +245,13 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
           legendWidth={legendWidth}
           responsive={boolean('responsive', true)}
           standalone={boolean('standalone', true)}
-          style={{
-            labels: {
-              fill: 'black',
-              fontSize: '18',
-              fontWeight: 'bold'
-            }
-          }}
+          // style={{
+          //   labels: {
+          //     fill: 'black',
+          //     fontSize: '18',
+          //     fontWeight: 'bold'
+          //   }
+          // }}
         />
       </div>
     );
@@ -272,18 +268,18 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
           groupSpacing={number('groupSpacing', 4)}
           data={object('data', [
             [
-              { x: 'A', y: 6, name: 'A', label: 'A\n \nDar es Salaam 1' },
-              { x: 'B', y: 1, name: 'B', label: 'B\n \nDar es Salaam 2' },
-              { x: 'C', y: 3, name: 'C', label: 'C\n \nDar es Salaam 3' },
-              { x: 'D', y: 1, name: 'D', label: 'D\n \nDar es Salaam 1' },
-              { x: 'E', y: 12, name: 'E', label: 'E\n \nDar es Salaam 2' }
+              { x: 'A', y: 6, name: 'A', label: 'A\nDar es Salaam 1' },
+              { x: 'B', y: 1, name: 'B', label: 'B\nDar es Salaam 2' },
+              { x: 'C', y: 3, name: 'C', label: 'C\nDar es Salaam 3' },
+              { x: 'D', y: 1, name: 'D', label: 'D\nDar es Salaam 1' },
+              { x: 'E', y: 12, name: 'E', label: 'E\nDar es Salaam 2' }
             ],
             [
-              { x: 'A', y: 3, label: 'A\n \nKagera 2' },
-              { x: 'B', y: 1, label: 'B\n \nKagera 1' },
-              { x: 'C', y: 2, label: 'C\n \nKagera 1' },
-              { x: 'D', y: 2, label: 'D\n \nKagera 1' },
-              { x: 'E', y: 5, label: 'E\n \nKagera 5' }
+              { x: 'A', y: 3, label: 'A\nKagera 2' },
+              { x: 'B', y: 1, label: 'B\nKagera 1' },
+              { x: 'C', y: 2, label: 'C\nKagera 1' },
+              { x: 'D', y: 2, label: 'D\nKagera 1' },
+              { x: 'E', y: 5, label: 'E\nKagera 5' }
             ]
           ])}
           width={width}

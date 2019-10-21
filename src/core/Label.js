@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import { VictoryLabel } from 'victory';
 
 const getFont = (style = {}) => {
-  const { font, fontFamily, fontSize } = style;
+  const { font, fontFamily, fontSize } = Array.isArray(style)
+    ? style[0]
+    : style;
   if (font) {
     return font;
   }
@@ -74,7 +76,10 @@ function Label({ text: originalText, width, style, ...props }) {
 }
 
 Label.propTypes = {
-  style: PropTypes.shape({}),
+  style: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.shape({})),
+    PropTypes.shape({})
+  ]),
   text: PropTypes.string,
   width: PropTypes.number
 };
