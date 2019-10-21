@@ -24,7 +24,7 @@ function ComparisonBarChart({
   const barProps = {
     ...{
       labels: datum => datum.y,
-      labelComponent: <VictoryLabel x={50} dy={-20} />
+      labelComponent: <VictoryLabel x={50} dy={-25} />
     },
     ...props
   };

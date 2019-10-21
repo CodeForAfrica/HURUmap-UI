@@ -37,6 +37,7 @@ export default function createVictoryTheme(chartOptions) {
         offset: 50
       },
       pie: {
+        emphasisCoefficient: 0.15,
         height: 250,
         legendWidth: 150,
         origin: { x: 150, y: 125 },
@@ -57,6 +58,15 @@ export default function createVictoryTheme(chartOptions) {
       fill: '#9b9b9b',
       fontSize: 18
     }
+  };
+  // Customize chart bar props
+  chart.bar = {
+    legend: {
+      align: 'bottom',
+      orientation: 'horizontal',
+      size: 50
+    },
+    ...chart.bar
   };
   // Customize chart bullet props off of chart group props
   chart.bullet = {
@@ -79,12 +89,26 @@ export default function createVictoryTheme(chartOptions) {
     ...chart.group,
     ...chart.comparisonBar
   };
+  // Customize chart line props
+  chart.line = {
+    legend: {
+      align: 'bottom',
+      orientation: 'horizontal',
+      size: 50
+    },
+    ...chart.line
+  };
   // Customize chart pie props
   chart.pie = {
     donut: true,
     donutRatio: 0.6,
     groupSpacing: 4,
-    legendWidth: 100,
+    legend: {
+      align: 'right',
+      labelWidth: 100,
+      orientation: 'vertical',
+      size: 100
+    },
     ...chart.pie
   };
   // Customize chart proportionalArea props off of chart area props
