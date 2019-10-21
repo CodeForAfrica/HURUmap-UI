@@ -86,7 +86,6 @@ function BarChart({
       <VictoryGroup {...groupProps} offset={offset}>
         {groupData.map((data, i) => (
           <VictoryBar
-            name="bar"
             barWidth={barWidth}
             data={data}
             key={data.toString()}
@@ -102,6 +101,7 @@ function BarChart({
                   data,
                   style: { ...tooltipProps.style, fill: colorScale[i] }
                 }}
+                theme={theme}
               />
             }
             {...props}
