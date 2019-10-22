@@ -37,9 +37,10 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           height={height}
           data={data.map((_, index) => {
             const y = rand();
+            const x = `${index}-${index} Employment Status`;
             return {
-              tooltip: `${index}-${index} Employment Status`,
-              x: `${index}-${index} Employment Status`,
+              tooltip: `${x}: Tooltip`,
+              x,
               y
             };
           })}
@@ -63,12 +64,17 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
     const dataCount = Array(number('data', 3)).fill(null);
     const horizontal = boolean('horizontal', false);
     const offset = number('offset', 12);
-    const data = dataCount.map(() =>
-      groups.map((_g, groupIndex) => ({
-        // Starting with 0 seems to trigger domainPadding coercion. See the comment below.
-        x: `Group ${groupIndex + 1} TickLabel`,
-        y: rand()
-      }))
+    const data = dataCount.map((_d, dataIndex) =>
+      groups.map((_g, groupIndex) => {
+        const x = `Group ${groupIndex + 1} TickLabel`;
+        const y = rand();
+        return {
+          // Starting with 0 seems to trigger domainPadding coercion. See the comment below.
+          tooltip: `Bar ${dataIndex + 1}: ${y}\n${x}`,
+          x,
+          y
+        };
+      })
     );
     // Include bottom legend
     const height = number('height', 400) || 350;
@@ -197,7 +203,7 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
         ])}
         parts={{
           container: {
-            labels: ({ datum }) => `${datum.x}\n${datum.geo} ${datum.y}`
+            labels: ({ datum }) => `${datum.geo}: ${datum.y}`
           },
           legend: {
             data: [
@@ -256,12 +262,12 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
             legend: {
               data: [
                 {
-                  name: 'A very, very, very, very long legend name',
-                  label: 'Female: 22%'
+                  name: 'F',
+                  label: 'Female rate: 22%'
                 },
                 {
-                  name: 'Short one',
-                  label: 'Long tooltip label should appear above chart: 78%'
+                  name: 'M',
+                  label: 'Male: 78%'
                 }
               ],
               rowGutter: number('Legend row spacing', 20),
@@ -284,16 +290,13 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
     return (
       <div style={{ height, width }}>
         <PieChart
-          donut={boolean('donut', true)}
-          donutLabelKey={object('donutLabelKey', { dataIndex: 0 })}
-          groupSpacing={number('groupSpacing', 4)}
           data={object('data', [
             [
-              { x: 'A', y: 6, name: 'A', label: 'A\nDar es Salaam 1' },
-              { x: 'B', y: 1, name: 'B', label: 'B\nDar es Salaam 2' },
-              { x: 'C', y: 3, name: 'C', label: 'C\nDar es Salaam 3' },
-              { x: 'D', y: 1, name: 'D', label: 'D\nDar es Salaam 1' },
-              { x: 'E', y: 12, name: 'E', label: 'E\nDar es Salaam 2' }
+              { x: 'A', y: 6, label: 'A\nDar es Salaam 1' },
+              { x: 'B', y: 1, label: 'B\nDar es Salaam 2' },
+              { x: 'C', y: 3, label: 'C\nDar es Salaam 3' },
+              { x: 'D', y: 1, label: 'D\nDar es Salaam 1' },
+              { x: 'E', y: 12, label: 'E\nDar es Salaam 2' }
             ],
             [
               { x: 'A', y: 3, label: 'A\nKagera 2' },
@@ -303,7 +306,9 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
               { x: 'E', y: 5, label: 'E\nKagera 5' }
             ]
           ])}
-          width={width}
+          donut={boolean('donut', true)}
+          donutLabelKey={object('donutLabelKey', { dataIndex: 0 })}
+          groupSpacing={number('groupSpacing', 4)}
           height={height}
           parts={{
             legend: {
@@ -314,12 +319,12 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
               ),
               data: object('Legend data', [
                 {
-                  name: 'A very, very, very, very long legend name',
-                  label: 'Female: 22%'
+                  name: 'Name for data A',
+                  label: 'Description/summary for data A'
                 },
                 {
-                  name: 'Short one',
-                  label: 'Long tooltip label should appear above chart: 78%'
+                  name: 'Name for data B',
+                  label: 'Description/summary for data B'
                 }
               ]),
               gutter: number('Legend column spacing', 10),
@@ -337,6 +342,7 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
           }}
           responsive={boolean('responsive', true)}
           standalone={boolean('standalone', true)}
+          width={width}
         />
       </div>
     );
