@@ -105,9 +105,18 @@ function InsightContainer({
 
   const toPng = () => {
     if (chartRef.current) {
-      return domToImage.toPng(chartRef.current).then(dataUrl => {
-        return dataUrl;
-      });
+      return domToImage
+        .toPng(chartRef.current, {
+          filter: n => {
+            if (typeof n.className !== 'string') {
+              return true;
+            }
+            return !n.className.includes('Download--hidden');
+          }
+        })
+        .then(dataUrl => {
+          return dataUrl;
+        });
     }
     return Promise.resolve(undefined);
   };

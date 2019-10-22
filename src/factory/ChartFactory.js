@@ -419,7 +419,10 @@ function ChartFactory({
     <Box display="flex" flexDirection="column">
       {renderChart()}
       {['column', 'grouped_column'].includes(visualType) && dataLength > 5 && (
-        <ButtonBase onClick={() => setShow(show === 0 ? -5 : 0)}>
+        <ButtonBase
+          className="Download--hidden"
+          onClick={() => setShow(show === 0 ? -5 : 0)}
+        >
           {show === 0 ? 'Show Less' : 'Show More'}
         </ButtonBase>
       )}
