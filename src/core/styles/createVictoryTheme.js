@@ -53,15 +53,11 @@ export default function createVictoryTheme(chartOptions) {
       },
       pie: {
         height: 250,
-        legendWidth: 150,
         origin: { x: 150, y: 125 },
         padding: 0,
         width: 450
       },
       tooltip: {
-        style: {
-          fill: '#fff'
-        },
         flyoutStyle: {
           fill: '#fff'
         },
@@ -88,6 +84,15 @@ export default function createVictoryTheme(chartOptions) {
       fontSize: 18
     }
   };
+  // Customize chart bar props
+  chart.bar = {
+    legend: {
+      align: 'bottom',
+      orientation: 'horizontal',
+      size: 50
+    },
+    ...chart.bar
+  };
   // Customize chart bullet props off of chart group props
   chart.bullet = {
     barWidth: 5,
@@ -109,18 +114,28 @@ export default function createVictoryTheme(chartOptions) {
     ...chart.group,
     ...chart.comparisonBar
   };
+  // Customize chart line props off of chart group props
+  chart.line = {
+    colorScale: chart.group.colorScale,
+    legend: {
+      align: 'bottom',
+      orientation: 'horizontal',
+      size: 50
+    },
+    ...chart.line
+  };
   // Customize chart pie props
   chart.pie = {
     donut: true,
     donutRatio: 0.6,
+    emphasisCoefficient: 0.15,
     groupSpacing: 4,
-    legendWidth: 100,
+    legend: {
+      align: 'right',
+      orientation: 'vertical',
+      size: 100
+    },
     ...chart.pie
-  };
-  // Customize chart line props off of chart group props
-  chart.line = {
-    colorScale: chart.group.colorScale,
-    ...chart.line
   };
   // Customize chart proportionalArea props off of chart area props
   chart.proportionalArea = {

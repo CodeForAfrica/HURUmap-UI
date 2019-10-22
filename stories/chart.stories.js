@@ -60,7 +60,7 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
   })
   .add('Grouped', () => {
     const groups = Array(number('groups', 3)).fill(null);
-    const dataCount = Array(number('data', 4)).fill(null);
+    const dataCount = Array(number('data', 3)).fill(null);
     const horizontal = boolean('horizontal', false);
     const offset = number('offset', 12);
     const data = dataCount.map(() =>
@@ -70,8 +70,9 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
         y: rand()
       }))
     );
-    const height = number('height', undefined) || 350;
-    const width = number('width', undefined) || 350;
+    // Include bottom legend
+    const height = number('height', 400) || 350;
+    const width = number('width', 350) || 450;
 
     return (
       <div style={{ height, width, overflow: 'hidden' }}>
@@ -96,6 +97,14 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           parts={{
             parent: {
               padding: { top: 50, left: 50, bottom: 50, right: 50 }
+            },
+            legend: {
+              data: data.map((d, i) => ({
+                name: `Bar ${i + 1}`,
+                label: d.reduce((a, c) => `${a && `${a}\n`}${c.x}`, '')
+              })),
+              rowGutter: { top: 20 },
+              x: 70
             },
             tooltip: { style: { textAnchor: 'start' } }
           }}
@@ -190,6 +199,32 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
           container: {
             labels: ({ datum }) => `${datum.x}\n${datum.geo} ${datum.y}`
           },
+          legend: {
+            data: [
+              {
+                name: 'A',
+                label: 'A\n \nDar es Salaam 6\n \nKagera 3'
+              },
+              {
+                name: 'B',
+                label: 'B\n \nDar es Salaam 1\n \nKagera 1'
+              },
+              {
+                name: 'C',
+                label: 'C\n \nDar es Salaam 3\n \nKagera 2'
+              },
+              {
+                name: 'D',
+                label: 'D\n \nDar es Salaam 1\n \nKagera 2'
+              },
+              {
+                name: 'E',
+                label: 'E\n \nDar es Salaam 12\n \nKagera 5'
+              }
+            ],
+            x: number('Legend x', 90)
+          },
+          scatter: [{ size: 5, symbol: 'circle' }, { size: 5, symbol: 'plus' }],
           tooltip: { style: { textAnchor: 'start' } }
         }}
       />
@@ -214,44 +249,30 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
           ])}
           width={width}
           height={height}
-          // padding={number('padding', 50)}
-          // origin={object('origin', {
-          //   x: (width - legendWidth) / 2,
-          //   y: height / 2
-          // })}
           parts={{
             tooltip: {
-              style: {
-                fontSize: 28
-              }
+              style: object('Tooltip style', undefined)
             },
             legend: {
+              data: [
+                {
+                  name: 'A very, very, very, very long legend name',
+                  label: 'Female: 22%'
+                },
+                {
+                  name: 'Short one',
+                  label: 'Long tooltip label should appear above chart: 78%'
+                }
+              ],
               rowGutter: number('Legend row spacing', 20),
               style: {
                 labels: object('Legend style', undefined)
               }
             }
           }}
-          legend={[
-            {
-              name: 'A very, very, very, very long legend name',
-              label: 'Female: 22%'
-            },
-            {
-              name: 'Short one',
-              label: 'Long tooltip label should appear above chart: 78%'
-            }
-          ]}
           legendWidth={legendWidth}
           responsive={boolean('responsive', true)}
           standalone={boolean('standalone', true)}
-          // style={{
-          //   labels: {
-          //     fill: 'black',
-          //     fontSize: '18',
-          //     fontWeight: 'bold'
-          //   }
-          // }}
         />
       </div>
     );
@@ -284,7 +305,38 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
           ])}
           width={width}
           height={height}
-          // padding={number('padding', 0)}
+          parts={{
+            legend: {
+              align: select(
+                'Legend align',
+                ['top', 'right', 'bottom', 'left'],
+                'right'
+              ),
+              data: object('Legend data', [
+                {
+                  name: 'A very, very, very, very long legend name',
+                  label: 'Female: 22%'
+                },
+                {
+                  name: 'Short one',
+                  label: 'Long tooltip label should appear above chart: 78%'
+                }
+              ]),
+              gutter: number('Legend column spacing', 10),
+              orientation: select(
+                'Legend orientation',
+                ['horizontal', 'vertical'],
+                'vertical'
+              ),
+              rowGutter: number('Legend row spacing', 20),
+              size: number('Legend size', 100),
+              style: {
+                labels: object('Legend style', undefined)
+              }
+            }
+          }}
+          responsive={boolean('responsive', true)}
+          standalone={boolean('standalone', true)}
         />
       </div>
     );
