@@ -145,19 +145,19 @@ function PieChart({
       colorScale={colorScale}
       cornerRadius={chartInnerRadius}
       flyoutStyle={{ fill: 'white', stroke: 'none' }}
-      height={chartInnerRadius * 2}
+      flyoutHeight={chartInnerRadius * 2}
       labelComponent={
         <Label
           colorScale={colorScale}
+          highlightIndex={1}
+          highlightStyle={{ fontWeight: 'bold' }}
           style={tooltipStyle}
           width={chartInnerRadius * 2}
-          renderInPortal={false}
         />
       }
       orientation="top"
       pointerLength={0}
-      renderInPortal={false}
-      width={chartInnerRadius * 2}
+      flyoutWidth={chartInnerRadius * 2}
       x={origin.x}
       y={origin.y + chartInnerRadius}
     />
@@ -206,7 +206,7 @@ function PieChart({
       <SharedEvents
         childName={['pie1', 'pie2', 'legend']}
         donut={donut}
-        emphasisCoefficient={0.3}
+        emphasisCoefficient={chart.emphasisCoefficient}
       >
         <g
           role="presentation"
@@ -216,6 +216,8 @@ function PieChart({
             <DonutLabel
               data={donutLabelData}
               colorScale={colorScale}
+              highlightIndex={1}
+              highlightStyle={{ fontWeight: 'bold' }}
               sortKey={donutLabelKey.sortKey}
               style={donutLabelStyle}
               text={data1[0].label}
@@ -273,7 +275,7 @@ function PieChart({
               <LegendLabel
                 colorScale={colorScale}
                 theme={theme}
-                width={legend.labelWidth}
+                width={legend.width}
               />
             }
             name="legend"

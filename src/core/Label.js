@@ -20,7 +20,6 @@ const getFont = (style = {}) => {
   return undefined;
 };
 
-/* eslint-disable-next-line no-unused-vars */
 const wrapText = (text, width, canvas, style) => {
   const words = text.split(/\s+/).reverse();
   const textLines = [];
@@ -71,57 +70,57 @@ function Label({
   width,
   ...props
 }) {
-  // const style = Array.isArray(colorScale)
-  //   ? {
-  //       // eslint-disable-next-line no-underscore-dangle
-  //       fill: colorScale[(datum._x - 1) % colorScale.length],
-  //       ...originalStyle
-  //     }
-  //   : originalStyle;
   const [style, setStyle] = useState(null);
   const [text, setText] = useState(null);
-  const [wrappedText, setWrappedText] = useState();
-  /* eslint-disable-next-line no-unused-vars */
+  const [wrappedText, setWrappedText] = useState(null);
   const canvas = useMemo(() => document.createElement('canvas'), []);
   useEffect(() => {
     if (originalText) {
       const textToWrap = Array.isArray(originalText)
         ? originalText
         : originalText.split('\n');
+      let wrapped;
       if (width) {
-        // NOOP
+        wrapped = textToWrap.map(tW =>
+          wrapText(tW, width, canvas, originalStyle)
+        );
       } else {
-        setWrappedText(textToWrap);
+        wrapped = textToWrap.map(tW => [tW]);
       }
+      setWrappedText(wrapped);
     }
-  }, [originalText, width]);
+  }, [canvas, originalStyle, originalText, width]);
   useEffect(() => {
-    if (wrappedText && wrappedText.length) {
-      if (highlightIndex && highlightStyle && !style) {
+    if (wrappedText && wrappedText.length > 1) {
+      if (highlightIndex && highlightStyle) {
         let wrappedTextStyle = [];
         wrappedText.forEach((wT, i) => {
-          const line = Array.isArray(wT) ? wT : [wT];
           const lineStyle =
             i === highlightIndex
               ? { ...highlightStyle, ...originalStyle }
               : { ...originalStyle };
           wrappedTextStyle = wrappedTextStyle.concat(
-            Array(line.length).fill(lineStyle)
+            Array(wT.length).fill(lineStyle)
           );
         });
         setStyle(wrappedTextStyle);
+      } else {
+        setStyle(originalStyle);
       }
-      setText(wrappedText.join('\n'));
     }
-  }, [highlightIndex, highlightStyle, originalStyle, style, wrappedText]);
+  }, [highlightIndex, highlightStyle, originalStyle, wrappedText]);
+
+  useEffect(() => {
+    if (wrappedText && wrappedText.length) {
+      setText(wrappedText.map(wT => wT.join('\n')).join('\n'));
+    }
+  }, [wrappedText]);
 
   return <VictoryLabel style={style} text={text} {...props} />;
 }
 
 Label.propTypes = {
   colorScale: propTypes.colorScale,
-  // TSeems like datum has _x variable that tracks the data index (but it
-  // starts from 1).
   datum: PropTypes.shape({ _x: PropTypes.number }),
   highlightIndex: PropTypes.number,
   highlightStyle: PropTypes.shape({}),
@@ -137,7 +136,7 @@ Label.defaultProps = {
   colorScale: undefined,
   datum: undefined,
   highlightIndex: undefined,
-  highlightStyle: { fontWeight: 'bold' },
+  highlightStyle: undefined,
   style: undefined,
   text: undefined,
   width: undefined

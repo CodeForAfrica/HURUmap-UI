@@ -20,7 +20,7 @@ function LegendLabel({ width, ...props }) {
     <g>
       <Label width={width} {...props} />
       <VictoryTooltip
-        constrainToVisibleArea
+        // constrainToVisibleArea
         {...props}
         datum={{ _x: index + 1, ...datum }}
         text={data[index].label}
