@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import domToImage from 'dom-to-image';
@@ -16,32 +16,36 @@ import propTypes from '../propTypes';
 const useStyles = makeStyles({
   root: {
     height: 'auto',
+    position: 'relative',
     backgroundColor: '#f6f6f6'
   },
-  title: ({ variant }) => ({
+  title: ({ variant, rootWidth }) => ({
     fontSize: '1.25rem',
     fontWeight: 'bold',
-    textAlign: variant === 'analysis' && 'center'
+    textAlign: (variant === 'analysis' || rootWidth < 628) && 'center',
+    marginBottom: (variant === 'analysis' || rootWidth < 628) && '1.25rem'
   }),
-  highlightGrid: {
+  highlightGrid: ({ variant, rootWidth }) => ({
+    display: (variant !== 'data' || rootWidth < 628) && 'none',
     flexGrow: 1,
-    flexShrink: 0,
-    flexBasis: '11.71875rem',
-    display: 'flex'
-  },
+    flexShrink: 1,
+    flexBasis: '11.71875rem'
+  }),
+  highlightContentChild: ({ variant, rootWidth }) => ({
+    display: variant === 'data' && rootWidth >= 628 && 'none'
+  }),
   contentGrid: {
     flexGrow: 1,
     flexShrink: 1,
     width: '100%',
-    height: '100%',
-    padding: '0 1.25rem',
+    height: 'available',
     flexBasis: '25.03125rem'
   },
   insightGrid: {
     flexGrow: 1,
     flexShrink: 1,
-    flexBasis: '18rem',
-    minWidth: '18rem'
+    flexBasis: '17rem',
+    minWidth: '17rem'
   },
   sourceLink: {
     wordBreak: 'break-all',
@@ -81,7 +85,6 @@ function InsightContainer({
   title,
   ...props
 }) {
-  const classes = useStyles(props);
   const { variant } = props;
   const highlightChild = children[0];
   const contentChild = children[1];
@@ -91,7 +94,14 @@ function InsightContainer({
     handleDownload: handleDownloadProp,
     handleShowData
   } = actions;
+
+  const [rootNode, setRootNode] = useState();
   const chartRef = useRef(null);
+
+  const classes = useStyles({
+    ...props,
+    rootWidth: rootNode ? rootNode.getBoundingClientRect().width : 300
+  });
 
   const toPng = () => {
     if (chartRef.current) {
@@ -142,60 +152,58 @@ function InsightContainer({
   const insight = insightProp || {};
 
   return (
-    <Grid container className={classes.root}>
+    <Grid ref={setRootNode} container className={classes.root}>
       <Box
         display="flex"
         flexGrow={1}
         flexShrink={1}
-        flexDirection="column"
-        flexBasis="32.5rem"
+        flexWrap="wrap"
+        flexBasis="35rem"
         padding="1.25rem"
       >
-        <Box display="flex">
-          {variant === 'data' && (
-            <Grid item className={classes.highlightGrid}>
-              <Grid container alignItems="stretch" alignContent="space-between">
-                <Grid item xs={12}>
-                  <BlockLoader loading={loading} height={300}>
-                    {highlightChild}
-                  </BlockLoader>
-                </Grid>
-              </Grid>
-            </Grid>
-          )}
-
-          <Grid item ref={chartRef} className={classes.contentGrid}>
-            <Box
-              display="flex"
-              height="100%"
-              alignItems="flex-start"
-              flexDirection="column"
-            >
-              <TypographyLoader
-                variant="h5"
-                loading={loading}
-                className={classes.title}
-              >
-                {title}
-              </TypographyLoader>
+        <Grid item className={classes.highlightGrid}>
+          <Grid container alignItems="stretch" alignContent="space-between">
+            <Grid item xs={12}>
               <BlockLoader loading={loading} height={300}>
-                {variant === 'analysis' && <Box>{highlightChild}</Box>}
-                <Box
-                  width="100%"
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  minHeight={300}
-                  flexGrow={1}
-                >
-                  {contentChild}
-                </Box>
+                {highlightChild}
               </BlockLoader>
-            </Box>
+            </Grid>
           </Grid>
-        </Box>
+        </Grid>
 
-        <Box>
+        <Grid item ref={chartRef} className={classes.contentGrid}>
+          <Box
+            display="flex"
+            height="100%"
+            alignItems="flex-start"
+            flexDirection="column"
+          >
+            <TypographyLoader
+              variant="h5"
+              loading={loading}
+              className={classes.title}
+            >
+              {title}
+            </TypographyLoader>
+            <BlockLoader loading={loading} height={300}>
+              <Box className={classes.highlightContentChild}>
+                {highlightChild}
+              </Box>
+              <Box
+                width="100%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                minHeight={300}
+                flexGrow={1}
+              >
+                {contentChild}
+              </Box>
+            </BlockLoader>
+          </Box>
+        </Grid>
+
+        <Box width="100%" marginTop="1.25rem">
           <TypographyLoader
             loading={loading}
             loader={{
@@ -212,11 +220,16 @@ function InsightContainer({
           </TypographyLoader>
         </Box>
 
-        <Box>
-          <Grid container justify="center">
-            {variant === 'analysis' ? actionsChildren : null}
-          </Grid>
-        </Box>
+        {variant === 'analysis' && (
+          <Box
+            width="100%"
+            display="flex"
+            justifyContent="center"
+            marginTop="1.25rem"
+          >
+            {actionsChildren}
+          </Box>
+        )}
       </Box>
 
       {!hideInsight && (
