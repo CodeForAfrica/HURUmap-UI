@@ -220,7 +220,7 @@ function InsightContainer({
           </TypographyLoader>
         </Box>
 
-        {variant === 'analysis' && (
+        {(variant === 'analysis' || hideInsight) && (
           <Box
             width="100%"
             display="flex"
