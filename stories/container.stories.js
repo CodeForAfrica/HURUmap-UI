@@ -322,14 +322,15 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
       const dataExponent = number('Data value E+', 6);
       const statisticDefinition = object('statisticDefinition', {
         type: 'number',
+        style: 'percent',
         subtitle: 'Lorem ipsum',
         description: 'Lorem ipsum dolor sit amet',
-        unit: 'percent',
         aggregate: 'last:percent'
       });
       const definition = object('visual', {
         type: 'column',
-        horizontal: false
+        horizontal: false,
+        customUnit: 'km²'
       });
 
       const dataArray = Array(data)

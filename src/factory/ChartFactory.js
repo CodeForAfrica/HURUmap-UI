@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState, useCallback } from 'react';
 
 import { Box, ButtonBase } from '@material-ui/core';
 import BarChart from '../core/BarChart';
@@ -23,10 +23,14 @@ function ChartFactory({
     description,
     horizontal,
     locale = 'en-GB',
+    customUnit = '',
     /**
      * The rest of the props are going to be considered as:
      *  Intl.NumberFormatOptions
+     *
+     * Omit unit simce its an experimental NumberFormat option.
      */
+    unit,
     ...numberFormat
   },
   data,
@@ -41,28 +45,61 @@ function ChartFactory({
     Math.random()
       .toString(36)
       .substring(2) + Date.now().toString(36);
-  const [
-    ,
-    aggregateUnit = numberFormat.unit === 'percent' ? 'percent' : undefined
-  ] = aggregate ? aggregate.split(':') : [];
   const [dataLength, setDataLength] = useState(-5);
   const [show, setShow] = useState(-5);
   const numberFormatter = useRef(
     (() => {
       try {
-        return new Intl.NumberFormat(locale, {
-          style: aggregateUnit || numberFormat.unit ? 'unit' : undefined,
-          notation: 'compact',
-          compactDisplay: 'short',
+        const formatter = new Intl.NumberFormat(locale, {
           maximumFractionDigits: 2,
-          ...numberFormat,
-          unit: aggregateUnit || numberFormat.unit
+          ...numberFormat
         });
+        return formatter;
       } catch (e) {
         return new Intl.NumberFormat(locale);
       }
     })()
   ).current;
+
+  const format = useCallback(
+    value => {
+      /**
+       * Since `notation: compact` is experimental as noted here:
+       *  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
+       * It is only available in Chrome 77+ :
+       *  https://v8.dev/features/intl-numberformat#notation
+       *
+       * Manually compact the numbers until this feature is available.
+       */
+      let formatValue = value;
+      let compactUnit = '';
+      if (value > 10 ** 12) {
+        compactUnit = 'T';
+        formatValue = value / 10 ** 12;
+      } else if (value > 10 ** 9) {
+        compactUnit = 'B';
+        formatValue = value / 10 ** 9;
+      } else if (value > 10 ** 6) {
+        compactUnit = 'M';
+        formatValue = value / 10 ** 6;
+      } else if (value > 10 ** 3) {
+        compactUnit = 'K';
+        formatValue = value / 10 ** 3;
+      } else {
+        //
+      }
+      /**
+       * `style: percent` expects a ratio
+       */
+      if (numberFormat.style === 'percent') {
+        formatValue /= 100;
+      }
+      return `${numberFormatter.format(
+        formatValue
+      )}${compactUnit} ${customUnit}`;
+    },
+    [customUnit, numberFormat.style, numberFormatter]
+  );
 
   const primaryData = useMemo(() => {
     if (visualType === 'column') {
@@ -75,7 +112,7 @@ function ChartFactory({
       return (!aggregate ? data : aggregateData(aggregate, data)).map(d => ({
         ...d,
         name: d.x,
-        label: `${d.x} ${numberFormatter.format(d.y)}`
+        label: `${d.x} ${format(d.y)}`
       }));
     }
 
@@ -94,13 +131,13 @@ function ChartFactory({
       return groupedData.map(gd => gd.slice(show));
     }
     return groupedData;
-  }, [visualType, data, aggregate, show, numberFormatter]);
+  }, [visualType, data, aggregate, show, format]);
 
   if (!data) {
     return null;
   }
 
-  const formatLabelValue = value => numberFormatter.format(value);
+  const formatLabelValue = value => format(value);
 
   const renderChart = () => {
     switch (visualType) {
@@ -125,7 +162,7 @@ function ChartFactory({
           <div style={{ width: !isComparison ? 200 : 650 }}>
             <NestedProportionalAreaChart
               key={key}
-              formatNumberForLabel={x => numberFormatter.format(x)}
+              formatNumberForLabel={x => format(x)}
               square={visualType === 'square_nested_proportional_area'}
               height={isComparison && 500}
               width={!isComparison ? 200 : 650}
@@ -196,7 +233,7 @@ function ChartFactory({
         const statUnique = unique || !isSelectFunc(func);
 
         const dataStat = aggregateData(statAggregate, data, statUnique);
-        const dataStatY = numberFormatter.format(dataStat[0].y);
+        const dataStatY = format(dataStat[0].y);
 
         let xDesc = isSelectFunc(func) ? `(${dataStat[0].x})` : '';
         xDesc = dataStat[0].groupBy
@@ -407,11 +444,13 @@ ChartFactory.propTypes = {
      */
     unique: propTypes.bool,
     horizontal: propTypes.bool,
-    locale: propTypes.string
+    locale: propTypes.string,
+    customUnit: propTypes.string,
     /**
      * The rest of the props are going to be considered as:
      *  Intl.NumberFormatOptions
      */
+    unit: propTypes.string
   }).isRequired,
   data: propTypes.graphQlData.isRequired,
   isComparison: propTypes.bool,
