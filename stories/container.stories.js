@@ -82,14 +82,14 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                 'Census 2011: Statistics South Africa (2011) South African Population Census 2011. Indicators derived from the full population Census'
               )}
               sourceLink="http://dev.dominion.africa"
-              content={object('content', { height: 400, width: '100%' })}
+              content={object('content', { height: 600, width: '100%' })}
               classes={{
                 title: classes.title,
                 embedDropDownRoot: classes.embedModal
               }}
             >
               {chartType === 'pie' && (
-                <div>
+                <div style={{ height: 350, width: 350 }}>
                   <PieChart
                     donut={boolean('donut', true)}
                     donutLabelKey={object('donutLabelKey', {
@@ -99,31 +99,19 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                       { x: 'Female', y: 22, label: 'Female\n22%' },
                       { x: 'Male', y: 78, label: 'Male\n78%' }
                     ])}
-                    legendWidth={40}
-                    radii={[150]}
+                    height={350}
                     parts={{
-                      tooltip: {
-                        style: {
-                          fontSize: 28
-                        }
-                      },
                       legend: {
-                        style: { labels: { fontSize: 20, fontWeight: 'bold' } }
+                        data: [
+                          { name: 'Female', label: 'Female: 22%' },
+                          { name: 'Male', label: 'Male: 78%' }
+                        ],
+                        size: 40
                       }
                     }}
-                    legend={[
-                      { name: 'Female', label: 'Female: 22%' },
-                      { name: 'Male', label: 'Male: 78%' }
-                    ]}
                     responsive={boolean('responsive', true)}
                     standalone={boolean('standalone', true)}
-                    style={{
-                      labels: {
-                        fill: 'black',
-                        fontSize: '18',
-                        fontWeight: 'bold'
-                      }
-                    }}
+                    width={350}
                   />
                 </div>
               )}
