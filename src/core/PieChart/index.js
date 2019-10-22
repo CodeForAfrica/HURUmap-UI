@@ -120,10 +120,10 @@ function PieChart({
 
   // Label & tooltip
   const donutLabelData = data2 ? data[donutLabelKey.dataIndex] : data1;
-  const { style: suggestedHeightStyle } = props;
+  const { style: suggestedStyle } = props;
   const donutLabelStyle = {
     textAnchor: 'middle',
-    ...(suggestedHeightStyle && suggestedHeightStyle.labels)
+    ...(suggestedStyle && suggestedStyle.labels)
   };
 
   const tooltipProps = {
@@ -149,8 +149,8 @@ function PieChart({
       labelComponent={
         <Label
           colorScale={colorScale}
-          highlightIndex={1}
-          highlightStyle={{ fontWeight: 'bold' }}
+          highlightIndex={chart.donutHighlightIndex}
+          highlightStyle={chart.donutHighlightStyle}
           style={tooltipStyle}
           width={chartInnerRadius * 2}
         />
@@ -216,8 +216,8 @@ function PieChart({
             <DonutLabel
               data={donutLabelData}
               colorScale={colorScale}
-              highlightIndex={1}
-              highlightStyle={{ fontWeight: 'bold' }}
+              highlightIndex={chart.donutHighlightIndex}
+              highlightStyle={chart.donutHighlightStyle}
               sortKey={donutLabelKey.sortKey}
               style={donutLabelStyle}
               text={data1[0].label}

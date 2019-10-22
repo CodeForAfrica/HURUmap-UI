@@ -127,6 +127,10 @@ export default function createVictoryTheme(chartOptions) {
   // Customize chart pie props
   chart.pie = {
     donut: true,
+    donutHighlightIndex: 1,
+    // Default VictoryTheme.material font size is 12
+    // see: https://github.com/FormidableLabs/victory/blob/master/packages/victory-core/src/victory-theme/material.js
+    donutHighlightStyle: { fontWeight: 'bold', fontSize: 18 },
     donutRatio: 0.6,
     emphasisCoefficient: 0.15,
     groupSpacing: 4,
