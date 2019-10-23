@@ -259,6 +259,20 @@ function ChartContainer({
               </BlockLoader>
             )}
 
+            {onClickEmbed && (
+              <BlockLoader loading={loading} width={40} height={40}>
+                <ButtonBase
+                  className={classes.actionButton}
+                  onClick={() =>
+                    onClickEmbed(getReferenceObject(embedButtonRef))
+                  }
+                  ref={embedButtonRef}
+                >
+                  <img alt="Embed" src={embedIcon} />
+                </ButtonBase>
+              </BlockLoader>
+            )}
+
             {onClickDownload && (
               <BlockLoader loading={loading} width={40} height={40}>
                 <ButtonBase
@@ -274,20 +288,6 @@ function ChartContainer({
                   ref={downloadButtonRef}
                 >
                   <img alt="Download" src={downloadIcon} />
-                </ButtonBase>
-              </BlockLoader>
-            )}
-
-            {onClickEmbed && (
-              <BlockLoader loading={loading} width={40} height={40}>
-                <ButtonBase
-                  className={classes.actionButton}
-                  onClick={() =>
-                    onClickEmbed(getReferenceObject(embedButtonRef))
-                  }
-                  ref={embedButtonRef}
-                >
-                  <img alt="Embed" src={embedIcon} />
                 </ButtonBase>
               </BlockLoader>
             )}
