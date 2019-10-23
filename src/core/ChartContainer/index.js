@@ -200,162 +200,156 @@ function ChartContainer({
       }));
 
   return (
-    <div className={classes.root}>
-      <Grid container ref={chartRef}>
+    <Grid container className={classes.root} ref={chartRef}>
+      <Grid
+        item
+        xs={12}
+        container
+        wrap="nowrap"
+        direction="row"
+        alignItems="flex-start"
+        justify="space-between"
+      >
+        <Grid item xs={8}>
+          <TypographyLoader
+            loading={loading}
+            loader={{
+              primaryOpacity: 0.5,
+              secondaryOpacity: 1
+            }}
+            className={classes.title}
+            variant="h5"
+          >
+            {title}
+          </TypographyLoader>
+          <TypographyLoader
+            loading={loading}
+            loader={{
+              primaryOpacity: 0.5,
+              secondaryOpacity: 1
+            }}
+            className={classes.subtitle}
+            variant="h6"
+          >
+            {subtitle}
+          </TypographyLoader>
+        </Grid>
+
         <Grid
           item
-          xs={12}
+          xs={4}
           container
           wrap="nowrap"
           direction="row"
-          alignItems="flex-start"
-          justify="space-between"
+          justify="flex-end"
+          className={classes.actions}
         >
-          <Grid item xs={8}>
-            <TypographyLoader
-              loading={loading}
-              loader={{
-                primaryOpacity: 0.5,
-                secondaryOpacity: 1
-              }}
-              className={classes.title}
-              variant="h5"
-            >
-              {title}
-            </TypographyLoader>
-            <TypographyLoader
-              loading={loading}
-              loader={{
-                primaryOpacity: 0.5,
-                secondaryOpacity: 1
-              }}
-              className={classes.subtitle}
-              variant="h6"
-            >
-              {subtitle}
-            </TypographyLoader>
-          </Grid>
+          {onClickShare && (
+            <BlockLoader loading={loading} width={40} height={40}>
+              <ButtonBase
+                className={classes.actionButton}
+                onClick={() => onClickShare(getReferenceObject(shareButtonRef))}
+                ref={shareButtonRef}
+              >
+                <img alt="Share" src={shareIcon} />
+              </ButtonBase>
+            </BlockLoader>
+          )}
 
-          <Grid
-            item
-            xs={4}
-            container
-            wrap="nowrap"
-            direction="row"
-            justify="flex-end"
-            className={classes.actions}
-          >
-            {onClickShare && (
-              <BlockLoader loading={loading} width={40} height={40}>
-                <ButtonBase
-                  className={classes.actionButton}
-                  onClick={() =>
-                    onClickShare(getReferenceObject(shareButtonRef))
-                  }
-                  ref={shareButtonRef}
-                >
-                  <img alt="Share" src={shareIcon} />
-                </ButtonBase>
-              </BlockLoader>
-            )}
+          {onClickEmbed && (
+            <BlockLoader loading={loading} width={40} height={40}>
+              <ButtonBase
+                className={classes.actionButton}
+                onClick={() => onClickEmbed(getReferenceObject(embedButtonRef))}
+                ref={embedButtonRef}
+              >
+                <img alt="Embed" src={embedIcon} />
+              </ButtonBase>
+            </BlockLoader>
+          )}
 
-            {onClickEmbed && (
-              <BlockLoader loading={loading} width={40} height={40}>
-                <ButtonBase
-                  className={classes.actionButton}
-                  onClick={() =>
-                    onClickEmbed(getReferenceObject(embedButtonRef))
-                  }
-                  ref={embedButtonRef}
-                >
-                  <img alt="Embed" src={embedIcon} />
-                </ButtonBase>
-              </BlockLoader>
-            )}
-
-            {onClickDownload && (
-              <BlockLoader loading={loading} width={40} height={40}>
-                <ButtonBase
-                  className={classes.actionButton}
-                  onClick={() =>
-                    toPng().then(
-                      onClickDownload.bind(
-                        null,
-                        getReferenceObject(downloadButtonRef)
-                      )
+          {onClickDownload && (
+            <BlockLoader loading={loading} width={40} height={40}>
+              <ButtonBase
+                className={classes.actionButton}
+                onClick={() =>
+                  toPng().then(
+                    onClickDownload.bind(
+                      null,
+                      getReferenceObject(downloadButtonRef)
                     )
-                  }
-                  ref={downloadButtonRef}
-                >
-                  <img alt="Download" src={downloadIcon} />
-                </ButtonBase>
-              </BlockLoader>
-            )}
+                  )
+                }
+                ref={downloadButtonRef}
+              >
+                <img alt="Download" src={downloadIcon} />
+              </ButtonBase>
+            </BlockLoader>
+          )}
 
-            {onClickCompare && (
-              <BlockLoader loading={loading} width={40} height={40}>
-                <ButtonBase
-                  className={classes.actionButton}
-                  onClick={() =>
-                    onClickCompare(getReferenceObject(compareButtonRef))
-                  }
-                  ref={compareButtonRef}
-                >
-                  <img alt="Compare" src={compareIcon} />
-                </ButtonBase>
-              </BlockLoader>
-            )}
+          {onClickCompare && (
+            <BlockLoader loading={loading} width={40} height={40}>
+              <ButtonBase
+                className={classes.actionButton}
+                onClick={() =>
+                  onClickCompare(getReferenceObject(compareButtonRef))
+                }
+                ref={compareButtonRef}
+              >
+                <img alt="Compare" src={compareIcon} />
+              </ButtonBase>
+            </BlockLoader>
+          )}
 
-            {onClickData && (
-              <BlockLoader loading={loading} width={40} height={40}>
-                <ButtonBase
-                  className={classes.actionButton}
-                  onClick={() => onClickData(getReferenceObject(dataButtonRef))}
-                  ref={dataButtonRef}
-                >
-                  <img alt="Show Data" src={dataIcon} />
-                </ButtonBase>
-              </BlockLoader>
-            )}
+          {onClickData && (
+            <BlockLoader loading={loading} width={40} height={40}>
+              <ButtonBase
+                className={classes.actionButton}
+                onClick={() => onClickData(getReferenceObject(dataButtonRef))}
+                ref={dataButtonRef}
+              >
+                <img alt="Show Data" src={dataIcon} />
+              </ButtonBase>
+            </BlockLoader>
+          )}
 
-            {embedDropDown}
-            {shareDropDown}
-          </Grid>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          container
-          justify="center"
-          className={classes.content}
-          style={{ width: content.width, height: content.height }}
-        >
-          {/* Set width 100% only when loading to allow Chart to define its own width
-            otherwise a chart with a small width will scale and look large. */}
-          <div
-            style={{ width: loading && '100%', height: '100%' }}
-            className={classes.container}
-          >
-            <BlockLoader loading={loading}>{children}</BlockLoader>
-            <TypographyLoader
-              loading={loading}
-              loader={{
-                primaryOpacity: 0.5,
-                secondaryOpacity: 1
-              }}
-              component="div"
-              style={{ width: '100%' }}
-            >
-              {sourceLink && (
-                <A className={classes.sourceLink} href={sourceLink}>
-                  {`Source: ${sourceTitle || sourceLink}`}
-                </A>
-              )}
-            </TypographyLoader>
-          </div>
+          {embedDropDown}
+          {shareDropDown}
         </Grid>
       </Grid>
-    </div>
+      <Grid
+        item
+        xs={12}
+        container
+        justify="center"
+        className={classes.content}
+        style={{ width: content.width, height: content.height }}
+      >
+        {/* Set width 100% only when loading to allow Chart to define its own width
+            otherwise a chart with a small width will scale and look large. */}
+        <div
+          style={{ width: loading && '100%', height: '100%' }}
+          className={classes.container}
+        >
+          <BlockLoader loading={loading}>{children}</BlockLoader>
+          <TypographyLoader
+            loading={loading}
+            loader={{
+              primaryOpacity: 0.5,
+              secondaryOpacity: 1
+            }}
+            component="div"
+            style={{ width: '100%' }}
+          >
+            {sourceLink && (
+              <A className={classes.sourceLink} href={sourceLink}>
+                {`Source: ${sourceTitle || sourceLink}`}
+              </A>
+            )}
+          </TypographyLoader>
+        </div>
+      </Grid>
+    </Grid>
   );
 }
 
