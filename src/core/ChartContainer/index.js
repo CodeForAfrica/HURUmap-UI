@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { makeStyles } from '@material-ui/styles';
-import { ButtonBase } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
-import BlockLoader from '../BlockLoader';
-import TypographyLoader from '../TypographyLoader';
+import domToImage from 'dom-to-image';
+
+import { makeStyles, ButtonBase, Grid } from '@material-ui/core';
 
 import A from '../A';
+import BlockLoader from '../BlockLoader';
 import EmbedDropDown from './EmbedDropDown';
 import ShareDropDown from './ShareDropDown';
+import TypographyLoader from '../TypographyLoader';
 
 import compareIcon from '../assets/icons/compare.svg';
 import dataIcon from '../assets/icons/tablet-reader.svg';
@@ -20,7 +20,6 @@ import shareIcon from '../assets/icons/network-connection.svg';
 const useStyles = makeStyles({
   root: {
     width: 'available',
-    height: 'auto',
     backgroundColor: '#fff',
     padding: '1.5625rem 1.25rem'
   },
@@ -33,6 +32,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'center'
   },
+  actions: {},
   actionButton: {
     border: '0.0625rem solid #d8d8d8',
     marginLeft: '-0.0625rem',
@@ -67,7 +67,7 @@ function ChartContainer({
   loading,
   onClickCompare,
   onClickData,
-  onClickDownload,
+  onClickDownload: onClickDownloadProp,
   onClickEmbed: onClickEmbedProp,
   onClickShare: onClickShareProp,
   share,
@@ -90,15 +90,38 @@ function ChartContainer({
     return null;
   };
 
-  const compareButtonRef = React.useRef(null);
+  const compareButtonRef = useRef(null);
 
-  const dataButtonRef = React.useRef(null);
+  const dataButtonRef = useRef(null);
 
-  const downloadButtonRef = React.useRef(null);
+  const downloadButtonRef = useRef(null);
+  const chartRef = useRef(null);
+  const toPng = () => {
+    if (chartRef.current) {
+      const filter = node =>
+        !(node.classList && node.classList.contains(classes.actions));
+      return domToImage.toPng(chartRef.current, { filter });
+    }
+    return Promise.resolve(undefined);
+  };
 
-  const [embedAnchorEl, setEmbedAnchorEl] = React.useState(null);
-  const embedButtonRef = React.useRef(null);
-  const [embedDropDown, setEmbedDropDown] = React.useState(null);
+  const handleDownload = (anchorEl, dataUrl) => {
+    if (dataUrl) {
+      const link = document.createElement('a');
+      link.download = `${title}.png`;
+      link.href = dataUrl;
+
+      document.body.appendChild(link); // Firefox requires this
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
+  const onClickDownload = onClickDownloadProp || handleDownload;
+
+  const [embedAnchorEl, setEmbedAnchorEl] = useState(null);
+  const embedButtonRef = useRef(null);
+  const [embedDropDown, setEmbedDropDown] = useState(null);
   const handleCloseEmbed = () => setEmbedAnchorEl(null);
   useEffect(() => {
     if (typeof onClickEmbedProp === 'undefined') {
@@ -125,9 +148,9 @@ function ChartContainer({
     }
   }, [classes, embed, embedAnchorEl, onClickEmbedProp]);
 
-  const shareButtonRef = React.useRef(null);
-  const [shareAnchorEl, setShareAnchorEl] = React.useState(null);
-  const [shareDropDown, setShareDropDown] = React.useState(null);
+  const shareButtonRef = useRef(null);
+  const [shareAnchorEl, setShareAnchorEl] = useState(null);
+  const [shareDropDown, setShareDropDown] = useState(null);
   const handleCloseShare = () => setShareAnchorEl(null);
   useEffect(() => {
     if (typeof onClickShareProp === 'undefined') {
@@ -177,8 +200,10 @@ function ChartContainer({
       }));
 
   return (
-    <Grid container className={classes.root}>
+    <Grid container className={classes.root} ref={chartRef}>
       <Grid
+        item
+        xs={12}
         container
         wrap="nowrap"
         direction="row"
@@ -217,6 +242,7 @@ function ChartContainer({
           wrap="nowrap"
           direction="row"
           justify="flex-end"
+          className={classes.actions}
         >
           {onClickShare && (
             <BlockLoader loading={loading} width={40} height={40}>
@@ -230,20 +256,6 @@ function ChartContainer({
             </BlockLoader>
           )}
 
-          {onClickDownload && (
-            <BlockLoader loading={loading} width={40} height={40}>
-              <ButtonBase
-                className={classes.actionButton}
-                onClick={() =>
-                  onClickDownload(getReferenceObject(downloadButtonRef))
-                }
-                ref={downloadButtonRef}
-              >
-                <img alt="Download" src={downloadIcon} />
-              </ButtonBase>
-            </BlockLoader>
-          )}
-
           {onClickEmbed && (
             <BlockLoader loading={loading} width={40} height={40}>
               <ButtonBase
@@ -252,6 +264,25 @@ function ChartContainer({
                 ref={embedButtonRef}
               >
                 <img alt="Embed" src={embedIcon} />
+              </ButtonBase>
+            </BlockLoader>
+          )}
+
+          {onClickDownload && (
+            <BlockLoader loading={loading} width={40} height={40}>
+              <ButtonBase
+                className={classes.actionButton}
+                onClick={() =>
+                  toPng().then(
+                    onClickDownload.bind(
+                      null,
+                      getReferenceObject(downloadButtonRef)
+                    )
+                  )
+                }
+                ref={downloadButtonRef}
+              >
+                <img alt="Download" src={downloadIcon} />
               </ButtonBase>
             </BlockLoader>
           )}
@@ -287,6 +318,8 @@ function ChartContainer({
         </Grid>
       </Grid>
       <Grid
+        item
+        xs={12}
         container
         justify="center"
         className={classes.content}
