@@ -7,8 +7,7 @@ import { Typography, List, ListItem, ListItemText } from '@material-ui/core';
 const useStyles = makeStyles(() => ({
   root: {
     width: '100%',
-    height: 'auto',
-    margin: '1rem'
+    height: 'auto'
   },
   hidden: {
     display: 'none'
@@ -17,7 +16,7 @@ const useStyles = makeStyles(() => ({
     marginTop: '1em'
   },
   statistic: {
-    fontSize: '2.5em'
+    fontSize: '2.25rem'
   },
   statisticDeviation: {
     fontSize: '0.4em',
@@ -32,6 +31,7 @@ const useStyles = makeStyles(() => ({
     fontSize: '1.25em'
   },
   description: {
+    wordBreak: 'break-all',
     fontSize: '1.5em'
   },
   comparison: {
@@ -76,14 +76,12 @@ function NumberVisuals({
           <span
             className={!onHover ? classes.hidden : classes.statisticDeviation}
           >
-            {' '}
             {statisticDeviation}
           </span>
         </Typography>
         <Typography
           className={!onHover ? classes.hidden : classes.secondaryDeviation}
         >
-          {' '}
           {secondaryDeviation}
         </Typography>
       </div>

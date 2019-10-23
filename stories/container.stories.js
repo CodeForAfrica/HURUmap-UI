@@ -20,10 +20,10 @@ import {
   ChartContainer,
   DropDown,
   InsightContainer,
-  NumberVisuals,
   PieChart
 } from '../src/core';
 import { CenterDecorator } from './common';
+import { ChartFactory } from '../src/factory';
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
 
@@ -297,16 +297,46 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
       const useStyles = makeStyles(() => ({
         root: {
           backgroundColor: '#f6f6f6'
-        },
-        numberVisuals: {
-          margin: '1.25rem'
         }
       }));
       const classes = useStyles();
 
+      const containerWidth = number('containerWidth', 930);
+      const hideInsight = boolean('hideInsight');
+      const variant = select('variant', ['data', 'analysis'], 'data');
+      const chartHeight = number('chartHeight');
+      const chartWidth = number('chartWidth');
+      const groups = number('groups', 3);
+      const data = number('data', 2);
+      const dataExponent = number('Data value E+', 6);
+      const statisticDefinition = object('statisticDefinition', {
+        type: 'number',
+        style: 'percent',
+        subtitle: 'Lorem ipsum',
+        description: 'Lorem ipsum dolor sit amet',
+        aggregate: 'last:percent'
+      });
+      const definition = object('visual', {
+        type: 'grouped_column',
+        horizontal: false,
+        customUnit: 'km²',
+        groupBy: 'Group',
+        aggregate: 'raw'
+      });
+
+      const dataArray = Array(((definition.groupBy && groups) || 1) * data)
+        .fill(null)
+        .map((_, index) => ({
+          groupBy:
+            definition.groupBy && `${definition.groupBy} ${index % groups}`,
+          x: `Data ${index}`,
+          y: rand() * 10 ** dataExponent
+        }));
+
       return (
-        <div>
+        <div style={{ width: containerWidth }}>
           <InsightContainer
+            hideInsight={hideInsight}
             classes={{ root: classes.root }}
             embedCode={text('embedCode', 'Embed Chart Code')}
             insight={object('insight', {
@@ -322,79 +352,19 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
               href: 'http://dev.dominion.africa'
             })}
             title="Lorem ipsum dolor sit amet"
-            variant={select('variant', ['data', 'analysis'], 'data')}
+            variant={variant}
           >
-            <NumberVisuals
-              classes={{ root: classes.numberVisuals }}
-              subtitle={text('Subtitle', 'Income')}
-              statistic={text('Statistic', '$60,336')}
-              statisticDeviation={text(
-                'Statistic Deviation',
-                'https://dev.dominion.africa/profile/country-ZA±0.1% '
-              )}
-              secondaryDeviation={text(
-                'Secondary Deviation',
-                '(194, 667, 872 ±241, 381.6)'
-              )}
-              description={text('Description', 'Median household income')}
-              comparisonData={object('Comparison Data', [
-                {
-                  id: 0,
-                  parentComparison: 'about 90 percent',
-                  parentDescription: 'of the amount in United States: $32,397',
-                  parentDeviation: '±0.24%'
-                }
-              ])}
+            <ChartFactory definition={statisticDefinition} data={dataArray} />
+            <ChartFactory
+              definition={definition}
+              data={dataArray}
+              height={chartHeight}
+              width={
+                variant === 'analysis' && !chartWidth
+                  ? containerWidth
+                  : chartWidth
+              }
             />
-            <div style={{ height: 300, width: 500 }}>
-              <BarChart
-                horizontal={boolean('horizontal', false)}
-                width={500}
-                height={300}
-                data={Array(number('data', 10))
-                  .fill(null)
-                  .map((_, index) => ({
-                    x: `${index}-${index}`,
-                    y: rand()
-                  }))}
-                domainPadding={{ x: 20 }}
-                parts={{
-                  axis: {
-                    independent: {
-                      style: {
-                        axis: {
-                          display: 'block'
-                        },
-                        grid: {
-                          display: 'block'
-                        },
-                        ticks: {
-                          display: 'block'
-                        },
-                        tickLabels: {
-                          display: 'block'
-                        }
-                      }
-                    },
-                    dependent: {
-                      style: {
-                        axis: {
-                          display: 'block'
-                        },
-                        grid: {
-                          display: 'block'
-                        },
-                        tickLabels: {
-                          display: 'block'
-                        }
-                      },
-                      tickValues: [10, 50, 90],
-                      tickFormat: ['10%', '50%', '90%']
-                    }
-                  }
-                }}
-              />
-            </div>
           </InsightContainer>
         </div>
       );
