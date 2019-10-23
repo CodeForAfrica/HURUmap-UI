@@ -318,7 +318,8 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
       const variant = select('variant', ['data', 'analysis'], 'data');
       const chartHeight = number('chartHeight');
       const chartWidth = number('chartWidth');
-      const data = number('data', 10);
+      const groups = number('groups', 3);
+      const data = number('data', 2);
       const dataExponent = number('Data value E+', 6);
       const statisticDefinition = object('statisticDefinition', {
         type: 'number',
@@ -328,15 +329,19 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
         aggregate: 'last:percent'
       });
       const definition = object('visual', {
-        type: 'column',
+        type: 'grouped_column',
         horizontal: false,
-        customUnit: 'km²'
+        customUnit: 'km²',
+        groupBy: 'Group',
+        aggregate: 'raw'
       });
 
-      const dataArray = Array(data)
+      const dataArray = Array(((definition.groupBy && groups) || 1) * data)
         .fill(null)
         .map((_, index) => ({
-          x: `${index}-${index}`,
+          groupBy:
+            definition.groupBy && `${definition.groupBy} ${index % groups}`,
+          x: `Data ${index}`,
           y: rand() * 10 ** dataExponent
         }));
 

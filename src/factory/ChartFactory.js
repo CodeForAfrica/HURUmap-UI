@@ -103,27 +103,44 @@ function ChartFactory({
 
   const primaryData = useMemo(() => {
     if (visualType === 'column') {
-      const computedData = aggregate ? aggregateData(aggregate, data) : data;
+      const computedData = aggregateData(aggregate, data);
       setDataLength(computedData.length);
       return computedData.slice(show);
     }
 
     if (visualType === 'pie') {
-      return (!aggregate ? data : aggregateData(aggregate, data)).map(d => ({
+      return aggregateData(aggregate, data).map(d => ({
         ...d,
         name: d.x,
         label: `${d.x} ${format(d.y)}`
       }));
     }
 
+    /**
+     * Group the data based on groupBy
+     */
     let groupedData = [...new Set(data.map(d => d.groupBy))].map(group =>
-      !aggregate
-        ? data.filter(d => d.groupBy === group)
-        : aggregateData(aggregate, data.filter(d => d.groupBy === group)).map(
-            d => ({ ...d, x: group })
-          )
+      data.filter(d => d.groupBy === group)
     );
 
+    groupedData = aggregateData(aggregate, groupedData);
+
+    /**
+     * Change `x` to be the `groupBy` value
+     * to plot group labels on the dependent axis
+     */
+    groupedData = groupedData.map(g =>
+      g.map(gd => ({
+        ...gd,
+        tooltip: `${gd.x}: ${format(gd.y)}`,
+        x: gd.groupBy
+      }))
+    );
+
+    /**
+     * Reverse grouped data
+     * since victory plots inversely
+     */
     groupedData = groupedData[0].map((_c, i) => groupedData.map(r => r[i]));
 
     if (visualType === 'grouped_column') {
@@ -230,7 +247,7 @@ function ChartFactory({
          *  default: false
          */
         const [func] = statAggregate.split(':');
-        const statUnique = unique || !isSelectFunc(func);
+        const statUnique = unique !== undefined ? unique : !isSelectFunc(func);
 
         const dataStat = aggregateData(statAggregate, data, statUnique);
         const dataStatY = format(dataStat[0].y);
