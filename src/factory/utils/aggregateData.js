@@ -24,6 +24,9 @@ const computeData = (func, data) =>
       data[0];
 
 function aggregate(option, data, unique = true) {
+  if (!option) {
+    return data;
+  }
   const [func, unit] = option.split(':');
   if (!selectFunc[func] && !aggregateFunc[func]) {
     return data;
