@@ -4,10 +4,8 @@ import PropTypes from 'prop-types';
 import {
   Helpers,
   VictoryAxis,
-  VictoryGroup,
   VictoryLegend,
   VictoryLine,
-  VictoryScatter,
   VictoryVoronoiContainer
 } from 'victory';
 
@@ -39,25 +37,25 @@ function LineChart({
   height: suggestedHeight,
   padding: suggestedPadding,
   parts,
+  style,
   theme,
   width: suggestedWidth,
   ...props
 }) {
-  const { line: chart, group: groupChart } = theme;
-  if (!data || !groupChart) {
+  const { line: chart } = theme;
+  if (!data || !chart) {
     return null;
   }
   const height = suggestedHeight || chart.height;
   const width = suggestedWidth || chart.width;
-  const { colorScale } = groupChart;
 
   const groupData = data.length > 1 && Array.isArray(data[0]) ? data : [data];
 
   const axisProps = (parts && toChartAxisProps(parts.axis)) || {};
   const containerProps = parts && parts.container;
-  const groupProps = parts && parts.group ? [].concat(parts.group) : [];
-  const scatterProps = parts && parts.scatter ? [].concat(parts.scatter) : [];
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
+  const { colorScale } = chart;
+  const { data: dataStyle, ...otherStyles } = style || {};
   const originalPadding = Helpers.getPadding({
     padding: suggestedPadding || chart.padding
   });
@@ -84,39 +82,42 @@ function LineChart({
   return (
     <Chart
       containerComponent={
-        <VictoryVoronoiContainer mouseFollowTooltips {...containerProps} />
+        <VictoryVoronoiContainer
+          labelComponent={<Tooltip {...tooltipProps} />}
+          mouseFollowTooltips
+          {...containerProps}
+        />
       }
       theme={theme}
       {...chartProps}
     >
-      {/* We only need this outer group for colorScale of charts */}
-      <VictoryGroup>
-        {groupData.map((gd, i) => (
-          <VictoryGroup
-            key={JSON.stringify(gd)}
-            labelComponent={
-              <Tooltip
-                {...tooltipProps}
-                style={{ ...tooltipProps.style, fill: colorScale[i] }}
-              />
-            }
-            /* groupProps can override the above props */
-            {...groupProps[i % groupProps.length]}
-            data={gd}
-          >
-            <VictoryLine {...props} />
-            <VictoryScatter {...scatterProps[i % scatterProps.length]} />
-          </VictoryGroup>
-        ))}
-      </VictoryGroup>
-
       <VictoryAxis {...axisProps.independent} />
-      <VictoryAxis dependentAxis {...axisProps.dependent} />
+      <VictoryAxis dependentAxis orientation="right" {...axisProps.dependent} />
+
+      {groupData.map((gd, i) => (
+        <VictoryLine
+          color={colorScale[i % colorScale.length]}
+          data={gd}
+          key={JSON.stringify(gd)}
+          style={{
+            data: {
+              ...{ stroke: colorScale[i % colorScale.length] },
+              ...dataStyle
+            },
+            ...otherStyles
+          }}
+          {...props}
+        />
+      ))}
       {legend && (
         <VictoryLegend
           standalone={false}
           labelComponent={
-            <LegendLabel colorScale={colorScale} width={legend.labelWidth} />
+            <LegendLabel
+              colorScale={colorScale}
+              theme={theme}
+              width={legend.labelWidth}
+            />
           }
           {...legend}
         />
@@ -135,15 +136,13 @@ LineChart.propTypes = {
     group: PropTypes.shape({}),
     legend: PropTypes.shape({}),
     parent: PropTypes.shape({}),
-    scatter: PropTypes.oneOfType([
-      PropTypes.shape({}),
-      PropTypes.arrayOf(PropTypes.shape({}))
-    ]),
     tooltip: PropTypes.shape({})
   }),
+  style: PropTypes.shape({
+    data: PropTypes.shape({})
+  }),
   theme: PropTypes.shape({
-    line: PropTypes.shape({}),
-    group: PropTypes.shape({})
+    line: PropTypes.shape({})
   }),
   width: PropTypes.number
 };
@@ -153,6 +152,7 @@ LineChart.defaultProps = {
   height: undefined,
   padding: undefined,
   parts: undefined,
+  style: undefined,
   theme: undefined,
   width: undefined
 };

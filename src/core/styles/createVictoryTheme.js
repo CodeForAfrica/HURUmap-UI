@@ -4,6 +4,7 @@ import { VictoryTheme } from 'victory';
 
 export default function createVictoryTheme(chartOptions) {
   const defaultTheme = _.merge(
+    // New props
     {
       breakpoints: {
         // Handsets: https://material.io/design/layout/responsive-layout-grid.html#breakpoints
@@ -11,21 +12,35 @@ export default function createVictoryTheme(chartOptions) {
         sm: 600
       },
       axis: {
-        labelWidth: 20,
+        labelWidth: 20
+      }
+    },
+
+    // Victory props
+    VictoryTheme.material,
+
+    // Overriding props,
+    {
+      independentAxis: {
         style: {
+          grid: {
+            display: 'none'
+          }
+        }
+      },
+      dependentAxis: {
+        orientation: 'right',
+        style: {
+          axis: {
+            display: 'none'
+          },
           axisLabel: {
             display: 'none'
           },
-          tickLabels: {
-            display: 'none'
+          grid: {
+            strokeDasharray: 'none'
           },
           ticks: {
-            display: 'none'
-          },
-          grid: {
-            display: 'none'
-          },
-          axis: {
             display: 'none'
           }
         }
@@ -37,15 +52,25 @@ export default function createVictoryTheme(chartOptions) {
         offset: 50
       },
       pie: {
-        emphasisCoefficient: 0.15,
         height: 250,
-        legendWidth: 150,
         origin: { x: 150, y: 125 },
         padding: 0,
         width: 450
+      },
+      tooltip: {
+        flyoutStyle: {
+          fill: '#fff'
+        },
+        pointerLength: 0
+      },
+      voronoi: {
+        style: {
+          flyout: {
+            fill: '#fff'
+          }
+        }
       }
-    },
-    VictoryTheme.material
+    }
   );
   const chart = _.merge(defaultTheme, chartOptions);
   const defaultReference = {
@@ -89,8 +114,9 @@ export default function createVictoryTheme(chartOptions) {
     ...chart.group,
     ...chart.comparisonBar
   };
-  // Customize chart line props
+  // Customize chart line props off of chart group props
   chart.line = {
+    colorScale: chart.group.colorScale,
     legend: {
       align: 'bottom',
       orientation: 'horizontal',
@@ -101,11 +127,15 @@ export default function createVictoryTheme(chartOptions) {
   // Customize chart pie props
   chart.pie = {
     donut: true,
+    donutHighlightIndex: 1,
+    // Default VictoryTheme.material font size is 12
+    // see: https://github.com/FormidableLabs/victory/blob/master/packages/victory-core/src/victory-theme/material.js
+    donutHighlightStyle: { fontWeight: 'bold', fontSize: 18 },
     donutRatio: 0.6,
+    emphasisCoefficient: 0.15,
     groupSpacing: 4,
     legend: {
       align: 'right',
-      labelWidth: 100,
       orientation: 'vertical',
       size: 100
     },

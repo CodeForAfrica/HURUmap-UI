@@ -6,7 +6,8 @@ import createVictoryTheme from './createVictoryTheme';
 export default function withVictoryTheme(C) {
   return ({ ...props }) => {
     const materialTheme = useTheme();
-    const theme = materialTheme ? materialTheme.chart : createVictoryTheme();
+    const theme =
+      (materialTheme && materialTheme.chart) || createVictoryTheme();
     return <C theme={theme} {...props} />;
   };
 }

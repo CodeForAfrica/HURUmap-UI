@@ -6,7 +6,9 @@ import { VictoryLabel } from 'victory';
 import propTypes from './propTypes';
 
 const getFont = (style = {}) => {
-  const { font, fontFamily, fontSize } = style;
+  const { font, fontFamily, fontSize } = Array.isArray(style)
+    ? style[0]
+    : style;
   if (font) {
     return font;
   }
@@ -18,6 +20,40 @@ const getFont = (style = {}) => {
   return undefined;
 };
 
+const wrapText = (text, width, canvas, style) => {
+  const words = text.split(/\s+/).reverse();
+  const textLines = [];
+  let word = words.pop();
+  let line = [];
+  const font = getFont(style);
+  const context = canvas.getContext('2d');
+  if (font) {
+    context.font = font;
+  }
+
+  while (word) {
+    line.push(word);
+    const textContent = line.join(' ');
+    const { width: measuredWidth } = context.measureText(textContent);
+    if (measuredWidth > width) {
+      line.pop();
+      if (line.length > 0) {
+        textLines.push(line.join(' '));
+        line = [word];
+      } else {
+        // single, long word
+        textLines.push(word);
+      }
+    }
+    word = words.pop();
+  }
+  // Any word(s) whose length was still < width
+  if (line.length > 0) {
+    textLines.push(line.join(' '));
+  }
+  return textLines;
+};
+
 /**
  * While VictoryLabel can handle array of strings, it can not handle wrapping
  * of a long string or color text based on `colorScale`.
@@ -27,73 +63,71 @@ const getFont = (style = {}) => {
 function Label({
   colorScale,
   datum,
+  highlightIndex,
+  highlightStyle,
   style: originalStyle,
   text: originalText,
   width,
   ...props
 }) {
-  const style = Array.isArray(colorScale)
-    ? {
-        // eslint-disable-next-line no-underscore-dangle
-        fill: colorScale[(datum._x - 1) % colorScale.length],
-        ...originalStyle
-      }
-    : originalStyle;
-  const [text, setText] = useState(originalText);
+  const [style, setStyle] = useState(null);
+  const [text, setText] = useState(null);
+  const [wrappedText, setWrappedText] = useState(null);
   const canvas = useMemo(() => document.createElement('canvas'), []);
   useEffect(() => {
-    const wrap = textToWrap => {
-      const words = textToWrap.split(/\s+/).reverse();
-      const textLines = [];
-      let word = words.pop();
-      let line = [];
-      const font = getFont(style);
-      if (font) {
-        canvas.getContext('2d').font = font;
-      }
-
-      while (word) {
-        line.push(word);
-        const textContent = line.join(' ');
-        const { width: measuredWidth } = canvas
-          .getContext('2d')
-          .measureText(textContent);
-        if (measuredWidth > width) {
-          line.pop();
-          if (line.length > 0) {
-            textLines.push(line.join(' '));
-            line = [word];
-          } else {
-            // single, long word
-            textLines.push(word);
-          }
-        }
-        word = words.pop();
-      }
-      // Any word(s) whose length was still < width
-      if (line.length > 0) {
-        textLines.push(line.join(' '));
-      }
-      return textLines.join('\n');
-    };
-    if (originalText && width) {
-      // Preserve any `\n` in original text string (if any)
+    if (originalText) {
       const textToWrap = Array.isArray(originalText)
         ? originalText
         : originalText.split('\n');
-      setText(textToWrap.map(wrap).join('\n'));
+      let wrapped;
+      if (width) {
+        wrapped = textToWrap.map(tW =>
+          wrapText(tW, width, canvas, originalStyle)
+        );
+      } else {
+        wrapped = textToWrap.map(tW => [tW]);
+      }
+      setWrappedText(wrapped);
     }
-  }, [canvas, originalText, style, width]);
+  }, [canvas, originalStyle, originalText, width]);
+  useEffect(() => {
+    if (wrappedText && wrappedText.length > 1) {
+      if (highlightIndex && highlightStyle) {
+        let wrappedTextStyle = [];
+        wrappedText.forEach((wT, i) => {
+          const lineStyle =
+            i === highlightIndex
+              ? { ...highlightStyle, ...originalStyle }
+              : { ...originalStyle };
+          wrappedTextStyle = wrappedTextStyle.concat(
+            Array(wT.length).fill(lineStyle)
+          );
+        });
+        setStyle(wrappedTextStyle);
+      } else {
+        setStyle(originalStyle);
+      }
+    }
+  }, [highlightIndex, highlightStyle, originalStyle, wrappedText]);
+
+  useEffect(() => {
+    if (wrappedText && wrappedText.length) {
+      setText(wrappedText.map(wT => wT.join('\n')).join('\n'));
+    }
+  }, [wrappedText]);
 
   return <VictoryLabel style={style} text={text} {...props} />;
 }
 
 Label.propTypes = {
   colorScale: propTypes.colorScale,
-  // TSeems like datum has _x variable that tracks the data index (but it
-  // starts from 1).
   datum: PropTypes.shape({ _x: PropTypes.number }),
-  style: PropTypes.shape({}),
+  highlightIndex: PropTypes.number,
+  highlightStyle: PropTypes.shape({}),
+  style: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.shape({})),
+    PropTypes.shape({})
+  ]),
   text: PropTypes.string,
   width: PropTypes.number
 };
@@ -101,6 +135,8 @@ Label.propTypes = {
 Label.defaultProps = {
   colorScale: undefined,
   datum: undefined,
+  highlightIndex: undefined,
+  highlightStyle: undefined,
   style: undefined,
   text: undefined,
   width: undefined
