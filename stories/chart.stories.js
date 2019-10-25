@@ -396,14 +396,14 @@ storiesOf('HURUmap UI|Charts/ComparisonBarChart', module)
           data={object('data', [
             {
               x: 'Ilala',
-              y: 17
+              y: 22
             },
             {
               x: 'Kinondoni',
               y: 17
             }
           ])}
-          reference={object('reference', [{ x: 'Dar es Salaam', y: 16 }])}
+          reference={object('reference', [{ x: 'Dar es Salaam', y: 28 }])}
         />
       </div>
     );

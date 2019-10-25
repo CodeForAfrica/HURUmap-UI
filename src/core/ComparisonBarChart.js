@@ -1,94 +1,85 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { VictoryBar, VictoryLabel, VictoryAxis } from 'victory';
+import { Border, VictoryLabel } from 'victory';
 
-import withVictoryTheme from './styles/withVictoryTheme';
-import Chart, { toReferenceProps } from './ReferableChart';
 import propTypes from './propTypes';
+import CustomContainer from './CustomContainer';
+import withVictoryTheme from './styles/withVictoryTheme';
+import { toReferenceProps } from './ReferableChart';
 
 function ComparisonBarChart({
   theme,
   data,
-  reference: ref,
+  height: heightProp,
   horizontal = true,
-  width,
-  height = 200,
-  ...props
+  reference: referenceProp,
+  style = {},
+  width: widthProp
 }) {
+  const { comparisonBar: chart } = theme;
+  if (!data || !chart) {
+    return null;
+  }
   const {
     data: [referenceData],
-    style: referenceStyle
-  } = toReferenceProps(ref);
-  const groupColorScale = theme.group.colorScale;
-  const barProps = {
-    ...{
-      labels: datum => datum.y,
-      labelComponent: <VictoryLabel x={50} dy={-25} />
-    },
-    ...props
-  };
+    style: referenceStyleProp
+  } = toReferenceProps(referenceProp);
+  const referenceStyle = { ...chart.referenceStyle, ...referenceStyleProp };
+  const dataStyle = { ...chart.style.data, ...style.data };
+  const { colorScale } = chart;
+
+  const height = heightProp || chart.height;
+  const width = widthProp || chart.width;
+  const values = data.map(d => d.y).concat(referenceData.y);
+  const max = Math.max.apply(null, values);
+  const dataBarWidths = data.map(d => (d.y * width) / max);
+  const referenceDataWidth = (referenceData.y * width) / max;
+
   return (
-    // The bar charts order is reversed, so the last will be at the top
-    <Chart theme={theme} horizontal={horizontal} width={width} height={height}>
-      {/* Legend */}
-      <VictoryBar
-        barWidth={5}
-        style={referenceStyle}
-        data={[referenceData]}
-        labels={({ datum }) => datum.y}
-        labelComponent={<VictoryLabel x={50} dy={-15} />}
-        {...props}
+    <CustomContainer
+      theme={theme}
+      horizontal={horizontal}
+      width={width}
+      height={height}
+    >
+      {dataBarWidths.map((barWidth, i) => (
+        <>
+          <VictoryLabel
+            capHeight={0}
+            lineHeight={0}
+            x={0}
+            y={(i + 1) * 40 - 5 + i * 10}
+            dy={0}
+            text={data[i].y}
+            style={{ fill: colorScale[i % colorScale.length], ...dataStyle }}
+          />
+          <Border
+            x={0}
+            y={(i + 1) * 40 + i * 10}
+            width={barWidth}
+            height={5}
+            style={{ fill: colorScale[i % colorScale.length] }}
+          />
+        </>
+      ))}
+      <VictoryLabel
+        capHeight={0}
+        lineHeight={0}
+        x={0}
+        y={data.length * 40 + 80}
+        dy={10}
+        text={referenceData.y}
+        style={referenceStyle.data}
       />
-      <VictoryAxis
-        style={{
-          axis: {
-            display: 'none'
-          },
-          ticks: {
-            display: 'none'
-          },
-          tickLabels: {
-            display: 'block',
-            ...(referenceStyle && referenceStyle.labels)
-          }
-        }}
-        tickFormat={x => (x === referenceData.x ? referenceData.x : '')}
-        tickLabelComponent={<VictoryLabel x={50} dy={20} textAnchor="start" />}
+      <Border
+        x={0}
+        y={data.length * 40 + 120}
+        width={referenceDataWidth}
+        height={5}
+        style={referenceStyle.labels}
       />
-      {/* Legend */}
-
-      {data[1] && (
-        <VictoryBar
-          style={{
-            data: {
-              fill: groupColorScale[1]
-            },
-            labels: {
-              fontSize: 25,
-              fill: groupColorScale[1]
-            }
-          }}
-          data={[data[1]]}
-          {...barProps}
-        />
-      )}
-
-      <VictoryBar
-        style={{
-          data: {
-            fill: groupColorScale[0]
-          },
-          labels: {
-            fontSize: 25,
-            fill: groupColorScale[0]
-          }
-        }}
-        data={[data[0]]}
-        labels={({ datum }) => datum.y}
-        {...barProps}
-      />
-    </Chart>
+    </CustomContainer>
   );
 }
 
@@ -99,6 +90,10 @@ ComparisonBarChart.propTypes = {
   height: PropTypes.number,
   horizontal: PropTypes.bool,
   reference: propTypes.reference,
+  style: PropTypes.shape({
+    data: PropTypes.shape({}),
+    labels: PropTypes.shape({})
+  }),
   theme: propTypes.theme,
   width: PropTypes.number
 };
@@ -107,6 +102,7 @@ ComparisonBarChart.defaultProps = {
   height: undefined,
   horizontal: undefined,
   reference: undefined,
+  style: undefined,
   theme: undefined,
   width: undefined
 };
