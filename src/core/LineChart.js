@@ -35,6 +35,7 @@ import propTypes from './propTypes';
 function LineChart({
   data,
   height: suggestedHeight,
+  horizontal,
   padding: suggestedPadding,
   parts,
   style,
@@ -74,6 +75,7 @@ function LineChart({
 
   const chartProps = {
     height,
+    horizontal,
     padding,
     width,
     ...(parts && parts.parent)
@@ -92,7 +94,11 @@ function LineChart({
       {...chartProps}
     >
       <VictoryAxis {...axisProps.independent} />
-      <VictoryAxis dependentAxis orientation="right" {...axisProps.dependent} />
+      <VictoryAxis
+        dependentAxis
+        orientation={horizontal ? 'bottom' : 'right'}
+        {...axisProps.dependent}
+      />
 
       {groupData.map((gd, i) => (
         <VictoryLine
@@ -129,6 +135,7 @@ function LineChart({
 LineChart.propTypes = {
   data: propTypes.groupedData,
   height: PropTypes.number,
+  horizontal: PropTypes.bool,
   padding: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
   parts: PropTypes.shape({
     axis: PropTypes.shape({}),
@@ -150,6 +157,7 @@ LineChart.propTypes = {
 LineChart.defaultProps = {
   data: undefined,
   height: undefined,
+  horizontal: undefined,
   padding: undefined,
   parts: undefined,
   style: undefined,
