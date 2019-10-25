@@ -42,6 +42,12 @@ function ComparisonBarChart({
       />
       <VictoryAxis
         style={{
+          axis: {
+            display: 'none'
+          },
+          ticks: {
+            display: 'none'
+          },
           tickLabels: {
             display: 'block',
             ...(referenceStyle && referenceStyle.labels)

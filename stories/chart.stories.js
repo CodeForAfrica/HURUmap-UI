@@ -37,9 +37,10 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           height={height}
           data={data.map((_, index) => {
             const y = rand();
+            const x = `${index}-${index} Employment Status`;
             return {
-              tooltip: `${index}-${index} Employment Status`,
-              x: `${index}-${index} Employment Status`,
+              tooltip: `${x}: Tooltip`,
+              x,
               y
             };
           })}
@@ -48,39 +49,9 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           domainPadding={object('domainPadding', { x: 20 })}
           parts={{
             axis: {
-              independent: {
-                style: {
-                  axis: {
-                    display: 'block'
-                  },
-                  grid: {
-                    display: 'block'
-                  },
-                  ticks: {
-                    display: 'block'
-                  },
-                  tickLabels: {
-                    display: 'block'
-                  }
-                }
-              },
               dependent: {
                 tickValues: [10, 50, 90],
-                tickFormat: ['10%', '50%', '90%'],
-                style: {
-                  axis: {
-                    display: 'block'
-                  },
-                  grid: {
-                    display: 'block'
-                  },
-                  ticks: {
-                    display: 'block'
-                  },
-                  tickLabels: {
-                    display: 'block'
-                  }
-                }
+                tickFormat: ['10%', '50%', '90%']
               }
             }
           }}
@@ -93,12 +64,17 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
     const dataCount = Array(number('data', 3)).fill(null);
     const horizontal = boolean('horizontal', false);
     const offset = number('offset', 12);
-    const data = dataCount.map(() =>
-      groups.map((_g, groupIndex) => ({
-        // Starting with 0 seems to trigger domainPadding coercion. See the comment below.
-        x: `Group ${groupIndex + 1} TickLabel`,
-        y: rand()
-      }))
+    const data = dataCount.map((_d, dataIndex) =>
+      groups.map((_g, groupIndex) => {
+        const x = `Group ${groupIndex + 1} TickLabel`;
+        const y = rand();
+        return {
+          // Starting with 0 seems to trigger domainPadding coercion. See the comment below.
+          tooltip: `Bar ${dataIndex + 1}: ${y}\n${x}`,
+          x,
+          y
+        };
+      })
     );
     // Include bottom legend
     const height = number('height', 400) || 350;
@@ -127,37 +103,6 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
           parts={{
             parent: {
               padding: { top: 50, left: 50, bottom: 50, right: 50 }
-            },
-            axis: {
-              independent: {
-                style: {
-                  axis: {
-                    display: 'block'
-                  },
-                  grid: {
-                    display: 'block'
-                  },
-                  ticks: {
-                    display: 'block'
-                  },
-                  tickLabels: {
-                    display: 'block'
-                  }
-                }
-              },
-              dependent: {
-                style: {
-                  axis: {
-                    display: 'block'
-                  },
-                  grid: {
-                    display: 'block'
-                  },
-                  tickLabels: {
-                    display: 'block'
-                  }
-                }
-              }
             },
             legend: {
               data: data.map((d, i) => ({
@@ -225,17 +170,8 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
           { x: 7, y: 5 }
         ])}
         parts={{
-          group: {
-            labels: ({ datum }) => `y: ${datum.y}`
-          },
-          axis: {
-            style: {
-              axis: { display: 'block' },
-              axisLabel: { display: 'block' },
-              grid: { display: 'block' },
-              tickLabels: { display: 'block' },
-              ticks: { display: 'block' }
-            }
+          container: {
+            labels: ({ datum }) => `y: ${datum.x}`
           },
           scatter: { size: 5 }
         }}
@@ -266,21 +202,8 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
           ]
         ])}
         parts={{
-          axis: {
-            independent: {
-              style: {
-                axis: { display: 'block' },
-                axisLabel: { display: 'block' },
-                grid: { display: 'block' },
-                tickLabels: { display: 'block' },
-                ticks: { display: 'block' }
-              }
-            }
-          },
-          group: {
-            // Line chart combines line and scatter hence best to define
-            // labels at group level
-            labels: ({ datum }) => `${datum.x}\n${datum.geo} ${datum.y}`
+          container: {
+            labels: ({ datum }) => `${datum.geo}: ${datum.y}`
           },
           legend: {
             data: [
@@ -317,123 +240,113 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
 storiesOf('HURUmap UI|Charts/PieChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
-  .add('Default', () => (
-    <div>
-      <PieChart
-        donut={boolean('donut', true)}
-        donutLabelKey={object('donutLabelKey', { dataIndex: 0 })}
-        data={object('data', [
-          { x: 'Female', y: 22, label: 'Female\n22%' },
-          { x: 'Male', y: 78, label: 'Male\n78%' }
-        ])}
-        width={number('width', 500)}
-        height={number('height', 500)}
-        padding={number('padding', 0)}
-        origin={object('origin', { x: 200, y: 200 })}
-        parts={{
-          tooltip: {
-            style: {
-              fontSize: 28
-            }
-          },
-          legend: {
-            align: select(
-              'Legend align',
-              ['top', 'right', 'bottom', 'left'],
-              'right'
-            ),
-            data: object('Legend data', [
-              {
-                name: 'A very, very, very, very long legend name',
-                label: 'Female: 22%'
-              },
-              {
-                name: 'Short one',
-                label: 'Long tooltip label should appear above chart: 78%'
-              }
-            ]),
-            gutter: number('Legend column spacing', 10),
-            orientation: select(
-              'Legend orientation',
-              ['horizontal', 'vertical'],
-              'vertical'
-            ),
-            rowGutter: number('Legend row spacing', 20),
-            size: number('Legend size', 100),
-            style: {
-              labels: object('Legend style', {
-                fontSize: 15
-              })
+  .add('Default', () => {
+    const height = number('height', undefined) || 350;
+    const width = number('width', undefined) || 350;
+    const legendWidth = number('Legend width', 100);
+    return (
+      <div style={{ height, width }}>
+        <PieChart
+          donut={boolean('donut', true)}
+          donutLabelKey={object('donutLabelKey', { dataIndex: 0 })}
+          data={object('data', [
+            { x: 'Female', y: 22, label: 'Female\n22%' },
+            { x: 'Male', y: 78, label: 'Male\n78%' }
+          ])}
+          width={width}
+          height={height}
+          parts={{
+            tooltip: {
+              style: object('Tooltip style', undefined)
             },
-            labelWidth: number('Legend label width', 100)
-          }
-        }}
-        responsive={boolean('responsive', true)}
-        standalone={boolean('standalone', true)}
-        style={{
-          labels: {
-            fill: 'black',
-            fontSize: '18',
-            fontWeight: 'bold'
-          }
-        }}
-      />
-    </div>
-  ))
-  .add('Comparison', () => (
-    <div>
-      <PieChart
-        donut={boolean('donut', true)}
-        donutLabelKey={object('donutLabelKey', { dataIndex: 0 })}
-        groupSpacing={number('groupSpacing', 4)}
-        data={object('data', [
-          [
-            { x: 'A', y: 6, label: 'A\n \nDar es Salaam 1' },
-            { x: 'B', y: 1, label: 'B\n \nDar es Salaam 2' },
-            { x: 'C', y: 3, label: 'C\n \nDar es Salaam 3' },
-            { x: 'D', y: 1, label: 'D\n \nDar es Salaam 1' },
-            { x: 'E', y: 12, label: 'E\n \nDar es Salaam 2' }
-          ],
-          [
-            { x: 'A', y: 3, label: 'A\n \nKagera 2' },
-            { x: 'B', y: 1, label: 'B\n \nKagera 1' },
-            { x: 'C', y: 2, label: 'C\n \nKagera 1' },
-            { x: 'D', y: 2, label: 'D\n \nKagera 1' },
-            { x: 'E', y: 5, label: 'E\n \nKagera 5' }
-          ]
-        ])}
-        parts={{
-          legend: {
-            data: [
-              {
-                name: 'A',
-                label: 'A\n \nDar es Salaam 6\n \nKagera 3'
-              },
-              {
-                name: 'B',
-                label: 'B\n \nDar es Salaam 1\n \nKagera 1'
-              },
-              {
-                name: 'C',
-                label: 'C\n \nDar es Salaam 3\n \nKagera 2'
-              },
-              {
-                name: 'D',
-                label: 'D\n \nDar es Salaam 1\n \nKagera 2'
-              },
-              {
-                name: 'E',
-                label: 'E\n \nDar es Salaam 12\n \nKagera 5'
+            legend: {
+              data: [
+                {
+                  name: 'F',
+                  label: 'Female rate: 22%'
+                },
+                {
+                  name: 'M',
+                  label: 'Male: 78%'
+                }
+              ],
+              rowGutter: number('Legend row spacing', 20),
+              style: {
+                labels: object('Legend style', undefined)
               }
+            }
+          }}
+          legendWidth={legendWidth}
+          responsive={boolean('responsive', true)}
+          standalone={boolean('standalone', true)}
+        />
+      </div>
+    );
+  })
+  .add('Comparison', () => {
+    const height = number('height', undefined) || 350;
+    const width = number('width', undefined) || 350;
+
+    return (
+      <div style={{ height, width }}>
+        <PieChart
+          data={object('data', [
+            [
+              { x: 'A', y: 6, label: 'A\nDar es Salaam 1' },
+              { x: 'B', y: 1, label: 'B\nDar es Salaam 2' },
+              { x: 'C', y: 3, label: 'C\nDar es Salaam 3' },
+              { x: 'D', y: 1, label: 'D\nDar es Salaam 1' },
+              { x: 'E', y: 12, label: 'E\nDar es Salaam 2' }
+            ],
+            [
+              { x: 'A', y: 3, label: 'A\nKagera 2' },
+              { x: 'B', y: 1, label: 'B\nKagera 1' },
+              { x: 'C', y: 2, label: 'C\nKagera 1' },
+              { x: 'D', y: 2, label: 'D\nKagera 1' },
+              { x: 'E', y: 5, label: 'E\nKagera 5' }
             ]
-          }
-        }}
-        width={number('width', 500)}
-        height={number('height', 500)}
-        padding={number('padding', 0)}
-      />
-    </div>
-  ));
+          ])}
+          donut={boolean('donut', true)}
+          donutLabelKey={object('donutLabelKey', { dataIndex: 0 })}
+          groupSpacing={number('groupSpacing', 4)}
+          height={height}
+          parts={{
+            legend: {
+              align: select(
+                'Legend align',
+                ['top', 'right', 'bottom', 'left'],
+                'right'
+              ),
+              data: object('Legend data', [
+                {
+                  name: 'Name for data A',
+                  label: 'Description/summary for data A'
+                },
+                {
+                  name: 'Name for data B',
+                  label: 'Description/summary for data B'
+                }
+              ]),
+              gutter: number('Legend column spacing', 10),
+              orientation: select(
+                'Legend orientation',
+                ['horizontal', 'vertical'],
+                'vertical'
+              ),
+              rowGutter: number('Legend row spacing', 20),
+              size: number('Legend size', 100),
+              style: {
+                labels: object('Legend style', undefined)
+              }
+            }
+          }}
+          responsive={boolean('responsive', true)}
+          standalone={boolean('standalone', true)}
+          width={width}
+        />
+      </div>
+    );
+  });
 
 const formatter = new Intl.NumberFormat('en-GB');
 

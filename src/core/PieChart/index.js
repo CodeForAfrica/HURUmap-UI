@@ -120,19 +120,20 @@ function PieChart({
 
   // Label & tooltip
   const donutLabelData = data2 ? data[donutLabelKey.dataIndex] : data1;
-  const { style: suggestedHeightStyle } = props;
+  const { style: suggestedStyle } = props;
   const donutLabelStyle = {
     textAnchor: 'middle',
-    ...(suggestedHeightStyle && suggestedHeightStyle.labels)
+    ...(suggestedStyle && suggestedStyle.labels)
   };
 
   const tooltipProps = {
     style: { textAnchor: donut ? 'middle' : 'start' },
+    theme,
     ...(parts && parts.tooltip)
   };
   const tooltipStyle = {
     ...donutLabelStyle,
-    ...tooltipProps.style.labels
+    ...(tooltipProps.style && tooltipProps.style.labels)
   };
   const Tooltip = isComparisonMode ? VictoryTooltip : SharedEventTooltip;
   // We define tooltip for donut label component here than using a separate
@@ -144,19 +145,19 @@ function PieChart({
       colorScale={colorScale}
       cornerRadius={chartInnerRadius}
       flyoutStyle={{ fill: 'white', stroke: 'none' }}
-      height={chartInnerRadius * 2}
+      flyoutHeight={chartInnerRadius * 2}
       labelComponent={
         <Label
           colorScale={colorScale}
+          highlightIndex={chart.donutHighlightIndex}
+          highlightStyle={chart.donutHighlightStyle}
           style={tooltipStyle}
           width={chartInnerRadius * 2}
-          renderInPortal={false}
         />
       }
       orientation="top"
       pointerLength={0}
-      renderInPortal={false}
-      width={chartInnerRadius * 2}
+      flyoutWidth={chartInnerRadius * 2}
       x={origin.x}
       y={origin.y + chartInnerRadius}
     />
@@ -205,7 +206,7 @@ function PieChart({
       <SharedEvents
         childName={['pie1', 'pie2', 'legend']}
         donut={donut}
-        emphasisCoefficient={0.3}
+        emphasisCoefficient={chart.emphasisCoefficient}
       >
         <g
           role="presentation"
@@ -215,6 +216,8 @@ function PieChart({
             <DonutLabel
               data={donutLabelData}
               colorScale={colorScale}
+              highlightIndex={chart.donutHighlightIndex}
+              highlightStyle={chart.donutHighlightStyle}
               sortKey={donutLabelKey.sortKey}
               style={donutLabelStyle}
               text={data1[0].label}
@@ -269,7 +272,11 @@ function PieChart({
         {legend && (
           <VictoryLegend
             labelComponent={
-              <LegendLabel colorScale={colorScale} width={legend.labelWidth} />
+              <LegendLabel
+                colorScale={colorScale}
+                theme={theme}
+                width={legend.width}
+              />
             }
             name="legend"
             standalone={false}

@@ -30,6 +30,9 @@ export function getLegendProps(
       case 'right': // fall-through
         chartWidth -= size;
         legendWidth = size;
+        // center the chart vertically
+        padding.top += size / 2;
+        legendY += size / 2;
         if (align === 'left') {
           padding.left += size;
         } else {
