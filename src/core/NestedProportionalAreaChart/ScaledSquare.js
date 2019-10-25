@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Rect } from 'victory';
+import { Border, Selection, VictoryTooltip } from 'victory';
 
 import { MOBILE_WIDTH } from './ScaledArea';
 import VerticalLegend from './VerticalLegend';
@@ -24,12 +24,19 @@ function ScaledSquare({
     data: [referenceData],
     style: referenceStyle
   } = reference;
+  const [status, setStatus] = useState({});
+  const statusTooltip = <VictoryTooltip constrainToVisibleArea {...status} />;
+
+  const activateTooltip = (evt, text) => {
+    const { x: tipX, y: tipY } = Selection.getSVGEventCoordinates(evt);
+    setStatus({ active: true, text, x: tipX, y: tipY });
+  };
 
   // NOTE: Nested square must be sorted to ensure they're all visible
   // but we need to remember original position to ensure right color is used.
   return (
     <>
-      <Rect
+      <Border
         {...props}
         key={referenceData.x}
         height={size}
@@ -46,9 +53,17 @@ function ScaledSquare({
             d.value.x !== referenceData.x
               ? (Math.sqrt(d.value.x) * size) / Math.sqrt(referenceData.x)
               : size;
+
           return (
-            <Rect
+            <Border
               {...props}
+              events={{
+                onMouseOver: evt =>
+                  activateTooltip(evt, `${d.value.y}: ${d.value.x}`),
+                onMouseMove: evt =>
+                  activateTooltip(evt, `${d.value.y}: ${d.value.x}`),
+                onMouseOut: () => setStatus({ active: false })
+              }}
               key={scaledSide}
               height={scaledSide}
               style={{ fill: colorScale[d.index % colorScale.length] }}
@@ -65,6 +80,7 @@ function ScaledSquare({
         style={style}
         formatNumberForLabel={formatNumberForLabel}
       />
+      {statusTooltip}
     </>
   );
 }

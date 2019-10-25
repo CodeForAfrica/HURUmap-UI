@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import propTypes from '../propTypes';
 import { scaleDesktopDimensions, scaleMobileDimensions } from './ScaledArea';
 import { toReferenceProps } from '../ReferableChart';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
 import ScaledCircle from './ScaledCircle';
 import ScaledSquare from './ScaledSquare';
-import propTypes from '../propTypes';
 
 /**
  * Data value represents **area**. We need to find length/radius in order to

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import propTypes from '../propTypes';
 import {
   DESKTOP_HEIGHT,
   DESKTOP_WIDTH,
@@ -9,8 +10,8 @@ import {
 } from './ScaledArea';
 import HorizontalLegend from './HorizontalLegend';
 import PieChart from '../PieChart';
+import Tooltip from '../Tooltip';
 import VerticalLegend from './VerticalLegend';
-import propTypes from '../propTypes';
 
 /**
  *
@@ -60,12 +61,16 @@ function ScaledCircle({
         colorScale={colorScale}
         height={height}
         data={radii.map(v => [v])}
-        donut={false}
         origin={{ x: cx, y: cy }}
         radii={radii}
         standalone={false}
         width={width}
         {...props}
+        donut={false}
+        labelComponent={<Tooltip />}
+        labels={data.map(
+          d => `${d.y}: ${d.x}\n${referenceData.y}: ${referenceData.x}`
+        )}
       />
       {mobile ? (
         <VerticalLegend

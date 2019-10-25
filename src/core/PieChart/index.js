@@ -163,8 +163,9 @@ function PieChart({
     />
   ) : (
     <Tooltip
-      constrainToVisibleArea
+      // constrainToVisibleArea
       {...tooltipProps}
+      flyoutStyle={{ fill: 'white', stroke: 'none' }}
       labelComponent={<Label colorScale={colorScale} />}
       orientation={data2 && data2.length > 0 ? 'left' : undefined}
       renderInPortal={false}
@@ -174,7 +175,9 @@ function PieChart({
   if (data2 && data2.length > 0 && !donut) {
     labelComponent2 = (
       <Tooltip
+        // constrainToVisibleArea
         {...tooltipProps}
+        flyoutStyle={{ fill: 'white', stroke: 'none' }}
         labelComponent={<Label colorScale={colorScale} />}
         orientation="right"
         renderInPortal={false}

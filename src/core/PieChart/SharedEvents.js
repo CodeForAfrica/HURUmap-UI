@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { darken } from '@material-ui/core/styles/colorManipulator';
 
-import { VictorySharedEvents } from 'victory';
+import { Selection, VictorySharedEvents } from 'victory';
 
 const activateData = (childName, emphasisCoefficient) => {
   return {
@@ -21,11 +21,13 @@ const activateData = (childName, emphasisCoefficient) => {
 
 // By not specifying the childName, the event will only affect the component
 // that triggered the event: https://formidable.com/open-source/victory/guides/events#single-component-events
-const activateLabels = (donut, childName) => {
+const activateLabels = (evt, donut, childName) => {
+  const { x, y } = !donut ? Selection.getSVGEventCoordinates(evt) : {};
+
   return {
     childName: donut ? childName : undefined,
     target: 'labels',
-    mutation: () => ({ active: true })
+    mutation: () => ({ x, y, active: true })
   };
 };
 
@@ -44,10 +46,16 @@ function SharedEvents({ childName, children, donut, emphasisCoefficient }) {
         {
           childName,
           eventHandlers: {
-            onMouseOver: () => {
+            onMouseOver: evt => {
               return [
                 activateData(childName, emphasisCoefficient),
-                activateLabels(donut, childName)
+                activateLabels(evt, donut, childName)
+              ];
+            },
+            onMouseMove: evt => {
+              return [
+                // activateData(childName, emphasisCoefficient),
+                activateLabels(evt, donut, childName)
               ];
             },
             onMouseOut: () => {

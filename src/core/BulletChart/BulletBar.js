@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Rect, VictoryLabel } from 'victory';
+import { Border, Rect, Selection, VictoryLabel, VictoryTooltip } from 'victory';
 import propTypes from '../propTypes';
 
 function BulletBar({
@@ -16,8 +16,31 @@ function BulletBar({
   y
 }) {
   const featuredMeasure = (width * data[0].x) / total;
+  const [featureMeasureStatus, setFeatureMeasureStatus] = useState({});
+  const featureMeasureTooltip = (
+    <VictoryTooltip
+      pointerLength={0}
+      flyoutStyle={{ fill: '#fff' }}
+      constrainToVisibleArea
+      {...featureMeasureStatus}
+      text={labels(data[0])}
+    />
+  );
   const [, qualitativeMeasure] = data;
+  const [qualitativeMeasureStatus, setQualitativeMeasureStatus] = useState({});
+  const qualitativeMeasureTooltip = qualitativeMeasure && (
+    <VictoryTooltip
+      pointerLength={0}
+      constrainToVisibleArea
+      {...qualitativeMeasureStatus}
+      text={labels(qualitativeMeasure)}
+    />
+  );
   const comparativeMeasure = (width * reference.data[0].x) / total;
+  const activateStatus = (setStatus, evt) => {
+    const { x: tipX, y: tipY } = Selection.getSVGEventCoordinates(evt);
+    setStatus({ active: true, x: tipX, y: tipY });
+  };
 
   return (
     <>
@@ -33,13 +56,19 @@ function BulletBar({
           style={style.labels}
         />
       )}
-      <Rect
+      <Border
+        events={{
+          onMouseOver: evt => activateStatus(setQualitativeMeasureStatus, evt),
+          onMouseMove: evt => activateStatus(setQualitativeMeasureStatus, evt),
+          onMouseOut: () => setQualitativeMeasureStatus({ active: false })
+        }}
         x={x}
         y={y - barWidth}
         width={width}
         height={barWidth}
         style={style.labels}
       />
+      {qualitativeMeasureTooltip}
       {/* Feature measure */}
       <VictoryLabel
         capHeight={0}
@@ -49,13 +78,19 @@ function BulletBar({
         text={labels(data[0])}
         style={style.data}
       />
-      <Rect
+      <Border
+        events={{
+          onMouseOver: evt => activateStatus(setFeatureMeasureStatus, evt),
+          onMouseMove: evt => activateStatus(setFeatureMeasureStatus, evt),
+          onMouseOut: () => setFeatureMeasureStatus({ active: false })
+        }}
         x={x}
         y={y - barWidth}
         width={featuredMeasure}
         height={barWidth}
         style={style.data}
       />
+      {featureMeasureTooltip}
       {/* Comparative measure */}
       <Rect
         x={x + comparativeMeasure}
