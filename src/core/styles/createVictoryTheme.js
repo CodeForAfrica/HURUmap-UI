@@ -110,7 +110,11 @@ export default function createVictoryTheme(chartOptions) {
   };
   // Customize chart comparisonBar props off of chart group props
   chart.comparisonBar = {
-    referenceStyle: { ...defaultReference, data: { fill: '#9b9b9b' } },
+    barHeight: 5,
+    referenceStyle: {
+      labels: { fill: '#9b9b9b' },
+      data: { fill: '#9b9b9b', fontWeight: 'bold' }
+    },
     ...chart.group,
     style: {
       data: {
