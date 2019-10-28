@@ -93,14 +93,7 @@ function ScaledSquare({
 
 ScaledSquare.propTypes = {
   formatNumberForLabel: PropTypes.func,
-  colorScale: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        x: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-      })
-    )
-  ]),
+  colorScale: propTypes.colorScale,
   data: propTypes.data,
   reference: propTypes.reference,
   style: PropTypes.shape({
