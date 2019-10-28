@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Border, VictoryLabel } from 'victory';
+import { Border, Selection, VictoryLabel, VictoryTooltip } from 'victory';
 
 import propTypes from './propTypes';
 import { toReferenceProps } from './ReferableChart';
@@ -18,6 +18,7 @@ function ComparisonBarChart({
   theme,
   width: widthProp
 }) {
+  const [tooltipProps, setTooltipProps] = useState({});
   const { comparisonBar: chart } = theme;
   if (!data || !chart) {
     return null;
@@ -38,6 +39,16 @@ function ComparisonBarChart({
   const referenceDataBarWidth = (referenceData.y * width) / max;
   const barHeight = barHeightProp || chart.barHeight;
 
+  const tooltip = (
+    <VictoryTooltip constrainToVisibleArea {...tooltipProps} theme={theme} />
+  );
+  const activateTooltip = (evt, newTooltipProps) => {
+    if (newTooltipProps && newTooltipProps.text) {
+      const { x: tipX, y: tipY } = Selection.getSVGEventCoordinates(evt);
+      setTooltipProps({ active: true, ...newTooltipProps, x: tipX, y: tipY });
+    }
+  };
+
   return (
     <CustomContainer
       theme={theme}
@@ -57,6 +68,13 @@ function ComparisonBarChart({
             y={(i + 1) * 40 + i * 10 - barHeight}
           />
           <Border
+            events={{
+              onMouseOver: evt =>
+                activateTooltip(evt, { text: `${data[i].x}: ${data[i].y}` }),
+              onMouseMove: evt =>
+                activateTooltip(evt, { text: `${data[i].x}: ${data[i].y}` }),
+              onMouseOut: () => setTooltipProps({ active: false })
+            }}
             height={barHeight}
             style={{ fill: colorScale[i % colorScale.length] }}
             x={0}
@@ -75,6 +93,17 @@ function ComparisonBarChart({
         y={data.length * 40 + (data.length - 1) * 10 - 2 * barHeight + 70}
       />
       <Border
+        events={{
+          onMouseOver: evt =>
+            activateTooltip(evt, {
+              text: `${referenceData.x}: ${referenceData.y}`
+            }),
+          onMouseMove: evt =>
+            activateTooltip(evt, {
+              text: `${referenceData.x}: ${referenceData.y}`
+            }),
+          onMouseOut: () => setTooltipProps({ active: false })
+        }}
         height={barHeight}
         style={referenceStyle.labels}
         width={referenceDataBarWidth}
@@ -90,6 +119,7 @@ function ComparisonBarChart({
         x={0}
         y={data.length * 40 + (data.length - 1) * 10 + 3 * barHeight + 70}
       />
+      {tooltip}
     </CustomContainer>
   );
 }
