@@ -47,7 +47,6 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
       })}
       onClickGeoLayer={action('onClickGeoLayer')}
     />
-
   ))
   .add('CountryRoot', () =>
     React.createElement(() => {
