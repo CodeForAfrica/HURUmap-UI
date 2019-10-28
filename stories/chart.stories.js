@@ -39,7 +39,7 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
             const y = rand();
             const x = `${index}-${index} Employment Status`;
             return {
-              tooltip: `${x}: Tooltip`,
+              tooltip: `${x}: ${y}`,
               x,
               y
             };
@@ -125,34 +125,60 @@ storiesOf('HURUmap UI|Charts/Bullet Chart', module)
   .add('Default', () => (
     <div>
       <BulletChart
-        width={number('width', 350)}
-        height={number('height', 100)}
         data={object('data', [
           { x: 49, label: 'Male' },
           { x: 51, label: 'Female' }
         ])}
-        total={100}
-        labels={d => `${d.x}% ${d.label}`}
+        height={number('height', 100)}
+        labels={d => (d.label && `${d.label}: ${d.x}%`) || ''}
         reference={object('reference', [{ x: 51, label: '' }])}
+        total={100}
+        width={number('width', 350)}
       />
     </div>
   ))
   .add('Comparison', () => (
     <div>
       <BulletChart
-        width={number('width', 350)}
         height={number('height', 100)}
-        offset={object('offset', { x: 25, y: 50 })}
         data={object('data', [
+          // When no qualitative measure is given, total would be assumed.
+          // Below data is equivalent to:
+          // [{ x: 12.7, label: 'Living in urban areas' }, { x: 100 }],
+          // [{ x: 9.3, label: 'Living in rural areas' }, { x: 100 }]
           [{ x: 12.7, label: 'Living in urban areas' }],
-          [{ x: 9.3, label: 'Living in urban areas' }]
+          [{ x: 9.3, label: 'Living in rural areas' }]
         ])}
+        reference={object('reference', [{ x: 51, label: '' }])}
+        labels={d => (d.label && `${d.label}: ${d.x}%`) || ''}
         total={100}
-        labels={d => `${d.x}% ${d.label}`}
-        reference={object('reference', [{ x: 51 }])}
+        width={number('width', 350)}
       />
     </div>
   ));
+
+storiesOf('HURUmap UI|Charts/ComparisonBarChart', module)
+  .addDecorator(CenterDecorator)
+  .addDecorator(withKnobs)
+  .add('Default', () => {
+    return (
+      <div>
+        <ComparisonBarChart
+          data={object('data', [
+            {
+              x: 'Ilala',
+              y: 22
+            },
+            {
+              x: 'Kinondoni',
+              y: 17
+            }
+          ])}
+          reference={object('reference', [{ x: 'Dar es Salaam', y: 28 }])}
+        />
+      </div>
+    );
+  });
 
 storiesOf('HURUmap UI|Charts/LineChart', module)
   .addDecorator(CenterDecorator)
@@ -256,9 +282,6 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
           width={width}
           height={height}
           parts={{
-            tooltip: {
-              style: object('Tooltip style', undefined)
-            },
             legend: {
               data: [
                 {
@@ -319,12 +342,24 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
               ),
               data: object('Legend data', [
                 {
-                  name: 'Name for data A',
-                  label: 'Description/summary for data A'
+                  name: 'A',
+                  label: 'Dar es Salaam: 1\nKagera: 2'
                 },
                 {
-                  name: 'Name for data B',
-                  label: 'Description/summary for data B'
+                  name: 'B',
+                  label: 'Dar es Salaam: 2\nKagera: 1'
+                },
+                {
+                  name: 'C',
+                  label: 'Dar es Salaam: 3\nKagera: 1'
+                },
+                {
+                  name: 'D',
+                  label: 'Dar es Salaam: 1\nKagera: 1'
+                },
+                {
+                  name: 'E',
+                  label: 'Dar es Salaam: 2\nKagera: 5'
                 }
               ]),
               gutter: number('Legend column spacing', 10),
@@ -385,26 +420,3 @@ storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
       />
     </div>
   ));
-
-storiesOf('HURUmap UI|Charts/ComparisonBarChart', module)
-  .addDecorator(CenterDecorator)
-  .addDecorator(withKnobs)
-  .add('Default', () => {
-    return (
-      <div>
-        <ComparisonBarChart
-          data={object('data', [
-            {
-              x: 'Ilala',
-              y: 22
-            },
-            {
-              x: 'Kinondoni',
-              y: 17
-            }
-          ])}
-          reference={object('reference', [{ x: 'Dar es Salaam', y: 28 }])}
-        />
-      </div>
-    );
-  });
