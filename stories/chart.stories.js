@@ -395,9 +395,9 @@ storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
         square={boolean('square', false)}
         height={number('height', 350)}
         width={number('width', 350)}
-        data={object('data', [{ x: 39626, y: 'City', label: 'People' }])}
+        data={object('data', [{ x: 'City', y: 39626, label: 'People' }])}
         reference={object('reference', [
-          { x: 947303, y: 'Country', label: 'Country' }
+          { x: 'Country', y: 947303, label: 'Country' }
         ])}
       />
     </div>
@@ -410,11 +410,11 @@ storiesOf('HURUmap UI|Charts/NestedProportionalAreaChart', module)
         height={number('height', 350)}
         width={number('width', 650)}
         data={object('data', [
-          { x: 76151, y: 'City 1', label: 'People' },
-          { x: 39626, y: 'City 2', label: 'People' }
+          { x: 'City 1', y: 76151, label: 'People' },
+          { x: 'City 2', y: 39626, label: 'People' }
         ])}
         reference={object('reference', [
-          { x: 947303, y: 'Country', label: 'Country' }
+          { x: 'Country', y: 947303, label: 'Country' }
         ])}
         groupSpacing={number('groupSpacing', 8)}
       />

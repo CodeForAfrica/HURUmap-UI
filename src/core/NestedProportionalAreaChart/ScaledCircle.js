@@ -37,8 +37,8 @@ function ScaledCircle({
     style: referenceStyle
   } = reference;
   const radii = data.map(d =>
-    d.x !== referenceData.x
-      ? (Math.sqrt(d.x) * size) / Math.sqrt(referenceData.x)
+    d.y !== referenceData.y
+      ? (Math.sqrt(d.y) * size) / Math.sqrt(referenceData.y)
       : size
   );
 
@@ -88,7 +88,7 @@ function ScaledCircle({
         donut={false}
         height={height}
         labels={data.map(
-          d => `${d.y}: ${d.x}\n${referenceData.y}: ${referenceData.x}`
+          d => `${d.x}: ${d.y}\n${referenceData.x}: ${referenceData.y}`
         )}
         labelComponent={<Tooltip theme={theme} />}
         origin={{ x: cx, y: cy }}

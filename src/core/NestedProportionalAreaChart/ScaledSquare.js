@@ -27,12 +27,12 @@ function ScaledSquare({
     style: referenceStyle
   } = reference;
   const referenceText =
-    referenceData && `${referenceData.y}: ${referenceData.x}`;
+    referenceData && `${referenceData.x}: ${referenceData.y}`;
   const [tooltipProps, setTooltipProps] = useState({});
   const tooltip = <VictoryTooltip theme={theme} {...tooltipProps} />;
   const activateTooltip = (evt, { data: dataProp, ...otherProps }) => {
     if (dataProp) {
-      const dataText = `${dataProp.y}: ${dataProp.x}`;
+      const dataText = `${dataProp.x}: ${dataProp.y}`;
       const text = referenceText ? `${dataText}\n${referenceText}` : dataText;
       const { x: tipX, y: tipY } = Selection.getSVGEventCoordinates(evt);
       setTooltipProps({ active: true, ...otherProps, text, x: tipX, y: tipY });
@@ -54,11 +54,11 @@ function ScaledSquare({
       />
       {data
         .map((v, i) => ({ value: v, index: i }))
-        .sort((a, b) => b.value.x - a.value.x)
+        .sort((a, b) => b.value.y - a.value.y)
         .map(d => {
           const scaledSide =
-            d.value.x !== referenceData.x
-              ? (Math.sqrt(d.value.x) * size) / Math.sqrt(referenceData.x)
+            d.value.y !== referenceData.y
+              ? (Math.sqrt(d.value.y) * size) / Math.sqrt(referenceData.y)
               : size;
 
           return (
@@ -101,16 +101,8 @@ ScaledSquare.propTypes = {
       })
     )
   ]),
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-      label: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-    })
-  ),
-  reference: PropTypes.shape({
-    data: PropTypes.arrayOf(PropTypes.shape({})),
-    style: PropTypes.arrayOf(PropTypes.shape({}))
-  }),
+  data: propTypes.data,
+  reference: propTypes.reference,
   style: PropTypes.shape({
     labels: PropTypes.shape({})
   }),

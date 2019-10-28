@@ -103,7 +103,7 @@ function NestedProportionalAreaChart({
 
 NestedProportionalAreaChart.propTypes = {
   formatNumberForLabel: PropTypes.func,
-  data: propTypes.groupedData,
+  data: propTypes.data,
   groupSpacing: PropTypes.number,
   height: PropTypes.number,
   reference: propTypes.reference,

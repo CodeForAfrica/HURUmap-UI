@@ -43,7 +43,7 @@ function VerticalLegend({
           x={x}
           dx={0}
           y={90} // 100 - 10
-          text={formatNumberForLabel(d.x)}
+          text={formatNumberForLabel(d.y)}
           style={dataLabelsStyle(i, colorScale, style)}
           dy={-i * 36}
         />
@@ -55,7 +55,7 @@ function VerticalLegend({
         lineHeight={0}
         x={x}
         y={MOBILE_HEIGHT - 25}
-        text={formatNumberForLabel(referenceData.x)}
+        text={formatNumberForLabel(referenceData.y)}
         style={referenceDataStyle(reference)}
       />
       {referenceData.label && (
