@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Border, Selection, VictoryTooltip } from 'victory';
 
+import propTypes from '../propTypes';
 import { MOBILE_WIDTH } from './ScaledArea';
 import VerticalLegend from './VerticalLegend';
 
@@ -15,6 +16,7 @@ function ScaledSquare({
   data,
   reference,
   style,
+  theme,
   ...props
 }) {
   const size = MOBILE_WIDTH;
@@ -24,12 +26,17 @@ function ScaledSquare({
     data: [referenceData],
     style: referenceStyle
   } = reference;
-  const [status, setStatus] = useState({});
-  const statusTooltip = <VictoryTooltip constrainToVisibleArea {...status} />;
-
-  const activateTooltip = (evt, text) => {
-    const { x: tipX, y: tipY } = Selection.getSVGEventCoordinates(evt);
-    setStatus({ active: true, text, x: tipX, y: tipY });
+  const referenceText =
+    referenceData && `${referenceData.y}: ${referenceData.x}`;
+  const [tooltipProps, setTooltipProps] = useState({});
+  const tooltip = <VictoryTooltip theme={theme} {...tooltipProps} />;
+  const activateTooltip = (evt, { data: dataProp, ...otherProps }) => {
+    if (dataProp) {
+      const dataText = `${dataProp.y}: ${dataProp.x}`;
+      const text = referenceText ? `${dataText}\n${referenceText}` : dataText;
+      const { x: tipX, y: tipY } = Selection.getSVGEventCoordinates(evt);
+      setTooltipProps({ active: true, ...otherProps, text, x: tipX, y: tipY });
+    }
   };
 
   // NOTE: Nested square must be sorted to ensure they're all visible
@@ -58,11 +65,9 @@ function ScaledSquare({
             <Border
               {...props}
               events={{
-                onMouseOver: evt =>
-                  activateTooltip(evt, `${d.value.y}: ${d.value.x}`),
-                onMouseMove: evt =>
-                  activateTooltip(evt, `${d.value.y}: ${d.value.x}`),
-                onMouseOut: () => setStatus({ active: false })
+                onMouseOver: evt => activateTooltip(evt, { data: d.value }),
+                onMouseMove: evt => activateTooltip(evt, { data: d.value }),
+                onMouseOut: () => setTooltipProps({ active: false })
               }}
               key={scaledSide}
               height={scaledSide}
@@ -78,9 +83,10 @@ function ScaledSquare({
         colorScale={colorScale}
         reference={reference}
         style={style}
+        theme={theme}
         formatNumberForLabel={formatNumberForLabel}
       />
-      {statusTooltip}
+      {tooltip}
     </>
   );
 }
@@ -107,7 +113,8 @@ ScaledSquare.propTypes = {
   }),
   style: PropTypes.shape({
     labels: PropTypes.shape({})
-  })
+  }),
+  theme: propTypes.theme
 };
 
 ScaledSquare.defaultProps = {
@@ -115,6 +122,7 @@ ScaledSquare.defaultProps = {
   colorScale: undefined,
   data: undefined,
   reference: undefined,
-  style: undefined
+  style: undefined,
+  theme: undefined
 };
 export default ScaledSquare;

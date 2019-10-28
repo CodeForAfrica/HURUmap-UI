@@ -24,6 +24,7 @@ function ScaledCircle({
   mobile,
   reference,
   style,
+  theme,
   ...props
 }) {
   const cx = mobile ? MOBILE_WIDTH / 2 : DESKTOP_WIDTH / 2;
@@ -47,51 +48,55 @@ function ScaledCircle({
   return (
     <>
       <PieChart
+        {...props}
         data={backgroundData}
         donut={false}
         height={height}
         origin={{ x: cx, y: cy }}
         radius={size}
         standalone={false}
-        width={width}
-        {...props}
         style={referenceStyle}
-      />
-      <PieChart
-        colorScale={colorScale}
-        height={height}
-        data={radii.map(v => [v])}
-        origin={{ x: cx, y: cy }}
-        radii={radii}
-        standalone={false}
+        theme={theme}
         width={width}
-        {...props}
-        donut={false}
-        labelComponent={<Tooltip />}
-        labels={data.map(
-          d => `${d.y}: ${d.x}\n${referenceData.y}: ${referenceData.x}`
-        )}
       />
       {mobile ? (
         <VerticalLegend
-          data={data}
           colorScale={colorScale}
+          data={data}
+          formatNumberForLabel={formatNumberForLabel}
           reference={reference}
           style={style}
-          formatNumberForLabel={formatNumberForLabel}
+          theme={theme}
         />
       ) : (
         <HorizontalLegend
-          data={data}
-          radii={radii}
           colorScale={colorScale}
-          style={style}
-          reference={reference}
           cx={cx}
           cy={cy}
+          data={data}
           formatNumberForLabel={formatNumberForLabel}
+          radii={radii}
+          reference={reference}
+          style={style}
+          theme={theme}
         />
       )}
+      <PieChart
+        {...props}
+        colorScale={colorScale}
+        data={radii.map(v => [v])}
+        donut={false}
+        height={height}
+        labels={data.map(
+          d => `${d.y}: ${d.x}\n${referenceData.y}: ${referenceData.x}`
+        )}
+        labelComponent={<Tooltip theme={theme} />}
+        origin={{ x: cx, y: cy }}
+        radii={radii}
+        standalone={false}
+        theme={theme}
+        width={width}
+      />
     </>
   );
 }
@@ -105,7 +110,8 @@ ScaledCircle.propTypes = {
   reference: propTypes.reference,
   style: PropTypes.shape({
     labels: PropTypes.shape({})
-  })
+  }),
+  theme: propTypes.theme
 };
 
 ScaledCircle.defaultProps = {
@@ -114,7 +120,8 @@ ScaledCircle.defaultProps = {
   data: undefined,
   mobile: false,
   reference: undefined,
-  style: undefined
+  style: undefined,
+  theme: undefined
 };
 
 export default ScaledCircle;
