@@ -59,7 +59,7 @@ function BulletChart({
   };
 
   return (
-    <CustomContainer width={width} height={height}>
+    <CustomContainer height={height} theme={theme} width={width}>
       {/* We're plotting from bottom up so start with last item */}
       {computedData.reverse().map((d, i) => (
         <g key={JSON.stringify(d)}>
@@ -70,8 +70,14 @@ function BulletChart({
             reference={reference}
             style={{
               ...computedStyle,
-              data: { fill: chart.colorScale[i % chart.colorScale.length] }
+              data: {
+                fill:
+                  chart.colorScale[
+                    (computedData.length - i - 1) % chart.colorScale.length
+                  ]
+              }
             }}
+            theme={theme}
             total={total}
             width={
               isDirectionColumn
