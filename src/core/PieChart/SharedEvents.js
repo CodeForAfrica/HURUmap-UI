@@ -5,13 +5,17 @@ import { darken } from '@material-ui/core/styles/colorManipulator';
 
 import { Selection, VictorySharedEvents } from 'victory';
 
-const activateData = (childName, emphasisCoefficient) => {
+const activateData = (evt, donut, childName, emphasisCoefficient) => {
   return {
     childName,
     target: 'data',
     mutation: p => {
-      const fill =
-        p.style && p.style.fill && darken(p.style.fill, emphasisCoefficient);
+      const style = (p && p.style) || {};
+      let { fill } = style;
+      // Watch out if `fill` is set via an asset
+      if (fill && !fill.startsWith('url')) {
+        fill = darken(style.fill, emphasisCoefficient);
+      }
       return {
         style: { ...p.style, fill }
       };
@@ -21,19 +25,23 @@ const activateData = (childName, emphasisCoefficient) => {
 
 // By not specifying the childName, the event will only affect the component
 // that triggered the event: https://formidable.com/open-source/victory/guides/events#single-component-events
-const activateLabels = (evt, donut, childName) => {
-  const { x, y } = !donut ? Selection.getSVGEventCoordinates(evt) : {};
+const activateLabels = (evt, donut, childName, props) => {
+  // Don't track movement if:
+  //  i. donut mode, and
+  //  ii. Hovering on a label since we'll move the label as well
+  const { x, y } =
+    donut || (props && props.key && props.key.indexOf('labels') !== -1)
+      ? {}
+      : Selection.getSVGEventCoordinates(evt);
 
   return {
-    childName: donut ? childName : undefined,
     target: 'labels',
-    mutation: () => ({ x, y, active: true })
+    mutation: () => ({ active: true, x, y })
   };
 };
 
-const deactivateLabels = (donut, childName) => {
+const deactivateLabels = () => {
   return {
-    childName: donut ? childName : undefined,
     target: 'labels',
     mutation: () => ({ active: false })
   };
@@ -46,19 +54,16 @@ function SharedEvents({ childName, children, donut, emphasisCoefficient }) {
         {
           childName,
           eventHandlers: {
-            onMouseOver: evt => {
+            onMouseOver: (evt, ...args) => {
               return [
-                activateData(childName, emphasisCoefficient),
-                activateLabels(evt, donut, childName)
+                activateData(evt, donut, childName, emphasisCoefficient),
+                activateLabels(evt, donut, childName, ...args)
               ];
             },
-            onMouseMove: evt => {
-              return [
-                // activateData(childName, emphasisCoefficient),
-                activateLabels(evt, donut, childName)
-              ];
+            onMouseMove: (evt, ...args) => {
+              return [activateLabels(evt, donut, childName, ...args)];
             },
-            onMouseOut: () => {
+            onMouseOut: evt => {
               return [
                 {
                   childName,
@@ -67,7 +72,19 @@ function SharedEvents({ childName, children, donut, emphasisCoefficient }) {
                     return null;
                   }
                 },
-                deactivateLabels(donut, childName)
+                deactivateLabels(evt, donut, childName)
+              ];
+            },
+            onMouseLeave: evt => {
+              return [
+                {
+                  childName,
+                  target: 'data',
+                  mutation: () => {
+                    return null;
+                  }
+                },
+                deactivateLabels(evt, donut, childName)
               ];
             }
           }
