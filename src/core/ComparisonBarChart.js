@@ -57,7 +57,7 @@ function ComparisonBarChart({
       height={height}
     >
       {dataBarWidths.map((barWidth, i) => (
-        <>
+        <React.Fragment key={data[i].x}>
           <VictoryLabel
             capHeight={0}
             dy={0}
@@ -81,7 +81,7 @@ function ComparisonBarChart({
             width={barWidth}
             y={(i + 1) * 40 + i * 10}
           />
-        </>
+        </React.Fragment>
       ))}
       <VictoryLabel
         capHeight={0}
