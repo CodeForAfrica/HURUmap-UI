@@ -26,6 +26,7 @@ function BulletBar({
     <VictoryTooltip constrainToVisibleArea {...tooltipProps} theme={theme} />
   );
   const activateTooltip = (evt, newTooltipProps) => {
+    console.log('BOOM', newTooltipProps);
     if (newTooltipProps && newTooltipProps.text) {
       const { x: tipX, y: tipY } = Selection.getSVGEventCoordinates(evt);
       setTooltipProps({ active: true, ...newTooltipProps, x: tipX, y: tipY });
@@ -75,7 +76,7 @@ function BulletBar({
         events={{
           onMouseOver: evt =>
             activateTooltip(evt, {
-              text: data[0]
+              text: labels(data[0])
             }),
           onMouseMove: evt =>
             activateTooltip(evt, {
