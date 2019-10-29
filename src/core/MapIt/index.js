@@ -10,8 +10,9 @@ import useDeepRef from './useDeepRef';
 
 const useStyles = makeStyles({
   root: {
-    height: '100%',
-    width: '100%'
+    width: '100%',
+    height: '100vh',
+    maxHeight: '100%'
   }
 });
 
