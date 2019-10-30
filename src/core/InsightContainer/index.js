@@ -86,8 +86,9 @@ function InsightContainer({
   ...props
 }) {
   const { variant } = props;
-  const highlightChild = children[0];
-  const contentChild = children[1];
+  const highlightChild = variant === 'data' && children[0];
+  const contentChild =
+    variant === 'data' ? children[1] : children[1] || children[0];
   const {
     handleShare,
     handleCompare,
@@ -167,18 +168,20 @@ function InsightContainer({
         flexGrow={1}
         flexShrink={1}
         flexWrap="wrap"
-        flexBasis="35rem"
+        flexBasis={hideInsight ? '100%' : '35rem'}
         padding="1.25rem"
       >
-        <Grid item className={classes.highlightGrid}>
-          <Grid container alignItems="stretch" alignContent="space-between">
-            <Grid item xs={12}>
-              <BlockLoader loading={loading} height={300}>
-                {highlightChild}
-              </BlockLoader>
+        {variant === 'data' && (
+          <Grid item className={classes.highlightGrid}>
+            <Grid container alignItems="stretch" alignContent="space-between">
+              <Grid item xs={12}>
+                <BlockLoader loading={loading} height={300}>
+                  {highlightChild}
+                </BlockLoader>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        )}
 
         <Grid item ref={chartRef} className={classes.contentGrid}>
           <Box
@@ -195,9 +198,11 @@ function InsightContainer({
               {title}
             </TypographyLoader>
             <BlockLoader loading={loading} height={300}>
-              <Box className={classes.highlightContentChild}>
-                {highlightChild}
-              </Box>
+              {variant === 'data' && (
+                <Box className={classes.highlightContentChild}>
+                  {highlightChild}
+                </Box>
+              )}
               <Box
                 width="100%"
                 display="flex"
@@ -275,7 +280,10 @@ InsightContainer.propTypes = {
     handleShowData: PropTypes.func,
     handleCompare: PropTypes.func
   }),
-  children: propTypes.twoNodeArrayType.isRequired,
+  children: propTypes.oneOfType([
+    propTypes.node,
+    propTypes.arrayOf(propTypes.twoNodeArrayType)
+  ]).isRequired,
   embedCode: PropTypes.string,
   gaEvents: PropTypes.shape({}),
   insight: PropTypes.shape({
