@@ -58,7 +58,7 @@ function HorizontalLegend({
             dx={0}
             y={cy}
             dy={18} // 36 / 2 since we want data value vertical centered
-            text={formatNumberForLabel(data[i].x)}
+            text={formatNumberForLabel(data[i].y)}
             style={dataLabelsStyle(i, colorScale, style)}
           />
           {data[i].label && (
@@ -83,7 +83,7 @@ function HorizontalLegend({
         lineHeight={0}
         x={cx + 200}
         y={2 * cy - 24}
-        text={formatNumberForLabel(referenceData.x)}
+        text={formatNumberForLabel(referenceData.y)}
         style={referenceDataStyle(reference)}
       />
       {referenceData.label && (

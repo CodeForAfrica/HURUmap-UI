@@ -111,11 +111,10 @@ function BarChart({
   return (
     <Chart {...chartProps}>
       <VictoryAxis
-        tickFormat={tickFormat}
-        tickLabelComponent={<WrapLabel width={labelWidth} />}
-        {...axisProps.independent}
+        dependentAxis
+        orientation={horizontal ? 'bottom' : 'right'}
+        {...axisProps.dependent}
       />
-      <VictoryAxis dependentAxis orientation="right" {...axisProps.dependent} />
 
       <VictoryGroup {...groupProps} offset={offset}>
         {groupData.map((data, i) => (
@@ -142,6 +141,12 @@ function BarChart({
           />
         ))}
       </VictoryGroup>
+      <VictoryAxis
+        tickFormat={tickFormat}
+        tickLabelComponent={<WrapLabel width={labelWidth} />}
+        {...axisProps.independent}
+      />
+
       {legend && (
         <VictoryLegend
           standalone={false}

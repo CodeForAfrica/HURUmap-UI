@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import propTypes from '../propTypes';
 import {
   DESKTOP_HEIGHT,
   DESKTOP_WIDTH,
@@ -9,8 +10,8 @@ import {
 } from './ScaledArea';
 import HorizontalLegend from './HorizontalLegend';
 import PieChart from '../PieChart';
+import Tooltip from '../Tooltip';
 import VerticalLegend from './VerticalLegend';
-import propTypes from '../propTypes';
 
 /**
  *
@@ -23,6 +24,7 @@ function ScaledCircle({
   mobile,
   reference,
   style,
+  theme,
   ...props
 }) {
   const cx = mobile ? MOBILE_WIDTH / 2 : DESKTOP_WIDTH / 2;
@@ -35,8 +37,8 @@ function ScaledCircle({
     style: referenceStyle
   } = reference;
   const radii = data.map(d =>
-    d.x !== referenceData.x
-      ? (Math.sqrt(d.x) * size) / Math.sqrt(referenceData.x)
+    d.y !== referenceData.y
+      ? (Math.sqrt(d.y) * size) / Math.sqrt(referenceData.y)
       : size
   );
 
@@ -46,47 +48,55 @@ function ScaledCircle({
   return (
     <>
       <PieChart
+        {...props}
         data={backgroundData}
         donut={false}
         height={height}
         origin={{ x: cx, y: cy }}
         radius={size}
         standalone={false}
-        width={width}
-        {...props}
         style={referenceStyle}
-      />
-      <PieChart
-        colorScale={colorScale}
-        height={height}
-        data={radii.map(v => [v])}
-        donut={false}
-        origin={{ x: cx, y: cy }}
-        radii={radii}
-        standalone={false}
+        theme={theme}
         width={width}
-        {...props}
       />
       {mobile ? (
         <VerticalLegend
-          data={data}
           colorScale={colorScale}
+          data={data}
+          formatNumberForLabel={formatNumberForLabel}
           reference={reference}
           style={style}
-          formatNumberForLabel={formatNumberForLabel}
+          theme={theme}
         />
       ) : (
         <HorizontalLegend
-          data={data}
-          radii={radii}
           colorScale={colorScale}
-          style={style}
-          reference={reference}
           cx={cx}
           cy={cy}
+          data={data}
           formatNumberForLabel={formatNumberForLabel}
+          radii={radii}
+          reference={reference}
+          style={style}
+          theme={theme}
         />
       )}
+      <PieChart
+        {...props}
+        colorScale={colorScale}
+        data={radii.map(v => [v])}
+        donut={false}
+        height={height}
+        labels={data.map(
+          d => `${d.x}: ${d.y}\n${referenceData.x}: ${referenceData.y}`
+        )}
+        labelComponent={<Tooltip theme={theme} />}
+        origin={{ x: cx, y: cy }}
+        radii={radii}
+        standalone={false}
+        theme={theme}
+        width={width}
+      />
     </>
   );
 }
@@ -100,7 +110,8 @@ ScaledCircle.propTypes = {
   reference: propTypes.reference,
   style: PropTypes.shape({
     labels: PropTypes.shape({})
-  })
+  }),
+  theme: propTypes.theme
 };
 
 ScaledCircle.defaultProps = {
@@ -109,7 +120,8 @@ ScaledCircle.defaultProps = {
   data: undefined,
   mobile: false,
   reference: undefined,
-  style: undefined
+  style: undefined,
+  theme: undefined
 };
 
 export default ScaledCircle;

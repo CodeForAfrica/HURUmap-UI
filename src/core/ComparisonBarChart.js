@@ -1,112 +1,151 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { VictoryBar, VictoryLabel, VictoryAxis } from 'victory';
+import { Border, Selection, VictoryLabel, VictoryTooltip } from 'victory';
 
-import withVictoryTheme from './styles/withVictoryTheme';
-import Chart, { toReferenceProps } from './ReferableChart';
 import propTypes from './propTypes';
+import { toReferenceProps } from './ReferableChart';
+import withVictoryTheme from './styles/withVictoryTheme';
+import CustomContainer from './CustomContainer';
 
 function ComparisonBarChart({
-  theme,
+  barHeight: barHeightProp,
   data,
-  reference: ref,
+  height: heightProp,
   horizontal = true,
-  width,
-  height = 200,
-  ...props
+  reference: referenceProp,
+  style = {},
+  theme,
+  width: widthProp
 }) {
+  const [tooltipProps, setTooltipProps] = useState({});
+  const { comparisonBar: chart } = theme;
+  if (!data || !chart) {
+    return null;
+  }
   const {
     data: [referenceData],
-    style: referenceStyle
-  } = toReferenceProps(ref);
-  const groupColorScale = theme.group.colorScale;
-  const barProps = {
-    ...{
-      labels: datum => datum.y,
-      labelComponent: <VictoryLabel x={50} dy={-25} />
-    },
-    ...props
+    style: referenceStyleProp
+  } = toReferenceProps(referenceProp);
+  const referenceStyle = { ...chart.referenceStyle, ...referenceStyleProp };
+  const dataStyle = { ...chart.style.data, ...style.data };
+  const { colorScale } = chart;
+
+  const height = heightProp || chart.height;
+  const width = widthProp || chart.width;
+  const values = data.map(d => d.y).concat(referenceData.y);
+  const max = Math.max.apply(null, values);
+  const dataBarWidths = data.map(d => (d.y * width) / max);
+  const referenceDataBarWidth = (referenceData.y * width) / max;
+  const barHeight = barHeightProp || chart.barHeight;
+
+  const tooltip = (
+    <VictoryTooltip constrainToVisibleArea {...tooltipProps} theme={theme} />
+  );
+  const activateTooltip = (evt, newTooltipProps) => {
+    if (newTooltipProps && newTooltipProps.text) {
+      const { x: tipX, y: tipY } = Selection.getSVGEventCoordinates(evt);
+      setTooltipProps({ active: true, ...newTooltipProps, x: tipX, y: tipY });
+    }
   };
+
   return (
-    // The bar charts order is reversed, so the last will be at the top
-    <Chart theme={theme} horizontal={horizontal} width={width} height={height}>
-      {/* Legend */}
-      <VictoryBar
-        barWidth={5}
-        style={referenceStyle}
-        data={[referenceData]}
-        labels={({ datum }) => datum.y}
-        labelComponent={<VictoryLabel x={50} dy={-15} />}
-        {...props}
+    <CustomContainer
+      theme={theme}
+      horizontal={horizontal}
+      width={width}
+      height={height}
+    >
+      {dataBarWidths.map((barWidth, i) => (
+        <React.Fragment key={data[i].x}>
+          <VictoryLabel
+            capHeight={0}
+            dy={0}
+            lineHeight={0}
+            style={{ fill: colorScale[i % colorScale.length], ...dataStyle }}
+            text={data[i].y}
+            x={0}
+            y={(i + 1) * 40 + i * 10 - barHeight}
+          />
+          <Border
+            events={{
+              onMouseOver: evt =>
+                activateTooltip(evt, { text: `${data[i].x}: ${data[i].y}` }),
+              onMouseMove: evt =>
+                activateTooltip(evt, { text: `${data[i].x}: ${data[i].y}` }),
+              onMouseOut: () => setTooltipProps({ active: false })
+            }}
+            height={barHeight}
+            style={{ fill: colorScale[i % colorScale.length] }}
+            x={0}
+            width={barWidth}
+            y={(i + 1) * 40 + i * 10}
+          />
+        </React.Fragment>
+      ))}
+      <VictoryLabel
+        capHeight={0}
+        dy={0}
+        lineHeight={0}
+        style={referenceStyle.data}
+        text={referenceData.y}
+        x={0}
+        y={data.length * 40 + (data.length - 1) * 10 - 2 * barHeight + 70}
       />
-      <VictoryAxis
-        style={{
-          axis: {
-            display: 'none'
-          },
-          ticks: {
-            display: 'none'
-          },
-          tickLabels: {
-            display: 'block',
-            ...(referenceStyle && referenceStyle.labels)
-          }
+      <Border
+        events={{
+          onMouseOver: evt =>
+            activateTooltip(evt, {
+              text: `${referenceData.x}: ${referenceData.y}`
+            }),
+          onMouseMove: evt =>
+            activateTooltip(evt, {
+              text: `${referenceData.x}: ${referenceData.y}`
+            }),
+          onMouseOut: () => setTooltipProps({ active: false })
         }}
-        tickFormat={x => (x === referenceData.x ? referenceData.x : '')}
-        tickLabelComponent={<VictoryLabel x={50} dy={20} textAnchor="start" />}
+        height={barHeight}
+        style={referenceStyle.labels}
+        width={referenceDataBarWidth}
+        x={0}
+        y={data.length * 40 + (data.length - 1) * 10 - barHeight + 70}
       />
-      {/* Legend */}
-
-      {data[1] && (
-        <VictoryBar
-          style={{
-            data: {
-              fill: groupColorScale[1]
-            },
-            labels: {
-              fontSize: 25,
-              fill: groupColorScale[1]
-            }
-          }}
-          data={[data[1]]}
-          {...barProps}
-        />
-      )}
-
-      <VictoryBar
-        style={{
-          data: {
-            fill: groupColorScale[0]
-          },
-          labels: {
-            fontSize: 25,
-            fill: groupColorScale[0]
-          }
-        }}
-        data={[data[0]]}
-        labels={({ datum }) => datum.y}
-        {...barProps}
+      <VictoryLabel
+        capHeight={0}
+        dy={0}
+        lineHeight={0}
+        style={referenceStyle.labels}
+        text={referenceData.x}
+        x={0}
+        y={data.length * 40 + (data.length - 1) * 10 + 3 * barHeight + 70}
       />
-    </Chart>
+      {tooltip}
+    </CustomContainer>
   );
 }
 
 ComparisonBarChart.propTypes = {
+  barHeight: PropTypes.number,
   data: PropTypes.arrayOf(
     PropTypes.shape({ x: PropTypes.string, y: PropTypes.number })
   ).isRequired,
   height: PropTypes.number,
   horizontal: PropTypes.bool,
   reference: propTypes.reference,
+  style: PropTypes.shape({
+    data: PropTypes.shape({}),
+    labels: PropTypes.shape({})
+  }),
   theme: propTypes.theme,
   width: PropTypes.number
 };
 
 ComparisonBarChart.defaultProps = {
+  barHeight: undefined,
   height: undefined,
   horizontal: undefined,
   reference: undefined,
+  style: undefined,
   theme: undefined,
   width: undefined
 };

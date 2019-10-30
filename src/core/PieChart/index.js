@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Helpers, VictoryPie, VictoryLegend, VictoryTooltip } from 'victory';
+import { Helpers, VictoryPie, VictoryLegend } from 'victory';
 
 import { getLegendProps } from '../utils';
 import propTypes from '../propTypes';
@@ -22,7 +22,7 @@ const computeRadii = (width, height, padding, groupSpacing = 0) => {
 function PieChart({
   colorScale: colorScaleProp,
   data,
-  donut,
+  donut: donutProp,
   donutLabelKey,
   groupSpacing,
   height: heightProp,
@@ -105,8 +105,9 @@ function PieChart({
           computedGroupSpacing
         ));
   const chartRadius = Math.max.apply(null, computedRadii);
+  const donut = donutProp || (typeof donutProp === 'undefined' && chart.donut);
   let chartInnerRadius = 0;
-  if (donut || (typeof donut === 'undefined' && chart.donut)) {
+  if (donut) {
     chartInnerRadius =
       innerRadiusProp && innerRadiusProp > 0
         ? innerRadiusProp
@@ -133,9 +134,9 @@ function PieChart({
   };
   const tooltipStyle = {
     ...donutLabelStyle,
-    ...(tooltipProps.style && tooltipProps.style.labels)
+    ...tooltipProps.style
   };
-  const Tooltip = isComparisonMode ? VictoryTooltip : SharedEventTooltip;
+  const Tooltip = SharedEventTooltip;
   // We define tooltip for donut label component here than using a separate
   // due to svg rendering components in the provided order and we don't have
   // z-index property to reorder them.
@@ -166,14 +167,15 @@ function PieChart({
       constrainToVisibleArea
       {...tooltipProps}
       labelComponent={<Label colorScale={colorScale} />}
-      orientation={data2 && data2.length > 0 ? 'left' : undefined}
+      orientation={isComparisonMode ? 'left' : undefined}
       renderInPortal={false}
     />
   );
   let labelComponent2 = labelComponent1;
-  if (data2 && data2.length > 0 && !donut) {
+  if (isComparisonMode && !donut) {
     labelComponent2 = (
       <Tooltip
+        constrainToVisibleArea
         {...tooltipProps}
         labelComponent={<Label colorScale={colorScale} />}
         orientation="right"
@@ -243,7 +245,7 @@ function PieChart({
             width={chartWidth}
             {...props}
           />
-          {data2 && data2.length > 0 && (
+          {isComparisonMode && (
             <VictoryPie
               colorScale={colorScale2}
               data={data2}

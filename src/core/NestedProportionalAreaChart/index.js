@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import propTypes from '../propTypes';
 import { scaleDesktopDimensions, scaleMobileDimensions } from './ScaledArea';
 import { toReferenceProps } from '../ReferableChart';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
 import ScaledCircle from './ScaledCircle';
 import ScaledSquare from './ScaledSquare';
-import propTypes from '../propTypes';
 
 /**
  * Data value represents **area**. We need to find length/radius in order to
@@ -76,9 +76,10 @@ function NestedProportionalAreaChart({
           {square ? (
             <ScaledSquare
               colorScale={chart.colorScale}
-              reference={reference}
               data={data}
               formatNumberForLabel={formatNumberForLabel}
+              reference={reference}
+              theme={theme}
             />
           ) : (
             <ScaledCircle
@@ -102,7 +103,7 @@ function NestedProportionalAreaChart({
 
 NestedProportionalAreaChart.propTypes = {
   formatNumberForLabel: PropTypes.func,
-  data: propTypes.groupedData,
+  data: propTypes.data,
   groupSpacing: PropTypes.number,
   height: PropTypes.number,
   reference: propTypes.reference,
