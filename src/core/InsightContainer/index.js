@@ -198,7 +198,7 @@ function InsightContainer({
               {title}
             </TypographyLoader>
             <BlockLoader loading={loading} height={300}>
-              {variant === 'data' && (
+              {highlightChild && (
                 <Box className={classes.highlightContentChild}>
                   {highlightChild}
                 </Box>
