@@ -87,8 +87,7 @@ function InsightContainer({
 }) {
   const { variant } = props;
   const highlightChild = variant === 'data' && children[0];
-  const contentChild =
-    const contentChild = children[1] || children[0];
+  const contentChild = children[1] || children[0];
   const {
     handleShare,
     handleCompare,
