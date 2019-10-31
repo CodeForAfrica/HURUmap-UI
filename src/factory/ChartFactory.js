@@ -82,9 +82,6 @@ function ChartFactory({
       } else if (value > 10 ** 6) {
         compactUnit = 'M';
         formatValue = value / 10 ** 6;
-      } else if (value > 10 ** 3) {
-        compactUnit = 'K';
-        formatValue = value / 10 ** 3;
       } else {
         //
       }
