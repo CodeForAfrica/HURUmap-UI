@@ -1,6 +1,9 @@
 // A file that defines needed graphql queries
 import gql from 'graphql-tag';
 
+/**
+ * `populationTables` can the array of strings [...`tableName`] or array [...[`tableName` , {`conditions`}]]
+ */
 export const buildProfileQuery = populationTables => gql`
 query profile($geoCode: String!, $geoLevel: String!) {
   geo: wazimapGeographyByGeoLevelAndGeoCodeAndVersion(
@@ -17,8 +20,20 @@ query profile($geoCode: String!, $geoLevel: String!) {
     name
   }
   ${populationTables.map(
-    (table, i) => `population${i}: ${table}(
-    condition: { geoCode: $geoCode, geoLevel: $geoLevel }
+    (table, i) => `population${i}: ${Array.isArray(table) ? table[0] : table}(
+    ${
+      Array.isArray(table) && table[1]
+        ? JSON.stringify(
+            Object.assign(table[1], {
+              condition: {
+                ...table[1].condition,
+                geoCode: '$geoCode',
+                geoLevel: '$geoLevel'
+              }
+            })
+          ).slice(1, -1)
+        : 'condition: { geoCode: $geoCode, geoLevel: $geoLevel }'
+    }
   ) {
     nodes {
       total
