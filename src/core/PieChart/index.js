@@ -9,10 +9,10 @@ import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
 import DefaultLegendLabel from '../LegendLabel';
 import DonutLabel from './DonutLabel';
+import DonutTooltip from './DonutTooltip';
 import Label from '../Label';
 import SharedEvents from './SharedEvents';
 import SharedEventsLegendLabel from './LegendLabel';
-import DonutTooltip from './DonutTooltip';
 import Tooltip from './Tooltip';
 
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
@@ -223,28 +223,7 @@ function PieChart({
             endAngle={endAngle1}
             height={chartHeight}
             innerRadius={chartInnerRadius}
-            labelComponent={
-              donut ? (
-                <DonutTooltip
-                  {...tooltipProps}
-                  colorScale={colorScale}
-                  cornerRadius={chartInnerRadius}
-                  highlightIndex={chart.donutHighlightIndex}
-                  highlightStyle={chart.donutHighlightStyle}
-                  origin={{ x: origin.x, y: origin.y + chartInnerRadius }}
-                  style={tooltipStyle}
-                  width={chartInnerRadius * 2}
-                />
-              ) : (
-                <Tooltip
-                  constrainToVisibleArea
-                  {...tooltipProps}
-                  labelComponent={<Label colorScale={colorScale} />}
-                  orientation={isComparisonMode ? 'left' : undefined}
-                  renderInPortal={false}
-                />
-              )
-            }
+            labelComponent={labelComponent1}
             labelRadius={labelRadius}
             name="pie1"
             origin={origin}
