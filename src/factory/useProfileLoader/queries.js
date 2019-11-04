@@ -31,7 +31,22 @@ query profile($geoCode: String!, $geoLevel: String!) {
                 geoLevel: '$geoLevel'
               }
             })
-          ).slice(1, -1)
+          )
+            /**
+             * Remove root curly brackets `{...}`
+             */
+            .slice(1, -1)
+            /**
+             * Replace quotes around keys from json stringify
+             */
+            .replace(/"([^(")"]+)":/g, '$1:')
+            /**
+             * Replace quotes from json stringify for:
+             *  - defined terms
+             *  - variables which start with $
+             */
+            .replace(/:"([^(")"][A-Z_]+)"/g, ': $1')
+            .replace(/:"([^(")"][$a-zA-Z]+)"/g, ': $1')
         : 'condition: { geoCode: $geoCode, geoLevel: $geoLevel }'
     }
   ) {
@@ -70,7 +85,12 @@ query charts($geoCode: String!, $geoLevel: String!) {
         geoLevel: parent.geoLevel,
         geoCode: parent.geoCode
       }
-    ).replace(/"([^(")"]+)":/g, '$1:')}
+    )
+
+      /**
+       * Replace quotes around keys from json stringify
+       */
+      .replace(/"([^(")"]+)":/g, '$1:')}
   ) {
     nodes {
       ${
