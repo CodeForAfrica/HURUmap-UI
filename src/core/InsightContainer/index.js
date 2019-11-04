@@ -86,8 +86,10 @@ const useStyles = makeStyles(({ palette }) => ({
   },
   attributionLogo: {
     '& img': {
+      height: 'auto',
       maxHeight: '2rem',
-      maxWidth: '300px'
+      maxWidth: '300px',
+      width: 'auto'
     }
   }
 }));
@@ -122,7 +124,7 @@ function InsightContainer({
     rootWidth: rootNode ? rootNode.getBoundingClientRect().width : 300
   });
 
-  const hideInImageClassName = 'Download--hidden';
+  const downloadHiddenClassName = 'Download--hidden';
   const toPng = () => {
     const filter = n => {
       const { classList } = n;
@@ -134,7 +136,7 @@ function InsightContainer({
         const { style: nodeStyle } = n;
         nodeStyle.display = 'flex';
       }
-      return !classList.contains(hideInImageClassName);
+      return !classList.contains(downloadHiddenClassName);
     };
 
     return domToPng(rootNode, { filter });
@@ -239,7 +241,7 @@ function InsightContainer({
               height: 20
             }}
             component="span"
-            className={`${classes.sourceGrid} ${hideInImageClassName}`}
+            className={`${classes.sourceGrid} ${downloadHiddenClassName}`}
           >
             {source && (
               <A className={classes.sourceLink} href={source.href}>
@@ -255,7 +257,7 @@ function InsightContainer({
             display="flex"
             justifyContent="center"
             marginTop="1.25rem"
-            className={hideInImageClassName}
+            className={downloadHiddenClassName}
           >
             {actionsChildren}
           </Box>
@@ -273,7 +275,7 @@ function InsightContainer({
               dataLink: classes.insightDataLink,
               description: classes.insightDescription,
               insight: classes.insightContent,
-              links: hideInImageClassName,
+              links: downloadHiddenClassName,
               title: classes.insightTitle
             }}
             dataLink={insight.dataLink}
@@ -298,11 +300,9 @@ function InsightContainer({
         <Grid item className={classes.attributionSource}>
           <Typography variant="caption">{`Source ${source.href}`}</Typography>
         </Grid>
-        {logo && (
-          <Grid item className={classes.attributionLogo}>
-            <img src={logo} alt="log" />
-          </Grid>
-        )}
+        <Grid item className={classes.attributionLogo}>
+          <img src={logo} alt="logo" />
+        </Grid>
       </Grid>
     </Grid>
   );

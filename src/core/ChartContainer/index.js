@@ -77,8 +77,10 @@ const useStyles = makeStyles(({ palette }) => ({
   },
   attributionLogo: {
     '& img': {
+      height: 'auto',
       maxHeight: '2rem',
-      maxWidth: '300px'
+      maxWidth: '300px',
+      width: 'auto'
     }
   }
 }));
@@ -403,11 +405,9 @@ function ChartContainer({
         <Grid item className={classes.attributionSource}>
           <Typography variant="caption">{`Source ${sourceLink}`}</Typography>
         </Grid>
-        {logo && (
-          <Grid item className={classes.attributionLogo}>
-            <img src={logo} alt="log" />
-          </Grid>
-        )}
+        <Grid item className={classes.attributionLogo}>
+          <img src={logo} alt="log" />
+        </Grid>
       </Grid>
     </Grid>
   );
