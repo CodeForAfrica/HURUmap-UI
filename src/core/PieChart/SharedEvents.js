@@ -26,17 +26,16 @@ const activateData = (evt, donut, childName, emphasisCoefficient) => {
 // By not specifying the childName, the event will only affect the component
 // that triggered the event: https://formidable.com/open-source/victory/guides/events#single-component-events
 const activateLabels = (evt, donut, childName, props) => {
-  // Don't track movement if:
-  //  i. donut mode, and
-  //  ii. Hovering on a label since we'll move the label as well
-  const { x, y } =
-    donut || (props && props.key && props.key.indexOf('labels') !== -1)
-      ? {}
-      : Selection.getSVGEventCoordinates(evt);
-
+  // Don't track movement if hovering on a legend since we'll move the
+  // legend label, etc.
+  const mutation = { active: true };
+  if (props && props.key && !props.key.startsWith('legend-')) {
+    const { x, y } = Selection.getSVGEventCoordinates(evt);
+    Object.assign(mutation, { x, y });
+  }
   return {
     target: 'labels',
-    mutation: () => ({ active: true, x, y })
+    mutation: () => mutation
   };
 };
 

@@ -12,7 +12,8 @@ import DonutLabel from './DonutLabel';
 import Label from '../Label';
 import SharedEvents from './SharedEvents';
 import SharedEventsLegendLabel from './LegendLabel';
-import SharedEventTooltip from './Tooltip';
+import DonutTooltip from './DonutTooltip';
+import Tooltip from './Tooltip';
 
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
   const radius = Helpers.getRadius({ width, height, padding });
@@ -136,31 +137,19 @@ function PieChart({
     ...donutLabelStyle,
     ...tooltipProps.style
   };
-  const Tooltip = SharedEventTooltip;
   // We define tooltip for donut label component here than using a separate
   // due to svg rendering components in the provided order and we don't have
   // z-index property to reorder them.
   const labelComponent1 = donut ? (
-    <Tooltip
+    <DonutTooltip
       {...tooltipProps}
       colorScale={colorScale}
       cornerRadius={chartInnerRadius}
-      flyoutStyle={{ fill: 'white', stroke: 'none' }}
-      flyoutHeight={chartInnerRadius * 2}
-      labelComponent={
-        <Label
-          colorScale={colorScale}
-          highlightIndex={chart.donutHighlightIndex}
-          highlightStyle={chart.donutHighlightStyle}
-          style={tooltipStyle}
-          width={chartInnerRadius * 2}
-        />
-      }
-      orientation="top"
-      pointerLength={0}
-      flyoutWidth={chartInnerRadius * 2}
-      x={origin.x}
-      y={origin.y + chartInnerRadius}
+      highlightIndex={chart.donutHighlightIndex}
+      highlightStyle={chart.donutHighlightStyle}
+      origin={{ x: origin.x, y: origin.y + chartInnerRadius }}
+      style={tooltipStyle}
+      width={chartInnerRadius * 2}
     />
   ) : (
     <Tooltip
@@ -232,9 +221,30 @@ function PieChart({
             colorScale={colorScale}
             data={data1}
             endAngle={endAngle1}
-            height={chartWidth}
+            height={chartHeight}
             innerRadius={chartInnerRadius}
-            labelComponent={labelComponent1}
+            labelComponent={
+              donut ? (
+                <DonutTooltip
+                  {...tooltipProps}
+                  colorScale={colorScale}
+                  cornerRadius={chartInnerRadius}
+                  highlightIndex={chart.donutHighlightIndex}
+                  highlightStyle={chart.donutHighlightStyle}
+                  origin={{ x: origin.x, y: origin.y + chartInnerRadius }}
+                  style={tooltipStyle}
+                  width={chartInnerRadius * 2}
+                />
+              ) : (
+                <Tooltip
+                  constrainToVisibleArea
+                  {...tooltipProps}
+                  labelComponent={<Label colorScale={colorScale} />}
+                  orientation={isComparisonMode ? 'left' : undefined}
+                  renderInPortal={false}
+                />
+              )
+            }
             labelRadius={labelRadius}
             name="pie1"
             origin={origin}
