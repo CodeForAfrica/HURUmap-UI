@@ -21,9 +21,13 @@ export function getLegendProps(
   let chartWidth = width;
   let legendHeight = height;
   let legendWidth = width;
-  let legendX = originalPadding.left || 0;
-  let legendY = originalPadding.top || 0;
   const padding = { ...originalPadding };
+  padding.top = padding.top || 0;
+  padding.right = padding.right || 0;
+  padding.bottom = padding.bottom || 0;
+  padding.left = padding.left || 0;
+  let legendX = padding.left;
+  let legendY = padding.top;
   if (legendData && size) {
     switch (align) {
       case 'left':
@@ -31,8 +35,11 @@ export function getLegendProps(
         chartWidth -= size;
         legendWidth = size;
         // center the chart vertically
-        padding.top += size / 2;
-        legendY += size / 2;
+        if (chartHeight > chartWidth) {
+          const verticalSpacing = chartHeight - chartWidth;
+          padding.top += verticalSpacing / 2;
+          legendY += verticalSpacing / 2;
+        }
         if (align === 'left') {
           padding.left += size;
         } else {
