@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import domToImage from 'dom-to-image';
+import { makeStyles, Box, Grid, Typography } from '@material-ui/core';
 
-import { makeStyles, Grid, Box } from '@material-ui/core';
+import { domToPng } from '../utils';
 
 import BlockLoader from '../BlockLoader';
 import TypographyLoader from '../TypographyLoader';
@@ -13,7 +13,9 @@ import Actions from './Action';
 import Insight from './Insight';
 import propTypes from '../propTypes';
 
-const useStyles = makeStyles({
+import defaultLogo from '../assets/logo.png';
+
+const useStyles = makeStyles(({ palette }) => ({
   root: {
     height: 'auto',
     position: 'relative',
@@ -70,8 +72,25 @@ const useStyles = makeStyles({
   actionsDownloadButton: {},
   actionsActionButtonIconGrid: {},
   actionsActionButtonVerticalDivider: {},
-  actionsActionButtonText: {}
-});
+  actionsActionButtonText: {},
+  attribution: {
+    display: 'none',
+    backgroundColor: palette.primary.main,
+    padding: '1.5625rem 1.25rem'
+  },
+  attributionSource: {
+    flex: '1 1 300px',
+    '& span': {
+      color: '#fff'
+    }
+  },
+  attributionLogo: {
+    '& img': {
+      maxHeight: '2rem',
+      maxWidth: '300px'
+    }
+  }
+}));
 
 function InsightContainer({
   hideInsight,
@@ -80,6 +99,7 @@ function InsightContainer({
   embedCode,
   gaEvents,
   insight: insightProp,
+  logo: logoProp,
   loading,
   source,
   title,
@@ -96,29 +116,28 @@ function InsightContainer({
   } = actions;
 
   const [rootNode, setRootNode] = useState();
-  const chartRef = useRef(null);
 
   const classes = useStyles({
     ...props,
     rootWidth: rootNode ? rootNode.getBoundingClientRect().width : 300
   });
 
+  const hideInImageClassName = 'Download--hidden';
   const toPng = () => {
-    if (chartRef.current) {
-      return domToImage
-        .toPng(chartRef.current, {
-          filter: n => {
-            if (typeof n.className !== 'string') {
-              return true;
-            }
-            return !n.className.includes('Download--hidden');
-          }
-        })
-        .then(dataUrl => {
-          return dataUrl;
-        });
-    }
-    return Promise.resolve(undefined);
+    const filter = n => {
+      const { classList } = n;
+      if (!classList) {
+        return true;
+      }
+
+      if (classList.contains(classes.attribution)) {
+        const { style: nodeStyle } = n;
+        nodeStyle.display = 'flex';
+      }
+      return !classList.contains(hideInImageClassName);
+    };
+
+    return domToPng(rootNode, { filter });
   };
 
   const defaultHandleDownload = (e, dataUrl) => {
@@ -159,6 +178,7 @@ function InsightContainer({
     />
   );
   const insight = insightProp || {};
+  const logo = logoProp || defaultLogo;
 
   return (
     <Grid ref={setRootNode} container className={classes.root}>
@@ -180,7 +200,7 @@ function InsightContainer({
           </Grid>
         </Grid>
 
-        <Grid item ref={chartRef} className={classes.contentGrid}>
+        <Grid item className={classes.contentGrid}>
           <Box
             display="flex"
             height="100%"
@@ -219,7 +239,7 @@ function InsightContainer({
               height: 20
             }}
             component="span"
-            className={classes.sourceGrid}
+            className={`${classes.sourceGrid} ${hideInImageClassName}`}
           >
             {source && (
               <A className={classes.sourceLink} href={source.href}>
@@ -235,6 +255,7 @@ function InsightContainer({
             display="flex"
             justifyContent="center"
             marginTop="1.25rem"
+            className={hideInImageClassName}
           >
             {actionsChildren}
           </Box>
@@ -247,10 +268,12 @@ function InsightContainer({
             analysisLink={insight.analysisLink}
             classes={{
               root: classes.insight,
+              actions: `Download--hidden`,
               analysisLink: classes.insightAnalysis,
               dataLink: classes.insightDataLink,
               description: classes.insightDescription,
               insight: classes.insightContent,
+              links: hideInImageClassName,
               title: classes.insightTitle
             }}
             dataLink={insight.dataLink}
@@ -263,6 +286,24 @@ function InsightContainer({
           </Insight>
         </Grid>
       )}
+      <Grid
+        item
+        xs={12}
+        container
+        alignItems="center"
+        justify="space-between"
+        wrap="wrap"
+        className={classes.attribution}
+      >
+        <Grid item className={classes.attributionSource}>
+          <Typography variant="caption">{`Source ${source.href}`}</Typography>
+        </Grid>
+        {logo && (
+          <Grid item className={classes.attributionLogo}>
+            <img src={logo} alt="log" />
+          </Grid>
+        )}
+      </Grid>
     </Grid>
   );
 }
@@ -298,6 +339,7 @@ InsightContainer.propTypes = {
     description: PropTypes.string,
     title: PropTypes.string
   }),
+  logo: PropTypes.string,
   loading: PropTypes.bool,
   source: PropTypes.shape({
     title: PropTypes.string,
@@ -318,6 +360,7 @@ InsightContainer.defaultProps = {
   embedCode: undefined,
   gaEvents: undefined,
   insight: undefined,
+  logo: undefined,
   loading: false,
   source: undefined,
   variant: 'data'
