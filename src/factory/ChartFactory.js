@@ -205,7 +205,7 @@ function ChartFactory({
               }
               reference={[
                 {
-                  x: summedReferenceData,
+                  y: summedReferenceData,
                   label: referenceLabel
                 }
               ]}
