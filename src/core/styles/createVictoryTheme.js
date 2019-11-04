@@ -38,7 +38,8 @@ export default function createVictoryTheme(chartOptions) {
             display: 'none'
           },
           grid: {
-            strokeDasharray: 'none'
+            strokeDasharray: 'none',
+            stroke: 'rgb(236, 239, 241)'
           },
           ticks: {
             display: 'none'
@@ -53,7 +54,6 @@ export default function createVictoryTheme(chartOptions) {
       },
       pie: {
         height: 250,
-        origin: { x: 150, y: 125 },
         padding: 0,
         width: 450
       },
