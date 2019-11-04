@@ -70,7 +70,7 @@ function Label({
   width,
   ...props
 }) {
-  const [style, setStyle] = useState(null);
+  const [style, setStyle] = useState(originalStyle);
   const [text, setText] = useState(null);
   const [wrappedText, setWrappedText] = useState(null);
   const canvas = useMemo(() => document.createElement('canvas'), []);
@@ -104,8 +104,6 @@ function Label({
           );
         });
         setStyle(wrappedTextStyle);
-      } else {
-        setStyle(originalStyle);
       }
     }
   }, [highlightIndex, highlightStyle, originalStyle, wrappedText]);
