@@ -13,6 +13,7 @@ import TypographyLoader from '../TypographyLoader';
 
 import compareIcon from '../assets/icons/compare.svg';
 import dataIcon from '../assets/icons/tablet-reader.svg';
+import defaultLogo from '../assets/logo.png';
 import downloadIcon from '../assets/icons/download.svg';
 import embedIcon from '../assets/icons/code.svg';
 import shareIcon from '../assets/icons/network-connection.svg';
@@ -87,7 +88,7 @@ function ChartContainer({
   content,
   embed,
   loading,
-  logo,
+  logo: logoProp,
   onClickCompare,
   onClickData,
   onClickDownload: onClickDownloadProp,
@@ -232,6 +233,7 @@ function ChartContainer({
         setEmbedAnchorEl(null);
         setShareAnchorEl(anchorEl);
       }));
+  const logo = logoProp || defaultLogo;
 
   return (
     <Grid container className={classes.root} ref={chartRef}>
