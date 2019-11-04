@@ -10,18 +10,22 @@ const useStyles = makeStyles({
   root: {
     backgroundColor: '#eeebeb'
   },
+  actions: {
+    marginBottom: '1.25rem'
+  },
   insight: {
     padding: '0 1.25rem'
   },
   title: ({ variant }) => ({
     fontWeight: 'bold',
-    marginTop: variant === 'data' ? '2.75rem' : '2.2125rem'
+    marginTop: variant === 'data' ? '1.5rem' : '0.9625rem'
   }),
   description: ({ variant }) => ({
     backgroundColor: '#eeebeb',
     marginTop: variant === 'data' ? '0.8125rem' : '1.1875rem',
     marginBottom: '1rem'
   }),
+  links: {},
   analysisLink: {
     borderRadius: '0.75rem',
     fontWeight: 'bold',
@@ -86,7 +90,12 @@ function Insight({
       alignItems="center"
       className={classes.root}
     >
-      <Box display="flex" width="100%" justifyContent="center">
+      <Box
+        display="flex"
+        width="100%"
+        justifyContent="center"
+        className={classes.actions}
+      >
         {children}
       </Box>
       <Box
@@ -120,43 +129,48 @@ function Insight({
             )}
           </Grid>
 
-          <Grid item xs={12}>
-            <Grid container spacing={1} justify="center">
-              {analysisLink && (
-                <BlockLoader loading={loading} height={40}>
-                  <Grid item component={Box} flexGrow={1} flexBasis={333}>
-                    <Grid container justify="center">
-                      <Button
-                        fullWidth
-                        color="primary"
-                        variant={analysisLink.variant}
-                        className={classes.analysisLink}
-                        href={analysisLink.href}
-                      >
-                        {analysisLink.title}
-                      </Button>
-                    </Grid>
+          <Grid
+            item
+            xs={12}
+            container
+            spacing={1}
+            justify="center"
+            className={classes.links}
+          >
+            {analysisLink && (
+              <BlockLoader loading={loading} height={40}>
+                <Grid item component={Box} flexGrow={1} flexBasis={333}>
+                  <Grid container justify="center">
+                    <Button
+                      fullWidth
+                      color="primary"
+                      variant={analysisLink.variant}
+                      className={classes.analysisLink}
+                      href={analysisLink.href}
+                    >
+                      {analysisLink.title}
+                    </Button>
                   </Grid>
-                </BlockLoader>
-              )}
-              {dataLink && (
-                <BlockLoader loading={loading} height={40}>
-                  <Grid item component={Box} flexGrow={1} flexBasis={333}>
-                    <Grid container justify="center">
-                      <Button
-                        fullWidth
-                        color="primary"
-                        variant={dataLink.variant}
-                        className={classes.dataLink}
-                        href={dataLink.href}
-                      >
-                        {dataLink.title}
-                      </Button>
-                    </Grid>
+                </Grid>
+              </BlockLoader>
+            )}
+            {dataLink && (
+              <BlockLoader loading={loading} height={40}>
+                <Grid item component={Box} flexGrow={1} flexBasis={333}>
+                  <Grid container justify="center">
+                    <Button
+                      fullWidth
+                      color="primary"
+                      variant={dataLink.variant}
+                      className={classes.dataLink}
+                      href={dataLink.href}
+                    >
+                      {dataLink.title}
+                    </Button>
                   </Grid>
-                </BlockLoader>
-              )}
-            </Grid>
+                </Grid>
+              </BlockLoader>
+            )}
           </Grid>
         </Grid>
       </Box>
