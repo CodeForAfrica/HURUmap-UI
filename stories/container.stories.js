@@ -25,6 +25,8 @@ import {
 import { CenterDecorator } from './common';
 import { ChartFactory } from '../src/factory';
 
+import logo from './assets/dominion-logo.png';
+
 const rand = () => Number((Math.random() * 100).toFixed(1));
 
 storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
@@ -82,7 +84,7 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                 'Census 2011: Statistics South Africa (2011) South African Population Census 2011. Indicators derived from the full population Census'
               )}
               sourceLink="http://dev.dominion.africa"
-              content={object('content', { height: 600, width: '100%' })}
+              content={object('content', { height: 400, width: '100%' })}
               classes={{
                 title: classes.title,
                 embedDropDownRoot: classes.embedModal
@@ -301,7 +303,7 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
       }));
       const classes = useStyles();
 
-      const containerWidth = number('containerWidth', 930);
+      const containerWidth = number('containerWidth', 950);
       const hideInsight = boolean('hideInsight');
       const variant = select('variant', ['data', 'analysis'], 'data');
       const chartHeight = number('chartHeight');
@@ -353,6 +355,7 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
             })}
             title="Lorem ipsum dolor sit amet"
             variant={variant}
+            logo={logo}
           >
             <ChartFactory definition={statisticDefinition} data={dataArray} />
             <ChartFactory
