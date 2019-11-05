@@ -1,4 +1,4 @@
-/* eslint-disable import/prefer-default-export */
+import domToImage from 'dom-to-image';
 
 export function getLegendProps(
   { height, width },
@@ -70,4 +70,30 @@ export function getLegendProps(
     padding,
     width: chartWidth
   };
+}
+
+export function domToPng(node, { style: nodeStyle, ...options }) {
+  if (node) {
+    // To avoid any flicking, it's best to clone the node and run the `filter`
+    // function, which may modify the node, on the cloned node.
+    const clonedNode = node.cloneNode(true);
+    const { left, position } = clonedNode.style;
+    clonedNode.style.left = '-999px';
+    clonedNode.style.position = 'absolute';
+    clonedNode.style.width = `${node.scrollWidth}px`;
+
+    const style = { ...nodeStyle, left, position };
+    document.body.appendChild(clonedNode);
+
+    return domToImage
+      .toPng(clonedNode, {
+        ...options,
+        style
+      })
+      .then(dataUrl => {
+        document.body.removeChild(clonedNode);
+        return dataUrl;
+      });
+  }
+  return Promise.resolve(undefined);
 }
