@@ -21,7 +21,6 @@ function DonutTooltip({
 }) {
   return (
     <g>
-      <Tooltip {...props} renderInPortal={false} x={x} y={y} />
       <Tooltip
         {...props}
         constrainToVisibleArea
@@ -43,6 +42,7 @@ function DonutTooltip({
         x={origin.x}
         y={origin.y}
       />
+      <Tooltip {...props} renderInPortal={false} x={x} y={y} />
     </g>
   );
 }
