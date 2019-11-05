@@ -51,6 +51,10 @@ const data = PropTypes.oneOfType([
 
 export default {
   ...PropTypes,
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node)
+  ]),
   graphQlData: PropTypes.arrayOf(
     PropTypes.shape({
       x: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
