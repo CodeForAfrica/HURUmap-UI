@@ -147,7 +147,7 @@ function PieChart({
       cornerRadius={chartInnerRadius}
       highlightIndex={chart.donutHighlightIndex}
       highlightStyle={chart.donutHighlightStyle}
-      origin={{ x: origin.x, y: origin.y + chartInnerRadius }}
+      center={{ ...origin }}
       style={tooltipStyle}
       width={chartInnerRadius * 2}
     />

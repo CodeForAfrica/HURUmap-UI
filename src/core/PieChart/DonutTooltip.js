@@ -13,7 +13,7 @@ function DonutTooltip({
   cornerRadius,
   highlightIndex,
   highlightStyle,
-  origin,
+  center,
   width,
   x,
   y,
@@ -35,12 +35,12 @@ function DonutTooltip({
             highlightIndex={highlightIndex}
             highlightStyle={highlightStyle}
             width={width}
+            verticalAnchor="middle"
           />
         }
         pointerLength={0}
         renderInPortal={false}
-        x={origin.x}
-        y={origin.y}
+        center={center}
       />
       <Tooltip {...props} renderInPortal={false} x={x} y={y} />
     </g>
@@ -51,7 +51,7 @@ DonutTooltip.propTypes = {
   cornerRadius: PropTypes.number,
   highlightIndex: PropTypes.number,
   highlightStyle: PropTypes.shape({}),
-  origin: PropTypes.shape({
+  center: PropTypes.shape({
     x: PropTypes.number,
     y: PropTypes.number
   }),
@@ -64,7 +64,7 @@ DonutTooltip.defaultProps = {
   cornerRadius: undefined,
   highlightIndex: undefined,
   highlightStyle: undefined,
-  origin: undefined,
+  center: undefined,
   width: undefined,
   x: undefined,
   y: undefined
