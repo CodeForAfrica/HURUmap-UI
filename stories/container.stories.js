@@ -84,7 +84,7 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                 'Census 2011: Statistics South Africa (2011) South African Population Census 2011. Indicators derived from the full population Census'
               )}
               sourceLink="http://dev.dominion.africa"
-              content={object('content', { height: 600, width: '100%' })}
+              content={object('content', { height: 400, width: '100%' })}
               classes={{
                 title: classes.title,
                 embedDropDownRoot: classes.embedModal
