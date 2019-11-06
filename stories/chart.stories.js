@@ -285,12 +285,12 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
             legend: {
               data: [
                 {
-                  name: 'F',
-                  label: 'Female rate: 22%'
+                  name: 'Female',
+                  label: 'Female\n22%'
                 },
                 {
-                  name: 'M',
-                  label: 'Male: 78%'
+                  name: 'Male',
+                  label: 'Male\n78%'
                 }
               ],
               rowGutter: number('Legend row spacing', 20),

@@ -185,17 +185,17 @@ function ChartFactory({
                 !isComparison
                   ? [
                       {
-                        x: summedData,
+                        y: summedData,
                         label: dataLabel
                       }
                     ]
                   : [
                       {
-                        x: summedData,
+                        y: summedData,
                         label: dataLabel
                       },
                       {
-                        x: comparisonData.reduce((a, b) => a + b.y, 0),
+                        y: comparisonData.reduce((a, b) => a + b.y, 0),
                         label:
                           comparisonData[0].label ||
                           profiles.comparison[label] ||
@@ -205,7 +205,7 @@ function ChartFactory({
               }
               reference={[
                 {
-                  x: summedReferenceData,
+                  y: summedReferenceData,
                   label: referenceLabel
                 }
               ]}
