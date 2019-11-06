@@ -23,9 +23,9 @@ const useStyles = makeStyles(theme => ({
   })
 }));
 
-function Card({ link, post, width }) {
+function Card({ fullWidth, link, post, width, onExpand }) {
   const [expand, setExpand] = useState(false);
-  const classes = useStyles({ width, expand });
+  const classes = useStyles({ width: fullWidth ? '100%' : width, expand });
 
   const renderPost = () => {
     return (
@@ -55,7 +55,14 @@ function Card({ link, post, width }) {
 
         {!link && (
           <Grid item>
-            <CardButton onClick={() => setExpand(!expand)}>
+            <CardButton
+              onClick={() => {
+                if (onExpand) {
+                  onExpand(!expand);
+                }
+                setExpand(!expand);
+              }}
+            >
               {expand ? (
                 <>
                   <MinimizeIcon />
@@ -92,6 +99,8 @@ function Card({ link, post, width }) {
 }
 
 Card.propTypes = {
+  fullWidth: propTypes.bool,
+  onExpand: propTypes.func,
   link: propTypes.string,
   post: propTypes.shape({
     title: propTypes.string,
@@ -104,6 +113,8 @@ Card.propTypes = {
 };
 
 Card.defaultProps = {
+  fullWidth: false,
+  onExpand: undefined,
   link: undefined,
   post: undefined,
   width: undefined
