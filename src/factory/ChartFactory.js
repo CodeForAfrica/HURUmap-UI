@@ -18,7 +18,7 @@ function sanitizeChartProps(chartProps, mergeProps) {
      * These props are computed
      * Avoid spreading (overriding) them to the charts
      */
-    if (!['height', 'width', 'offset'].includes(key)) {
+    if (!['horizontal', 'height', 'width', 'offset'].includes(key)) {
       sanitizedProps[key] = chartProps[key];
     }
   });
@@ -303,7 +303,8 @@ function ChartFactory({
           domainPadding.x[1];
         const height = chartProps.height || theme.bar.height;
         const width = chartProps.width || theme.bar.width;
-        const computedHorizontal = computedSize > width || horizontal;
+        const computedHorizontal =
+          computedSize > width || chartProps.horizontal || horizontal;
         const computedWidth = computedHorizontal ? width : computedSize;
         const computedHeight = computedHorizontal ? computedSize : height;
 
@@ -363,7 +364,8 @@ function ChartFactory({
           (primaryData.length === 2 ? offset : 0);
         const height = chartProps.height || theme.bar.height;
         const width = chartProps.width || theme.bar.width;
-        const computedHorizontal = computedSize > width || horizontal;
+        const computedHorizontal =
+          computedSize > width || chartProps.horizontal || horizontal;
         const computedWidth = computedHorizontal ? width : computedSize;
         const computedHeight = computedHorizontal ? computedSize : height;
         if (isComparison) {
