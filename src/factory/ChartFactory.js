@@ -10,6 +10,20 @@ import aggregateData, { isSelectFunc } from './utils/aggregateData';
 import propTypes from '../core/propTypes';
 import withVictoryTheme from '../core/styles/withVictoryTheme';
 
+function sanitizeChartProps(chartProps) {
+  const sanitizedProps = {};
+  Object.keys(chartProps).forEach(key => {
+    /**
+     * These props are computed
+     * Avoid spreading (overriding) them to the charts
+     */
+    if (!['height', 'width', 'offset'].includes(key)) {
+      sanitizedProps[key] = chartProps[key];
+    }
+  });
+  return sanitizedProps;
+}
+
 function ChartFactory({
   theme,
   definition: {
@@ -38,7 +52,10 @@ function ChartFactory({
   comparisonData,
   referenceData,
   profiles,
-  ...visualProps
+  /**
+   * Custom properties to apply to the chart
+   */
+  ...chartProps
 }) {
   const key =
     id ||
@@ -209,13 +226,14 @@ function ChartFactory({
                   label: referenceLabel
                 }
               ]}
+              {...sanitizeChartProps(chartProps)}
             />
           </div>
         );
       }
       case 'pie': {
-        const height = visualProps.height || theme.pie.height;
-        const width = visualProps.width || theme.pie.width;
+        const height = chartProps.height || theme.pie.height;
+        const width = chartProps.width || theme.pie.width;
 
         return (
           <div style={{ height, width }}>
@@ -227,6 +245,7 @@ function ChartFactory({
               theme={theme}
               width={width}
               height={height}
+              {...sanitizeChartProps(chartProps)}
             />
           </div>
         );
@@ -262,12 +281,13 @@ function ChartFactory({
             description={`${description} ${xDesc}`}
             comparisonData={[]} // TODO: pending NumberVisuals components (HURUmap-UI) fix on this propTypes
             classes={{}} // TODO: pending NumberVisuals style configurations - update root margin
+            {...sanitizeChartProps(chartProps)}
           />
         );
       }
       case 'grouped_column': {
         const barCount = primaryData[0].length;
-        const offset = visualProps.offset || theme.bar.offset;
+        const offset = chartProps.offset || theme.bar.offset;
         const {
           domainPadding: {
             x: [x0, x1]
@@ -280,8 +300,8 @@ function ChartFactory({
           primaryData.length * barCount * offset +
           domainPadding.x[0] +
           domainPadding.x[1];
-        const height = visualProps.height || theme.bar.height;
-        const width = visualProps.width || theme.bar.width;
+        const height = chartProps.height || theme.bar.height;
+        const width = chartProps.width || theme.bar.width;
         const computedHorizontal = computedSize > width || horizontal;
         const computedWidth = computedHorizontal ? width : computedSize;
         const computedHeight = computedHorizontal ? computedSize : height;
@@ -319,13 +339,14 @@ function ChartFactory({
                 }
               }}
               theme={theme}
+              {...sanitizeChartProps(chartProps)}
             />
           </div>
         );
       }
       case 'column': {
         const barCount = isComparison ? 2 : 1;
-        const offset = visualProps.offset || theme.bar.offset;
+        const offset = chartProps.offset || theme.bar.offset;
         const {
           domainPadding: {
             x: [x0, x1]
@@ -338,8 +359,8 @@ function ChartFactory({
           domainPadding.x[1] +
           // Bug when 2 bars only
           (primaryData.length === 2 ? offset : 0);
-        const height = visualProps.height || theme.bar.height;
-        const width = visualProps.width || theme.bar.width;
+        const height = chartProps.height || theme.bar.height;
+        const width = chartProps.width || theme.bar.width;
         const computedHorizontal = computedSize > width || horizontal;
         const computedWidth = computedHorizontal ? width : computedSize;
         const computedHeight = computedHorizontal ? computedSize : height;
@@ -381,6 +402,7 @@ function ChartFactory({
                   }
                 }}
                 theme={theme}
+                {...sanitizeChartProps(chartProps)}
               />
             </div>
           );
@@ -420,6 +442,7 @@ function ChartFactory({
                 }
               }}
               theme={theme}
+              {...sanitizeChartProps(chartProps)}
             />
           </div>
         );
@@ -449,6 +472,11 @@ ChartFactory.propTypes = {
   definition: propTypes.shape({
     id: propTypes.string,
     type: propTypes.string,
+    /**
+     * Custom chart props
+     * These props override any default or computated values
+     */
+    props: propTypes.shape({}),
     label: propTypes.string,
     reference: propTypes.shape({ label: propTypes.string }),
     aggregate: propTypes.string,
