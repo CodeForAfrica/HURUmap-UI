@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState, useCallback } from 'react';
 
 import { Box, ButtonBase } from '@material-ui/core';
+import _ from 'lodash';
 import BarChart from '../core/BarChart';
 import PieChart from '../core/PieChart';
 import NestedProportionalAreaChart from '../core/NestedProportionalAreaChart';
@@ -10,7 +11,7 @@ import aggregateData, { isSelectFunc } from './utils/aggregateData';
 import propTypes from '../core/propTypes';
 import withVictoryTheme from '../core/styles/withVictoryTheme';
 
-function sanitizeChartProps(chartProps) {
+function sanitizeChartProps(chartProps, mergeProps) {
   const sanitizedProps = {};
   Object.keys(chartProps).forEach(key => {
     /**
@@ -21,7 +22,7 @@ function sanitizeChartProps(chartProps) {
       sanitizedProps[key] = chartProps[key];
     }
   });
-  return sanitizedProps;
+  return _.merge(mergeProps || {}, sanitizedProps);
 }
 
 function ChartFactory({
@@ -317,29 +318,30 @@ function ChartFactory({
               horizontal={computedHorizontal}
               domainPadding={domainPadding}
               labels={({ datum }) => formatLabelValue(datum.y)}
-              parts={{
-                axis: {
-                  independent: {
-                    style: {
-                      axis: {
-                        display: 'block'
-                      },
-                      tickLabels: {
-                        display: 'block'
+              theme={theme}
+              {...sanitizeChartProps(chartProps, {
+                parts: {
+                  axis: {
+                    independent: {
+                      style: {
+                        axis: {
+                          display: 'block'
+                        },
+                        tickLabels: {
+                          display: 'block'
+                        }
                       }
-                    }
-                  },
-                  dependent: {
-                    style: {
-                      grid: {
-                        display: 'block'
+                    },
+                    dependent: {
+                      style: {
+                        grid: {
+                          display: 'block'
+                        }
                       }
                     }
                   }
                 }
-              }}
-              theme={theme}
-              {...sanitizeChartProps(chartProps)}
+              })}
             />
           </div>
         );
@@ -380,7 +382,50 @@ function ChartFactory({
                 horizontal={computedHorizontal}
                 domainPadding={domainPadding}
                 labels={({ datum }) => formatLabelValue(datum.y)}
-                parts={{
+                theme={theme}
+                {...sanitizeChartProps(chartProps, {
+                  parts: {
+                    axis: {
+                      independent: {
+                        style: {
+                          axis: {
+                            display: 'block'
+                          },
+                          tickLabels: {
+                            display: 'block'
+                          }
+                        }
+                      },
+                      dependent: {
+                        style: {
+                          grid: {
+                            display: 'block'
+                          }
+                        }
+                      }
+                    }
+                  }
+                })}
+              />
+            </div>
+          );
+        }
+        return (
+          <div style={{ width: computedWidth, height: computedHeight }}>
+            <BarChart
+              key={key}
+              data={primaryData}
+              offset={offset}
+              height={computedHeight}
+              width={computedWidth}
+              horizontal={computedHorizontal}
+              domainPadding={domainPadding}
+              labels={({ datum }) => {
+                return formatLabelValue(datum.y);
+              }}
+              theme={theme}
+              {...sanitizeChartProps(chartProps, {
+                parts: {
                   axis: {
                     independent: {
                       style: {
@@ -400,49 +445,8 @@ function ChartFactory({
                       }
                     }
                   }
-                }}
-                theme={theme}
-                {...sanitizeChartProps(chartProps)}
-              />
-            </div>
-          );
-        }
-        return (
-          <div style={{ width: computedWidth, height: computedHeight }}>
-            <BarChart
-              key={key}
-              data={primaryData}
-              offset={offset}
-              height={computedHeight}
-              width={computedWidth}
-              horizontal={computedHorizontal}
-              domainPadding={domainPadding}
-              labels={({ datum }) => {
-                return formatLabelValue(datum.y);
-              }}
-              parts={{
-                axis: {
-                  independent: {
-                    style: {
-                      axis: {
-                        display: 'block'
-                      },
-                      tickLabels: {
-                        display: 'block'
-                      }
-                    }
-                  },
-                  dependent: {
-                    style: {
-                      grid: {
-                        display: 'block'
-                      }
-                    }
-                  }
                 }
-              }}
-              theme={theme}
-              {...sanitizeChartProps(chartProps)}
+              })}
             />
           </div>
         );
