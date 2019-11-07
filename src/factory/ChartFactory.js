@@ -13,7 +13,7 @@ import withVictoryTheme from '../core/styles/withVictoryTheme';
 
 function sanitizeChartProps(chartProps, mergeProps) {
   const sanitizedProps = {};
-  Object.keys(chartProps).forEach(key => {
+  Object.keys(chartProps || {}).forEach(key => {
     /**
      * These props are computed
      * Avoid spreading (overriding) them to the charts
