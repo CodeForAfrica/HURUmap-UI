@@ -121,6 +121,7 @@ function ChartContainer({
   const dataButtonRef = useRef(null);
 
   const downloadButtonRef = useRef(null);
+  const downloadHiddenClassName = 'Download--hidden';
   const chartRef = useRef(null);
   const toPng = () => {
     const filter = node => {
@@ -131,10 +132,7 @@ function ChartContainer({
           nodeStyle.display = 'flex';
         }
 
-        return !(
-          classList.contains(classes.actions) ||
-          classList.contains(classes.source)
-        );
+        return !classList.contains(downloadHiddenClassName);
       }
       return true;
     };
@@ -281,7 +279,7 @@ function ChartContainer({
             wrap="nowrap"
             direction="row"
             justify="flex-end"
-            className={classes.actions}
+            className={`${downloadHiddenClassName} ${classes.actions}`}
           >
             {onClickShare && (
               <BlockLoader loading={loading} width={40} height={40}>
@@ -382,7 +380,7 @@ function ChartContainer({
                 secondaryOpacity: 1
               }}
               component="div"
-              className={classes.source}
+              className={`${downloadHiddenClassName} ${classes.source}`}
             >
               {sourceLink && (
                 <A className={classes.sourceLink} href={sourceLink}>

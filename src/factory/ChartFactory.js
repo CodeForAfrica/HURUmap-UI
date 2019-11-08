@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState, useCallback } from 'react';
 
 import { Box, ButtonBase } from '@material-ui/core';
-import _ from 'lodash';
+
 import BarChart from '../core/BarChart';
 import PieChart from '../core/PieChart';
 import NestedProportionalAreaChart from '../core/NestedProportionalAreaChart';
@@ -311,29 +311,7 @@ function ChartFactory({
               domainPadding={domainPadding}
               labels={({ datum }) => formatLabelValue(datum.y)}
               theme={theme}
-              {..._.merge(chartProps, {
-                parts: {
-                  axis: {
-                    independent: {
-                      style: {
-                        axis: {
-                          display: 'block'
-                        },
-                        tickLabels: {
-                          display: 'block'
-                        }
-                      }
-                    },
-                    dependent: {
-                      style: {
-                        grid: {
-                          display: 'block'
-                        }
-                      }
-                    }
-                  }
-                }
-              })}
+              {...chartProps}
             />
           </div>
         );
@@ -375,29 +353,7 @@ function ChartFactory({
                 domainPadding={domainPadding}
                 labels={({ datum }) => formatLabelValue(datum.y)}
                 theme={theme}
-                {..._.merge(chartProps, {
-                  parts: {
-                    axis: {
-                      independent: {
-                        style: {
-                          axis: {
-                            display: 'block'
-                          },
-                          tickLabels: {
-                            display: 'block'
-                          }
-                        }
-                      },
-                      dependent: {
-                        style: {
-                          grid: {
-                            display: 'block'
-                          }
-                        }
-                      }
-                    }
-                  }
-                })}
+                {...chartProps}
               />
             </div>
           );
@@ -416,29 +372,7 @@ function ChartFactory({
                 return formatLabelValue(datum.y);
               }}
               theme={theme}
-              {..._.merge(chartProps, {
-                parts: {
-                  axis: {
-                    independent: {
-                      style: {
-                        axis: {
-                          display: 'block'
-                        },
-                        tickLabels: {
-                          display: 'block'
-                        }
-                      }
-                    },
-                    dependent: {
-                      style: {
-                        grid: {
-                          display: 'block'
-                        }
-                      }
-                    }
-                  }
-                }
-              })}
+              {...chartProps}
             />
           </div>
         );
