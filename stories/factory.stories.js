@@ -21,7 +21,6 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     const type = select('type', ['column', 'number', 'pie'], 'column');
     const horizontal = boolean('horizontal');
     const data = Array(number('data', 3)).fill(null);
-    // const aggregate = select('aggregate', ['sum', 'avg', 'sum:percent'], 'sum');
     const unit = text('unit', 'u');
     const subtitle = text('subtitle', 'Subtitle');
     const description = text('description', 'Description');
@@ -30,7 +29,6 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     });
     const statistic = object('statistic', {
       unit: '%',
-      // aggregate: 'sum:percent',
       unique: true
     });
 
@@ -41,7 +39,6 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
           typeProps: {
             horizontal
           },
-          // aggregate,
           unit,
           subtitle,
           description,
