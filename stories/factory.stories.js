@@ -21,7 +21,7 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     const type = select('type', ['column', 'number', 'pie'], 'column');
     const horizontal = boolean('horizontal');
     const data = Array(number('data', 3)).fill(null);
-    const aggregate = select('aggregate', ['sum', 'avg', 'sum:percent'], 'sum');
+    // const aggregate = select('aggregate', ['sum', 'avg', 'sum:percent'], 'sum');
     const unit = text('unit', 'u');
     const subtitle = text('subtitle', 'Subtitle');
     const description = text('description', 'Description');
@@ -30,7 +30,7 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     });
     const statistic = object('statistic', {
       unit: '%',
-      aggregate: 'sum:percent',
+      // aggregate: 'sum:percent',
       unique: true
     });
 
@@ -38,12 +38,14 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
       <ChartFactory
         definition={{
           type,
-          aggregate,
+          typeProps: {
+            horizontal
+          },
+          // aggregate,
           unit,
           subtitle,
           description,
-          statistic,
-          horizontal
+          statistic
         }}
         data={data.map((_, index) => {
           const y = rand();
@@ -60,12 +62,12 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
   .add('Grouped', () => {
     const type = select('type', ['grouped_column', 'number'], 'grouped_column');
     const horizontal = boolean('horizontal');
-    const groups = number('groups', 3);
-    const data = Array(number('data', 3) * groups).fill(null);
+    const groups = number('groups', 2);
+    const data = Array(number('data', 2) * groups).fill(null);
     const aggregate = select(
       'aggregate',
       ['sum', 'avg', 'sum:percent', ''],
-      'sum:percent'
+      ''
     );
     const unit = text('unit', '%');
     const subtitle = text('subtitle', 'Subtitle');
@@ -84,12 +86,15 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
       <ChartFactory
         definition={{
           type,
+          typeProps: {
+            ...props,
+            horizontal
+          },
           aggregate,
           unit,
           subtitle,
           description,
-          statistic,
-          horizontal
+          statistic
         }}
         data={data.map((_, index) => {
           const y = rand();
@@ -100,7 +105,6 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
             y
           };
         })}
-        {...props}
       />
     );
   })
