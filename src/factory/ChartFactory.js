@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState, useCallback } from 'react';
 
 import { Box, ButtonBase } from '@material-ui/core';
+
 import BarChart from '../core/BarChart';
 import PieChart from '../core/PieChart';
 import NestedProportionalAreaChart from '../core/NestedProportionalAreaChart';
@@ -15,20 +16,23 @@ function ChartFactory({
   definition: {
     id,
     type: visualType,
+    /**
+     * Custom properties to apply to the visual
+     */
+    typeProps,
     label,
     reference: { label: propReferenceLabel } = {},
     aggregate,
     unique,
     subtitle,
     description,
-    horizontal,
     locale = 'en-GB',
     customUnit = '',
     /**
      * The rest of the props are going to be considered as:
      *  Intl.NumberFormatOptions
      *
-     * Omit unit simce its an experimental NumberFormat option.
+     * Omit unit since its an experimental NumberFormat option.
      */
     unit,
     ...numberFormat
@@ -37,9 +41,15 @@ function ChartFactory({
   isComparison,
   comparisonData,
   referenceData,
-  profiles,
-  ...visualProps
+  profiles
 }) {
+  const {
+    width: widthProp,
+    height: heightProp,
+    horizontal: horizontalProp,
+    offset: offsetProp,
+    ...chartProps
+  } = typeProps || {};
   const key =
     id ||
     Math.random()
@@ -164,7 +174,7 @@ function ChartFactory({
           (referenceData.length && summedReferenceData
             ? referenceData[0].label
             : dataLabel) ||
-          // Default refrence label is the chart label
+          // Default reference label is the chart label
           profiles.parent[propReferenceLabel || label] ||
           propReferenceLabel ||
           label;
@@ -209,13 +219,14 @@ function ChartFactory({
                   label: referenceLabel
                 }
               ]}
+              {...chartProps}
             />
           </div>
         );
       }
       case 'pie': {
-        const height = visualProps.height || theme.pie.height;
-        const width = visualProps.width || theme.pie.width;
+        const height = heightProp || theme.pie.height;
+        const width = widthProp || theme.pie.width;
 
         return (
           <div style={{ height, width }}>
@@ -227,6 +238,7 @@ function ChartFactory({
               theme={theme}
               width={width}
               height={height}
+              {...chartProps}
             />
           </div>
         );
@@ -262,12 +274,13 @@ function ChartFactory({
             description={`${description} ${xDesc}`}
             comparisonData={[]} // TODO: pending NumberVisuals components (HURUmap-UI) fix on this propTypes
             classes={{}} // TODO: pending NumberVisuals style configurations - update root margin
+            {...chartProps}
           />
         );
       }
       case 'grouped_column': {
         const barCount = primaryData[0].length;
-        const offset = visualProps.offset || theme.bar.offset;
+        const offset = offsetProp || theme.bar.offset;
         const {
           domainPadding: {
             x: [x0, x1]
@@ -280,9 +293,9 @@ function ChartFactory({
           primaryData.length * barCount * offset +
           domainPadding.x[0] +
           domainPadding.x[1];
-        const height = visualProps.height || theme.bar.height;
-        const width = visualProps.width || theme.bar.width;
-        const computedHorizontal = computedSize > width || horizontal;
+        const height = heightProp || theme.bar.height;
+        const width = widthProp || theme.bar.width;
+        const computedHorizontal = computedSize > width || horizontalProp;
         const computedWidth = computedHorizontal ? width : computedSize;
         const computedHeight = computedHorizontal ? computedSize : height;
 
@@ -297,35 +310,15 @@ function ChartFactory({
               horizontal={computedHorizontal}
               domainPadding={domainPadding}
               labels={({ datum }) => formatLabelValue(datum.y)}
-              parts={{
-                axis: {
-                  independent: {
-                    style: {
-                      axis: {
-                        display: 'block'
-                      },
-                      tickLabels: {
-                        display: 'block'
-                      }
-                    }
-                  },
-                  dependent: {
-                    style: {
-                      grid: {
-                        display: 'block'
-                      }
-                    }
-                  }
-                }
-              }}
               theme={theme}
+              {...chartProps}
             />
           </div>
         );
       }
       case 'column': {
         const barCount = isComparison ? 2 : 1;
-        const offset = visualProps.offset || theme.bar.offset;
+        const offset = offsetProp || theme.bar.offset;
         const {
           domainPadding: {
             x: [x0, x1]
@@ -338,9 +331,9 @@ function ChartFactory({
           domainPadding.x[1] +
           // Bug when 2 bars only
           (primaryData.length === 2 ? offset : 0);
-        const height = visualProps.height || theme.bar.height;
-        const width = visualProps.width || theme.bar.width;
-        const computedHorizontal = computedSize > width || horizontal;
+        const height = heightProp || theme.bar.height;
+        const width = widthProp || theme.bar.width;
+        const computedHorizontal = computedSize > width || horizontalProp;
         const computedWidth = computedHorizontal ? width : computedSize;
         const computedHeight = computedHorizontal ? computedSize : height;
         if (isComparison) {
@@ -359,28 +352,8 @@ function ChartFactory({
                 horizontal={computedHorizontal}
                 domainPadding={domainPadding}
                 labels={({ datum }) => formatLabelValue(datum.y)}
-                parts={{
-                  axis: {
-                    independent: {
-                      style: {
-                        axis: {
-                          display: 'block'
-                        },
-                        tickLabels: {
-                          display: 'block'
-                        }
-                      }
-                    },
-                    dependent: {
-                      style: {
-                        grid: {
-                          display: 'block'
-                        }
-                      }
-                    }
-                  }
-                }}
                 theme={theme}
+                {...chartProps}
               />
             </div>
           );
@@ -398,28 +371,8 @@ function ChartFactory({
               labels={({ datum }) => {
                 return formatLabelValue(datum.y);
               }}
-              parts={{
-                axis: {
-                  independent: {
-                    style: {
-                      axis: {
-                        display: 'block'
-                      },
-                      tickLabels: {
-                        display: 'block'
-                      }
-                    }
-                  },
-                  dependent: {
-                    style: {
-                      grid: {
-                        display: 'block'
-                      }
-                    }
-                  }
-                }
-              }}
               theme={theme}
+              {...chartProps}
             />
           </div>
         );
@@ -449,6 +402,11 @@ ChartFactory.propTypes = {
   definition: propTypes.shape({
     id: propTypes.string,
     type: propTypes.string,
+    /**
+     * Custom chart props
+     * These props override any default or computed values
+     */
+    typeProps: propTypes.shape({}),
     label: propTypes.string,
     reference: propTypes.shape({ label: propTypes.string }),
     aggregate: propTypes.string,
@@ -486,17 +444,10 @@ ChartFactory.propTypes = {
     parent: propTypes.shape({}),
     profile: propTypes.shape({}),
     comparison: propTypes.shape({})
-  }),
-  /**
-   * Other props ...
-   */
-  height: propTypes.number,
-  offset: propTypes.number
+  })
 };
 
 ChartFactory.defaultProps = {
-  height: undefined,
-  offset: undefined,
   isComparison: false,
   comparisonData: [],
   referenceData: [],

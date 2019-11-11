@@ -133,34 +133,7 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                       }))}
                     parts={{
                       axis: {
-                        independent: {
-                          style: {
-                            axis: {
-                              display: 'block'
-                            },
-                            grid: {
-                              display: 'block'
-                            },
-                            ticks: {
-                              display: 'block'
-                            },
-                            tickLabels: {
-                              display: 'block'
-                            }
-                          }
-                        },
                         dependent: {
-                          style: {
-                            axis: {
-                              display: 'block'
-                            },
-                            grid: {
-                              display: 'block'
-                            },
-                            tickLabels: {
-                              display: 'block'
-                            }
-                          },
                           tickValues: [10, 50, 90],
                           tickFormat: ['10%', '50%', '90%']
                         }
@@ -253,26 +226,16 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                 horizontal={boolean('horizontal', false)}
                 width={500}
                 height={300}
-                data={Array(number('data', 100))
+                data={Array(number('data', 10))
                   .fill(null)
                   .map((_, index) => ({
                     x: `${index}-${index}`,
                     y: rand()
                   }))}
+                domainPadding={{ x: 40 }}
                 parts={{
                   axis: {
                     dependent: {
-                      style: {
-                        axis: {
-                          display: 'block'
-                        },
-                        grid: {
-                          display: 'block'
-                        },
-                        tickLabels: {
-                          display: 'block'
-                        }
-                      },
                       tickValues: [10, 50, 90],
                       tickFormat: ['10%', '50%', '90%']
                     }
@@ -359,14 +322,17 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
           >
             <ChartFactory definition={statisticDefinition} data={dataArray} />
             <ChartFactory
-              definition={definition}
+              definition={{
+                ...definition,
+                typeProps: {
+                  height: chartHeight,
+                  width:
+                    variant === 'analysis' && !chartWidth
+                      ? containerWidth
+                      : chartWidth
+                }
+              }}
               data={dataArray}
-              height={chartHeight}
-              width={
-                variant === 'analysis' && !chartWidth
-                  ? containerWidth
-                  : chartWidth
-              }
             />
           </InsightContainer>
         </div>

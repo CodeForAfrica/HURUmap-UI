@@ -78,14 +78,13 @@ function BarChart({
   const originalPadding = Helpers.getPadding({
     padding:
       suggestedPadding ||
-      (parts.parent && parts.parent.padding) ||
+      (parts && parts.parent && parts.parent.padding) ||
       chart.padding
   });
 
   const initialLegendProps = {
     ...chart.legend,
-    colorScale,
-    ...(parts && parts.legend)
+    colorScale
   };
   const { padding, legend } = getLegendProps(
     { height, width },
