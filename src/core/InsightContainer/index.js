@@ -247,7 +247,7 @@ function InsightContainer({
             component="span"
             className={`${classes.sourceGrid} ${downloadHiddenClassName}`}
           >
-            {source && source.href && (
+            {source && (
               <A className={classes.sourceLink} href={source.href}>
                 {`Source: ${source.title || source.href}`}
               </A>
@@ -302,7 +302,7 @@ function InsightContainer({
         className={classes.attribution}
       >
         <Grid item className={classes.attributionSource}>
-          <Typography variant="caption">{`Source ${source.href}`}</Typography>
+          {source && <Typography variant="caption">{`Source ${source.href}`}</Typography>}
         </Grid>
         <Grid item className={classes.attributionLogo}>
           <img src={logo} alt="logo" />
