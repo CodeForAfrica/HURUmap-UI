@@ -401,7 +401,9 @@ function ChartContainer({
         className={classes.attribution}
       >
         <Grid item className={classes.attributionSource}>
-          <Typography variant="caption">{`Source ${sourceLink}`}</Typography>
+          {sourceLink && (
+            <Typography variant="caption">{`Source ${sourceLink}`}</Typography>
+          )}
         </Grid>
         <Grid item className={classes.attributionLogo}>
           <img src={logo} alt="log" />

@@ -302,7 +302,9 @@ function InsightContainer({
         className={classes.attribution}
       >
         <Grid item className={classes.attributionSource}>
-          <Typography variant="caption">{`Source ${source.href}`}</Typography>
+          {source && (
+            <Typography variant="caption">{`Source ${source.href}`}</Typography>
+          )}
         </Grid>
         <Grid item className={classes.attributionLogo}>
           <img src={logo} alt="logo" />
@@ -350,7 +352,7 @@ InsightContainer.propTypes = {
   loading: PropTypes.bool,
   source: PropTypes.shape({
     title: PropTypes.string,
-    href: PropTypes.string
+    href: PropTypes.string.isRequired
   }),
   title: PropTypes.string.isRequired,
   variant: PropTypes.oneOf(['data', 'analysis'])
