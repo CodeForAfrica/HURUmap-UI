@@ -36,7 +36,10 @@ function aggregate(option, data, unique = true) {
   if (unique) {
     const uniqueX = [...new Set(data.map(d => d.x))];
     uniqueX.forEach(x => {
-      const computedData = computeData(func, data.filter(d => d.x === x));
+      const computedData = computeData(
+        func,
+        data.filter(d => d.x === x)
+      );
       reduced[x] = {
         ...computedData,
         x: selectFunc[func] ? computedData.x : x,

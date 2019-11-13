@@ -11,10 +11,9 @@ import {
   withKnobs
 } from '@storybook/addon-knobs';
 
-import Grid from '@material-ui/core/Grid';
+import { Grid, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-import { Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
 import {
   BarChart,
   ChartContainer,
