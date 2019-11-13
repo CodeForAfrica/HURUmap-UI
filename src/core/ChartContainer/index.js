@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { makeStyles, ButtonBase, Grid, Typography } from '@material-ui/core';
+import { ButtonBase, Grid, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { domToPng } from '../utils';
 

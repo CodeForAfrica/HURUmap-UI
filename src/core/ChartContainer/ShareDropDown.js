@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { makeStyles } from '@material-ui/styles';
 import { DialogContent, DialogTitle, Grid, TextField } from '@material-ui/core';
 import {
   EmailIcon,
@@ -11,6 +10,7 @@ import {
   TwitterIcon,
   TwitterShareButton
 } from 'react-share';
+import { makeStyles } from '@material-ui/core/styles';
 
 import DropDown from './DropDown';
 
