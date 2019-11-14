@@ -16,7 +16,7 @@ import BlockLoader from '../../BlockLoader';
 
 const useStyles = makeStyles({
   root: {
-    width: '100%',
+    width: 'auto',
     maxWidth: '21.75rem',
     overflow: 'hidden',
     backgroundColor: 'white',
@@ -41,10 +41,12 @@ const useStyles = makeStyles({
     letterSpacing: '0.019rem'
   },
   verticalDivider: {
-    margin: 'auto 0',
-    width: '0.07rem',
-    height: '1.913rem',
-    backgroundColor: '#eaeaea'
+    '&:not(:first-of-type)': {
+      margin: 'auto 0',
+      width: '0.07rem',
+      height: '1.913rem',
+      backgroundColor: '#eaeaea'
+    }
   },
   iconGrid: {
     height: '2.1875rem'
@@ -76,17 +78,22 @@ function Actions({
     <Grid container justify="space-evenly" className={classes.root}>
       <BlockLoader loading={loading} height={40}>
         {onShare && (
-          <ActionButton
-            gaEvents={share}
-            onClick={onShare}
-            classes={{
-              actionButton: classes.shareButton,
-              iconGrid: classes.actionButtonIconGrid
-            }}
-          >
-            <img alt="" src={shareIcon} />
-            <Typography className={classes.actionButtonText}>Share</Typography>
-          </ActionButton>
+          <>
+            <div className={classes.verticalDivider} />
+            <ActionButton
+              gaEvents={share}
+              onClick={onShare}
+              classes={{
+                actionButton: classes.shareButton,
+                iconGrid: classes.actionButtonIconGrid
+              }}
+            >
+              <img alt="" src={shareIcon} />
+              <Typography className={classes.actionButtonText}>
+                Share
+              </Typography>
+            </ActionButton>
+          </>
         )}
 
         {onDownload && (
