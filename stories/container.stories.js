@@ -300,9 +300,9 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
       return (
         <div style={{ width: containerWidth }}>
           <InsightContainer
-            hideInsight={hideInsight}
             classes={{ root: classes.root }}
             embedCode={text('embedCode', 'Embed Chart Code')}
+            hideInsight={hideInsight}
             insight={object('insight', {
               analysisLink: '#',
               dataLink: '#',
@@ -311,13 +311,13 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
               title: 'Summary'
             })}
             loading={boolean('loading', false)}
+            logo={logo}
             source={object('source', {
               title: 'Community Survey 2016',
               href: 'http://dev.dominion.africa'
             })}
             title="Lorem ipsum dolor sit amet"
             variant={variant}
-            logo={logo}
           >
             <ChartFactory definition={statisticDefinition} data={dataArray} />
             <ChartFactory
@@ -330,6 +330,88 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
                       ? containerWidth
                       : chartWidth
                 }
+              }}
+              data={dataArray}
+            />
+          </InsightContainer>
+        </div>
+      );
+    })
+  )
+  .add('Custom', () =>
+    React.createElement(() => {
+      const useStyles = makeStyles(() => ({
+        root: {
+          backgroundColor: '#f6f6f6'
+        }
+      }));
+      const classes = useStyles();
+
+      const containerWidth = 950;
+      const variant = 'data';
+      const groups = 3;
+      const data = 2;
+      const dataExponent = 6;
+      const statisticDefinition = {
+        type: 'number',
+        style: 'percent',
+        subtitle: 'Lorem ipsum',
+        description: 'Lorem ipsum dolor sit amet',
+        aggregate: 'last:percent'
+      };
+      const definition = {
+        type: 'grouped_column',
+        horizontal: false,
+        customUnit: 'km²',
+        groupBy: 'Group',
+        aggregate: 'raw'
+      };
+
+      const dataArray = Array(((definition.groupBy && groups) || 1) * data)
+        .fill(null)
+        .map((_, index) => ({
+          groupBy:
+            definition.groupBy && `${definition.groupBy} ${index % groups}`,
+          x: `Data ${index}`,
+          y: rand() * 10 ** dataExponent
+        }));
+      const share = boolean('Share', true);
+      const download = boolean('Download', true);
+      const embed = boolean('Embed', true);
+      const compare = boolean('Compare', true);
+      const showData = boolean('Show Data', true);
+
+      return (
+        <div style={{ width: containerWidth }}>
+          <InsightContainer
+            actions={{
+              handleShare: share ? () => {} : undefined,
+              // For download, undefined means use default
+              handleDownload: download ? undefined : null,
+              handleShowData: showData ? () => {} : undefined,
+              handleCompare: compare ? () => {} : undefined
+            }}
+            classes={{ root: classes.root }}
+            embedCode={embed ? 'Embed Chart Code' : undefined}
+            insight={{
+              analysisLink: '#',
+              dataLink: '#',
+              description:
+                'Ethnically diverse population of over 55 million Country benefits from broad social cohesion, with inter-ethtensions rare Two thirds of the population live on lethan $2 per day - espcially rural areas',
+              title: 'Summary'
+            }}
+            logo={logo}
+            source={{
+              title: 'Community Survey 2016',
+              href: 'http://dev.takwimu.africa'
+            }}
+            title="Lorem ipsum dolor sit amet"
+            variant={variant}
+          >
+            <ChartFactory definition={statisticDefinition} data={dataArray} />
+            <ChartFactory
+              definition={{
+                ...definition
               }}
               data={dataArray}
             />
