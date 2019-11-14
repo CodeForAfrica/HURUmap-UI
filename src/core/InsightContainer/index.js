@@ -116,7 +116,7 @@ function InsightContainer({
     handleCompare,
     handleDownload: handleDownloadProp,
     handleShowData
-  } = actions;
+  } = actions || {};
 
   const [rootNode, setRootNode] = useState();
 
@@ -154,8 +154,11 @@ function InsightContainer({
       document.body.removeChild(link);
     }
   };
+  // null should disable action
+  const handleDownload =
+    handleDownloadProp ||
+    (handleDownloadProp === undefined ? defaultHandleDownload : undefined);
 
-  const handleDownload = handleDownloadProp || defaultHandleDownload;
   const actionsChildren = (
     <Actions
       loading={loading}
@@ -361,12 +364,7 @@ InsightContainer.propTypes = {
 
 InsightContainer.defaultProps = {
   hideInsight: false,
-  actions: {
-    handleShare: () => {},
-    handleDownload: undefined,
-    handleShowData: () => {},
-    handleCompare: () => {}
-  },
+  actions: undefined,
   embedCode: undefined,
   gaEvents: undefined,
   insight: undefined,
