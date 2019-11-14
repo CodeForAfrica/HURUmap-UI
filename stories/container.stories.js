@@ -316,6 +316,7 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
               href: 'http://dev.dominion.africa'
             })}
             title="Lorem ipsum dolor sit amet"
+            description={text('embedCode', 'Lorem ipsum dolor sit amet ipsum dolor sit amet ipsum dolor sit amet ipsum dolor sit amet')}
             variant={variant}
             logo={logo}
           >
