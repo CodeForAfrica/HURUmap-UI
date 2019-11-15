@@ -17,7 +17,7 @@ import propTypes from '../propTypes';
 
 import defaultLogo from '../assets/logo.png';
 
-const useStyles = makeStyles(({ palette, breakpoints }) => ({
+const useStyles = makeStyles(({ palette }) => ({
   root: {
     height: 'auto',
     position: 'relative',
@@ -95,10 +95,8 @@ const useStyles = makeStyles(({ palette, breakpoints }) => ({
     }
   },
   descriptionWrapper: {
-    margin: '1.25rem auto 0',
-    [breakpoints.up('md')]: {
-      width: '90%'
-    }
+    marginTop: '1.25rem',
+    padding: '0 5%'
   },
   description: {
     display: 'flex',
@@ -196,8 +194,8 @@ function InsightContainer({
   const logo = logoProp || defaultLogo;
 
   return (
-    <>
-      <Grid ref={setRootNode} container className={classes.root}>
+    <div ref={setRootNode}>
+      <Grid container className={classes.root}>
         <Box
           display="flex"
           flexGrow={1}
@@ -306,40 +304,41 @@ function InsightContainer({
             </Insight>
           </Grid>
         )}
-        <Grid
-          item
-          xs={12}
-          container
-          alignItems="center"
-          justify="space-between"
-          wrap="wrap"
-          className={classes.attribution}
-        >
-          <Grid item className={classes.attributionSource}>
-            {source && (
-              <Typography variant="caption">{`Source ${source.href}`}</Typography>
-            )}
-          </Grid>
-          <Grid item className={classes.attributionLogo}>
-            <img src={logo} alt="logo" />
-          </Grid>
-        </Grid>
       </Grid>
       {description && (
-        <div className={classes.descriptionWrapper}>
-          <Grid container alignItems="flex-start" wrap="nowrap">
-            <Grid item>
-              <ArrowDropUp color="primary" />
-            </Grid>
-            <Grid item>
-              <Typography variant="caption" className={classes.description}>
-                {description}
-              </Typography>
-            </Grid>
+        <Grid
+          container
+          alignItems="flex-start"
+          wrap="nowrap"
+          className={classes.descriptionWrapper}
+        >
+          <Grid item>
+            <ArrowDropUp color="primary" />
           </Grid>
-        </div>
+          <Grid item>
+            <Typography variant="caption" className={classes.description}>
+              {description}
+            </Typography>
+          </Grid>
+        </Grid>
       )}
-    </>
+      <Grid
+        container
+        alignItems="center"
+        justify="space-between"
+        wrap="wrap"
+        className={classes.attribution}
+      >
+        <Grid item className={classes.attributionSource}>
+          {source && (
+            <Typography variant="caption">{`Source ${source.href}`}</Typography>
+          )}
+        </Grid>
+        <Grid item className={classes.attributionLogo}>
+          <img src={logo} alt="logo" />
+        </Grid>
+      </Grid>
+    </div>
   );
 }
 
