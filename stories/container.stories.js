@@ -264,7 +264,7 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
     React.createElement(() => {
       const useStyles = makeStyles(() => ({
         root: {
-          backgroundColor: '#f6f6f6'
+          backgroundColor: '#fff'
         }
       }));
       const classes = useStyles();

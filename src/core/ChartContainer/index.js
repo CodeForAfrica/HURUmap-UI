@@ -21,6 +21,9 @@ import shareIcon from '../assets/icons/network-connection.svg';
 
 const useStyles = makeStyles(({ palette }) => ({
   root: {
+    backgroundColor: '#f1f1ed'
+  },
+  containerRoot: {
     backgroundColor: '#fff',
     width: 'available'
   },
@@ -242,8 +245,8 @@ function ChartContainer({
   const logo = logoProp || defaultLogo;
 
   return (
-    <div ref={chartRef}>
-      <Grid container className={classes.root}>
+    <div ref={chartRef} className={classes.root}>
+      <Grid container className={classes.containerRoot}>
         <Grid item xs={12} container className={classes.chart}>
           <Grid
             item

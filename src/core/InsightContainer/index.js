@@ -19,6 +19,9 @@ import defaultLogo from '../assets/logo.png';
 
 const useStyles = makeStyles(({ palette }) => ({
   root: {
+    backgroundColor: '#fff'
+  },
+  container: {
     height: 'auto',
     position: 'relative',
     backgroundColor: '#f6f6f6'
@@ -194,8 +197,8 @@ function InsightContainer({
   const logo = logoProp || defaultLogo;
 
   return (
-    <div ref={setRootNode}>
-      <Grid container className={classes.root}>
+    <div ref={setRootNode} className={classes.root}>
+      <Grid container className={classes.container}>
         <Box
           display="flex"
           flexGrow={1}
