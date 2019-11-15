@@ -21,7 +21,7 @@ const useStyles = makeStyles(({ palette }) => ({
   root: {
     backgroundColor: '#fff'
   },
-  container: {
+  containerRoot: {
     height: 'auto',
     position: 'relative',
     backgroundColor: '#f6f6f6'
@@ -198,7 +198,7 @@ function InsightContainer({
 
   return (
     <div ref={setRootNode} className={classes.root}>
-      <Grid container className={classes.container}>
+      <Grid container className={classes.containerRoot}>
         <Box
           display="flex"
           flexGrow={1}
