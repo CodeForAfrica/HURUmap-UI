@@ -12,12 +12,12 @@ import EmbedDropDown from './EmbedDropDown';
 import ShareDropDown from './ShareDropDown';
 import TypographyLoader from '../TypographyLoader';
 
-import compareIcon from '../assets/icons/compare.svg';
-import dataIcon from '../assets/icons/tablet-reader.svg';
 import defaultLogo from '../assets/logo.png';
-import downloadIcon from '../assets/icons/download.svg';
-import embedIcon from '../assets/icons/code.svg';
-import shareIcon from '../assets/icons/network-connection.svg';
+import CompareIcon from '../assets/icons/compare.svg';
+import DataIcon from '../assets/icons/tablet-reader.svg';
+import DownloadIcon from '../assets/icons/download.svg';
+import EmbedIcon from '../assets/icons/code.svg';
+import ShareIcon from '../assets/icons/network-connection.svg';
 
 const useStyles = makeStyles(({ palette }) => ({
   root: {
@@ -300,7 +300,7 @@ function ChartContainer({
                     }
                     ref={shareButtonRef}
                   >
-                    <img alt="Share" src={shareIcon} />
+                    <ShareIcon />
                   </ButtonBase>
                 </BlockLoader>
               )}
@@ -314,7 +314,7 @@ function ChartContainer({
                     }
                     ref={embedButtonRef}
                   >
-                    <img alt="Embed" src={embedIcon} />
+                    <EmbedIcon />
                   </ButtonBase>
                 </BlockLoader>
               )}
@@ -333,7 +333,7 @@ function ChartContainer({
                     }
                     ref={downloadButtonRef}
                   >
-                    <img alt="Download" src={downloadIcon} />
+                    <DownloadIcon />
                   </ButtonBase>
                 </BlockLoader>
               )}
@@ -347,7 +347,7 @@ function ChartContainer({
                     }
                     ref={compareButtonRef}
                   >
-                    <img alt="Compare" src={compareIcon} />
+                    <CompareIcon />
                   </ButtonBase>
                 </BlockLoader>
               )}
@@ -361,7 +361,7 @@ function ChartContainer({
                     }
                     ref={dataButtonRef}
                   >
-                    <img alt="Show Data" src={dataIcon} />
+                    <DataIcon />
                   </ButtonBase>
                 </BlockLoader>
               )}

@@ -20,6 +20,7 @@
     "@storybook/storybook-deployer": "^2.8.1",
     "apollo-client": "^2.6.4",
     "babel-loader": "^8.0.5",
+    "babel-plugin-inline-react-svg": "^1.1.0",
     "eslint": "^6.5.1",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.0.0",

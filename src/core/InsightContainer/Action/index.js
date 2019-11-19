@@ -7,11 +7,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import ActionButton from './ActionButton';
 import EmbedCodeTextArea from './EmbedCodeTextArea';
 
-import shareIcon from '../../assets/icons/network-connection.svg';
-import embedIcon from '../../assets/icons/code.svg';
-import downloadIcon from '../../assets/icons/download.svg';
-import compareIcon from '../../assets/icons/compare.svg';
-import showIcon from '../../assets/icons/tablet-reader.svg';
+import CompareIcon from '../../assets/icons/compare.svg';
+import DataIcon from '../../assets/icons/tablet-reader.svg';
+import DownloadIcon from '../../assets/icons/download.svg';
+import EmbedIcon from '../../assets/icons/code.svg';
+import ShareIcon from '../../assets/icons/network-connection.svg';
 import BlockLoader from '../../BlockLoader';
 
 const useStyles = makeStyles({
@@ -88,7 +88,7 @@ function Actions({
                 iconGrid: classes.actionButtonIconGrid
               }}
             >
-              <img alt="" src={shareIcon} />
+              <ShareIcon />
               <Typography className={classes.actionButtonText}>
                 Share
               </Typography>
@@ -107,7 +107,7 @@ function Actions({
                 iconGrid: classes.actionButtonIconGrid
               }}
             >
-              <img alt="" src={downloadIcon} />
+              <DownloadIcon />
               <Typography className={classes.actionButtonText}>
                 Download
               </Typography>
@@ -126,7 +126,7 @@ function Actions({
                 iconGrid: classes.actionButtonIconGrid
               }}
             >
-              <img alt="" src={embedIcon} />
+              <EmbedIcon />
               <Typography className={classes.actionButtonText}>
                 Embed
               </Typography>
@@ -146,7 +146,7 @@ function Actions({
                 iconGrid: classes.actionButtonIconGrid
               }}
             >
-              <img alt="" src={compareIcon} />
+              <CompareIcon />
               <Typography className={classes.actionButtonText}>
                 Compare
               </Typography>
@@ -165,7 +165,7 @@ function Actions({
                 iconGrid: classes.actionButtonIconGrid
               }}
             >
-              <img alt="" src={showIcon} />
+              <DataIcon />
               <Typography className={classes.actionButtonText}>
                 Show Data
               </Typography>
