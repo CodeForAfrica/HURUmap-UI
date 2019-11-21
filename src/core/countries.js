@@ -16,7 +16,7 @@ export default [
         name: 'Region'
       },
       level2: {
-        name: 'Provinces'
+        name: 'Province'
       },
       level3: {
         name: 'Department'
@@ -133,7 +133,7 @@ export default [
         name: 'Country'
       },
       level1: {
-        name: 'Municipality'
+        name: 'Province'
       }
     }
   },
