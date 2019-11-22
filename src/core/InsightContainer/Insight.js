@@ -71,10 +71,12 @@ function Insight({
       : analysisLinkProp;
   if (analysisLink) {
     analysisLink.variant = analysisLink.variant || 'contained';
-    analysisLink.title =
-      analysisLink.title || analysisLink.variant === 'contained'
-        ? 'Read the full analysis'
-        : 'Read the country analysis';
+    if (!analysisLink.title) {
+      analysisLink.title =
+        analysisLink.variant === 'contained'
+          ? 'Read the full analysis'
+          : 'Read the country analysis';
+    }
   }
   const dataLink =
     dataLinkProp && typeof dataLinkProp === 'string'
