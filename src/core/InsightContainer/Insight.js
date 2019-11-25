@@ -84,6 +84,7 @@ function Insight({
       : dataLinkProp;
   if (dataLink) {
     dataLink.variant = dataLink.variant || 'outlined';
+    dataLink.title = dataLink.title || 'View more data by topic';
   }
 
   return (
