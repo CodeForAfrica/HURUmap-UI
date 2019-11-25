@@ -402,8 +402,24 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
             classes={{ root: classes.root }}
             embedCode={embed ? 'Embed Chart Code' : undefined}
             insight={{
-              analysisLink: '#',
-              dataLink: '#',
+              analysisLink: {
+                href: text('Analysis link url', '#'),
+                title: text('Analysis link title', 'Read country analysis'),
+                variant: select(
+                  'Analysis link variant',
+                  ['contained', 'outlined'],
+                  'contained'
+                )
+              },
+              dataLink: {
+                href: text('Data link url', '#'),
+                title: text('Data link title', 'View country data'),
+                variant: select(
+                  'Data link variant',
+                  ['contained', 'outlined'],
+                  'outlined'
+                )
+              },
               description:
                 'Ethnically diverse population of over 55 million Country benefits from broad social cohesion, with inter-ethtensions rare Two thirds of the population live on lethan $2 per day - espcially rural areas',
               title: 'Summary'
