@@ -12,8 +12,11 @@ export { default as DropDown } from './ChartContainer/DropDown';
 export { default as EmbedDropDown } from './ChartContainer/EmbedDropDown';
 export { default as InsightContainer } from './InsightContainer';
 export { default as LineChart } from './LineChart';
-export { default as NestedProportionalAreaChart } from './NestedProportionalAreaChart';
+export {
+  default as NestedProportionalAreaChart
+} from './NestedProportionalAreaChart';
 export { default as NumberVisuals } from './NumberVisuals';
 export { default as PieChart } from './PieChart';
 export { default as ShareDropDown } from './ChartContainer/ShareDropDown';
 export { default as TypographyLoader } from './TypographyLoader';
+export { default as Card } from './Card';
