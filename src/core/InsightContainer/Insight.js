@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { makeStyles, Button, Grid, Box } from '@material-ui/core';
+import { Button, Grid, Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import BlockLoader from '../BlockLoader';
 import TypographyLoader from '../TypographyLoader';
@@ -70,10 +71,12 @@ function Insight({
       : analysisLinkProp;
   if (analysisLink) {
     analysisLink.variant = analysisLink.variant || 'contained';
-    analysisLink.title =
-      analysisLink.title || analysisLink.variant === 'contained'
-        ? 'Read the full analysis'
-        : 'Read the country analysis';
+    if (!analysisLink.title) {
+      analysisLink.title =
+        analysisLink.variant === 'contained'
+          ? 'Read the full analysis'
+          : 'Read the country analysis';
+    }
   }
   const dataLink =
     dataLinkProp && typeof dataLinkProp === 'string'
@@ -81,6 +84,7 @@ function Insight({
       : dataLinkProp;
   if (dataLink) {
     dataLink.variant = dataLink.variant || 'outlined';
+    dataLink.title = dataLink.title || 'View more data by topic';
   }
 
   return (

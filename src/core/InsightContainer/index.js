@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { makeStyles, Box, Grid, Typography } from '@material-ui/core';
+import { Box, Grid, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
+import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import { domToPng } from '../utils';
 
 import BlockLoader from '../BlockLoader';
@@ -17,6 +19,9 @@ import defaultLogo from '../assets/logo.png';
 
 const useStyles = makeStyles(({ palette }) => ({
   root: {
+    backgroundColor: '#fff'
+  },
+  containerRoot: {
     height: 'auto',
     position: 'relative',
     backgroundColor: '#f6f6f6'
@@ -91,6 +96,14 @@ const useStyles = makeStyles(({ palette }) => ({
       maxWidth: '300px',
       width: 'auto'
     }
+  },
+  descriptionWrapper: {
+    marginTop: '1.25rem',
+    padding: '0 5%'
+  },
+  description: {
+    display: 'flex',
+    marginLeft: '1.25rem'
   }
 }));
 
@@ -105,6 +118,7 @@ function InsightContainer({
   loading,
   source,
   title,
+  description,
   ...props
 }) {
   const { variant } = props;
@@ -115,7 +129,7 @@ function InsightContainer({
     handleCompare,
     handleDownload: handleDownloadProp,
     handleShowData
-  } = actions;
+  } = actions || {};
 
   const [rootNode, setRootNode] = useState();
 
@@ -153,8 +167,11 @@ function InsightContainer({
       document.body.removeChild(link);
     }
   };
+  // null should disable action
+  const handleDownload =
+    handleDownloadProp ||
+    (handleDownloadProp === undefined ? defaultHandleDownload : undefined);
 
-  const handleDownload = handleDownloadProp || defaultHandleDownload;
   const actionsChildren = (
     <Actions
       loading={loading}
@@ -183,118 +200,135 @@ function InsightContainer({
   const logo = logoProp || defaultLogo;
 
   return (
-    <Grid ref={setRootNode} container className={classes.root}>
-      <Box
-        display="flex"
-        flexGrow={1}
-        flexShrink={1}
-        flexWrap="wrap"
-        flexBasis={hideInsight ? '100%' : '35rem'}
-        padding="1.25rem"
-      >
-        {variant === 'data' && (
-          <Grid item className={classes.highlightGrid}>
-            <Grid container alignItems="stretch" alignContent="space-between">
-              <Grid item xs={12}>
-                <BlockLoader loading={loading} height={300}>
-                  {highlightChild}
-                </BlockLoader>
+    <div ref={setRootNode} className={classes.root}>
+      <Grid container className={classes.containerRoot}>
+        <Box
+          display="flex"
+          flexGrow={1}
+          flexShrink={1}
+          flexWrap="wrap"
+          flexBasis={hideInsight ? '100%' : '35rem'}
+          padding="1.25rem"
+        >
+          {variant === 'data' && (
+            <Grid item className={classes.highlightGrid}>
+              <Grid container alignItems="stretch" alignContent="space-between">
+                <Grid item xs={12}>
+                  <BlockLoader loading={loading} height={300}>
+                    {highlightChild}
+                  </BlockLoader>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        )}
+          )}
 
-        <Grid item className={classes.contentGrid}>
-          <Box
-            display="flex"
-            height="100%"
-            alignItems="flex-start"
-            flexDirection="column"
-          >
-            <TypographyLoader
-              variant="h5"
-              loading={loading}
-              className={classes.title}
+          <Grid item className={classes.contentGrid}>
+            <Box
+              display="flex"
+              height="100%"
+              alignItems="flex-start"
+              flexDirection="column"
             >
-              {title}
-            </TypographyLoader>
-            <BlockLoader loading={loading} height={300}>
-              {highlightChild && (
-                <Box className={classes.highlightContentChild}>
-                  {highlightChild}
-                </Box>
-              )}
-              <Box
-                width="100%"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                minHeight={300}
-                flexGrow={1}
+              <TypographyLoader
+                variant="h5"
+                loading={loading}
+                className={classes.title}
               >
-                {contentChild}
-              </Box>
-            </BlockLoader>
-          </Box>
-        </Grid>
+                {title}
+              </TypographyLoader>
+              <BlockLoader loading={loading} height={300}>
+                {highlightChild && (
+                  <Box className={classes.highlightContentChild}>
+                    {highlightChild}
+                  </Box>
+                )}
+                <Box
+                  width="100%"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  minHeight={300}
+                  flexGrow={1}
+                >
+                  {contentChild}
+                </Box>
+              </BlockLoader>
+            </Box>
+          </Grid>
 
-        <Box width="100%" marginTop="1.25rem">
-          <TypographyLoader
-            loading={loading}
-            loader={{
-              height: 20
-            }}
-            component="span"
-            className={`${classes.sourceGrid} ${downloadHiddenClassName}`}
-          >
-            {source && (
-              <A className={classes.sourceLink} href={source.href}>
-                {`Source: ${source.title || source.href}`}
-              </A>
-            )}
-          </TypographyLoader>
+          <Box width="100%" marginTop="1.25rem">
+            <TypographyLoader
+              loading={loading}
+              loader={{
+                height: 20
+              }}
+              component="span"
+              className={`${classes.sourceGrid} ${downloadHiddenClassName}`}
+            >
+              {source && (
+                <A className={classes.sourceLink} href={source.href}>
+                  {`Source: ${source.title || source.href}`}
+                </A>
+              )}
+            </TypographyLoader>
+          </Box>
+
+          {(variant === 'analysis' || hideInsight) && (
+            <Box
+              width="100%"
+              display="flex"
+              justifyContent="center"
+              marginTop="1.25rem"
+              className={downloadHiddenClassName}
+            >
+              {actionsChildren}
+            </Box>
+          )}
         </Box>
 
-        {(variant === 'analysis' || hideInsight) && (
-          <Box
-            width="100%"
-            display="flex"
-            justifyContent="center"
-            marginTop="1.25rem"
-            className={downloadHiddenClassName}
-          >
-            {actionsChildren}
-          </Box>
+        {!hideInsight && (
+          <Grid item className={classes.insightGrid}>
+            <Insight
+              analysisLink={insight.analysisLink}
+              classes={{
+                root: classes.insight,
+                actions: `Download--hidden`,
+                analysisLink: classes.insightAnalysis,
+                dataLink: classes.insightDataLink,
+                description: classes.insightDescription,
+                insight: classes.insightContent,
+                links: downloadHiddenClassName,
+                title: classes.insightTitle
+              }}
+              dataLink={insight.dataLink}
+              description={insight.description}
+              title={insight.title}
+              variant={variant}
+              loading={loading}
+            >
+              {variant === 'data' && actionsChildren}
+            </Insight>
+          </Grid>
         )}
-      </Box>
-
-      {!hideInsight && (
-        <Grid item className={classes.insightGrid}>
-          <Insight
-            analysisLink={insight.analysisLink}
-            classes={{
-              root: classes.insight,
-              actions: `Download--hidden`,
-              analysisLink: classes.insightAnalysis,
-              dataLink: classes.insightDataLink,
-              description: classes.insightDescription,
-              insight: classes.insightContent,
-              links: downloadHiddenClassName,
-              title: classes.insightTitle
-            }}
-            dataLink={insight.dataLink}
-            description={insight.description}
-            title={insight.title}
-            variant={variant}
-            loading={loading}
-          >
-            {variant === 'data' && actionsChildren}
-          </Insight>
+      </Grid>
+      {description && (
+        <Grid
+          container
+          alignItems="flex-start"
+          wrap="nowrap"
+          className={classes.descriptionWrapper}
+        >
+          <Grid item>
+            <ArrowDropUp color="primary" />
+          </Grid>
+          <Grid item>
+            <Typography variant="caption" className={classes.description}>
+              {description}
+            </Typography>
+          </Grid>
         </Grid>
       )}
       <Grid
-        item
-        xs={12}
         container
         alignItems="center"
         justify="space-between"
@@ -302,13 +336,15 @@ function InsightContainer({
         className={classes.attribution}
       >
         <Grid item className={classes.attributionSource}>
-          <Typography variant="caption">{`Source ${source.href}`}</Typography>
+          {source && (
+            <Typography variant="caption">{`Source ${source.href}`}</Typography>
+          )}
         </Grid>
         <Grid item className={classes.attributionLogo}>
           <img src={logo} alt="logo" />
         </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 }
 
@@ -347,10 +383,11 @@ InsightContainer.propTypes = {
     title: PropTypes.string
   }),
   logo: PropTypes.string,
+  description: PropTypes.string,
   loading: PropTypes.bool,
   source: PropTypes.shape({
     title: PropTypes.string,
-    href: PropTypes.string
+    href: PropTypes.string.isRequired
   }),
   title: PropTypes.string.isRequired,
   variant: PropTypes.oneOf(['data', 'analysis'])
@@ -358,14 +395,10 @@ InsightContainer.propTypes = {
 
 InsightContainer.defaultProps = {
   hideInsight: false,
-  actions: {
-    handleShare: () => {},
-    handleDownload: undefined,
-    handleShowData: () => {},
-    handleCompare: () => {}
-  },
+  actions: undefined,
   embedCode: undefined,
   gaEvents: undefined,
+  description: undefined,
   insight: undefined,
   logo: undefined,
   loading: false,

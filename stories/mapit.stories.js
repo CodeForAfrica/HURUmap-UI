@@ -12,7 +12,7 @@ import { action } from '@storybook/addon-actions';
 
 import { TileLayer } from 'leaflet';
 import { Grid } from '@material-ui/core';
-import { MapIt } from '../src/core';
+import { countries, MapIt } from '../src/core';
 import { CenterDecorator } from './common';
 
 storiesOf('HURUmap UI|MapIt/Geography', module)
@@ -23,7 +23,10 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
       tolerance={number('tolerance', 0.01)}
       url={text('url', 'https://mapit.hurumap.org')}
       drawChildren={boolean('drawChildren', true)}
-      filterCountries={array('filterCountries', ['KE', 'TZ', 'ZA'])}
+      filterCountries={array(
+        'filterCountries',
+        countries.map(c => c.iso_code)
+      )}
       drawProfile={boolean('drawProfile', false)}
       codeType={text('codeType', 'AFR')}
       geoLevel={text('geoLevel', 'continent')}

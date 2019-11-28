@@ -256,7 +256,10 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
             ],
             x: number('Legend x', 90)
           },
-          scatter: [{ size: 5, symbol: 'circle' }, { size: 5, symbol: 'plus' }],
+          scatter: [
+            { size: 5, symbol: 'circle' },
+            { size: 5, symbol: 'plus' }
+          ],
           tooltip: { style: { textAnchor: 'start' } }
         }}
       />
@@ -285,12 +288,12 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
             legend: {
               data: [
                 {
-                  name: 'F',
-                  label: 'Female rate: 22%'
+                  name: 'Female',
+                  label: 'Female\n22%'
                 },
                 {
-                  name: 'M',
-                  label: 'Male: 78%'
+                  name: 'Male',
+                  label: 'Male\n78%'
                 }
               ],
               rowGutter: number('Legend row spacing', 20),

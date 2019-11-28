@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { makeStyles, ButtonBase, Grid, Typography } from '@material-ui/core';
+import { ButtonBase, Grid, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { domToPng } from '../utils';
 
@@ -11,15 +12,18 @@ import EmbedDropDown from './EmbedDropDown';
 import ShareDropDown from './ShareDropDown';
 import TypographyLoader from '../TypographyLoader';
 
-import compareIcon from '../assets/icons/compare.svg';
-import dataIcon from '../assets/icons/tablet-reader.svg';
 import defaultLogo from '../assets/logo.png';
-import downloadIcon from '../assets/icons/download.svg';
-import embedIcon from '../assets/icons/code.svg';
-import shareIcon from '../assets/icons/network-connection.svg';
+import CompareIcon from '../assets/icons/compare.svg';
+import DataIcon from '../assets/icons/tablet-reader.svg';
+import DownloadIcon from '../assets/icons/download.svg';
+import EmbedIcon from '../assets/icons/code.svg';
+import ShareIcon from '../assets/icons/network-connection.svg';
 
 const useStyles = makeStyles(({ palette }) => ({
   root: {
+    backgroundColor: '#f1f1ed'
+  },
+  containerRoot: {
     backgroundColor: '#fff',
     width: 'available'
   },
@@ -82,7 +86,11 @@ const useStyles = makeStyles(({ palette }) => ({
       maxWidth: '300px',
       width: 'auto'
     }
-  }
+  },
+  descriptionWrapper: {
+    marginTop: '1.75rem'
+  },
+  description: {}
 }));
 
 function ChartContainer({
@@ -101,6 +109,7 @@ function ChartContainer({
   sourceTitle,
   title,
   subtitle,
+  description,
   ...props
 }) {
   const classes = useStyles(props);
@@ -121,6 +130,7 @@ function ChartContainer({
   const dataButtonRef = useRef(null);
 
   const downloadButtonRef = useRef(null);
+  const downloadHiddenClassName = 'Download--hidden';
   const chartRef = useRef(null);
   const toPng = () => {
     const filter = node => {
@@ -131,10 +141,7 @@ function ChartContainer({
           nodeStyle.display = 'flex';
         }
 
-        return !(
-          classList.contains(classes.actions) ||
-          classList.contains(classes.source)
-        );
+        return !classList.contains(downloadHiddenClassName);
       }
       return true;
     };
@@ -238,164 +245,178 @@ function ChartContainer({
   const logo = logoProp || defaultLogo;
 
   return (
-    <Grid container className={classes.root} ref={chartRef}>
-      <Grid item xs={12} container className={classes.chart}>
-        <Grid
-          item
-          xs={12}
-          container
-          wrap="nowrap"
-          direction="row"
-          alignItems="flex-start"
-          justify="space-between"
-        >
-          <Grid item xs={8}>
-            <TypographyLoader
-              loading={loading}
-              loader={{
-                primaryOpacity: 0.5,
-                secondaryOpacity: 1
-              }}
-              className={classes.title}
-              variant="body1"
-            >
-              {title}
-            </TypographyLoader>
-            <TypographyLoader
-              loading={loading}
-              loader={{
-                primaryOpacity: 0.5,
-                secondaryOpacity: 1
-              }}
-              className={classes.subtitle}
-              variant="caption"
-            >
-              {subtitle}
-            </TypographyLoader>
-          </Grid>
-
+    <div ref={chartRef} className={classes.root}>
+      <Grid container className={classes.containerRoot}>
+        <Grid item xs={12} container className={classes.chart}>
           <Grid
             item
-            xs={4}
+            xs={12}
             container
             wrap="nowrap"
             direction="row"
-            justify="flex-end"
-            className={classes.actions}
+            alignItems="flex-start"
+            justify="space-between"
           >
-            {onClickShare && (
-              <BlockLoader loading={loading} width={40} height={40}>
-                <ButtonBase
-                  className={classes.actionButton}
-                  onClick={() =>
-                    onClickShare(getReferenceObject(shareButtonRef))
-                  }
-                  ref={shareButtonRef}
-                >
-                  <img alt="Share" src={shareIcon} />
-                </ButtonBase>
-              </BlockLoader>
-            )}
+            <Grid item xs={8}>
+              <TypographyLoader
+                loading={loading}
+                loader={{
+                  primaryOpacity: 0.5,
+                  secondaryOpacity: 1
+                }}
+                className={classes.title}
+                variant="body1"
+              >
+                {title}
+              </TypographyLoader>
+              <TypographyLoader
+                loading={loading}
+                loader={{
+                  primaryOpacity: 0.5,
+                  secondaryOpacity: 1
+                }}
+                className={classes.subtitle}
+                variant="caption"
+              >
+                {subtitle}
+              </TypographyLoader>
+            </Grid>
 
-            {onClickEmbed && (
-              <BlockLoader loading={loading} width={40} height={40}>
-                <ButtonBase
-                  className={classes.actionButton}
-                  onClick={() =>
-                    onClickEmbed(getReferenceObject(embedButtonRef))
-                  }
-                  ref={embedButtonRef}
-                >
-                  <img alt="Embed" src={embedIcon} />
-                </ButtonBase>
-              </BlockLoader>
-            )}
+            <Grid
+              item
+              xs={4}
+              container
+              wrap="nowrap"
+              direction="row"
+              justify="flex-end"
+              className={`${downloadHiddenClassName} ${classes.actions}`}
+            >
+              {onClickShare && (
+                <BlockLoader loading={loading} width={40} height={40}>
+                  <ButtonBase
+                    className={classes.actionButton}
+                    onClick={() =>
+                      onClickShare(getReferenceObject(shareButtonRef))
+                    }
+                    ref={shareButtonRef}
+                  >
+                    <ShareIcon />
+                  </ButtonBase>
+                </BlockLoader>
+              )}
 
-            {onClickDownload && (
-              <BlockLoader loading={loading} width={40} height={40}>
-                <ButtonBase
-                  className={classes.actionButton}
-                  onClick={() =>
-                    toPng().then(
-                      onClickDownload.bind(
-                        null,
-                        getReferenceObject(downloadButtonRef)
+              {onClickEmbed && (
+                <BlockLoader loading={loading} width={40} height={40}>
+                  <ButtonBase
+                    className={classes.actionButton}
+                    onClick={() =>
+                      onClickEmbed(getReferenceObject(embedButtonRef))
+                    }
+                    ref={embedButtonRef}
+                  >
+                    <EmbedIcon />
+                  </ButtonBase>
+                </BlockLoader>
+              )}
+
+              {onClickDownload && (
+                <BlockLoader loading={loading} width={40} height={40}>
+                  <ButtonBase
+                    className={classes.actionButton}
+                    onClick={() =>
+                      toPng().then(
+                        onClickDownload.bind(
+                          null,
+                          getReferenceObject(downloadButtonRef)
+                        )
                       )
-                    )
-                  }
-                  ref={downloadButtonRef}
-                >
-                  <img alt="Download" src={downloadIcon} />
-                </ButtonBase>
-              </BlockLoader>
-            )}
+                    }
+                    ref={downloadButtonRef}
+                  >
+                    <DownloadIcon />
+                  </ButtonBase>
+                </BlockLoader>
+              )}
 
-            {onClickCompare && (
-              <BlockLoader loading={loading} width={40} height={40}>
-                <ButtonBase
-                  className={classes.actionButton}
-                  onClick={() =>
-                    onClickCompare(getReferenceObject(compareButtonRef))
-                  }
-                  ref={compareButtonRef}
-                >
-                  <img alt="Compare" src={compareIcon} />
-                </ButtonBase>
-              </BlockLoader>
-            )}
+              {onClickCompare && (
+                <BlockLoader loading={loading} width={40} height={40}>
+                  <ButtonBase
+                    className={classes.actionButton}
+                    onClick={() =>
+                      onClickCompare(getReferenceObject(compareButtonRef))
+                    }
+                    ref={compareButtonRef}
+                  >
+                    <CompareIcon />
+                  </ButtonBase>
+                </BlockLoader>
+              )}
 
-            {onClickData && (
-              <BlockLoader loading={loading} width={40} height={40}>
-                <ButtonBase
-                  className={classes.actionButton}
-                  onClick={() => onClickData(getReferenceObject(dataButtonRef))}
-                  ref={dataButtonRef}
-                >
-                  <img alt="Show Data" src={dataIcon} />
-                </ButtonBase>
-              </BlockLoader>
-            )}
+              {onClickData && (
+                <BlockLoader loading={loading} width={40} height={40}>
+                  <ButtonBase
+                    className={classes.actionButton}
+                    onClick={() =>
+                      onClickData(getReferenceObject(dataButtonRef))
+                    }
+                    ref={dataButtonRef}
+                  >
+                    <DataIcon />
+                  </ButtonBase>
+                </BlockLoader>
+              )}
 
-            {embedDropDown}
-            {shareDropDown}
+              {embedDropDown}
+              {shareDropDown}
+            </Grid>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            container
+            justify="center"
+            className={classes.content}
+            style={{ width: content.width, height: content.height }}
+          >
+            {/* Set width 100% only when loading to allow Chart to define its own width
+            otherwise a chart with a small width will scale and look large. */}
+            <div
+              style={{ width: loading && '100%', height: '100%' }}
+              className={classes.container}
+            >
+              <BlockLoader loading={loading}>{children}</BlockLoader>
+              <TypographyLoader
+                loading={loading}
+                loader={{
+                  primaryOpacity: 0.5,
+                  secondaryOpacity: 1
+                }}
+                component="div"
+                className={`${downloadHiddenClassName} ${classes.source}`}
+              >
+                {sourceLink && (
+                  <A className={classes.sourceLink} href={sourceLink}>
+                    {`Source: ${sourceTitle || sourceLink}`}
+                  </A>
+                )}
+              </TypographyLoader>
+            </div>
           </Grid>
         </Grid>
-        <Grid
-          item
-          xs={12}
-          container
-          justify="center"
-          className={classes.content}
-          style={{ width: content.width, height: content.height }}
-        >
-          {/* Set width 100% only when loading to allow Chart to define its own width
-            otherwise a chart with a small width will scale and look large. */}
-          <div
-            style={{ width: loading && '100%', height: '100%' }}
-            className={classes.container}
-          >
-            <BlockLoader loading={loading}>{children}</BlockLoader>
-            <TypographyLoader
-              loading={loading}
-              loader={{
-                primaryOpacity: 0.5,
-                secondaryOpacity: 1
-              }}
-              component="div"
-              className={classes.source}
-            >
-              {sourceLink && (
-                <A className={classes.sourceLink} href={sourceLink}>
-                  {`Source: ${sourceTitle || sourceLink}`}
-                </A>
-              )}
-            </TypographyLoader>
-          </div>
-        </Grid>
       </Grid>
+      {description && (
+        <Grid
+          container
+          alignItems="flex-start"
+          wrap="nowrap"
+          className={classes.descriptionWrapper}
+        >
+          <Typography variant="caption" className={classes.description}>
+            {description}
+          </Typography>
+        </Grid>
+      )}
       <Grid
-        item
-        xs={12}
         container
         alignItems="center"
         justify="space-between"
@@ -403,13 +424,15 @@ function ChartContainer({
         className={classes.attribution}
       >
         <Grid item className={classes.attributionSource}>
-          <Typography variant="caption">{`Source ${sourceLink}`}</Typography>
+          {sourceLink && (
+            <Typography variant="caption">{`Source ${sourceLink}`}</Typography>
+          )}
         </Grid>
         <Grid item className={classes.attributionLogo}>
           <img src={logo} alt="log" />
         </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 }
 
@@ -452,6 +475,7 @@ ChartContainer.propTypes = {
   }),
   subtitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  description: PropTypes.string,
   sourceLink: PropTypes.string,
   sourceTitle: PropTypes.string,
   loading: PropTypes.bool,
@@ -477,6 +501,7 @@ style="margin: 1em; max-width: 18.75rem;"
 />
 <script src="https://tanzania.hurumap.org/static/js/embed.chart.make.js" />`
   },
+  description: undefined,
   logo: undefined,
   onClickCompare: undefined,
   onClickData: undefined,

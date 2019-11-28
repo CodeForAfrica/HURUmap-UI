@@ -10,37 +10,18 @@ export default function createVictoryTheme(chartOptions) {
         // Handsets: https://material.io/design/layout/responsive-layout-grid.html#breakpoints
         // Lets use Material UI language here
         sm: 600
-      },
-      axis: {
-        labelWidth: 20
       }
     },
 
     // Victory props
     VictoryTheme.material,
 
-    // Overriding props,
+    // Overriding known props,
     {
-      independentAxis: {
+      axis: {
+        labelWidth: 20,
         style: {
           grid: {
-            display: 'none'
-          }
-        }
-      },
-      dependentAxis: {
-        orientation: 'right',
-        style: {
-          axis: {
-            display: 'none'
-          },
-          axisLabel: {
-            display: 'none'
-          },
-          grid: {
-            strokeDasharray: 'none'
-          },
-          ticks: {
             display: 'none'
           }
         }
@@ -53,7 +34,6 @@ export default function createVictoryTheme(chartOptions) {
       },
       pie: {
         height: 250,
-        origin: { x: 150, y: 125 },
         padding: 0,
         width: 450
       },
@@ -68,6 +48,32 @@ export default function createVictoryTheme(chartOptions) {
           flyout: {
             fill: '#fff'
           }
+        }
+      }
+    }
+  );
+  // The way dependentAxis/independentAxis axis namespaces are merged in theme
+  // seems a bit counter-intuitive still: https://github.com/FormidableLabs/victory/pull/1423
+  // Lets just merge them `manually` here to be sure
+  defaultTheme.dependentAxis = _.merge(
+    defaultTheme.dependentAxis,
+    defaultTheme.axis,
+    VictoryTheme.material.dependentAxis,
+    {
+      style: {
+        axis: {
+          display: 'none'
+        },
+        axisLabel: {
+          display: 'none'
+        },
+        grid: {
+          display: 'block',
+          strokeDasharray: 'none',
+          stroke: 'rgb(236, 239, 241)'
+        },
+        ticks: {
+          display: 'none'
         }
       }
     }

@@ -9,10 +9,11 @@ import withVictoryTheme from '../styles/withVictoryTheme';
 import CustomContainer from '../CustomContainer';
 import DefaultLegendLabel from '../LegendLabel';
 import DonutLabel from './DonutLabel';
+import DonutTooltip from './DonutTooltip';
 import Label from '../Label';
 import SharedEvents from './SharedEvents';
 import SharedEventsLegendLabel from './LegendLabel';
-import SharedEventTooltip from './Tooltip';
+import Tooltip from './Tooltip';
 
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
   const radius = Helpers.getRadius({ width, height, padding });
@@ -136,31 +137,19 @@ function PieChart({
     ...donutLabelStyle,
     ...tooltipProps.style
   };
-  const Tooltip = SharedEventTooltip;
   // We define tooltip for donut label component here than using a separate
   // due to svg rendering components in the provided order and we don't have
   // z-index property to reorder them.
   const labelComponent1 = donut ? (
-    <Tooltip
+    <DonutTooltip
       {...tooltipProps}
       colorScale={colorScale}
       cornerRadius={chartInnerRadius}
-      flyoutStyle={{ fill: 'white', stroke: 'none' }}
-      flyoutHeight={chartInnerRadius * 2}
-      labelComponent={
-        <Label
-          colorScale={colorScale}
-          highlightIndex={chart.donutHighlightIndex}
-          highlightStyle={chart.donutHighlightStyle}
-          style={tooltipStyle}
-          width={chartInnerRadius * 2}
-        />
-      }
-      orientation="top"
-      pointerLength={0}
-      flyoutWidth={chartInnerRadius * 2}
-      x={origin.x}
-      y={origin.y + chartInnerRadius}
+      highlightIndex={chart.donutHighlightIndex}
+      highlightStyle={chart.donutHighlightStyle}
+      center={{ ...origin }}
+      style={tooltipStyle}
+      width={chartInnerRadius * 2}
     />
   ) : (
     <Tooltip
@@ -232,7 +221,7 @@ function PieChart({
             colorScale={colorScale}
             data={data1}
             endAngle={endAngle1}
-            height={chartWidth}
+            height={chartHeight}
             innerRadius={chartInnerRadius}
             labelComponent={labelComponent1}
             labelRadius={labelRadius}

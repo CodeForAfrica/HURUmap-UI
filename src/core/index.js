@@ -1,3 +1,4 @@
+export { default as countries } from './countries';
 export { default as createTheme } from './styles/createTheme';
 export { default as A } from './A';
 export { default as MapIt } from './MapIt';

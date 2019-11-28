@@ -11,10 +11,9 @@ import {
   withKnobs
 } from '@storybook/addon-knobs';
 
-import Grid from '@material-ui/core/Grid';
+import { Grid, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-import { Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
 import {
   BarChart,
   ChartContainer,
@@ -85,6 +84,10 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
               )}
               sourceLink="http://dev.dominion.africa"
               content={object('content', { height: 400, width: '100%' })}
+              description={text(
+                'description',
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minsequat. Duis aute irure dolor in reprehenderit in voluptate'
+              )}
               classes={{
                 title: classes.title,
                 embedDropDownRoot: classes.embedModal
@@ -133,34 +136,7 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                       }))}
                     parts={{
                       axis: {
-                        independent: {
-                          style: {
-                            axis: {
-                              display: 'block'
-                            },
-                            grid: {
-                              display: 'block'
-                            },
-                            ticks: {
-                              display: 'block'
-                            },
-                            tickLabels: {
-                              display: 'block'
-                            }
-                          }
-                        },
                         dependent: {
-                          style: {
-                            axis: {
-                              display: 'block'
-                            },
-                            grid: {
-                              display: 'block'
-                            },
-                            tickLabels: {
-                              display: 'block'
-                            }
-                          },
                           tickValues: [10, 50, 90],
                           tickFormat: ['10%', '50%', '90%']
                         }
@@ -253,26 +229,16 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                 horizontal={boolean('horizontal', false)}
                 width={500}
                 height={300}
-                data={Array(number('data', 100))
+                data={Array(number('data', 10))
                   .fill(null)
                   .map((_, index) => ({
                     x: `${index}-${index}`,
                     y: rand()
                   }))}
+                domainPadding={{ x: 40 }}
                 parts={{
                   axis: {
                     dependent: {
-                      style: {
-                        axis: {
-                          display: 'block'
-                        },
-                        grid: {
-                          display: 'block'
-                        },
-                        tickLabels: {
-                          display: 'block'
-                        }
-                      },
                       tickValues: [10, 50, 90],
                       tickFormat: ['10%', '50%', '90%']
                     }
@@ -298,7 +264,7 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
     React.createElement(() => {
       const useStyles = makeStyles(() => ({
         root: {
-          backgroundColor: '#f6f6f6'
+          backgroundColor: '#fff'
         }
       }));
       const classes = useStyles();
@@ -338,9 +304,9 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
       return (
         <div style={{ width: containerWidth }}>
           <InsightContainer
-            hideInsight={hideInsight}
             classes={{ root: classes.root }}
             embedCode={text('embedCode', 'Embed Chart Code')}
+            hideInsight={hideInsight}
             insight={object('insight', {
               analysisLink: '#',
               dataLink: '#',
@@ -349,24 +315,129 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
               title: 'Summary'
             })}
             loading={boolean('loading', false)}
+            logo={logo}
             source={object('source', {
               title: 'Community Survey 2016',
               href: 'http://dev.dominion.africa'
             })}
             title="Lorem ipsum dolor sit amet"
+            description={text(
+              'description',
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo'
+            )}
             variant={variant}
-            logo={logo}
           >
             <ChartFactory definition={statisticDefinition} data={dataArray} />
             <ChartFactory
-              definition={definition}
+              definition={{
+                ...definition,
+                typeProps: {
+                  height: chartHeight,
+                  width:
+                    variant === 'analysis' && !chartWidth
+                      ? containerWidth
+                      : chartWidth
+                }
+              }}
               data={dataArray}
-              height={chartHeight}
-              width={
-                variant === 'analysis' && !chartWidth
-                  ? containerWidth
-                  : chartWidth
-              }
+            />
+          </InsightContainer>
+        </div>
+      );
+    })
+  )
+  .add('Custom', () =>
+    React.createElement(() => {
+      const useStyles = makeStyles(() => ({
+        root: {
+          backgroundColor: '#f6f6f6'
+        }
+      }));
+      const classes = useStyles();
+
+      const containerWidth = 950;
+      const variant = 'data';
+      const groups = 3;
+      const data = 2;
+      const dataExponent = 6;
+      const statisticDefinition = {
+        type: 'number',
+        style: 'percent',
+        subtitle: 'Lorem ipsum',
+        description: 'Lorem ipsum dolor sit amet',
+        aggregate: 'last:percent'
+      };
+      const definition = {
+        type: 'grouped_column',
+        horizontal: false,
+        customUnit: 'km²',
+        groupBy: 'Group',
+        aggregate: 'raw'
+      };
+
+      const dataArray = Array(((definition.groupBy && groups) || 1) * data)
+        .fill(null)
+        .map((_, index) => ({
+          groupBy:
+            definition.groupBy && `${definition.groupBy} ${index % groups}`,
+          x: `Data ${index}`,
+          y: rand() * 10 ** dataExponent
+        }));
+      const share = boolean('Share', true);
+      const download = boolean('Download', true);
+      const embed = boolean('Embed', true);
+      const compare = boolean('Compare', true);
+      const showData = boolean('Show Data', true);
+
+      return (
+        <div style={{ width: containerWidth }}>
+          <InsightContainer
+            actions={{
+              handleShare: share ? () => {} : undefined,
+              // For download, undefined means use default
+              handleDownload: download ? undefined : null,
+              handleShowData: showData ? () => {} : undefined,
+              handleCompare: compare ? () => {} : undefined
+            }}
+            classes={{ root: classes.root }}
+            embedCode={embed ? 'Embed Chart Code' : undefined}
+            insight={{
+              analysisLink: {
+                href: text('Analysis link url', '#'),
+                title: text('Analysis link title', 'Read country analysis'),
+                variant: select(
+                  'Analysis link variant',
+                  ['contained', 'outlined'],
+                  'contained'
+                )
+              },
+              dataLink: {
+                href: text('Data link url', '#'),
+                title: text('Data link title', 'View country data'),
+                variant: select(
+                  'Data link variant',
+                  ['contained', 'outlined'],
+                  'outlined'
+                )
+              },
+              description:
+                'Ethnically diverse population of over 55 million Country benefits from broad social cohesion, with inter-ethtensions rare Two thirds of the population live on lethan $2 per day - espcially rural areas',
+              title: 'Summary'
+            }}
+            logo={logo}
+            source={{
+              title: 'Community Survey 2016',
+              href: 'http://dev.takwimu.africa'
+            }}
+            title="Lorem ipsum dolor sit amet"
+            variant={variant}
+          >
+            <ChartFactory definition={statisticDefinition} data={dataArray} />
+            <ChartFactory
+              definition={{
+                ...definition
+              }}
+              data={dataArray}
             />
           </InsightContainer>
         </div>
