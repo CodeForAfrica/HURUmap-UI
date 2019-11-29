@@ -4,7 +4,7 @@ import { PropTypes } from 'prop-types';
 import { Typography, Grid, Popover } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import ActionButton from './ActionButton';
+import ActionButton from '../../ActionButton';
 import EmbedCodeTextArea from './EmbedCodeTextArea';
 
 import CompareIcon from '../../assets/icons/compare.svg';

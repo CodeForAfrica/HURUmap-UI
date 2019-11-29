@@ -12,6 +12,9 @@ import CardButton from './Button';
 import ContentLoader from '../ContentLoader';
 import CardActions from './Actions';
 
+import EmbedDropDown from '../EmbedDropDown';
+import ShareDropDown from '../ShareDropDown';
+
 const useStyles = makeStyles(theme => ({
   root: ({ expand, width }) => ({
     borderTop: `2px solid ${theme.palette.primary.main}`,
@@ -23,17 +26,70 @@ const useStyles = makeStyles(theme => ({
   })
 }));
 
-function Card({ fullWidth, link, post, width, onExpand }) {
+function Card({
+  fullWidth,
+  share,
+  embed,
+  link,
+  post,
+  width,
+  onExpand,
+  ...props
+}) {
   const [expand, setExpand] = useState(false);
-  const classes = useStyles({ width: fullWidth ? '100%' : width, expand });
-
+  const classes = useStyles({
+    width: fullWidth ? '100%' : width,
+    expand,
+    ...props
+  });
+  const [embedAnchorEl, setEmbedAnchorEl] = useState(null);
+  const [shareAnchorEl, setShareAnchorEl] = useState(null);
   const renderPost = () => {
     return (
       <>
         {!link && (
-          <Box position="absolute" top={20} right={20}>
-            <CardActions />
-          </Box>
+          <>
+            <Box position="absolute" top={20} right={20}>
+              <CardActions
+                onEmbed={e => setEmbedAnchorEl(e.target)}
+                onShare={e => setShareAnchorEl(e.target)}
+              />
+            </Box>
+            <ShareDropDown
+              {...share}
+              anchorEl={shareAnchorEl}
+              open={shareAnchorEl !== null}
+              onClose={() => setShareAnchorEl(null)}
+              classes={{
+                root: classes.shareRoot,
+                title: classes.shareTitle,
+                social: classes.shareSocial,
+                url: classes.shareUrl,
+                urlInput: classes.shareUrlInput,
+                dropDownRoot: classes.shareDropDownRoot,
+                dropDownPaper: classes.shareDropDownPaper
+              }}
+            >
+              Share
+            </ShareDropDown>
+            <EmbedDropDown
+              anchorEl={embedAnchorEl}
+              onClose={() => setEmbedAnchorEl(null)}
+              open={embedAnchorEl !== null}
+              title={embed.title}
+              subtitle={embed.subtitle}
+              classes={{
+                root: classes.embedRoot,
+                title: classes.embedTitle,
+                subtitle: classes.embedSubtitle,
+                code: classes.embedCode,
+                dropDownRoot: classes.embedDropDownRoot,
+                dropDownPaper: classes.embedDropDownPaper
+              }}
+            >
+              {embed.code}
+            </EmbedDropDown>
+          </>
         )}
         <Grid item>
           <Grid container direction="column" spacing={1}>
@@ -53,7 +109,7 @@ function Card({ fullWidth, link, post, width, onExpand }) {
           </Grid>
         </Grid>
 
-        {!link && (
+        {!link && post.content.includes('<p><!--more--></p>') && (
           <Grid item>
             <CardButton
               onClick={() => {
@@ -99,6 +155,11 @@ function Card({ fullWidth, link, post, width, onExpand }) {
 }
 
 Card.propTypes = {
+  embed: propTypes.shape({
+    title: propTypes.string.isRequired,
+    subtitle: propTypes.string,
+    code: propTypes.string
+  }),
   fullWidth: propTypes.bool,
   onExpand: propTypes.func,
   link: propTypes.string,
@@ -109,15 +170,47 @@ Card.propTypes = {
      */
     content: propTypes.string
   }),
-  width: propTypes.oneOfType([propTypes.number, propTypes.string])
+  width: propTypes.oneOfType([propTypes.number, propTypes.string]),
+  share: propTypes.shape({
+    email: propTypes.shape({
+      subject: propTypes.string,
+      body: propTypes.string,
+      separator: propTypes.string
+    }),
+    facebook: propTypes.shape({
+      url: propTypes.string,
+      quote: propTypes.string,
+      hashtag: propTypes.string
+    }),
+    shareIcon: propTypes.shape({
+      round: propTypes.bool,
+      size: propTypes.number
+    }),
+    twitter: propTypes.shape({
+      url: propTypes.string,
+      title: propTypes.string,
+      hashtags: propTypes.string
+    })
+  })
 };
 
 Card.defaultProps = {
+  embed: {
+    title: 'Embed code for this card',
+    subtitle: 'Copy the code below, then paste into your own CMS or HTML.',
+    code: `
+    <iframe title="" src="" />
+    <script src="https://dashboard.takwimu.africa/wp-content/themes/hurumap/assets/js/hurumap-iframe-handler.js" />`
+  },
   fullWidth: false,
   onExpand: undefined,
   link: undefined,
   post: undefined,
-  width: undefined
+  width: undefined,
+  share: {
+    facebook: {},
+    twitter: {}
+  }
 };
 
 export default Card;
