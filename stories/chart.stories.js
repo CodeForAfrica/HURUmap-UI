@@ -256,10 +256,7 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
             ],
             x: number('Legend x', 90)
           },
-          scatter: [
-            { size: 5, symbol: 'circle' },
-            { size: 5, symbol: 'plus' }
-          ],
+          scatter: [{ size: 5, symbol: 'circle' }, { size: 5, symbol: 'plus' }],
           tooltip: { style: { textAnchor: 'start' } }
         }}
       />

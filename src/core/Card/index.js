@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import MinimizeIcon from '@material-ui/icons/Minimize';
 
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Link } from '@material-ui/core';
 import propTypes from '../propTypes';
 import CardButton from './Button';

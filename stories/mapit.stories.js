@@ -23,10 +23,7 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
       tolerance={number('tolerance', 0.01)}
       url={text('url', 'https://mapit.hurumap.org')}
       drawChildren={boolean('drawChildren', true)}
-      filterCountries={array(
-        'filterCountries',
-        countries.map(c => c.iso_code)
-      )}
+      filterCountries={array('filterCountries', countries.map(c => c.iso_code))}
       drawProfile={boolean('drawProfile', false)}
       codeType={text('codeType', 'AFR')}
       geoLevel={text('geoLevel', 'continent')}
