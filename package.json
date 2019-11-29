@@ -47,7 +47,7 @@
     "postpublish": "yarn deploy",
     "lint": "yarn eslint --fix --ignore-path './.gitignore' --ext '.js,.json,.md' './'",
     "lint-staged": "yarn eslint --fix --ignore-path './.gitignore' --ext '.js,.json,.md'",
-    "start": "start-storybook",
+    "start": "start-storybook -s ./",
     "build": "yarn build:lib",
     "build:lib": "babel src/core --out-dir core --copy-files && babel src/factory --out-dir factory --copy-files",
     "deploy": "yarn deploy:storybook",

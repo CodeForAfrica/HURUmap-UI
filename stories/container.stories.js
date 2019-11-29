@@ -443,4 +443,65 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
         </div>
       );
     })
+  )
+  .add('iframe Content', () =>
+    React.createElement(() => {
+      const useStyles = makeStyles(() => ({
+        root: {
+          backgroundColor: '#fff'
+        }
+      }));
+      const classes = useStyles();
+
+      const containerWidth = 950;
+      const variant = 'data';
+
+      return (
+        <div style={{ width: containerWidth }}>
+          <InsightContainer
+            classes={{ root: classes.root }}
+            embedCode="Embed Chart Code"
+            insight={{
+              analysisLink: {
+                href: text('Analysis link url', '#'),
+                title: text('Analysis link title', 'Read country analysis'),
+                variant: select(
+                  'Analysis link variant',
+                  ['contained', 'outlined'],
+                  'contained'
+                )
+              },
+              dataLink: {
+                href: text('Data link url', '#'),
+                title: text('Data link title', 'View country data'),
+                variant: select(
+                  'Data link variant',
+                  ['contained', 'outlined'],
+                  'outlined'
+                )
+              },
+              description:
+                'Ethnically diverse population of over 55 million Country benefits from broad social cohesion, with inter-ethtensions rare Two thirds of the population live on lethan $2 per day - espcially rural areas',
+              title: 'Summary'
+            }}
+            logo={logo}
+            source={{
+              title: 'Community Survey 2016',
+              href: 'http://dev.takwimu.africa'
+            }}
+            title="Lorem ipsum dolor sit amet"
+            variant={variant}
+          >
+            <div />
+            <iframe
+              src="/public/iframe.html"
+              title="Title"
+              width="100%"
+              height="100%"
+              frameBorder="0"
+            />
+          </InsightContainer>
+        </div>
+      );
+    })
   );
