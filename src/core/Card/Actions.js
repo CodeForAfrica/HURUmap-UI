@@ -28,7 +28,13 @@ function CardActions({ onShare, onEmbed }) {
   return (
     <Grid className={classes.actionsContainer} container spacing={1}>
       <Grid item>
-        <ActionButton classes={classes} onClick={onShare}>
+        <ActionButton
+          classes={{
+            actionButton: classes.actionButton,
+            iconGrid: classes.iconGrid
+          }}
+          onClick={onShare}
+        >
           <ShareIcon style={{ fontSize: 15 }} />
         </ActionButton>
       </Grid>
