@@ -51,8 +51,12 @@ function EmbedDropDown({
               {subtitle}
             </DialogContentText>
           )}
-          <Typography variant="caption" component="code">
-            <pre className={classes.code}>{children}</pre>
+          <Typography
+            variant="caption"
+            component="code"
+            className={classes.code}
+          >
+            {children}
           </Typography>
         </DialogContent>
       </Container>
