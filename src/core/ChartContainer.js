@@ -4,20 +4,20 @@ import PropTypes from 'prop-types';
 import { ButtonBase, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { domToPng } from '../utils';
+import { domToPng } from './utils';
 
-import A from '../A';
-import BlockLoader from '../BlockLoader';
+import A from './A';
+import BlockLoader from './BlockLoader';
 import EmbedDropDown from './EmbedDropDown';
 import ShareDropDown from './ShareDropDown';
-import TypographyLoader from '../TypographyLoader';
+import TypographyLoader from './TypographyLoader';
 
-import defaultLogo from '../assets/logo.png';
-import CompareIcon from '../assets/icons/compare.svg';
-import DataIcon from '../assets/icons/tablet-reader.svg';
-import DownloadIcon from '../assets/icons/download.svg';
-import EmbedIcon from '../assets/icons/code.svg';
-import ShareIcon from '../assets/icons/network-connection.svg';
+import defaultLogo from './assets/logo.png';
+import CompareIcon from './assets/icons/compare.svg';
+import DataIcon from './assets/icons/tablet-reader.svg';
+import DownloadIcon from './assets/icons/download.svg';
+import EmbedIcon from './assets/icons/code.svg';
+import ShareIcon from './assets/icons/network-connection.svg';
 
 const useStyles = makeStyles(({ palette }) => ({
   root: {

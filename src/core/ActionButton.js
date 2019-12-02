@@ -21,10 +21,9 @@ function ActionButton({
   children,
   onClick,
   gaEvents: { gaOn, gaEventAction, gaEventCategory, gaEventLabel },
-  classes: propClasses,
   ...props
 }) {
-  const classes = useStyles({ ...propClasses, props });
+  const classes = useStyles(props);
   return (
     <IconButton
       className={classes.actionButton}

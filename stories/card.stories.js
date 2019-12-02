@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, text } from '@storybook/addon-knobs';
+import { withKnobs, text, object } from '@storybook/addon-knobs';
 
 import Card from '../src/core/Card';
 import { CenterDecorator } from './common';
@@ -15,6 +15,10 @@ storiesOf('HURUmap UI|Cards/Card', module)
   .add('Default', () => (
     <Card
       width={text('width', undefined)}
+      share={object('share', {
+        facebook: {},
+        twitter: {}
+      })}
       post={{
         title: 'Development Context',
         content: decodeHTML(
@@ -37,6 +41,10 @@ storiesOf('HURUmap UI|Cards/Card', module)
   .add('Link', () => (
     <Card
       link="#"
+      share={object('share', {
+        facebook: {},
+        twitter: {}
+      })}
       post={{
         title: 'Development Context',
         content: decodeHTML(
