@@ -103,7 +103,7 @@ function ChartFactory({
       }
       return `${numberFormatter.format(
         formatValue
-      )}${compactUnit} ${customUnit}`;
+      )}${compactUnit} ${customUnit}`.trim(); // in case customUnit is empty
     },
     [customUnit, numberFormat.style, numberFormatter]
   );
