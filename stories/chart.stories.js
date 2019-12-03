@@ -39,7 +39,6 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
             const y = rand();
             const x = `${index}-${index} Employment Status`;
             return {
-              tooltip: `${x}: ${y}`,
               x,
               y
             };
@@ -126,12 +125,11 @@ storiesOf('HURUmap UI|Charts/Bullet Chart', module)
     <div>
       <BulletChart
         data={object('data', [
-          { x: 49, label: 'Male' },
-          { x: 51, label: 'Female' }
+          { x: 'Male', y: 49, unit: '%' },
+          { x: 'Female', y: 51, unit: '%' }
         ])}
         height={number('height', 100)}
-        labels={d => (d.label && `${d.label}: ${d.x}%`) || ''}
-        reference={object('reference', [{ x: 51, label: '' }])}
+        reference={object('reference', [{ x: 51 }])}
         total={100}
         width={number('width', 350)}
       />
@@ -146,11 +144,10 @@ storiesOf('HURUmap UI|Charts/Bullet Chart', module)
           // Below data is equivalent to:
           // [{ x: 12.7, label: 'Living in urban areas' }, { x: 100 }],
           // [{ x: 9.3, label: 'Living in rural areas' }, { x: 100 }]
-          [{ x: 12.7, label: 'Living in urban areas' }],
-          [{ x: 9.3, label: 'Living in rural areas' }]
+          [{ x: 'Living in urban areas', y: 12.7, unit: '%' }],
+          [{ x: 'Living in rural areas', y: 9.3, unit: '%' }]
         ])}
-        reference={object('reference', [{ x: 51, label: '' }])}
-        labels={d => (d.label && `${d.label}: ${d.x}%`) || ''}
+        reference={object('reference', [{ y: 51 }])}
         total={100}
         width={number('width', 350)}
       />
@@ -256,7 +253,10 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
             ],
             x: number('Legend x', 90)
           },
-          scatter: [{ size: 5, symbol: 'circle' }, { size: 5, symbol: 'plus' }],
+          scatter: [
+            { size: 5, symbol: 'circle' },
+            { size: 5, symbol: 'plus' }
+          ],
           tooltip: { style: { textAnchor: 'start' } }
         }}
       />

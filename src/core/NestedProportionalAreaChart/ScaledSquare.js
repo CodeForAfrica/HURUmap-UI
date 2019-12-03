@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Border, Selection, VictoryTooltip } from 'victory';
 
+import { labels } from '../utils';
 import propTypes from '../propTypes';
 import { MOBILE_WIDTH } from './ScaledArea';
 import VerticalLegend from './VerticalLegend';
@@ -26,13 +27,12 @@ function ScaledSquare({
     data: [referenceData],
     style: referenceStyle
   } = reference;
-  const referenceText =
-    referenceData && `${referenceData.x}: ${referenceData.y}`;
+  const referenceText = referenceData && labels(referenceData);
   const [tooltipProps, setTooltipProps] = useState({});
   const tooltip = <VictoryTooltip theme={theme} {...tooltipProps} />;
   const activateTooltip = (evt, { data: dataProp, ...otherProps }) => {
     if (dataProp) {
-      const dataText = `${dataProp.x}: ${dataProp.y}`;
+      const dataText = labels(dataProp);
       const text = referenceText ? `${dataText}\n${referenceText}` : dataText;
       const { x: tipX, y: tipY } = Selection.getSVGEventCoordinates(evt);
       setTooltipProps({ active: true, ...otherProps, text, x: tipX, y: tipY });

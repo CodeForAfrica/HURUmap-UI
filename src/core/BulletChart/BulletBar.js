@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Border, Rect, Selection, VictoryLabel, VictoryTooltip } from 'victory';
+
 import propTypes from '../propTypes';
 
 function BulletBar({
@@ -16,11 +17,11 @@ function BulletBar({
   x,
   y
 }) {
-  const featuredMeasure = (width * data[0].x) / total;
+  const featuredMeasure = (width * data[0].y) / total;
   const [tooltipProps, setTooltipProps] = useState({});
   const [, qualitativeMeasureProp] = data;
-  const qualitativeMeasure = qualitativeMeasureProp || { x: total };
-  const comparativeMeasure = (width * reference.data[0].x) / total;
+  const qualitativeMeasure = qualitativeMeasureProp || { y: total };
+  const comparativeMeasure = (width * reference.data[0].y) / total;
 
   const tooltip = (
     <VictoryTooltip constrainToVisibleArea {...tooltipProps} theme={theme} />
@@ -35,27 +36,31 @@ function BulletBar({
   return (
     <>
       {/* Qualitative scale */}
-      <VictoryLabel
-        capHeight={0}
-        lineHeight={0}
-        textAnchor="end"
-        x={x + width}
-        y={y - 2 * barWidth}
-        text={labels(qualitativeMeasure)}
-        style={style.labels}
-      />
+      {qualitativeMeasureProp && (
+        <VictoryLabel
+          capHeight={0}
+          lineHeight={0}
+          textAnchor="end"
+          x={x + width}
+          y={y - 2 * barWidth}
+          text={labels(qualitativeMeasure)}
+          style={style.labels}
+        />
+      )}
       <Border
-        events={{
-          onMouseOver: evt =>
-            activateTooltip(evt, {
-              text: labels(qualitativeMeasure)
-            }),
-          onMouseMove: evt =>
-            activateTooltip(evt, {
-              text: labels(qualitativeMeasure)
-            }),
-          onMouseOut: () => setTooltipProps({ active: false })
-        }}
+        events={
+          qualitativeMeasureProp && {
+            onMouseOver: evt =>
+              activateTooltip(evt, {
+                text: labels(qualitativeMeasure)
+              }),
+            onMouseMove: evt =>
+              activateTooltip(evt, {
+                text: labels(qualitativeMeasure)
+              }),
+            onMouseOut: () => setTooltipProps({ active: false })
+          }
+        }
         x={x}
         y={y - barWidth}
         width={width}

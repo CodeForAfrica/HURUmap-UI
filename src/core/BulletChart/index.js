@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { labels as defaultLabels } from '../utils';
 import { toReferenceProps } from '../ReferableChart';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import BulletBar from './BulletBar';
@@ -66,7 +67,7 @@ function BulletChart({
           <BulletBar
             barWidth={computedBarWidth}
             data={d}
-            labels={labels || (() => '')}
+            labels={labels || defaultLabels}
             reference={reference}
             style={{
               ...computedStyle,

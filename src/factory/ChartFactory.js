@@ -109,17 +109,24 @@ function ChartFactory({
   );
 
   const primaryData = useMemo(() => {
+    const tooltip = ({ x, y }) => {
+      const formatedX = x ? `${x}: ` : '';
+      return `${formatedX}${format(y)}`;
+    };
     if (visualType === 'column') {
       const computedData = aggregateData(aggregate, data);
       setDataLength(computedData.length);
-      return computedData.slice(show);
+      return computedData.slice(show).map(cD => ({
+        ...cD,
+        tooltip: tooltip(cD)
+      }));
     }
 
     if (visualType === 'pie') {
       return aggregateData(aggregate, data).map(d => ({
         ...d,
         name: d.x,
-        label: `${d.x} ${format(d.y)}`
+        label: tooltip(d)
       }));
     }
 
@@ -139,7 +146,7 @@ function ChartFactory({
     groupedData = groupedData.map(g =>
       g.map(gd => ({
         ...gd,
-        tooltip: `${gd.x}: ${format(gd.y)}`,
+        tooltip: tooltip(gd),
         x: gd.groupBy
       }))
     );
@@ -309,7 +316,7 @@ function ChartFactory({
               height={computedHeight}
               horizontal={computedHorizontal}
               domainPadding={domainPadding}
-              labels={({ datum }) => formatLabelValue(datum.y)}
+              labels={({ datum }) => format(datum.y)}
               theme={theme}
               {...chartProps}
             />

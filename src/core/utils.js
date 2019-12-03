@@ -131,3 +131,11 @@ export function domToPng(node, { style: nodeStyle, ...options }) {
   }
   return Promise.resolve(undefined);
 }
+
+/**
+ * Default `labels` function for HURUmap UI
+ */
+export const labels = ({ x, y, unit = '' }) => {
+  const formatedX = x ? `${x}: ` : '';
+  return `${formatedX}${y}${unit}`;
+};
