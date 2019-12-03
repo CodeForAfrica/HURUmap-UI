@@ -315,18 +315,43 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
         <PieChart
           data={object('data', [
             [
-              { x: 'A', y: 6, label: 'A\nDar es Salaam 1' },
-              { x: 'B', y: 1, label: 'B\nDar es Salaam 2' },
-              { x: 'C', y: 3, label: 'C\nDar es Salaam 3' },
-              { x: 'D', y: 1, label: 'D\nDar es Salaam 1' },
-              { x: 'E', y: 12, label: 'E\nDar es Salaam 2' }
+              {
+                x: 'A',
+                y: 6,
+                donutLabel: 'A\nDar es Salaam 1',
+                label: 'A: Dar es Salaam 1'
+              },
+              {
+                x: 'B',
+                y: 1,
+                donutLabel: 'B\nDar es Salaam 2',
+                label: 'B: Dar es Salaam 2'
+              },
+              {
+                x: 'C',
+                y: 3,
+                donutLabel: 'C\nDar es Salaam 3',
+                label: 'C: Dar es Salaam 3'
+              },
+              {
+                x: 'D',
+                y: 1,
+                donutLabel: 'D\nDar es Salaam 1',
+                label: 'D: Dar es Salaam 1'
+              },
+              {
+                x: 'E',
+                y: 12,
+                donutLabel: 'E\nDar es Salaam 2',
+                label: 'E: Dar es Salaam 2'
+              }
             ],
             [
-              { x: 'A', y: 3, label: 'A\nKagera 2' },
-              { x: 'B', y: 1, label: 'B\nKagera 1' },
-              { x: 'C', y: 2, label: 'C\nKagera 1' },
-              { x: 'D', y: 2, label: 'D\nKagera 1' },
-              { x: 'E', y: 5, label: 'E\nKagera 5' }
+              { x: 'A', y: 3, donutLabel: 'A\nKagera 2', label: 'A: Kagera 2' },
+              { x: 'B', y: 1, donutLabel: 'B\nKagera 1', label: 'B: Kagera 1' },
+              { x: 'C', y: 2, donutLabel: 'C\nKagera 1', label: 'C: Kagera 1' },
+              { x: 'D', y: 2, donutLabel: 'D\nKagera 1', label: 'D: Kagera 1' },
+              { x: 'E', y: 5, donutLabel: 'E\nKagera 5', label: 'E: Kagera 5' }
             ]
           ])}
           donut={boolean('donut', true)}

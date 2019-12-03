@@ -211,7 +211,7 @@ function PieChart({
               highlightStyle={chart.donutHighlightStyle}
               sortKey={donutLabelKey.sortKey}
               style={donutLabelStyle}
-              text={data1[0].label}
+              text={data1[0].donutLabel || data1[0].label}
               width={chartInnerRadius * 2}
               x={origin.x}
               y={origin.y}

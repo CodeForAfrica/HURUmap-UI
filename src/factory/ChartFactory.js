@@ -109,8 +109,8 @@ function ChartFactory({
   );
 
   const primaryData = useMemo(() => {
-    const tooltip = ({ x, y }) => {
-      const formatedX = x ? `${x}: ` : '';
+    const labels = ({ x, y }, separator = ': ') => {
+      const formatedX = x ? `${x}${separator}` : '';
       return `${formatedX}${format(y)}`;
     };
     if (visualType === 'column') {
@@ -118,7 +118,7 @@ function ChartFactory({
       setDataLength(computedData.length);
       return computedData.slice(show).map(cD => ({
         ...cD,
-        tooltip: tooltip(cD)
+        tooltip: labels(cD)
       }));
     }
 
@@ -126,7 +126,8 @@ function ChartFactory({
       return aggregateData(aggregate, data).map(d => ({
         ...d,
         name: d.x,
-        label: tooltip(d)
+        donutLabel: labels(d, '\n'),
+        label: labels(d)
       }));
     }
 
@@ -146,7 +147,7 @@ function ChartFactory({
     groupedData = groupedData.map(g =>
       g.map(gd => ({
         ...gd,
-        tooltip: tooltip(gd),
+        tooltip: labels(gd),
         x: gd.groupBy
       }))
     );
