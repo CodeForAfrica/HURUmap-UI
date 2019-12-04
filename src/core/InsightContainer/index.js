@@ -141,7 +141,11 @@ function InsightContainer({
   const downloadHiddenClassName = 'Download--hidden';
   const toPng = () => {
     const filter = n => {
-      const { classList } = n;
+      const { classList, tagName } = n;
+      if (tagName === 'SCRIPT') {
+        return false;
+      }
+
       if (!classList) {
         return true;
       }

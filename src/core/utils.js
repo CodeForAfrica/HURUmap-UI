@@ -112,7 +112,9 @@ export function domToPng(node, { style: nodeStyle, ...options }) {
       const iframe = iframes[0];
       if (iframe.contentWindow && iframe.contentWindow.domtoimage) {
         return iframe.contentWindow.domtoimage
-          .toPng(iframe.contentDocument.body)
+          .toPng(iframe.contentDocument.body, {
+            ...options
+          })
           .then(dataUrl => {
             const img = new Image();
             img.src = dataUrl;
