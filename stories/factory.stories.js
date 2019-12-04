@@ -46,9 +46,11 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
         }}
         data={data.map((_, index) => {
           const y = rand();
+          const x = `${index} Dummy Data`;
           return {
+            name: type === 'pie' ? x : undefined,
             tooltip: `${index} Dummy Data`,
-            x: `${index} Dummy Data`,
+            x,
             y
           };
         })}

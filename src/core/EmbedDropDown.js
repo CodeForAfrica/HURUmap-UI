@@ -69,7 +69,7 @@ EmbedDropDown.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]).isRequired,
-  anchorEl: PropTypes.shape({}).isRequired,
+  anchorEl: PropTypes.shape({}),
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool,
   subtitle: PropTypes.string,
@@ -77,6 +77,7 @@ EmbedDropDown.propTypes = {
 };
 
 EmbedDropDown.defaultProps = {
+  anchorEl: null,
   open: undefined,
   subtitle: null,
   title: null

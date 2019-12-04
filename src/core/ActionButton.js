@@ -21,9 +21,15 @@ function ActionButton({
   children,
   onClick,
   gaEvents: { gaOn, gaEventAction, gaEventCategory, gaEventLabel },
+  classes: propClasses,
   ...props
 }) {
-  const classes = useStyles(props);
+  const classes = useStyles({
+    classes: {
+      actionButton: propClasses.actionButton,
+      iconGrid: propClasses.iconGrid
+    }
+  });
   return (
     <IconButton
       className={classes.actionButton}

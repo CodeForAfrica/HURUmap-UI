@@ -119,7 +119,7 @@ function ShareDropDown({
 }
 
 ShareDropDown.propTypes = {
-  anchorEl: PropTypes.shape({}).isRequired,
+  anchorEl: PropTypes.shape({}),
   email: PropTypes.shape({
     subject: PropTypes.string,
     body: PropTypes.string,
@@ -130,7 +130,6 @@ ShareDropDown.propTypes = {
     quote: PropTypes.string,
     hashtag: PropTypes.string
   }),
-  forwardedRef: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool,
   shareIcon: PropTypes.shape({
@@ -147,6 +146,7 @@ ShareDropDown.propTypes = {
 };
 
 ShareDropDown.defaultProps = {
+  anchorEl: null,
   open: undefined,
   email: null,
   facebook: null,

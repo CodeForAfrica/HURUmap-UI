@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { VictoryTooltip } from 'victory';
 
+import { labels } from './utils';
 import propTypes from './propTypes';
 import Label from './Label';
 
@@ -14,7 +15,16 @@ import Label from './Label';
  */
 // while we need `width` for the label, we don't need it for tooltip
 function LegendLabel({ width, ...props }) {
-  const { colorScale, data, datum, index } = props;
+  const { colorScale, datum, index, text: textProp } = props;
+  let text = textProp;
+  if (datum) {
+    const { tooltip } = datum;
+    if (tooltip) {
+      text = tooltip;
+    } else if (datum.y) {
+      text = labels(datum);
+    }
+  }
 
   return (
     <g>
@@ -22,7 +32,7 @@ function LegendLabel({ width, ...props }) {
       <VictoryTooltip
         {...props}
         datum={{ _x: index + 1, ...datum }}
-        text={data[index].label}
+        text={text}
         labelComponent={<Label colorScale={colorScale} />}
       />
     </g>
@@ -33,21 +43,20 @@ LegendLabel.defaultEvents = VictoryTooltip.defaultEvents;
 
 LegendLabel.propTypes = {
   colorScale: propTypes.colorScale,
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string
-    })
-  ),
-  datum: PropTypes.shape({}),
+  datum: PropTypes.shape({
+    tooltip: PropTypes.string,
+    y: PropTypes.number
+  }),
   index: PropTypes.number,
+  text: PropTypes.string,
   width: PropTypes.number
 };
 
 LegendLabel.defaultProps = {
   colorScale: undefined,
-  data: undefined,
   datum: undefined,
   index: undefined,
+  text: undefined,
   width: undefined
 };
 

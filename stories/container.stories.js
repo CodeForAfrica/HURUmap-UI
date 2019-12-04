@@ -172,8 +172,12 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
       }
       CustomPopover.propTypes = {
         open: PropTypes.bool.isRequired,
-        anchorEl: PropTypes.shape.isRequired,
+        anchorEl: PropTypes.shape({}),
         onClose: PropTypes.func.isRequired
+      };
+
+      CustomPopover.defaultProps = {
+        anchorEl: null
       };
 
       const share = boolean('Share', true);

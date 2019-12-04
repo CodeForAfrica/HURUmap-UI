@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { labels } from '../utils';
 import propTypes from '../propTypes';
 import {
   DESKTOP_HEIGHT,
@@ -87,9 +88,7 @@ function ScaledCircle({
         data={radii.map(v => [v])}
         donut={false}
         height={height}
-        labels={data.map(
-          d => `${d.x}: ${d.y}\n${referenceData.x}: ${referenceData.y}`
-        )}
+        labels={data.map(d => `${labels(d)}\n${labels(referenceData)}`)}
         labelComponent={<Tooltip theme={theme} />}
         origin={{ x: cx, y: cy }}
         radii={radii}

@@ -8,6 +8,7 @@ import {
   number
 } from '@storybook/addon-knobs';
 
+import { labels } from '../src/core/utils';
 import {
   BarChart,
   BulletChart,
@@ -39,7 +40,6 @@ storiesOf('HURUmap UI|Charts/BarChart', module)
             const y = rand();
             const x = `${index}-${index} Employment Status`;
             return {
-              tooltip: `${x}: ${y}`,
               x,
               y
             };
@@ -126,12 +126,11 @@ storiesOf('HURUmap UI|Charts/Bullet Chart', module)
     <div>
       <BulletChart
         data={object('data', [
-          { x: 49, label: 'Male' },
-          { x: 51, label: 'Female' }
+          { x: 'Male', y: 49, unit: '%' },
+          { x: 'Female', y: 51, unit: '%' }
         ])}
         height={number('height', 100)}
-        labels={d => (d.label && `${d.label}: ${d.x}%`) || ''}
-        reference={object('reference', [{ x: 51, label: '' }])}
+        reference={object('reference', [{ x: 51 }])}
         total={100}
         width={number('width', 350)}
       />
@@ -146,11 +145,10 @@ storiesOf('HURUmap UI|Charts/Bullet Chart', module)
           // Below data is equivalent to:
           // [{ x: 12.7, label: 'Living in urban areas' }, { x: 100 }],
           // [{ x: 9.3, label: 'Living in rural areas' }, { x: 100 }]
-          [{ x: 12.7, label: 'Living in urban areas' }],
-          [{ x: 9.3, label: 'Living in rural areas' }]
+          [{ x: 'Living in urban areas', y: 12.7, unit: '%' }],
+          [{ x: 'Living in rural areas', y: 9.3, unit: '%' }]
         ])}
-        reference={object('reference', [{ x: 51, label: '' }])}
-        labels={d => (d.label && `${d.label}: ${d.x}%`) || ''}
+        reference={object('reference', [{ y: 51 }])}
         total={100}
         width={number('width', 350)}
       />
@@ -235,28 +233,31 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
             data: [
               {
                 name: 'A',
-                label: 'A\n \nDar es Salaam 6\n \nKagera 3'
+                tooltip: 'A\n \nDar es Salaam 6\n \nKagera 3'
               },
               {
                 name: 'B',
-                label: 'B\n \nDar es Salaam 1\n \nKagera 1'
+                tooltip: 'B\n \nDar es Salaam 1\n \nKagera 1'
               },
               {
                 name: 'C',
-                label: 'C\n \nDar es Salaam 3\n \nKagera 2'
+                tooltip: 'C\n \nDar es Salaam 3\n \nKagera 2'
               },
               {
                 name: 'D',
-                label: 'D\n \nDar es Salaam 1\n \nKagera 2'
+                tooltip: 'D\n \nDar es Salaam 1\n \nKagera 2'
               },
               {
                 name: 'E',
-                label: 'E\n \nDar es Salaam 12\n \nKagera 5'
+                tooltip: 'E\n \nDar es Salaam 12\n \nKagera 5'
               }
             ],
             x: number('Legend x', 90)
           },
-          scatter: [{ size: 5, symbol: 'circle' }, { size: 5, symbol: 'plus' }],
+          scatter: [
+            { size: 5, symbol: 'circle' },
+            { size: 5, symbol: 'plus' }
+          ],
           tooltip: { style: { textAnchor: 'start' } }
         }}
       />
@@ -273,35 +274,38 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
     return (
       <div style={{ height, width }}>
         <PieChart
+          data={object('data', [
+            {
+              x: 'Female',
+              y: 22,
+              donutLabel: 'Female\n22%',
+              name: 'Female',
+              unit: '%'
+            },
+            {
+              x: 'Male',
+              y: 78,
+              donutLabel: 'Male\n78%',
+              name: 'Male',
+              unit: '%'
+            }
+          ])}
           donut={boolean('donut', true)}
           donutLabelKey={object('donutLabelKey', { dataIndex: 0 })}
-          data={object('data', [
-            { x: 'Female', y: 22, label: 'Female\n22%' },
-            { x: 'Male', y: 78, label: 'Male\n78%' }
-          ])}
-          width={width}
           height={height}
+          labels={({ datum }) => labels(datum)}
+          legendWidth={legendWidth}
           parts={{
             legend: {
-              data: [
-                {
-                  name: 'Female',
-                  label: 'Female\n22%'
-                },
-                {
-                  name: 'Male',
-                  label: 'Male\n78%'
-                }
-              ],
               rowGutter: number('Legend row spacing', 20),
               style: {
                 labels: object('Legend style', undefined)
               }
             }
           }}
-          legendWidth={legendWidth}
           responsive={boolean('responsive', true)}
           standalone={boolean('standalone', true)}
+          width={width}
         />
       </div>
     );
@@ -315,18 +319,43 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
         <PieChart
           data={object('data', [
             [
-              { x: 'A', y: 6, label: 'A\nDar es Salaam 1' },
-              { x: 'B', y: 1, label: 'B\nDar es Salaam 2' },
-              { x: 'C', y: 3, label: 'C\nDar es Salaam 3' },
-              { x: 'D', y: 1, label: 'D\nDar es Salaam 1' },
-              { x: 'E', y: 12, label: 'E\nDar es Salaam 2' }
+              {
+                x: 'A',
+                y: 6,
+                donutLabel: 'A\nDar es Salaam 6',
+                label: 'A: Dar es Salaam 6'
+              },
+              {
+                x: 'B',
+                y: 1,
+                donutLabel: 'B\nDar es Salaam 1',
+                label: 'B: Dar es Salaam 1'
+              },
+              {
+                x: 'C',
+                y: 3,
+                donutLabel: 'C\nDar es Salaam 3',
+                label: 'C: Dar es Salaam 3'
+              },
+              {
+                x: 'D',
+                y: 1,
+                donutLabel: 'D\nDar es Salaam 1',
+                label: 'D: Dar es Salaam 1'
+              },
+              {
+                x: 'E',
+                y: 12,
+                donutLabel: 'E\nDar es Salaam 12',
+                label: 'E: Dar es Salaam 12'
+              }
             ],
             [
-              { x: 'A', y: 3, label: 'A\nKagera 2' },
-              { x: 'B', y: 1, label: 'B\nKagera 1' },
-              { x: 'C', y: 2, label: 'C\nKagera 1' },
-              { x: 'D', y: 2, label: 'D\nKagera 1' },
-              { x: 'E', y: 5, label: 'E\nKagera 5' }
+              { x: 'A', y: 3, donutLabel: 'A\nKagera 3', label: 'A: Kagera 3' },
+              { x: 'B', y: 1, donutLabel: 'B\nKagera 1', label: 'B: Kagera 1' },
+              { x: 'C', y: 2, donutLabel: 'C\nKagera 2', label: 'C: Kagera 2' },
+              { x: 'D', y: 2, donutLabel: 'D\nKagera 2', label: 'D: Kagera 2' },
+              { x: 'E', y: 5, donutLabel: 'E\nKagera 5', label: 'E: Kagera 5' }
             ]
           ])}
           donut={boolean('donut', true)}
@@ -343,23 +372,23 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
               data: object('Legend data', [
                 {
                   name: 'A',
-                  label: 'Dar es Salaam: 1\nKagera: 2'
+                  tooltip: 'Dar es Salaam: 6\nKagera: 3'
                 },
                 {
                   name: 'B',
-                  label: 'Dar es Salaam: 2\nKagera: 1'
+                  tooltip: 'Dar es Salaam: 1\nKagera: 1'
                 },
                 {
                   name: 'C',
-                  label: 'Dar es Salaam: 3\nKagera: 1'
+                  tooltip: 'Dar es Salaam: 3\nKagera: 2'
                 },
                 {
                   name: 'D',
-                  label: 'Dar es Salaam: 1\nKagera: 1'
+                  tooltip: 'Dar es Salaam: 1\nKagera: 2'
                 },
                 {
                   name: 'E',
-                  label: 'Dar es Salaam: 2\nKagera: 5'
+                  tooltip: 'Dar es Salaam: 12\nKagera: 5'
                 }
               ]),
               gutter: number('Legend column spacing', 10),

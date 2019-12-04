@@ -103,23 +103,31 @@ function ChartFactory({
       }
       return `${numberFormatter.format(
         formatValue
-      )}${compactUnit} ${customUnit}`;
+      )}${compactUnit} ${customUnit}`.trim(); // in case customUnit is empty
     },
     [customUnit, numberFormat.style, numberFormatter]
   );
 
   const primaryData = useMemo(() => {
+    const labels = ({ x, y }, separator = ': ') => {
+      const formatedX = x ? `${x}${separator}` : '';
+      return `${formatedX}${format(y)}`;
+    };
     if (visualType === 'column') {
       const computedData = aggregateData(aggregate, data);
       setDataLength(computedData.length);
-      return computedData.slice(show);
+      return computedData.slice(show).map(cD => ({
+        ...cD,
+        tooltip: labels(cD)
+      }));
     }
 
     if (visualType === 'pie') {
       return aggregateData(aggregate, data).map(d => ({
         ...d,
         name: d.x,
-        label: `${d.x} ${format(d.y)}`
+        donutLabel: labels(d, '\n'),
+        label: labels(d)
       }));
     }
 
@@ -139,7 +147,7 @@ function ChartFactory({
     groupedData = groupedData.map(g =>
       g.map(gd => ({
         ...gd,
-        tooltip: `${gd.x}: ${format(gd.y)}`,
+        tooltip: labels(gd),
         x: gd.groupBy
       }))
     );
@@ -309,7 +317,7 @@ function ChartFactory({
               height={computedHeight}
               horizontal={computedHorizontal}
               domainPadding={domainPadding}
-              labels={({ datum }) => formatLabelValue(datum.y)}
+              labels={({ datum }) => format(datum.y)}
               theme={theme}
               {...chartProps}
             />
