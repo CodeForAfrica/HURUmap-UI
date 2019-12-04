@@ -72,14 +72,13 @@ function Label({
 }) {
   const [style, setStyle] = useState(originalStyle);
   const [text, setText] = useState(null);
-  const [wrappedText, setWrappedText] = useState(null);
   const canvas = useMemo(() => document.createElement('canvas'), []);
-  useEffect(() => {
+  const wrappedText = useMemo(() => {
+    let wrapped = [];
     if (originalText) {
       const textToWrap = Array.isArray(originalText)
         ? originalText
         : originalText.split('\n');
-      let wrapped;
       if (width) {
         wrapped = textToWrap.map(tW =>
           wrapText(tW, width, canvas, originalStyle)
@@ -87,9 +86,9 @@ function Label({
       } else {
         wrapped = textToWrap.map(tW => [tW]);
       }
-      setWrappedText(wrapped);
     }
-  }, [canvas, originalStyle, originalText, width]);
+    return wrapped;
+  }, [canvas, originalText, originalStyle, width]);
   useEffect(() => {
     if (wrappedText && wrappedText.length > 1) {
       if (highlightIndex && highlightStyle) {
