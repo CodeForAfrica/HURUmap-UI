@@ -456,6 +456,13 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
       const containerWidth = 950;
       const variant = 'data';
 
+      const iframeSrc = text('iframeSrc', '/public/iframe.html');
+
+      const documentDomain = text('documentDomain');
+      if (documentDomain) {
+        document.domain = documentDomain;
+      }
+
       return (
         <div style={{ width: containerWidth }}>
           <InsightContainer
@@ -494,7 +501,7 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
           >
             <div />
             <iframe
-              src="/public/iframe.html"
+              src={iframeSrc || `/public/iframe.html`}
               title="Title"
               width="100%"
               height="100%"
