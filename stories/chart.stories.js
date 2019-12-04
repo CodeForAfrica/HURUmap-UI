@@ -285,16 +285,6 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
           legendWidth={legendWidth}
           parts={{
             legend: {
-              data: [
-                {
-                  name: 'Female',
-                  label: 'Female: 22%'
-                },
-                {
-                  name: 'Male',
-                  label: 'Male: 78%'
-                }
-              ],
               rowGutter: number('Legend row spacing', 20),
               style: {
                 labels: object('Legend style', undefined)
@@ -320,14 +310,14 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
               {
                 x: 'A',
                 y: 6,
-                donutLabel: 'A\nDar es Salaam 1',
-                label: 'A: Dar es Salaam 1'
+                donutLabel: 'A\nDar es Salaam 6',
+                label: 'A: Dar es Salaam 6'
               },
               {
                 x: 'B',
                 y: 1,
-                donutLabel: 'B\nDar es Salaam 2',
-                label: 'B: Dar es Salaam 2'
+                donutLabel: 'B\nDar es Salaam 1',
+                label: 'B: Dar es Salaam 1'
               },
               {
                 x: 'C',
@@ -344,15 +334,15 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
               {
                 x: 'E',
                 y: 12,
-                donutLabel: 'E\nDar es Salaam 2',
-                label: 'E: Dar es Salaam 2'
+                donutLabel: 'E\nDar es Salaam 12',
+                label: 'E: Dar es Salaam 12'
               }
             ],
             [
-              { x: 'A', y: 3, donutLabel: 'A\nKagera 2', label: 'A: Kagera 2' },
+              { x: 'A', y: 3, donutLabel: 'A\nKagera 3', label: 'A: Kagera 3' },
               { x: 'B', y: 1, donutLabel: 'B\nKagera 1', label: 'B: Kagera 1' },
-              { x: 'C', y: 2, donutLabel: 'C\nKagera 1', label: 'C: Kagera 1' },
-              { x: 'D', y: 2, donutLabel: 'D\nKagera 1', label: 'D: Kagera 1' },
+              { x: 'C', y: 2, donutLabel: 'C\nKagera 2', label: 'C: Kagera 2' },
+              { x: 'D', y: 2, donutLabel: 'D\nKagera 2', label: 'D: Kagera 2' },
               { x: 'E', y: 5, donutLabel: 'E\nKagera 5', label: 'E: Kagera 5' }
             ]
           ])}
@@ -370,23 +360,23 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
               data: object('Legend data', [
                 {
                   name: 'A',
-                  label: 'Dar es Salaam: 1\nKagera: 2'
+                  tooltip: 'Dar es Salaam: 6\nKagera: 3'
                 },
                 {
                   name: 'B',
-                  label: 'Dar es Salaam: 2\nKagera: 1'
+                  tooltip: 'Dar es Salaam: 1\nKagera: 1'
                 },
                 {
                   name: 'C',
-                  label: 'Dar es Salaam: 3\nKagera: 1'
+                  tooltip: 'Dar es Salaam: 3\nKagera: 2'
                 },
                 {
                   name: 'D',
-                  label: 'Dar es Salaam: 1\nKagera: 1'
+                  tooltip: 'Dar es Salaam: 1\nKagera: 2'
                 },
                 {
                   name: 'E',
-                  label: 'Dar es Salaam: 2\nKagera: 5'
+                  tooltip: 'Dar es Salaam: 12\nKagera: 5'
                 }
               ]),
               gutter: number('Legend column spacing', 10),
