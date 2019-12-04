@@ -233,23 +233,23 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
             data: [
               {
                 name: 'A',
-                label: 'A\n \nDar es Salaam 6\n \nKagera 3'
+                tooltip: 'A\n \nDar es Salaam 6\n \nKagera 3'
               },
               {
                 name: 'B',
-                label: 'B\n \nDar es Salaam 1\n \nKagera 1'
+                tooltip: 'B\n \nDar es Salaam 1\n \nKagera 1'
               },
               {
                 name: 'C',
-                label: 'C\n \nDar es Salaam 3\n \nKagera 2'
+                tooltip: 'C\n \nDar es Salaam 3\n \nKagera 2'
               },
               {
                 name: 'D',
-                label: 'D\n \nDar es Salaam 1\n \nKagera 2'
+                tooltip: 'D\n \nDar es Salaam 1\n \nKagera 2'
               },
               {
                 name: 'E',
-                label: 'E\n \nDar es Salaam 12\n \nKagera 5'
+                tooltip: 'E\n \nDar es Salaam 12\n \nKagera 5'
               }
             ],
             x: number('Legend x', 90)
@@ -275,8 +275,20 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
       <div style={{ height, width }}>
         <PieChart
           data={object('data', [
-            { x: 'Female', y: 22, donutLabel: 'Female\n22%', unit: '%' },
-            { x: 'Male', y: 78, donutLabel: 'Male\n78%', unit: '%' }
+            {
+              x: 'Female',
+              y: 22,
+              donutLabel: 'Female\n22%',
+              name: 'Female',
+              unit: '%'
+            },
+            {
+              x: 'Male',
+              y: 78,
+              donutLabel: 'Male\n78%',
+              name: 'Male',
+              unit: '%'
+            }
           ])}
           donut={boolean('donut', true)}
           donutLabelKey={object('donutLabelKey', { dataIndex: 0 })}
