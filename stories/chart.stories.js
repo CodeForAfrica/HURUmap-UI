@@ -8,6 +8,7 @@ import {
   number
 } from '@storybook/addon-knobs';
 
+import { labels } from '../src/core/utils';
 import {
   BarChart,
   BulletChart,
@@ -273,24 +274,25 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
     return (
       <div style={{ height, width }}>
         <PieChart
+          data={object('data', [
+            { x: 'Female', y: 22, donutLabel: 'Female\n22%', unit: '%' },
+            { x: 'Male', y: 78, donutLabel: 'Male\n78%', unit: '%' }
+          ])}
           donut={boolean('donut', true)}
           donutLabelKey={object('donutLabelKey', { dataIndex: 0 })}
-          data={object('data', [
-            { x: 'Female', y: 22, label: 'Female\n22%' },
-            { x: 'Male', y: 78, label: 'Male\n78%' }
-          ])}
-          width={width}
           height={height}
+          labels={({ datum }) => labels(datum)}
+          legendWidth={legendWidth}
           parts={{
             legend: {
               data: [
                 {
                   name: 'Female',
-                  label: 'Female\n22%'
+                  label: 'Female: 22%'
                 },
                 {
                   name: 'Male',
-                  label: 'Male\n78%'
+                  label: 'Male: 78%'
                 }
               ],
               rowGutter: number('Legend row spacing', 20),
@@ -299,9 +301,9 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
               }
             }
           }}
-          legendWidth={legendWidth}
           responsive={boolean('responsive', true)}
           standalone={boolean('standalone', true)}
+          width={width}
         />
       </div>
     );
