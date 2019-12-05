@@ -204,17 +204,17 @@ function ChartFactory({
                   ? [
                       {
                         y: summedData,
-                        label: dataLabel
+                        x: dataLabel
                       }
                     ]
                   : [
                       {
                         y: summedData,
-                        label: dataLabel
+                        x: dataLabel
                       },
                       {
                         y: comparisonData.reduce((a, b) => a + b.y, 0),
-                        label:
+                        x:
                           comparisonData[0].label ||
                           profiles.comparison[label] ||
                           label
