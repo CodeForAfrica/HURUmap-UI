@@ -145,17 +145,16 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
           props,
           statistic
         }}
-        data={data.map((_, index) => {
+        data={data.map(() => {
           const y = rand();
           return {
-            tooltip: `Data ${index}`,
-            x: `Data ${index}`,
+            x: `Data`,
             y
           };
         })}
-        referenceData={reference.map((_, index) => ({
-          label: 'Reference',
-          x: index,
+        referenceData={reference.map(() => ({
+          label: `Reference`,
+          x: `Reference`,
           y: rand()
         }))}
         {...props}
