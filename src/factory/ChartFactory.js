@@ -125,9 +125,10 @@ function ChartFactory({
     if (visualType === 'pie') {
       return aggregateData(aggregate, data).map(d => ({
         ...d,
-        name: d.x,
         donutLabel: labels(d, '\n'),
-        label: labels(d)
+        label: labels(d),
+        name: d.x,
+        tooltip: labels(d)
       }));
     }
 
