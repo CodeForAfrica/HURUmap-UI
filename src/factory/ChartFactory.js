@@ -176,12 +176,12 @@ function ChartFactory({
     switch (visualType) {
       case 'square_nested_proportional_area':
       case 'circle_nested_proportional_area': {
-        const dataLabel = data[0].label || profiles.profile[label];
+        const dataLabel = data[0].x || data[0].label || profiles.profile[label];
         const summedData = aggregateData('sum', data, false)[0].y;
         let summedReferenceData = referenceData.reduce((a, b) => a + b.y, 0);
         const referenceLabel =
           (referenceData.length && summedReferenceData
-            ? referenceData[0].label
+            ? referenceData[0].x || referenceData[0].label
             : dataLabel) ||
           // Default reference label is the chart label
           profiles.parent[propReferenceLabel || label] ||
@@ -191,6 +191,7 @@ function ChartFactory({
           referenceData.length && summedReferenceData
             ? summedReferenceData
             : summedData;
+
         return (
           <div style={{ width: !isComparison ? 200 : 650 }}>
             <NestedProportionalAreaChart
@@ -224,8 +225,9 @@ function ChartFactory({
               }
               reference={[
                 {
+                  label: referenceLabel,
                   y: summedReferenceData,
-                  label: referenceLabel
+                  x: referenceLabel
                 }
               ]}
               {...chartProps}
