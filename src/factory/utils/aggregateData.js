@@ -28,9 +28,6 @@ function aggregate(option, data, unique = true) {
     return data;
   }
   const [func, unit] = option.split(':');
-  if (!selectFunc[func] && !aggregateFunc[func]) {
-    return data;
-  }
 
   const reduced = {};
   if (unique) {
@@ -54,15 +51,14 @@ function aggregate(option, data, unique = true) {
       y: selectFunc[func] ? computedData.y : computedData
     };
   }
-
   const reducedArray = Object.values(reduced);
 
   if (unit === 'percent') {
     const total = data.reduce((a, b) => a + b.y, 0);
-    return (aggregateFunc[func] || reducedArray.length
-      ? reducedArray
-      : data
-    ).map(d => ({
+    // Use the reduced array *only* if aggregateFunc[func] was defined to
+    // reduce the data.
+    const toProcess = aggregateFunc[func] ? reducedArray : data;
+    return toProcess.map(d => ({
       ...d,
       y: (100 * d.y) / total
     }));

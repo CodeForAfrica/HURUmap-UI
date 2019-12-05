@@ -22,6 +22,8 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     const horizontal = boolean('horizontal');
     const data = Array(number('data', 3)).fill(null);
     const unit = text('unit', 'u');
+    const aggregate = select('aggregate', [':percent', ''], '');
+    const customUnit = aggregate === ':percent' ? '%' : '';
     const subtitle = text('subtitle', 'Subtitle');
     const description = text('description', 'Description');
     const props = object('props', {
@@ -39,17 +41,17 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
           typeProps: {
             horizontal
           },
+          aggregate,
           unit,
           subtitle,
           description,
-          statistic
+          statistic,
+          customUnit
         }}
         data={data.map((_, index) => {
           const y = rand();
           const x = `${index} Dummy Data`;
           return {
-            name: type === 'pie' ? x : undefined,
-            tooltip: `${index} Dummy Data`,
             x,
             y
           };
@@ -143,17 +145,16 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
           props,
           statistic
         }}
-        data={data.map((_, index) => {
+        data={data.map(() => {
           const y = rand();
           return {
-            tooltip: `Data ${index}`,
-            x: `Data ${index}`,
+            x: `Data`,
             y
           };
         })}
-        referenceData={reference.map((_, index) => ({
-          label: 'Reference',
-          x: index,
+        referenceData={reference.map(() => ({
+          label: `Reference`,
+          x: `Reference`,
           y: rand()
         }))}
         {...props}
