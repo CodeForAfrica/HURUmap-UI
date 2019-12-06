@@ -37,6 +37,7 @@ function ChartFactory({
     unit,
     ...numberFormat
   },
+  toggleSize,
   data,
   isComparison,
   comparisonData,
@@ -115,6 +116,9 @@ function ChartFactory({
     };
     if (visualType === 'column') {
       const computedData = aggregateData(aggregate, data);
+      if (!toggleSize) {
+        return computedData;
+      }
       setDataLength(computedData.length);
       return computedData.slice(show).map(cD => ({
         ...cD,
@@ -159,12 +163,12 @@ function ChartFactory({
      */
     groupedData = groupedData[0].map((_c, i) => groupedData.map(r => r[i]));
 
-    if (visualType === 'grouped_column') {
+    if (visualType === 'grouped_column' && toggleSize) {
       setDataLength(groupedData[0].length);
       return groupedData.map(gd => gd.slice(show));
     }
     return groupedData;
-  }, [visualType, data, aggregate, show, format]);
+  }, [aggregate, data, format, show, toggleSize, visualType]);
 
   if (!data) {
     return null;
@@ -399,14 +403,16 @@ function ChartFactory({
   return (
     <Box display="flex" flexDirection="column">
       {renderChart()}
-      {['column', 'grouped_column'].includes(visualType) && dataLength > 5 && (
-        <ButtonBase
-          className="Download--hidden"
-          onClick={() => setShow(show === 0 ? -5 : 0)}
-        >
-          {show === 0 ? 'Show Less' : 'Show More'}
-        </ButtonBase>
-      )}
+      {toggleSize &&
+        ['column', 'grouped_column'].includes(visualType) &&
+        dataLength > 5 && (
+          <ButtonBase
+            className="Download--hidden"
+            onClick={() => setShow(show === 0 ? -5 : 0)}
+          >
+            {show === 0 ? 'Show Less' : 'Show More'}
+          </ButtonBase>
+        )}
     </Box>
   );
 }
@@ -458,18 +464,20 @@ ChartFactory.propTypes = {
     parent: propTypes.shape({}),
     profile: propTypes.shape({}),
     comparison: propTypes.shape({})
-  })
+  }),
+  toggleSize: propTypes.bool
 };
 
 ChartFactory.defaultProps = {
   isComparison: false,
   comparisonData: [],
-  referenceData: [],
   profiles: {
     parent: {},
     profile: {},
     comparison: {}
-  }
+  },
+  referenceData: [],
+  toggleSize: true
 };
 
 export default withVictoryTheme(ChartFactory);
