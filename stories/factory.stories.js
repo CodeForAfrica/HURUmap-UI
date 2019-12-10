@@ -21,6 +21,7 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     const type = select('type', ['column', 'number', 'pie'], 'column');
     const horizontal = boolean('horizontal');
     const data = Array(number('data', 3)).fill(null);
+    const toggleSize = type === 'column' && boolean('toggleSize', true);
     const unit = text('unit', 'u');
     const aggregate = select('aggregate', [':percent', ''], '');
     const customUnit = aggregate === ':percent' ? '%' : '';
@@ -56,6 +57,7 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
             y
           };
         })}
+        toggleSize={toggleSize}
         {...props}
       />
     );
