@@ -77,7 +77,7 @@ query charts($geoCode: String!, $geoLevel: String!) {
     }
   }
   ${
-    visual.reference
+    visual.reference && parent && parent.geoLevel && parent.geoCode
       ? `${visual.queryAlias}Reference: ${visual.reference.table ||
           visual.table} (
     condition: ${JSON.stringify(
