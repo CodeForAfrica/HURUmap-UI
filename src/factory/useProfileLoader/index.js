@@ -75,15 +75,12 @@ export default ({ geoId, comparisonGeoId, visuals, populationTables }) => {
     }
   }, [client, geoId, comparisonGeoId, populationTables]);
 
-  let chartData;
-  if (!profiles.isLoading) {
-    chartData = visualLoader({
-      geoId,
-      comparisonGeoId,
-      visuals,
-      parent: profiles.parent
-    });
-  }
+  const chartData = visualLoader({
+    geoId,
+    comparisonGeoId,
+    visuals,
+    parent: profiles.parent
+  });
 
   return { profiles, chartData };
 };
