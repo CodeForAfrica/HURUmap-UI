@@ -38,6 +38,7 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     return (
       <ChartFactory
         definition={{
+          id: 'data-indicator-10',
           type,
           typeProps: {
             horizontal
