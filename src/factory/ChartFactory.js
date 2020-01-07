@@ -401,7 +401,7 @@ function ChartFactory({
   };
 
   return (
-    <Box display="flex" flexDirection="column">
+    <Box display="flex" flexDirection="column" id={id}>
       {renderChart()}
       {toggleSize &&
         ['column', 'grouped_column'].includes(visualType) &&
