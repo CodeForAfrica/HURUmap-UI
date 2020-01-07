@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useApolloClient } from '@apollo/react-hooks';
-import { buildVisualsQuery, buildProfileQuery } from './queries';
+import { buildProfileQuery } from './queries';
+import visualLoader from '../utils/visualLoader';
 
 export default ({ geoId, comparisonGeoId, visuals, populationTables }) => {
   const client = useApolloClient();
-  const [chartData, setChartsData] = useState({
-    isLoading: true
-  });
   const [profiles, setProfiles] = useState({
     isLoading: true
   });
@@ -77,40 +75,12 @@ export default ({ geoId, comparisonGeoId, visuals, populationTables }) => {
     }
   }, [client, geoId, comparisonGeoId, populationTables]);
 
-  useEffect(() => {
-    if (!profiles.isLoading && visuals && visuals.length) {
-      (async () => {
-        setChartsData({
-          isLoading: true
-        });
-
-        const { data: profileVisualsData } = await client.query({
-          query: buildVisualsQuery(visuals, profiles.parent),
-          variables: {
-            geoCode: profiles.profile.geoCode,
-            geoLevel: profiles.profile.geoLevel
-          }
-        });
-
-        let comparisonVisualsData;
-        if (profiles.comparison) {
-          const { data } = await client.query({
-            query: buildVisualsQuery(visuals, profiles.parent),
-            variables: {
-              geoCode: profiles.comparison.geoCode,
-              geoLevel: profiles.comparison.geoLevel
-            }
-          });
-          comparisonVisualsData = data;
-        }
-        setChartsData({
-          isLoading: false,
-          profileVisualsData,
-          comparisonVisualsData
-        });
-      })();
-    }
-  }, [profiles, client, visuals]);
+  const chartData = visualLoader({
+    geoId,
+    comparisonGeoId,
+    visuals,
+    parent: profiles.parent
+  });
 
   return { profiles, chartData };
 };
