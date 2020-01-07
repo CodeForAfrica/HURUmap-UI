@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApolloClient } from '@apollo/react-hooks';
 import { buildProfileQuery } from './queries';
-import visualLoader from './visualLoader';
+import visualLoader from '../utils/visualLoader';
 
 export default ({ geoId, comparisonGeoId, visuals, populationTables }) => {
   const client = useApolloClient();

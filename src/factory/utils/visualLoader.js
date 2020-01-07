@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useApolloClient } from '@apollo/react-hooks';
-import { buildVisualsQuery } from './queries';
+import { buildVisualsQuery } from '../useProfileLoader/queries';
 
 export default ({ geoId, comparisonGeoId, visuals, parent }) => {
   const client = useApolloClient();
-  const [chartData, setChartsData] = useState({
+  const [visualsData, setVisualsData] = useState({
     isLoading: true
   });
 
   useEffect(() => {
     if (visuals && visuals.length) {
       (async () => {
-        setChartsData({
+        setVisualsData({
           isLoading: true
         });
 
-        const { data: visualsData } = await client.query({
+        const { data: profileVisualsData } = await client.query({
           query: buildVisualsQuery(visuals, parent),
           variables: {
             geoCode: geoId.split('-')[1],
@@ -34,14 +34,15 @@ export default ({ geoId, comparisonGeoId, visuals, parent }) => {
           });
           comparisonVisualsData = data;
         }
-        setChartsData({
+
+        setVisualsData({
           isLoading: false,
-          visualsData,
+          profileVisualsData,
           comparisonVisualsData
         });
       })();
     }
   }, [client, comparisonGeoId, geoId, parent, visuals]);
 
-  return chartData;
+  return visualsData;
 };
