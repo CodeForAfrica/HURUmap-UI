@@ -418,7 +418,7 @@ function ChartFactory({
 }
 
 ChartFactory.propTypes = {
-  theme: propTypes.theme.isRequired,
+  theme: propTypes.shape({}).isRequired,
   definition: propTypes.shape({
     id: propTypes.string,
     type: propTypes.string,
