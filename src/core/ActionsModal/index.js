@@ -73,9 +73,9 @@ function ActionsModel({
         variant="scrollable"
         className={classes.tabs}
       >
-        <Tab label="Share" {...a11yProps(SHARE_TAB)} />
-        <Tab label="Embed" {...a11yProps(EMBED_TAB)} />
-        <Tab label="Download" {...a11yProps(DOWNLOAD_TAB)} />
+        <Tab label="Share" {...a11yProps(SHARE_TAB, id)} />
+        <Tab label="Embed" {...a11yProps(EMBED_TAB, id)} />
+        <Tab label="Download" {...a11yProps(DOWNLOAD_TAB, id)} />
       </Tabs>
       <TabPanel id={id} value={value} index={EMBED_TAB}>
         <EmbedPanel
