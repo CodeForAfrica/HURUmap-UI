@@ -1,17 +1,16 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import ShareIcon from '@material-ui/icons/Share';
-import EmbedIcon from '@material-ui/icons/Code';
 import { makeStyles } from '@material-ui/core';
 import propTypes from '../propTypes';
 
 import ActionButton from '../ActionButton';
+import EmbedIcon from '../assets/icons/code.svg';
+import ShareIcon from '../assets/icons/network-connection.svg';
 
 const useStyles = makeStyles({
   actionsContainer: {
     right: 20,
     color: 'white',
-    backgroundColor: 'black',
     padding: '2px 5px',
     borderRadius: 5
   },
@@ -26,7 +25,7 @@ const useStyles = makeStyles({
 function CardActions({ onShare, onEmbed }) {
   const classes = useStyles();
   return (
-    <Grid className={classes.actionsContainer} container spacing={1}>
+    <Grid className={classes.actionsContainer} container spacing={0}>
       <Grid item>
         <ActionButton
           classes={{
@@ -35,12 +34,18 @@ function CardActions({ onShare, onEmbed }) {
           }}
           onClick={onShare}
         >
-          <ShareIcon style={{ fontSize: 15 }} />
+          <ShareIcon />
         </ActionButton>
       </Grid>
       <Grid item>
-        <ActionButton classes={classes} onClick={onEmbed}>
-          <EmbedIcon style={{ fontSize: 15 }} />
+        <ActionButton
+          classes={{
+            actionButton: classes.actionButton,
+            iconGrid: classes.iconGrid
+          }}
+          onClick={onEmbed}
+        >
+          <EmbedIcon />
         </ActionButton>
       </Grid>
     </Grid>
