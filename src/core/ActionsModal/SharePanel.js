@@ -2,7 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { DialogContent, DialogTitle, Grid, TextField } from '@material-ui/core';
+import {
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  Typography
+} from '@material-ui/core';
 import {
   EmailIcon,
   EmailShareButton,
@@ -18,12 +24,16 @@ const useStyles = makeStyles(() => ({
   socialIcon: {
     padding: '0 0.5rem 1.5rem 0.5rem'
   },
+  subtitle: {},
   title: {},
   url: {
+    fontFamily: 'monospace',
     width: '100%'
   },
-  urlInput: {
-    fontFamily: 'monospace'
+  urlContainer: {
+    border: '1px solid #eaeaea',
+    padding: '18.5px 14px',
+    overflow: 'auto'
   }
 }));
 
@@ -87,15 +97,20 @@ function SharePanel({
           )}
         </Grid>
         {url && (
-          <TextField
-            defaultValue={url}
-            className={classes.url}
-            InputProps={{
-              readOnly: true,
-              classes: { root: classes.urlInput }
-            }}
-            variant="outlined"
-          />
+          <>
+            <DialogContentText className={classes.subtitle}>
+              Link:
+            </DialogContentText>
+            <pre className={classes.urlContainer}>
+              <Typography
+                variant="caption"
+                component="code"
+                className={classes.url}
+              >
+                {url}
+              </Typography>
+            </pre>
+          </>
         )}
       </DialogContent>
     </>
