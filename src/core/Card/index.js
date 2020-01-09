@@ -24,7 +24,8 @@ const useStyles = makeStyles(theme => ({
     width: expand ? '100%' : width || 500,
     height: 'auto',
     padding: 20
-  })
+  }),
+  cardButton: {}
 }));
 
 function Card({
@@ -107,6 +108,7 @@ function Card({
             <ActionsModal
               download={{ ...download, onDownload }}
               embed={{ url, ...embed }}
+              id={id}
               onClose={handleActionsModalClose}
               open={modalOpen}
               share={{ url, ...share }}
@@ -125,21 +127,19 @@ function Card({
             />
           </>
         )}
-        <Grid item>
-          <Grid container direction="column" spacing={1}>
-            <Grid item>
-              <Typography dangerouslySetInnerHTML={{ __html: post.title }} />
-            </Grid>
-            <Grid item>
-              <Typography
-                component="div"
-                dangerouslySetInnerHTML={{
-                  __html: expand
-                    ? post.content
-                    : post.content.split('<p><!--more--></p>')[0]
-                }}
-              />
-            </Grid>
+        <Grid item container direction="column" spacing={1}>
+          <Grid item>
+            <Typography dangerouslySetInnerHTML={{ __html: post.title }} />
+          </Grid>
+          <Grid item>
+            <Typography
+              component="div"
+              dangerouslySetInnerHTML={{
+                __html: expand
+                  ? post.content
+                  : post.content.split('<p><!--more--></p>')[0]
+              }}
+            />
           </Grid>
         </Grid>
 
@@ -152,6 +152,7 @@ function Card({
                 }
                 setExpand(!expand);
               }}
+              classes={{ root: classes.cardButton }}
             >
               {expand ? (
                 <>
