@@ -83,6 +83,10 @@ export default {
       })
     )
   ]),
+  singleRefrence: PropTypes.shape({
+    data: PropTypes.number,
+    style: PropTypes.shape({})
+  }),
   theme: PropTypes.shape({
     bullet: PropTypes.shape({}),
     proportionalArea: PropTypes.shape({}),

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { labels as defaultLabels } from '../utils';
-import { toReferenceProps } from '../ReferableChart';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import BulletBar from './BulletBar';
 import CustomContainer from '../CustomContainer';
@@ -54,10 +53,6 @@ function BulletChart({
   const computedWidth = width || chart.width;
   const isMobile = computedWidth < mobileBreakpoint;
   const isDirectionColumn = isMobile || computedData.length < 2;
-  const reference = {
-    style: chart.reference,
-    ...toReferenceProps(ref)
-  };
 
   return (
     <CustomContainer height={height} theme={theme} width={width}>
@@ -68,7 +63,17 @@ function BulletChart({
             barWidth={computedBarWidth}
             data={d}
             labels={labels || defaultLabels}
-            reference={reference}
+            reference={
+              typeof ref === 'number'
+                ? {
+                    style: chart.reference,
+                    data: ref
+                  }
+                : {
+                    style: ref.reference || chart.reference,
+                    data: ref.data
+                  }
+            }
             style={{
               ...computedStyle,
               data: {
@@ -106,7 +111,7 @@ BulletChart.propTypes = {
   height: PropTypes.number,
   labels: PropTypes.func,
   offset: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
-  reference: propTypes.reference,
+  reference: PropTypes.oneOfType([propTypes.number, propTypes.singleRefrence]),
   theme: propTypes.theme,
   total: PropTypes.number.isRequired,
   width: PropTypes.number

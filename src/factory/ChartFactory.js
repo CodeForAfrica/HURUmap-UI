@@ -118,17 +118,12 @@ const ChartFactory = React.memo(
         return `${formatedX}${format(y)}`;
       };
 
-      if (visualType === 'line') {
-        const computedData = aggregateData(aggregate, data);
-        setDataLength(computedData.length);
-        return computedData.slice(toggleSize ? show : 0).map(cD => ({
-          ...cD,
-          tooltip: labels(cD)
-        }));
-      }
-
-      if (visualType === 'column') {
-        const computedData = aggregateData(aggregate, data);
+      if (['column', 'line', 'bullet'].includes(visualType)) {
+        const computedData = aggregateData(
+          aggregate,
+          // Bullet charts only use first two data
+          visualType === 'bullet' ? data.slice(0, 2) : data
+        );
         setDataLength(computedData.length);
         return computedData.slice(toggleSize ? show : 0).map(cD => ({
           ...cD,
@@ -397,17 +392,30 @@ const ChartFactory = React.memo(
                 width={computedWidth}
                 horizontal={computedHorizontal}
                 domainPadding={domainPadding}
-                labels={({ datum }) => {
-                  return format(datum.y);
-                }}
+                labels={({ datum }) => format(datum.y)}
                 theme={theme}
                 {...chartProps}
               />
             </div>
           );
         }
-        case 'bullet':
-          return <BulletChart />;
+        case 'bullet': {
+          const summedData = aggregateData('sum', primaryData, false)[0].y;
+          const summedReferenceData =
+            referenceData.reduce((a, b) => a + b.y, 0) || primaryData[0].y;
+          return (
+            <BulletChart
+              total={unit === 'percent' ? 100 : summedData}
+              data={!isComparison ? primaryData : [primaryData, comparisonData]}
+              reference={summedReferenceData}
+              height={!isComparison ? 50 : 100}
+              width={widthProp || 350}
+              labels={datum => format(datum.y)}
+              theme={theme}
+              {...chartProps}
+            />
+          );
+        }
         case 'line': {
           const offset = offsetProp || theme.line.offset;
           const computedSize = primaryData.length * offset;
@@ -430,6 +438,7 @@ const ChartFactory = React.memo(
                 },
                 scatter: { size: 5 }
               }}
+              theme={theme}
               {...chartProps}
             />
           );

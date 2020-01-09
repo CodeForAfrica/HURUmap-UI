@@ -26,7 +26,7 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     const horizontal = boolean('horizontal');
     const data = Array(number('data', 3)).fill(null);
     const toggleSize = type === 'column' && boolean('toggleSize', true);
-    const customUnit = text('customUnit', 'u');
+    const customUnit = text('customUnit', 'unit');
     const aggregate = select('aggregate', [':percent', ''], '');
     const subtitle = text('subtitle', 'Subtitle');
     const description = text('description', 'Description');
@@ -75,7 +75,7 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
       ['sum', 'avg', 'sum:percent', ''],
       ''
     );
-    const customUnit = text('customUnit', '%');
+    const customUnit = text('customUnit', 'unit');
     const subtitle = text('subtitle', 'Subtitle');
     const description = text('description', 'Description');
     const props = object('props', {
@@ -127,7 +127,7 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
       ['sum', 'avg', 'sum:percent', ''],
       'sum:percent'
     );
-    const unit = text('unit', '%');
+    const customUnit = text('customUnit', '%');
     const subtitle = text('subtitle', 'Subtitle');
     const description = text('description', 'Description');
     const props = object('props', {
@@ -144,7 +144,7 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
         definition={{
           type,
           aggregate,
-          unit,
+          customUnit,
           subtitle,
           description,
           props,
