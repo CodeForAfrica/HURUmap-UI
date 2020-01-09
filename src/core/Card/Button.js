@@ -5,10 +5,10 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 
 import propTypes from '../propTypes';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(({ palette }) => ({
   root: {
     color: 'white',
-    backgroundColor: 'black',
+    backgroundColor: palette.primary.main,
     padding: '5px 10px',
     paddingLeft: '5px',
     borderRadius: 5
