@@ -29,6 +29,7 @@ const useStyles = makeStyles(() => ({
 function ActionsModel({
   download,
   embed: embedProp,
+  id,
   open,
   onClose,
   tab,
@@ -70,7 +71,7 @@ function ActionsModel({
         <Tab label="Embed" {...a11yProps(EMBED_TAB)} />
         <Tab label="Download" {...a11yProps(DOWNLOAD_TAB)} />
       </Tabs>
-      <TabPanel value={value} index={EMBED_TAB}>
+      <TabPanel id={id} value={value} index={EMBED_TAB}>
         <EmbedPanel
           {...embed}
           classes={{
@@ -83,19 +84,19 @@ function ActionsModel({
           {embedCode}
         </EmbedPanel>
       </TabPanel>
-      <TabPanel value={value} index={SHARE_TAB}>
+      <TabPanel id={id} value={value} index={SHARE_TAB}>
         <SharePanel
           {...share}
           classes={{
             social: classes.shareSocial,
-            socialIcon: classes.socialIcon,
-            title: classes.socialTitle,
-            url: classes.socialUrl,
-            urlInput: classes.socialUrlInput
+            socialIcon: classes.shareSocialIcon,
+            title: classes.shareTitle,
+            url: classes.shareUrl,
+            urlInput: classes.shareUrlInput
           }}
         />
       </TabPanel>
-      <TabPanel value={value} index={DOWNLOAD_TAB}>
+      <TabPanel id={id} value={value} index={DOWNLOAD_TAB}>
         <DownloadPanel {...download} />
       </TabPanel>
     </Dialog>
@@ -113,6 +114,7 @@ ActionsModel.propTypes = {
     subtitle: PropTypes.string,
     title: PropTypes.string
   }),
+  id: PropTypes.string,
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   share: PropTypes.shape({
@@ -145,6 +147,7 @@ ActionsModel.propTypes = {
 ActionsModel.defaultProps = {
   download: null,
   embed: null,
+  id: '',
   share: null,
   tab: EMBED_TAB,
   url: null

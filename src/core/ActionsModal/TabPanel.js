@@ -3,24 +3,22 @@ import PropTypes from 'prop-types';
 
 import { Box, Typography } from '@material-ui/core';
 
-export function a11yProps(index) {
+export function a11yProps(index, id = '') {
   return {
-    id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`
+    id: `${id}-actions-tab-${index}`,
+    'aria-controls': `${id}-actions-tabpanel-${index}`
   };
 }
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
+function TabPanel({ id, children, value, index, ...props }) {
   return (
     <Typography
       component="div"
       role="tabpanel"
       hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      {...other}
+      id={`${id}-actions-tabpanel-${index}`}
+      aria-labelledby={`${id}-actions-tab-${index}`}
+      {...props}
     >
       {value === index && <Box>{children}</Box>}
     </Typography>
@@ -32,10 +30,13 @@ TabPanel.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]).isRequired,
+  id: PropTypes.string,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired
 };
 
-TabPanel.defaultProps = {};
+TabPanel.defaultProps = {
+  id: ''
+};
 
 export default TabPanel;
