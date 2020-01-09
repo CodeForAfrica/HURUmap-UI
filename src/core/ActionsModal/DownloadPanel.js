@@ -9,11 +9,11 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
+import DownloadIcon from '../assets/icons/download.svg';
+
 const useStyles = makeStyles({
   content: {},
-  downloadButton: {
-    textTransform: 'uppercase'
-  },
+  downloadButton: {},
   subtitle: {},
   title: {}
 });
@@ -32,8 +32,9 @@ function DownloadPanel({ children, subtitle, title, onDownload, ...props }) {
         )}
         <Button
           className={classes.downloadButton}
-          color="primary"
+          variant="outlined"
           onClick={onDownload}
+          startIcon={<DownloadIcon />}
         >
           Download
         </Button>
@@ -53,8 +54,8 @@ DownloadPanel.propTypes = {
 };
 
 DownloadPanel.defaultProps = {
-  subtitle: null,
-  title: 'Download this as an image'
+  subtitle: undefined,
+  title: undefined
 };
 
 export default DownloadPanel;
