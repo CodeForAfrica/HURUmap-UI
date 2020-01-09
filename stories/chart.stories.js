@@ -126,11 +126,11 @@ storiesOf('HURUmap UI|Charts/Bullet Chart', module)
     <div>
       <BulletChart
         data={object('data', [
-          { x: 'Male', y: 49, unit: '%' },
-          { x: 'Female', y: 51, unit: '%' }
+          { x: 'Health Budget 2020', y: 45 },
+          { x: 'Health Budget 2019', y: 55 }
         ])}
         height={number('height', 100)}
-        reference={object('reference', [{ x: 51 }])}
+        reference={number('reference', 51)}
         total={100}
         width={number('width', 350)}
       />
@@ -141,14 +141,16 @@ storiesOf('HURUmap UI|Charts/Bullet Chart', module)
       <BulletChart
         height={number('height', 100)}
         data={object('data', [
-          // When no qualitative measure is given, total would be assumed.
-          // Below data is equivalent to:
-          // [{ x: 12.7, label: 'Living in urban areas' }, { x: 100 }],
-          // [{ x: 9.3, label: 'Living in rural areas' }, { x: 100 }]
-          [{ x: 'Living in urban areas', y: 12.7, unit: '%' }],
-          [{ x: 'Living in rural areas', y: 9.3, unit: '%' }]
+          [
+            { x: 'A Health Budget 2019', y: 12.7 },
+            { x: 'A Health Budget 2020', y: 12.7 }
+          ],
+          [
+            { x: 'B Health Budget 2019', y: 9.3 },
+            { x: 'B Health Budget 2020', y: 12.7 }
+          ]
         ])}
-        reference={object('reference', [{ y: 51 }])}
+        reference={number('reference', 51)}
         total={100}
         width={number('width', 350)}
       />
@@ -279,15 +281,13 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
               x: 'Female',
               y: 22,
               donutLabel: 'Female\n22%',
-              name: 'Female',
-              unit: '%'
+              name: 'Female'
             },
             {
               x: 'Male',
               y: 78,
               donutLabel: 'Male\n78%',
-              name: 'Male',
-              unit: '%'
+              name: 'Male'
             }
           ])}
           donut={boolean('donut', true)}
