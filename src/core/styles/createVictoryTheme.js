@@ -26,6 +26,10 @@ export default function createVictoryTheme(chartOptions) {
           }
         }
       },
+      line: {
+        offset: 100,
+        height: 300
+      },
       bar: {
         barWidth: 25,
         domainPadding: { x: [25, 25] },
