@@ -15,7 +15,12 @@ export const DOWNLOAD_TAB = 2;
 const useStyles = makeStyles(() => ({
   root: {},
   tabs: {},
+  downloadContent: {},
+  downloadDownloadButton: {},
+  downloadSubtitle: {},
+  downloadTitle: {},
   embedCode: {},
+  embedCodeContainer: {},
   embedContent: {},
   embedSubtitle: {},
   embedTitle: {},
@@ -23,7 +28,7 @@ const useStyles = makeStyles(() => ({
   shareSocialIcon: {},
   shareTitle: {},
   shareUrl: {},
-  shareUrlInput: {}
+  shareUrlContainer: {}
 }));
 
 function ActionsModel({
@@ -54,6 +59,7 @@ function ActionsModel({
 
   return (
     <Dialog
+      {...props}
       onClose={handleClose}
       onEnter={handleEnter}
       open={open}
@@ -76,6 +82,7 @@ function ActionsModel({
           {...embed}
           classes={{
             code: classes.embedCode,
+            codeContainer: classes.embedCodeContainer,
             content: classes.embedContent,
             subtitle: classes.embedSubtitle,
             title: classes.embedTitle
@@ -90,14 +97,23 @@ function ActionsModel({
           classes={{
             social: classes.shareSocial,
             socialIcon: classes.shareSocialIcon,
+            subtitle: classes.shareSubtitle,
             title: classes.shareTitle,
             url: classes.shareUrl,
-            urlInput: classes.shareUrlInput
+            urlContainer: classes.shareUrlContainer
           }}
         />
       </TabPanel>
       <TabPanel id={id} value={value} index={DOWNLOAD_TAB}>
-        <DownloadPanel {...download} />
+        <DownloadPanel
+          {...download}
+          classes={{
+            content: classes.downloadContent,
+            downloadButton: classes.downloadDownloadButton,
+            subtitle: classes.downloadSubtitle,
+            title: classes.downloadTitle
+          }}
+        />
       </TabPanel>
     </Dialog>
   );
