@@ -31,9 +31,15 @@ function EmbedPanel({ children, subtitle, title, ...props }) {
             {subtitle}
           </DialogContentText>
         )}
-        <Typography variant="caption" component="pre" className={classes.code}>
-          <code>{children}</code>
-        </Typography>
+        <pre>
+          <Typography
+            variant="caption"
+            component="code"
+            className={classes.code}
+          >
+            {children}
+          </Typography>
+        </pre>
       </DialogContent>
     </>
   );

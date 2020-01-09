@@ -15,8 +15,6 @@ import ActionsModal, { EMBED_TAB, SHARE_TAB } from '../ActionsModal';
 import CardButton from './Button';
 import CardActions from './Actions';
 import ContentLoader from '../ContentLoader';
-import EmbedDropDown from '../EmbedDropDown';
-import ShareDropDown from '../ShareDropDown';
 
 const useStyles = makeStyles(theme => ({
   root: ({ expand, width }) => ({
@@ -48,8 +46,6 @@ function Card({
     ...props
   });
   const id = idProp || shortid.generate();
-  const [embedAnchorEl, setEmbedAnchorEl] = useState(null);
-  const [shareAnchorEl, setShareAnchorEl] = useState(null);
   const [activeTab, setActiveTab] = useState(SHARE_TAB);
   const [modalOpen, setModalOpen] = useState(false);
   const [url, setUrl] = useState();
@@ -108,40 +104,6 @@ function Card({
                 onShare={e => showActionsModal(SHARE_TAB, e)}
               />
             </Box>
-            <ShareDropDown
-              {...share}
-              anchorEl={shareAnchorEl}
-              open={shareAnchorEl !== null}
-              onClose={() => setShareAnchorEl(null)}
-              classes={{
-                root: classes.shareRoot,
-                title: classes.shareTitle,
-                social: classes.shareSocial,
-                url: classes.shareUrl,
-                urlInput: classes.shareUrlInput,
-                dropDownRoot: classes.shareDropDownRoot,
-                dropDownPaper: classes.shareDropDownPaper
-              }}
-            >
-              Share
-            </ShareDropDown>
-            <EmbedDropDown
-              anchorEl={embedAnchorEl}
-              onClose={() => setEmbedAnchorEl(null)}
-              open={embedAnchorEl !== null}
-              title={embed.title}
-              subtitle={embed.subtitle}
-              classes={{
-                root: classes.embedRoot,
-                title: classes.embedTitle,
-                subtitle: classes.embedSubtitle,
-                code: classes.embedCode,
-                dropDownRoot: classes.embedDropDownRoot,
-                dropDownPaper: classes.embedDropDownPaper
-              }}
-            >
-              {embed.code}
-            </EmbedDropDown>
             <ActionsModal
               download={{ ...download, onDownload }}
               embed={{ url, ...embed }}
@@ -149,6 +111,17 @@ function Card({
               open={modalOpen}
               share={{ url, ...share }}
               tab={activeTab}
+              classes={{
+                embedCode: classes.embedCode,
+                embedContent: classes.embedContent,
+                embedSubtitle: classes.embedSubtitle,
+                embedTitle: classes.embedTitle,
+                shareSocial: classes.shareSocial,
+                shareSocialIcon: classes.shareSocialIcon,
+                shareTitle: classes.shareTitle,
+                shareUrl: classes.shareUrl,
+                shareUrlInput: classes.shareUrlInput
+              }}
             />
           </>
         )}

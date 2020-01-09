@@ -14,7 +14,16 @@ export const DOWNLOAD_TAB = 2;
 
 const useStyles = makeStyles(() => ({
   root: {},
-  tabs: {}
+  tabs: {},
+  embedCode: {},
+  embedContent: {},
+  embedSubtitle: {},
+  embedTitle: {},
+  shareSocial: {},
+  shareSocialIcon: {},
+  shareTitle: {},
+  shareUrl: {},
+  shareUrlInput: {}
 }));
 
 function ActionsModel({
@@ -62,10 +71,29 @@ function ActionsModel({
         <Tab label="Download" {...a11yProps(DOWNLOAD_TAB)} />
       </Tabs>
       <TabPanel value={value} index={EMBED_TAB}>
-        <EmbedPanel {...embed}>{embedCode}</EmbedPanel>
+        <EmbedPanel
+          {...embed}
+          classes={{
+            code: classes.embedCode,
+            content: classes.embedContent,
+            subtitle: classes.embedSubtitle,
+            title: classes.embedTitle
+          }}
+        >
+          {embedCode}
+        </EmbedPanel>
       </TabPanel>
       <TabPanel value={value} index={SHARE_TAB}>
-        <SharePanel {...share} />
+        <SharePanel
+          {...share}
+          classes={{
+            social: classes.shareSocial,
+            socialIcon: classes.socialIcon,
+            title: classes.socialTitle,
+            url: classes.socialUrl,
+            urlInput: classes.socialUrlInput
+          }}
+        />
       </TabPanel>
       <TabPanel value={value} index={DOWNLOAD_TAB}>
         <DownloadPanel {...download} />
