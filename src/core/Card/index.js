@@ -115,14 +115,16 @@ function Card({
               tab={activeTab}
               classes={{
                 embedCode: classes.embedCode,
+                embedCodeContainer: classes.embedCodeContainer,
                 embedContent: classes.embedContent,
                 embedSubtitle: classes.embedSubtitle,
                 embedTitle: classes.embedTitle,
                 shareSocial: classes.shareSocial,
                 shareSocialIcon: classes.shareSocialIcon,
+                shareSubtitle: classes.shareSubtitle,
                 shareTitle: classes.shareTitle,
                 shareUrl: classes.shareUrl,
-                shareUrlInput: classes.shareUrlInput
+                shareUrlContainer: classes.shareUrlContainer
               }}
             />
           </>
@@ -243,7 +245,10 @@ Card.propTypes = {
 };
 
 Card.defaultProps = {
-  download: undefined,
+  download: {
+    subtitle: 'For offline viewing or using it in print media.',
+    title: 'Download this as an image'
+  },
   embed: {
     title: 'Embed this by',
     subtitle:
