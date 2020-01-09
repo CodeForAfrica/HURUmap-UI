@@ -12,7 +12,12 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles({
   content: {},
   code: {
-    width: '100%',
+    fontFamily: 'monospace',
+    width: '100%'
+  },
+  codeContainer: {
+    border: '1px solid #eaeaea',
+    padding: '18.5px 14px',
     overflow: 'auto'
   },
   subtitle: {},
@@ -31,7 +36,7 @@ function EmbedPanel({ children, subtitle, title, ...props }) {
             {subtitle}
           </DialogContentText>
         )}
-        <pre>
+        <pre className={classes.codeContainer}>
           <Typography
             variant="caption"
             component="code"
