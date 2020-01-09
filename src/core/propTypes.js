@@ -96,7 +96,8 @@ export default {
     pie: PropTypes.shape({}),
     group: PropTypes.shape({
       colorScale
-    })
+    }),
+    line: PropTypes.shape({})
   }),
   colorScale
 };
