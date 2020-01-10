@@ -2,6 +2,8 @@ import React, { useMemo, useRef, useState, useCallback } from 'react';
 
 import { Box, ButtonBase } from '@material-ui/core';
 
+import LineChart from '../core/LineChart';
+import BulletChart from '../core/BulletChart';
 import BarChart from '../core/BarChart';
 import PieChart from '../core/PieChart';
 import NestedProportionalAreaChart from '../core/NestedProportionalAreaChart';
@@ -11,411 +13,460 @@ import aggregateData, { isSelectFunc } from './utils/aggregateData';
 import propTypes from '../core/propTypes';
 import withVictoryTheme from '../core/styles/withVictoryTheme';
 
-function ChartFactory({
-  theme,
-  definition: {
-    id,
-    type: visualType,
-    /**
-     * Custom properties to apply to the visual
-     */
-    typeProps,
-    label,
-    reference: { label: propReferenceLabel } = {},
-    aggregate,
-    unique,
-    subtitle,
-    description,
-    locale = 'en-GB',
-    customUnit = '',
-    /**
-     * The rest of the props are going to be considered as:
-     *  Intl.NumberFormatOptions
-     *
-     * Omit unit since its an experimental NumberFormat option.
-     */
-    unit,
-    ...numberFormat
-  },
-  toggleSize,
-  data,
-  isComparison,
-  comparisonData,
-  referenceData,
-  profiles
-}) {
-  const {
-    width: widthProp,
-    height: heightProp,
-    horizontal: horizontalProp,
-    offset: offsetProp,
-    ...chartProps
-  } = typeProps || {};
-  const key =
-    id ||
-    Math.random()
-      .toString(36)
-      .substring(2) + Date.now().toString(36);
-  const [dataLength, setDataLength] = useState(-5);
-  const [show, setShow] = useState(-5);
-  const numberFormatter = useRef(
-    (() => {
-      try {
-        const formatter = new Intl.NumberFormat(locale, {
-          maximumFractionDigits: 2,
-          ...numberFormat
-        });
-        return formatter;
-      } catch (e) {
-        return new Intl.NumberFormat(locale);
-      }
-    })()
-  ).current;
-
-  const format = useCallback(
-    value => {
+const ChartFactory = React.memo(
+  ({
+    theme,
+    definition: {
+      id,
+      type: visualType,
       /**
-       * Since `notation: compact` is experimental as noted here:
-       *  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
-       * It is only available in Chrome 77+ :
-       *  https://v8.dev/features/intl-numberformat#notation
+       * Custom properties to apply to the visual
+       */
+      typeProps,
+      label,
+      reference: { label: propReferenceLabel } = {},
+      aggregate,
+      unique,
+      subtitle,
+      description,
+      locale = 'en-GB',
+      customUnit = '',
+      /**
+       * The rest of the props are going to be considered as:
+       *  Intl.NumberFormatOptions
        *
-       * Manually compact the numbers until this feature is available.
+       * Omit unit since its an experimental NumberFormat option.
        */
-      let formatValue = value;
-      let compactUnit = '';
-      if (value > 10 ** 12) {
-        compactUnit = 'T';
-        formatValue = value / 10 ** 12;
-      } else if (value > 10 ** 9) {
-        compactUnit = 'B';
-        formatValue = value / 10 ** 9;
-      } else if (value > 10 ** 6) {
-        compactUnit = 'M';
-        formatValue = value / 10 ** 6;
-      } else {
-        //
-      }
-      /**
-       * `style: percent` expects a ratio
-       */
-      if (numberFormat.style === 'percent') {
-        formatValue /= 100;
-      }
-      return `${numberFormatter.format(
-        formatValue
-      )}${compactUnit} ${customUnit}`.trim(); // in case customUnit is empty
+      unit,
+      ...numberFormat
     },
-    [customUnit, numberFormat.style, numberFormatter]
-  );
+    toggleSize,
+    data,
+    isComparison,
+    comparisonData,
+    referenceData,
+    profiles
+  }) => {
+    const {
+      width: widthProp,
+      height: heightProp,
+      horizontal: horizontalProp,
+      offset: offsetProp,
+      ...chartProps
+    } = typeProps || {};
+    const key =
+      id ||
+      Math.random()
+        .toString(36)
+        .substring(2) + Date.now().toString(36);
+    const [dataLength, setDataLength] = useState(-5);
+    const [show, setShow] = useState(-5);
+    const numberFormatter = useRef(
+      (() => {
+        try {
+          const formatter = new Intl.NumberFormat(locale, {
+            maximumFractionDigits: 2,
+            ...numberFormat
+          });
+          return formatter;
+        } catch (e) {
+          return new Intl.NumberFormat(locale);
+        }
+      })()
+    ).current;
 
-  const primaryData = useMemo(() => {
-    const labels = ({ x, y }, separator = ': ') => {
-      const formatedX = x ? `${x}${separator}` : '';
-      return `${formatedX}${format(y)}`;
-    };
-    if (visualType === 'column') {
-      const computedData = aggregateData(aggregate, data);
-      if (!toggleSize) {
-        return computedData;
+    const format = useCallback(
+      value => {
+        /**
+         * Since `notation: compact` is experimental as noted here:
+         *  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
+         * It is only available in Chrome 77+ :
+         *  https://v8.dev/features/intl-numberformat#notation
+         *
+         * Manually compact the numbers until this feature is available.
+         */
+        let formatValue = value;
+        let compactUnit = '';
+        if (value > 10 ** 12) {
+          compactUnit = 'T';
+          formatValue = value / 10 ** 12;
+        } else if (value > 10 ** 9) {
+          compactUnit = 'B';
+          formatValue = value / 10 ** 9;
+        } else if (value > 10 ** 6) {
+          compactUnit = 'M';
+          formatValue = value / 10 ** 6;
+        } else {
+          //
+        }
+        /**
+         * `style: percent` expects a ratio
+         */
+        if (numberFormat.style === 'percent') {
+          formatValue /= 100;
+        }
+        return `${numberFormatter.format(
+          formatValue
+        )}${compactUnit} ${customUnit}`.trim(); // in case customUnit is empty
+      },
+      [customUnit, numberFormat.style, numberFormatter]
+    );
+
+    const primaryData = useMemo(() => {
+      const labels = ({ x, y }, separator = ': ') => {
+        const formatedX = x ? `${x}${separator}` : '';
+        return `${formatedX}${format(y)}`;
+      };
+
+      if (['column', 'line', 'bullet'].includes(visualType)) {
+        const computedData = aggregateData(
+          aggregate,
+          // Bullet charts only use first two data
+          visualType === 'bullet' ? data.slice(0, 2) : data
+        );
+        setDataLength(computedData.length);
+        return computedData.slice(toggleSize ? show : 0).map(cD => ({
+          ...cD,
+          tooltip: labels(cD)
+        }));
       }
-      setDataLength(computedData.length);
-      return computedData.slice(show).map(cD => ({
-        ...cD,
-        tooltip: labels(cD)
-      }));
+
+      if (visualType === 'pie') {
+        return aggregateData(aggregate, data).map(d => ({
+          ...d,
+          donutLabel: labels(d, '\n'),
+          label: labels(d),
+          name: d.x,
+          tooltip: labels(d)
+        }));
+      }
+
+      /**
+       * Group the data based on groupBy
+       */
+      let groupedData = [...new Set(data.map(d => d.groupBy))].map(group =>
+        data.filter(d => d.groupBy === group)
+      );
+
+      groupedData = aggregateData(aggregate, groupedData);
+
+      /**
+       * Change `x` to be the `groupBy` value
+       * to plot group labels on the dependent axis
+       */
+      groupedData = groupedData.map(g =>
+        g.map(gd => ({
+          ...gd,
+          tooltip: labels(gd),
+          x: gd.groupBy
+        }))
+      );
+
+      /**
+       * Reverse grouped data
+       * since victory plots inversely
+       */
+      groupedData = groupedData[0].map((_c, i) => groupedData.map(r => r[i]));
+
+      if (visualType === 'grouped_column' && toggleSize) {
+        setDataLength(groupedData[0].length);
+        return groupedData.map(gd => gd.slice(show));
+      }
+      return groupedData;
+    }, [aggregate, data, format, show, toggleSize, visualType]);
+
+    if (!data) {
+      return null;
     }
 
-    if (visualType === 'pie') {
-      return aggregateData(aggregate, data).map(d => ({
-        ...d,
-        donutLabel: labels(d, '\n'),
-        label: labels(d),
-        name: d.x,
-        tooltip: labels(d)
-      }));
-    }
+    const renderChart = () => {
+      switch (visualType) {
+        case 'square_nested_proportional_area':
+        case 'circle_nested_proportional_area': {
+          const summedData = aggregateData('sum', data, false)[0].y;
+          let summedReferenceData = referenceData.reduce((a, b) => a + b.y, 0);
+          summedReferenceData =
+            referenceData.length && summedReferenceData
+              ? summedReferenceData
+              : summedData;
+          const dataLabel =
+            (label && profiles.profile[label]) ||
+            data[0].x ||
+            data[0].label ||
+            label;
+          const referenceLabelProp = propReferenceLabel || label;
+          const referenceLabel =
+            (referenceLabelProp && profiles.parent[referenceLabelProp]) ||
+            (referenceData.length && summedReferenceData
+              ? referenceData[0].x || referenceData[0].label
+              : dataLabel) ||
+            referenceLabelProp;
 
-    /**
-     * Group the data based on groupBy
-     */
-    let groupedData = [...new Set(data.map(d => d.groupBy))].map(group =>
-      data.filter(d => d.groupBy === group)
-    );
-
-    groupedData = aggregateData(aggregate, groupedData);
-
-    /**
-     * Change `x` to be the `groupBy` value
-     * to plot group labels on the dependent axis
-     */
-    groupedData = groupedData.map(g =>
-      g.map(gd => ({
-        ...gd,
-        tooltip: labels(gd),
-        x: gd.groupBy
-      }))
-    );
-
-    /**
-     * Reverse grouped data
-     * since victory plots inversely
-     */
-    groupedData = groupedData[0].map((_c, i) => groupedData.map(r => r[i]));
-
-    if (visualType === 'grouped_column' && toggleSize) {
-      setDataLength(groupedData[0].length);
-      return groupedData.map(gd => gd.slice(show));
-    }
-    return groupedData;
-  }, [aggregate, data, format, show, toggleSize, visualType]);
-
-  if (!data) {
-    return null;
-  }
-
-  const formatLabelValue = value => format(value);
-
-  const renderChart = () => {
-    switch (visualType) {
-      case 'square_nested_proportional_area':
-      case 'circle_nested_proportional_area': {
-        const summedData = aggregateData('sum', data, false)[0].y;
-        let summedReferenceData = referenceData.reduce((a, b) => a + b.y, 0);
-        summedReferenceData =
-          referenceData.length && summedReferenceData
-            ? summedReferenceData
-            : summedData;
-        const dataLabel =
-          (label && profiles.profile[label]) ||
-          data[0].x ||
-          data[0].label ||
-          label;
-        const referenceLabelProp = propReferenceLabel || label;
-        const referenceLabel =
-          (referenceLabelProp && profiles.parent[referenceLabelProp]) ||
-          (referenceData.length && summedReferenceData
-            ? referenceData[0].x || referenceData[0].label
-            : dataLabel) ||
-          referenceLabelProp;
-
-        return (
-          <div style={{ width: !isComparison ? 200 : 650 }}>
-            <NestedProportionalAreaChart
-              key={key}
-              formatNumberForLabel={x => format(x)}
-              square={visualType === 'square_nested_proportional_area'}
-              height={isComparison && 500}
-              width={!isComparison ? 200 : 650}
-              groupSpacing={isComparison && 8}
-              data={
-                !isComparison
-                  ? [
-                      {
-                        y: summedData,
-                        x: dataLabel
-                      }
-                    ]
-                  : [
-                      {
-                        y: summedData,
-                        x: dataLabel
-                      },
-                      {
-                        y: comparisonData.reduce((a, b) => a + b.y, 0),
-                        x:
-                          comparisonData[0].label ||
-                          profiles.comparison[label] ||
-                          label
-                      }
-                    ]
-              }
-              reference={[
-                {
-                  label: referenceLabel,
-                  y: summedReferenceData,
-                  x: referenceLabel
+          return (
+            <div style={{ width: !isComparison ? 200 : 650 }}>
+              <NestedProportionalAreaChart
+                key={key}
+                formatNumberForLabel={x => format(x)}
+                square={visualType === 'square_nested_proportional_area'}
+                height={isComparison && 500}
+                width={!isComparison ? 200 : 650}
+                groupSpacing={isComparison && 8}
+                data={
+                  !isComparison
+                    ? [
+                        {
+                          y: summedData,
+                          x: dataLabel
+                        }
+                      ]
+                    : [
+                        {
+                          y: summedData,
+                          x: dataLabel
+                        },
+                        {
+                          y: comparisonData.reduce((a, b) => a + b.y, 0),
+                          x:
+                            comparisonData[0].label ||
+                            profiles.comparison[label] ||
+                            label
+                        }
+                      ]
                 }
-              ]}
-              {...chartProps}
-            />
-          </div>
-        );
-      }
-      case 'pie': {
-        const height = heightProp || theme.pie.height;
-        const width = widthProp || theme.pie.width;
+                reference={[
+                  {
+                    label: referenceLabel,
+                    y: summedReferenceData,
+                    x: referenceLabel
+                  }
+                ]}
+                {...chartProps}
+              />
+            </div>
+          );
+        }
+        case 'pie': {
+          const height = heightProp || theme.pie.height;
+          const width = widthProp || theme.pie.width;
 
-        return (
-          <div style={{ height, width }}>
-            <PieChart
-              donut
+          return (
+            <div style={{ height, width }}>
+              <PieChart
+                donut
+                key={key}
+                data={primaryData}
+                donutLabelKey={{ dataIndex: 0 }}
+                theme={theme}
+                width={width}
+                height={height}
+                {...chartProps}
+              />
+            </div>
+          );
+        }
+        case 'number': {
+          /**
+           * Statistic aggregate
+           *  default: 'last',
+           */
+          const statAggregate = aggregate || 'last';
+
+          /**
+           * Statistic data aggregation
+           * with respect to label
+           *  default: false
+           */
+          const [func] = statAggregate.split(':');
+          const statUnique =
+            unique !== undefined ? unique : !isSelectFunc(func);
+
+          const dataStat = aggregateData(statAggregate, data, statUnique);
+          const dataStatY = format(dataStat[0].y);
+
+          let xDesc = isSelectFunc(func) ? `(${dataStat[0].x})` : '';
+          xDesc = dataStat[0].groupBy
+            ? `${xDesc.substring(0, xDesc.length - 1)} - ${
+                dataStat[0].groupBy
+              })`
+            : `${xDesc}`;
+
+          return (
+            <NumberVisuals
               key={key}
-              data={primaryData}
-              donutLabelKey={{ dataIndex: 0 }}
-              theme={theme}
-              width={width}
-              height={height}
+              subtitle={subtitle}
+              statistic={dataStatY}
+              description={`${description} ${xDesc}`}
+              comparisonData={[]} // TODO: pending NumberVisuals components (HURUmap-UI) fix on this propTypes
+              classes={{}} // TODO: pending NumberVisuals style configurations - update root margin
               {...chartProps}
             />
-          </div>
-        );
-      }
-      case 'number': {
-        /**
-         * Statistic aggregate
-         *  default: 'last',
-         */
-        const statAggregate = aggregate || 'last';
-
-        /**
-         * Statistic data aggregation
-         * with respect to label
-         *  default: false
-         */
-        const [func] = statAggregate.split(':');
-        const statUnique = unique !== undefined ? unique : !isSelectFunc(func);
-
-        const dataStat = aggregateData(statAggregate, data, statUnique);
-        const dataStatY = format(dataStat[0].y);
-
-        let xDesc = isSelectFunc(func) ? `(${dataStat[0].x})` : '';
-        xDesc = dataStat[0].groupBy
-          ? `${xDesc.substring(0, xDesc.length - 1)} - ${dataStat[0].groupBy})`
-          : `${xDesc}`;
-
-        return (
-          <NumberVisuals
-            key={key}
-            subtitle={subtitle}
-            statistic={dataStatY}
-            description={`${description} ${xDesc}`}
-            comparisonData={[]} // TODO: pending NumberVisuals components (HURUmap-UI) fix on this propTypes
-            classes={{}} // TODO: pending NumberVisuals style configurations - update root margin
-            {...chartProps}
-          />
-        );
-      }
-      case 'grouped_column': {
-        const barCount = primaryData[0].length;
-        const offset = offsetProp || theme.bar.offset;
-        const {
-          domainPadding: {
-            x: [x0, x1]
-          }
-        } = theme.bar;
-        const domainPadding = {
-          x: [x0 * primaryData.length, x1 * primaryData.length]
-        };
-        const computedSize =
-          primaryData.length * barCount * offset +
-          domainPadding.x[0] +
-          domainPadding.x[1];
-        const height = heightProp || theme.bar.height;
-        const width = widthProp || theme.bar.width;
-        const computedHorizontal = computedSize > width || horizontalProp;
-        const computedWidth = computedHorizontal ? width : computedSize;
-        const computedHeight = computedHorizontal ? computedSize : height;
-
-        return (
-          <div style={{ width: computedWidth, height: computedHeight }}>
-            <BarChart
-              key={key}
-              data={primaryData}
-              offset={offset}
-              width={computedWidth}
-              height={computedHeight}
-              horizontal={computedHorizontal}
-              domainPadding={domainPadding}
-              labels={({ datum }) => format(datum.y)}
-              theme={theme}
-              {...chartProps}
-            />
-          </div>
-        );
-      }
-      case 'column': {
-        const barCount = isComparison ? 2 : 1;
-        const offset = offsetProp || theme.bar.offset;
-        const {
-          domainPadding: {
-            x: [x0, x1]
-          }
-        } = theme.bar;
-        const domainPadding = { x: [x0 * barCount, x1 * barCount] };
-        const computedSize =
-          primaryData.length * barCount * offset +
-          domainPadding.x[0] +
-          domainPadding.x[1] +
-          // Bug when 2 bars only
-          (primaryData.length === 2 ? offset : 0);
-        const height = heightProp || theme.bar.height;
-        const width = widthProp || theme.bar.width;
-        const computedHorizontal = computedSize > width || horizontalProp;
-        const computedWidth = computedHorizontal ? width : computedSize;
-        const computedHeight = computedHorizontal ? computedSize : height;
-        if (isComparison) {
-          const processedComparisonData = aggregate
-            ? aggregateData(aggregate, comparisonData)
-            : comparisonData;
+          );
+        }
+        case 'grouped_column': {
+          const barCount = primaryData[0].length;
+          const offset = offsetProp || theme.bar.offset;
+          const {
+            domainPadding: {
+              x: [x0, x1]
+            }
+          } = theme.bar;
+          const domainPadding = {
+            x: [x0 * primaryData.length, x1 * primaryData.length]
+          };
+          const computedSize =
+            primaryData.length * barCount * offset +
+            domainPadding.x[0] +
+            domainPadding.x[1];
+          const height = heightProp || theme.bar.height;
+          const width = widthProp || theme.bar.width;
+          const computedHorizontal = computedSize > width || horizontalProp;
+          const computedWidth = computedHorizontal ? width : computedSize;
+          const computedHeight = computedHorizontal ? computedSize : height;
 
           return (
             <div style={{ width: computedWidth, height: computedHeight }}>
               <BarChart
-                data={[primaryData, processedComparisonData]}
                 key={key}
+                data={primaryData}
                 offset={offset}
-                height={computedWidth}
-                width={computedHeight}
+                width={computedWidth}
+                height={computedHeight}
                 horizontal={computedHorizontal}
                 domainPadding={domainPadding}
-                labels={({ datum }) => formatLabelValue(datum.y)}
+                labels={({ datum }) => format(datum.y)}
                 theme={theme}
                 {...chartProps}
               />
             </div>
           );
         }
-        return (
-          <div style={{ width: computedWidth, height: computedHeight }}>
-            <BarChart
+        case 'column': {
+          const barCount = isComparison ? 2 : 1;
+          const offset = offsetProp || theme.bar.offset;
+          const {
+            domainPadding: {
+              x: [x0, x1]
+            }
+          } = theme.bar;
+          const domainPadding = { x: [x0 * barCount, x1 * barCount] };
+          const computedSize =
+            primaryData.length * barCount * offset +
+            domainPadding.x[0] +
+            domainPadding.x[1] +
+            // Bug when 2 bars only
+            (primaryData.length === 2 ? offset : 0);
+          const height = heightProp || theme.bar.height;
+          const width = widthProp || theme.bar.width;
+          const computedHorizontal = computedSize > width || horizontalProp;
+          const computedWidth = computedHorizontal ? width : computedSize;
+          const computedHeight = computedHorizontal ? computedSize : height;
+          if (isComparison) {
+            const processedComparisonData = aggregate
+              ? aggregateData(aggregate, comparisonData)
+              : comparisonData;
+
+            return (
+              <div style={{ width: computedWidth, height: computedHeight }}>
+                <BarChart
+                  data={[primaryData, processedComparisonData]}
+                  key={key}
+                  offset={offset}
+                  height={computedWidth}
+                  width={computedHeight}
+                  horizontal={computedHorizontal}
+                  domainPadding={domainPadding}
+                  labels={({ datum }) => format(datum.y)}
+                  theme={theme}
+                  {...chartProps}
+                />
+              </div>
+            );
+          }
+          return (
+            <div style={{ width: computedWidth, height: computedHeight }}>
+              <BarChart
+                key={key}
+                data={primaryData}
+                offset={offset}
+                height={computedHeight}
+                width={computedWidth}
+                horizontal={computedHorizontal}
+                domainPadding={domainPadding}
+                labels={({ datum }) => format(datum.y)}
+                theme={theme}
+                {...chartProps}
+              />
+            </div>
+          );
+        }
+        case 'bullet': {
+          const summedData = aggregateData('sum', primaryData, false)[0].y;
+          const summedReferenceData =
+            referenceData.reduce((a, b) => a + b.y, 0) || primaryData[0].y;
+          return (
+            <BulletChart
+              total={unit === 'percent' ? 100 : summedData}
+              data={!isComparison ? primaryData : [primaryData, comparisonData]}
+              reference={summedReferenceData}
+              height={!isComparison ? 50 : 100}
+              width={widthProp || 350}
+              labels={datum => format(datum.y)}
+              theme={theme}
+              {...chartProps}
+            />
+          );
+        }
+        case 'line': {
+          const offset = offsetProp || theme.line.offset;
+          const computedSize = primaryData.length * offset;
+          const height = heightProp || theme.line.height;
+          const width = widthProp || theme.line.width;
+          const computedHorizontal = computedSize > width || horizontalProp;
+          const computedWidth = computedHorizontal ? width : computedSize;
+          const computedHeight = computedHorizontal ? computedSize : height;
+          return (
+            <LineChart
               key={key}
-              data={primaryData}
-              offset={offset}
+              responsive
+              horizontal={computedHorizontal}
               height={computedHeight}
               width={computedWidth}
-              horizontal={computedHorizontal}
-              domainPadding={domainPadding}
-              labels={({ datum }) => {
-                return formatLabelValue(datum.y);
+              data={!isComparison ? primaryData : [primaryData, comparisonData]}
+              parts={{
+                container: {
+                  labels: ({ datum }) => `y: ${format(datum.y)}`
+                },
+                scatter: { size: 5 }
               }}
               theme={theme}
               {...chartProps}
             />
-          </div>
-        );
+          );
+        }
+        default:
+          return null;
       }
-      default:
-        return null;
-    }
-  };
+    };
 
-  return (
-    <Box display="flex" flexDirection="column" id={id}>
-      {renderChart()}
-      {toggleSize &&
-        ['column', 'grouped_column'].includes(visualType) &&
-        dataLength > 5 && (
-          <ButtonBase
-            className="Download--hidden"
-            onClick={() => setShow(show === 0 ? -5 : 0)}
-          >
-            {show === 0 ? 'Show Less' : 'Show More'}
-          </ButtonBase>
-        )}
-    </Box>
-  );
-}
+    return (
+      <Box display="flex" flexDirection="column" id={id}>
+        {renderChart()}
+        {toggleSize &&
+          ['column', 'grouped_column'].includes(visualType) &&
+          dataLength > 5 && (
+            <ButtonBase
+              className="Download--hidden"
+              onClick={() => setShow(show === 0 ? -5 : 0)}
+            >
+              {show === 0 ? 'Show Less' : 'Show More'}
+            </ButtonBase>
+          )}
+      </Box>
+    );
+  },
+  (prevProps, nextProps) =>
+    JSON.stringify(prevProps) === JSON.stringify(nextProps)
+);
 
 ChartFactory.propTypes = {
   theme: propTypes.theme.isRequired,

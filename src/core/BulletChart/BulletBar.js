@@ -21,7 +21,7 @@ function BulletBar({
   const [tooltipProps, setTooltipProps] = useState({});
   const [, qualitativeMeasureProp] = data;
   const qualitativeMeasure = qualitativeMeasureProp || { y: total };
-  const comparativeMeasure = (width * reference.data[0].y) / total;
+  const comparativeMeasure = (width * reference.data) / total;
 
   const tooltip = (
     <VictoryTooltip constrainToVisibleArea {...tooltipProps} theme={theme} />
@@ -111,7 +111,7 @@ BulletBar.propTypes = {
   data: propTypes.data.isRequired,
   barWidth: PropTypes.number,
   labels: PropTypes.func.isRequired,
-  reference: propTypes.reference,
+  reference: propTypes.singleRefrence,
   style: PropTypes.shape({
     data: PropTypes.shape({}),
     labels: PropTypes.shape({})

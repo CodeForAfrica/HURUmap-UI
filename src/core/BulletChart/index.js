@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { labels as defaultLabels } from '../utils';
-import { toReferenceProps } from '../ReferableChart';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import BulletBar from './BulletBar';
 import CustomContainer from '../CustomContainer';
@@ -33,9 +32,9 @@ function BulletChart({
   height,
   labels,
   offset,
-  reference: ref,
+  reference,
   theme,
-  total,
+  total: totalProp,
   width
 }) {
   const {
@@ -54,10 +53,7 @@ function BulletChart({
   const computedWidth = width || chart.width;
   const isMobile = computedWidth < mobileBreakpoint;
   const isDirectionColumn = isMobile || computedData.length < 2;
-  const reference = {
-    style: chart.reference,
-    ...toReferenceProps(ref)
-  };
+  const total = Array.isArray(totalProp) ? totalProp.reverse() : totalProp;
 
   return (
     <CustomContainer height={height} theme={theme} width={width}>
@@ -68,7 +64,17 @@ function BulletChart({
             barWidth={computedBarWidth}
             data={d}
             labels={labels || defaultLabels}
-            reference={reference}
+            reference={
+              typeof ref === 'number'
+                ? {
+                    style: chart.reference,
+                    data: reference
+                  }
+                : {
+                    style: reference.style || chart.reference,
+                    data: reference.data
+                  }
+            }
             style={{
               ...computedStyle,
               data: {
@@ -79,7 +85,7 @@ function BulletChart({
               }
             }}
             theme={theme}
-            total={total}
+            total={Array.isArray(total) ? total[i] : total}
             width={
               isDirectionColumn
                 ? computedWidth
@@ -106,9 +112,9 @@ BulletChart.propTypes = {
   height: PropTypes.number,
   labels: PropTypes.func,
   offset: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
-  reference: propTypes.reference,
+  reference: PropTypes.oneOfType([propTypes.number, propTypes.singleRefrence]),
   theme: propTypes.theme,
-  total: PropTypes.number.isRequired,
+  total: propTypes.number.isRequired,
   width: PropTypes.number
 };
 

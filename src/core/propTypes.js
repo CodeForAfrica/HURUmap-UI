@@ -83,6 +83,10 @@ export default {
       })
     )
   ]),
+  singleRefrence: PropTypes.shape({
+    data: PropTypes.number,
+    style: PropTypes.shape({})
+  }),
   theme: PropTypes.shape({
     bullet: PropTypes.shape({}),
     proportionalArea: PropTypes.shape({}),
@@ -96,7 +100,8 @@ export default {
     pie: PropTypes.shape({}),
     group: PropTypes.shape({
       colorScale
-    })
+    }),
+    line: PropTypes.shape({})
   }),
   colorScale
 };

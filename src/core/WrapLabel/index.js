@@ -1,32 +1,31 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import shortid from 'shortid';
 
 import wrapSVGText from './wrapSVGText';
 
-function WrapLabel({ width, text, x, y, style, transform, textAnchor }) {
-  const ref = useRef();
-
-  useEffect(() => {
-    if (ref.current) {
-      wrapSVGText(ref.current, text, width);
-    }
-  }, [text, width, x]);
-
-  return (
-    <text
-      key={shortid.generate()}
-      ref={node => {
-        ref.current = node;
-      }}
-      x={x}
-      y={y}
-      style={style}
-      transform={transform}
-      textAnchor={textAnchor}
-    />
-  );
-}
+const WrapLabel = React.memo(
+  ({ width, text, x, y, style, transform, textAnchor }) => {
+    return (
+      <text
+        key={shortid.generate()}
+        ref={node => {
+          if (node) {
+            wrapSVGText(node, text, width);
+          }
+        }}
+        x={x}
+        y={y}
+        style={style}
+        transform={transform}
+        textAnchor={textAnchor}
+      />
+    );
+  },
+  (prevProps, nextProps) => {
+    return JSON.stringify(prevProps) === JSON.stringify(nextProps);
+  }
+);
 
 WrapLabel.propTypes = {
   text: PropTypes.oneOfType([

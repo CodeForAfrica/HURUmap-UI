@@ -13,6 +13,7 @@ import { getLegendProps } from './utils';
 import withVictoryTheme from './styles/withVictoryTheme';
 import Chart, { toChartAxisProps } from './Chart';
 import LegendLabel from './LegendLabel';
+import WrapLabel from './WrapLabel';
 import Tooltip from './Tooltip';
 import propTypes from './propTypes';
 
@@ -33,6 +34,7 @@ import propTypes from './propTypes';
  * }
  */
 function LineChart({
+  labelWidth: propLabelWidth,
   data,
   height: suggestedHeight,
   horizontal,
@@ -43,7 +45,10 @@ function LineChart({
   width: suggestedWidth,
   ...props
 }) {
-  const { line: chart } = theme;
+  const {
+    axis: { labelWidth: themeLabelWidth },
+    line: chart
+  } = theme;
   if (!data || !chart) {
     return null;
   }
@@ -81,6 +86,11 @@ function LineChart({
     ...(parts && parts.parent)
   };
 
+  let labelWidth = propLabelWidth || themeLabelWidth;
+  if (!labelWidth) {
+    labelWidth = width / groupData[0].length;
+  }
+
   return (
     <Chart
       containerComponent={
@@ -93,7 +103,10 @@ function LineChart({
       theme={theme}
       {...chartProps}
     >
-      <VictoryAxis {...axisProps.independent} />
+      <VictoryAxis
+        tickLabelComponent={<WrapLabel width={labelWidth} />}
+        {...axisProps.independent}
+      />
       <VictoryAxis
         dependentAxis
         orientation={horizontal ? 'bottom' : 'right'}
@@ -133,6 +146,7 @@ function LineChart({
 }
 
 LineChart.propTypes = {
+  labelWidth: PropTypes.number,
   data: propTypes.groupedData,
   height: PropTypes.number,
   horizontal: PropTypes.bool,
@@ -148,13 +162,12 @@ LineChart.propTypes = {
   style: PropTypes.shape({
     data: PropTypes.shape({})
   }),
-  theme: PropTypes.shape({
-    line: PropTypes.shape({})
-  }),
+  theme: propTypes.theme,
   width: PropTypes.number
 };
 
 LineChart.defaultProps = {
+  labelWidth: undefined,
   data: undefined,
   height: undefined,
   horizontal: undefined,
