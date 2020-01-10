@@ -32,9 +32,9 @@ function BulletChart({
   height,
   labels,
   offset,
-  reference: ref,
+  reference,
   theme,
-  total,
+  total: totalProp,
   width
 }) {
   const {
@@ -53,6 +53,7 @@ function BulletChart({
   const computedWidth = width || chart.width;
   const isMobile = computedWidth < mobileBreakpoint;
   const isDirectionColumn = isMobile || computedData.length < 2;
+  const total = Array.isArray(totalProp) ? totalProp.reverse() : totalProp;
 
   return (
     <CustomContainer height={height} theme={theme} width={width}>
@@ -67,11 +68,11 @@ function BulletChart({
               typeof ref === 'number'
                 ? {
                     style: chart.reference,
-                    data: ref
+                    data: reference
                   }
                 : {
-                    style: ref.reference || chart.reference,
-                    data: ref.data
+                    style: reference.style || chart.reference,
+                    data: reference.data
                   }
             }
             style={{
@@ -84,7 +85,7 @@ function BulletChart({
               }
             }}
             theme={theme}
-            total={total}
+            total={Array.isArray(total) ? total[i] : total}
             width={
               isDirectionColumn
                 ? computedWidth
@@ -113,7 +114,7 @@ BulletChart.propTypes = {
   offset: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
   reference: PropTypes.oneOfType([propTypes.number, propTypes.singleRefrence]),
   theme: propTypes.theme,
-  total: PropTypes.number.isRequired,
+  total: propTypes.number.isRequired,
   width: PropTypes.number
 };
 

@@ -126,33 +126,33 @@ storiesOf('HURUmap UI|Charts/Bullet Chart', module)
     <div>
       <BulletChart
         data={object('data', [
-          { x: 'Health Budget 2020', y: 45 },
-          { x: 'Health Budget 2019', y: 55 }
+          { x: 'Male', y: 49 },
+          { x: 'Female', y: 51 }
         ])}
         height={number('height', 100)}
-        reference={number('reference', 51)}
-        total={100}
+        reference={number('reference', 50)}
         width={number('width', 350)}
+        total={100}
       />
     </div>
   ))
   .add('Comparison', () => (
     <div>
       <BulletChart
-        height={number('height', 100)}
         data={object('data', [
           [
-            { x: 'A Health Budget 2019', y: 12.7 },
-            { x: 'A Health Budget 2020', y: 12.7 }
+            { x: 'Male', y: 49 },
+            { x: 'Female', y: 51 }
           ],
           [
-            { x: 'B Health Budget 2019', y: 9.3 },
-            { x: 'B Health Budget 2020', y: 12.7 }
+            { x: 'Male', y: 49 },
+            { x: 'Female', y: 51 }
           ]
         ])}
-        reference={number('reference', 51)}
-        total={100}
-        width={number('width', 350)}
+        height={number('height', 100)}
+        reference={number('reference', 50)}
+        total={[100, 100]}
+        width={number('width', 700)}
       />
     </div>
   ));
