@@ -400,7 +400,7 @@ const ChartFactory = React.memo(
           );
         }
         case 'bullet': {
-          const summedData = aggregateData('sum', primaryData, false)[0].y;
+          const summedData = aggregateData('sum', data, false)[0].y;
           const summedReferenceData =
             referenceData.reduce((a, b) => a + b.y, 0) || primaryData[0].y;
           return (
@@ -410,7 +410,7 @@ const ChartFactory = React.memo(
               reference={summedReferenceData}
               height={!isComparison ? 50 : 100}
               width={widthProp || 350}
-              labels={datum => format(datum.y)}
+              labels={datum => `${datum.x}: ${format(datum.y)}`}
               theme={theme}
               {...chartProps}
             />
@@ -418,18 +418,15 @@ const ChartFactory = React.memo(
         }
         case 'line': {
           const offset = offsetProp || theme.line.offset;
-          const computedSize = primaryData.length * offset;
           const height = heightProp || theme.line.height;
           const width = widthProp || theme.line.width;
-          const computedHorizontal = computedSize > width || horizontalProp;
-          const computedWidth = computedHorizontal ? width : computedSize;
-          const computedHeight = computedHorizontal ? computedSize : height;
+          const computedSize = primaryData.length * offset;
+          const computedWidth = computedSize < width ? width : computedSize;
           return (
             <LineChart
               key={key}
               responsive
-              horizontal={computedHorizontal}
-              height={computedHeight}
+              height={height}
               width={computedWidth}
               data={!isComparison ? primaryData : [primaryData, comparisonData]}
               parts={{
@@ -449,7 +446,7 @@ const ChartFactory = React.memo(
     };
 
     return (
-      <Box display="flex" flexDirection="column" id={id}>
+      <Box id={id} display="flex" flexDirection="column">
         {renderChart()}
         {toggleSize &&
           ['column', 'grouped_column'].includes(visualType) &&

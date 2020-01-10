@@ -95,13 +95,15 @@ function BulletBar({
         style={style.data}
       />
       {/* Comparative measure / Target */}
-      <Rect
-        x={x + comparativeMeasure}
-        y={y - barWidth}
-        width={barWidth}
-        height={barWidth}
-        style={reference.style && reference.style.data}
-      />
+      {typeof reference.data === 'number' && (
+        <Rect
+          x={x + comparativeMeasure}
+          y={y - barWidth}
+          width={barWidth}
+          height={barWidth}
+          style={reference.style && reference.style.data}
+        />
+      )}
       {tooltip}
     </>
   );
