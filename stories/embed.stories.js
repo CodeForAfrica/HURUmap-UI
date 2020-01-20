@@ -9,7 +9,7 @@ storiesOf('HURUmap UI|Components/Embed', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('Default', () => {
-    const type = select('type', ['hurumap', 'flourish', 'snippet'], 'flourish');
+    const type = select('type', ['hurumap', 'flourish', 'snippet'], 'hurumap');
     const definition =
       // eslint-disable-next-line no-nested-ternary
       type === 'flourish'
@@ -53,6 +53,7 @@ storiesOf('HURUmap UI|Components/Embed', module)
       <div style={{ width: '100%', height: '100%' }}>
         <Visual
           id="1234"
+          key={type}
           type={type}
           geoId="country-KE"
           definition={definition}
@@ -60,9 +61,4 @@ storiesOf('HURUmap UI|Components/Embed', module)
         />
       </div>
     );
-  })
-  .add('Live', () => (
-    <Visual
-      type={select('type', ['hurumap', 'flourish', 'snippet'], 'flourish')}
-    />
-  ));
+  });
