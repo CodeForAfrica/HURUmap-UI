@@ -4,7 +4,11 @@ import PropTypes from 'prop-types';
 import { ButtonBase, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { domToPng } from './utils';
+import {
+  domToPng,
+  isDowloadHiddenElement,
+  DOWNLOAD_HIDDEN_CLASSNAME
+} from './utils';
 
 import A from './A';
 import BlockLoader from './BlockLoader';
@@ -130,7 +134,6 @@ function ChartContainer({
   const dataButtonRef = useRef(null);
 
   const downloadButtonRef = useRef(null);
-  const downloadHiddenClassName = 'Download--hidden';
   const chartRef = useRef(null);
   const toPng = () => {
     const filter = node => {
@@ -141,7 +144,7 @@ function ChartContainer({
           nodeStyle.display = 'flex';
         }
 
-        return !classList.contains(downloadHiddenClassName);
+        return isDowloadHiddenElement(node);
       }
       return true;
     };
@@ -289,7 +292,7 @@ function ChartContainer({
               wrap="nowrap"
               direction="row"
               justify="flex-end"
-              className={`${downloadHiddenClassName} ${classes.actions}`}
+              className={`${DOWNLOAD_HIDDEN_CLASSNAME} ${classes.actions}`}
             >
               {onClickShare && (
                 <BlockLoader loading={loading} width={40} height={40}>
@@ -392,7 +395,7 @@ function ChartContainer({
                   secondaryOpacity: 1
                 }}
                 component="div"
-                className={`${downloadHiddenClassName} ${classes.source}`}
+                className={`${DOWNLOAD_HIDDEN_CLASSNAME} ${classes.source}`}
               >
                 {sourceLink && (
                   <A className={classes.sourceLink} href={sourceLink}>

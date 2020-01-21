@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   }
 });
 
-function CardActions({ onShare, onEmbed }) {
+function SnippetActions({ onShare, onEmbed }) {
   const classes = useStyles();
   return (
     <Grid className={classes.actionsContainer} container spacing={0}>
@@ -52,14 +52,14 @@ function CardActions({ onShare, onEmbed }) {
   );
 }
 
-CardActions.propTypes = {
+SnippetActions.propTypes = {
   onShare: propTypes.func,
   onEmbed: propTypes.func
 };
 
-CardActions.defaultProps = {
+SnippetActions.defaultProps = {
   onShare: undefined,
   onEmbed: undefined
 };
 
-export default CardActions;
+export default SnippetActions;

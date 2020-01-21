@@ -39,7 +39,6 @@ function ActionsModel({
   onClose,
   tab,
   share,
-  url,
   ...props
 }) {
   const classes = useStyles(props);
@@ -156,8 +155,7 @@ ActionsModel.propTypes = {
     }),
     title: PropTypes.string
   }),
-  tab: PropTypes.number,
-  url: PropTypes.string
+  tab: PropTypes.number
 };
 
 ActionsModel.defaultProps = {
@@ -165,8 +163,7 @@ ActionsModel.defaultProps = {
   embed: null,
   id: '',
   share: null,
-  tab: EMBED_TAB,
-  url: null
+  tab: EMBED_TAB
 };
 
 export default ActionsModel;

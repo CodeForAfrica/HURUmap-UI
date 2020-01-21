@@ -141,3 +141,13 @@ export const labels = ({ x, y, unit = '' }) => {
   const formatedX = x ? `${x}: ` : '';
   return `${formatedX}${y}${unit}`;
 };
+
+export const DOWNLOAD_HIDDEN_CLASSNAME = 'Download--hidden';
+
+export const isDowloadHiddenElement = node => {
+  const { classList } = node;
+  if (classList) {
+    return !classList.contains(DOWNLOAD_HIDDEN_CLASSNAME);
+  }
+  return true;
+};

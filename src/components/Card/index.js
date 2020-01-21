@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 
-import HurumapCard from '../../core/Card';
+import Snippet from '../../core/Snippet';
 import FlourishChart from './FlourishChart';
 import HURUmapChart from './HURUmapChart';
 
@@ -11,7 +11,7 @@ import { shareIndicator } from '../utils';
 
 import propTypes from '../propTypes';
 
-export default function Visual({
+export default function Card({
   id,
   logo,
   type,
@@ -135,7 +135,7 @@ export default function Visual({
       );
     case 'snippet':
       return (
-        <HurumapCard
+        <Snippet
           fullWidth
           onExpand={expanded => {
             if (!parentEl) {
@@ -178,7 +178,7 @@ export default function Visual({
   }
 }
 
-Visual.propTypes = {
+Card.propTypes = {
   type: propTypes.oneOf(['hurumap', 'flourish', 'snippet']).isRequired,
   parentEl: propTypes.shape({
     style: propTypes.shape({
@@ -228,7 +228,7 @@ Visual.propTypes = {
   logo: propTypes.string
 };
 
-Visual.defaultProps = {
+Card.defaultProps = {
   logo: undefined,
   parentEl: undefined,
   definition: undefined,
