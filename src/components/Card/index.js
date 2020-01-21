@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from '@apollo/react-hooks';
-
 import Snippet from '../../core/Snippet';
 import FlourishChart from './FlourishChart';
 import HURUmapChart from './HURUmapChart';
@@ -84,54 +81,46 @@ export default function Card({
       );
     case 'hurumap':
       return (
-        <ApolloProvider
-          client={
-            new ApolloClient({
-              uri: 'https://graphql.takwimu.africa/graphql'
-            })
-          }
-        >
-          <HURUmapChart
-            logo={logo}
-            geoId={geoId}
-            chartId={id}
-            chartWidth={chartWidth}
-            dataGeoId={dataLinkGeoId}
-            showInsight={showInsight}
-            showStatVisual={showStatVisual}
-            insightSummary={insightSummary}
-            insightTitle={insightTitle}
-            dataLinkTitle={dataLinkTitle}
-            analysisCountry={analysisLinkCountrySlug}
-            analysisLinkTitle={analysisLinkTitle}
-            dataLinkHref={dataLinkHref}
-            analysisLinkHref={analysisLinkHref}
-            // eslint-disable-next-line react/jsx-no-bind
-            handleShare={shareIndicator.bind(null, id)}
-            chart={
-              definition && {
-                ...definition,
-                visual: {
-                  ...definition.visual,
-                  queryAlias: 'viz'
-                },
-                stat: {
-                  ...definition.stat,
-                  queryAlias: 'viz'
-                }
+        <HURUmapChart
+          logo={logo}
+          geoId={geoId}
+          chartId={id}
+          chartWidth={chartWidth}
+          dataGeoId={dataLinkGeoId}
+          showInsight={showInsight}
+          showStatVisual={showStatVisual}
+          insightSummary={insightSummary}
+          insightTitle={insightTitle}
+          dataLinkTitle={dataLinkTitle}
+          analysisCountry={analysisLinkCountrySlug}
+          analysisLinkTitle={analysisLinkTitle}
+          dataLinkHref={dataLinkHref}
+          analysisLinkHref={analysisLinkHref}
+          // eslint-disable-next-line react/jsx-no-bind
+          handleShare={shareIndicator.bind(null, id)}
+          chart={
+            definition && {
+              ...definition,
+              visual: {
+                ...definition.visual,
+                queryAlias: 'viz'
+              },
+              stat: {
+                ...definition.stat,
+                queryAlias: 'viz'
               }
             }
-            embedCode={
-              typeof embedCode === 'string'
-                ? embedCode
-                : embedCode(type, {
-                    title: title || (definition && definition.title),
-                    id,
-                    geoId
-                  })
-            }
-          />
-        </ApolloProvider>
+          }
+          embedCode={
+            typeof embedCode === 'string'
+              ? embedCode
+              : embedCode(type, {
+                  title: title || (definition && definition.title),
+                  id,
+                  geoId
+                })
+          }
+        />
       );
     case 'snippet':
       return (

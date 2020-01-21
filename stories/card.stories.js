@@ -1,9 +1,12 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, select } from '@storybook/addon-knobs';
+import { withKnobs, select, text } from '@storybook/addon-knobs';
 
 import { CenterDecorator } from './common';
 import Card from '../src/components/Card';
+
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from '@apollo/react-hooks';
 
 storiesOf('HURUmap UI|Components/Card', module)
   .addDecorator(CenterDecorator)
@@ -58,15 +61,23 @@ storiesOf('HURUmap UI|Components/Card', module)
             }
           };
     return (
-      <div style={{ width: '100%', height: '100%' }}>
-        <Card
-          id="1234"
-          key={type}
-          type={type}
-          geoId="country-KE"
-          definition={definition}
-          flourishURL=""
-        />
-      </div>
+      <ApolloProvider
+        client={
+          new ApolloClient({
+            uri: text('graphql', 'https://graphql.hurumap.africa/graphql')
+          })
+        }
+      >
+        <div style={{ width: '100%', height: '100%' }}>
+          <Card
+            id="1234"
+            key={type}
+            type={type}
+            geoId="country-KE"
+            definition={definition}
+            flourishURL=""
+          />
+        </div>
+      </ApolloProvider>
     );
   });
