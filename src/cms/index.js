@@ -1,7 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Visual from '../components/Visual';
+import Card from '../components/Card';
+
+import {
+  CHART_ID,
+  CHART_TITLE,
+  CHART_DESCRIPTION,
+  SHOW_INSIGHT,
+  DATA_LINK_TITLE,
+  ANALYSIS_COUNTRY,
+  ANALYSIS_LINK_TITLTE,
+  GEO_ID,
+  INSIGHT_TITLE,
+  INSIGHT_SUMMARY,
+  SHOW_STAT_VISUAL,
+  DATA_GEO_ID,
+  WIDTH,
+  POST_ID,
+  POST_TYPE,
+  GEO_TYPE,
+  SHOW_STATVISUAL,
+  GEOID,
+  DATA_GEOID
+} from './attributes';
 
 export const TYPES = {
   HURUMAP_CARD: 'hurumap-card',
@@ -36,21 +58,21 @@ export function dataProps(
       marginBottom: 10,
       width: chartWidth
     },
-    'data-chart-id': chartId,
-    'data-chart-title': title,
-    'data-chart-description': description,
-    'data-show-insight': showInsight,
-    'data-insight-title': insightTitle,
-    'data-insight-summary': insightSummary,
-    'data-data-link-title': dataLinkTitle,
-    'data-analysis-country': analysisCountry,
-    'data-analysis-link-title': analysisLinkTitle,
-    'data-geo-id': geoId,
-    'data-data-geo-id': dataGeoId,
-    'data-show-statvisual': showStatVisual,
-    'data-width': chartWidth,
-    'data-post-type': postType,
-    'data-post-id': postId
+    [CHART_ID]: chartId,
+    [CHART_TITLE]: title,
+    [CHART_DESCRIPTION]: description,
+    [SHOW_INSIGHT]: showInsight,
+    [INSIGHT_TITLE]: insightTitle,
+    [INSIGHT_SUMMARY]: insightSummary,
+    [DATA_LINK_TITLE]: dataLinkTitle,
+    [ANALYSIS_COUNTRY]: analysisCountry,
+    [ANALYSIS_LINK_TITLTE]: analysisLinkTitle,
+    [GEO_ID]: geoId,
+    [DATA_GEO_ID]: dataGeoId,
+    [SHOW_STAT_VISUAL]: showStatVisual,
+    [WIDTH]: chartWidth,
+    [POST_TYPE]: postType,
+    [POST_ID]: postId
   };
 }
 
@@ -71,13 +93,13 @@ export function renderBlocks({
         document.querySelectorAll(`div[id^=${TYPES.HURUMAP_CARD}]`)
       ).map(el =>
         ReactDOM.createPortal(
-          <Visual
+          <Card
             parentEl={el}
             logo={logo}
             fetchDefinition={fetchDefinition}
             fetchDefinitionUrl={fetchDefinitionUrl}
-            id={el.getAttribute('data-post-id')}
-            type={el.getAttribute('data-post-type')}
+            id={el.getAttribute(POST_ID)}
+            type={el.getAttribute(POST_TYPE)}
           />,
           el
         )
@@ -86,22 +108,24 @@ export function renderBlocks({
         document.querySelectorAll(`div[id^=${TYPES.FLOURISH_CHART}]`)
       ).map(el =>
         ReactDOM.createPortal(
-          <Visual
+          <Card
             parentEl={el}
             logo={logo}
             flourishURL={flourishURL}
             fetchDefinition={fetchDefinition}
             fetchDefinitionUrl={fetchDefinitionUrl}
-            id={el.getAttribute('data-chart-id')}
-            title={el.getAttribute('data-chart-title')}
-            description={el.getAttribute('data-chart-description')}
-            showInsight={el.getAttribute('data-show-insight') === 'true'}
-            insightTitle={el.getAttribute('data-insight-title')}
-            insightSummary={el.getAttribute('data-insight-summary')}
-            analysisLinkCountrySlug={el.getAttribute('data-analysis-country')}
-            analysisLinkTitle={el.getAttribute('data-analysis-link-title')}
-            dataLinkTitle={el.getAttribute('data-data-link-title')}
-            dataLinkGeoId={el.getAttribute('data-data-geo-id')}
+            id={el.getAttribute(CHART_ID)}
+            title={el.getAttribute(CHART_TITLE)}
+            description={el.getAttribute(CHART_DESCRIPTION)}
+            showInsight={el.getAttribute(SHOW_INSIGHT) === 'true'}
+            insightTitle={el.getAttribute(INSIGHT_TITLE)}
+            insightSummary={el.getAttribute(INSIGHT_SUMMARY)}
+            analysisLinkCountrySlug={el.getAttribute(ANALYSIS_COUNTRY)}
+            analysisLinkTitle={el.getAttribute(ANALYSIS_LINK_TITLTE)}
+            dataLinkTitle={el.getAttribute(ANALYSIS_LINK_TITLTE)}
+            dataLinkGeoId={
+              el.getAttribute(DATA_GEOID) || el.getAttribute(DATA_GEO_ID)
+            }
           />,
           el
         )
@@ -110,25 +134,31 @@ export function renderBlocks({
         document.querySelectorAll(`div[id^=${TYPES.HURUMAP_CHART}]`)
       ).map(el =>
         ReactDOM.createPortal(
-          <Visual
+          <Card
             parentEl={el}
             fetch={fetch}
             logo={logo}
             fetchDefinition={fetchDefinition}
             fetchDefinitionUrl={fetchDefinitionUrl}
-            chartId={el.getAttribute('data-chart-id')}
+            chartId={el.getAttribute(CHART_ID)}
             geoId={
-              // data-geo-type to support old posts
-              el.getAttribute('data-geo-type') || el.getAttribute('data-geo-id')
+              el.getAttribute(GEO_TYPE) ||
+              el.getAttribute(GEOID) ||
+              el.getAttribute(GEO_ID)
             }
-            showInsight={el.getAttribute('data-show-insight') === 'true'}
-            showStatVisual={el.getAttribute('data-show-statvisual') === 'true'}
-            insightTitle={el.getAttribute('data-insight-title')}
-            insightSummary={el.getAttribute('data-insight-summary')}
-            analysisCountry={el.getAttribute('data-analysis-country')}
-            analysisLinkTitle={el.getAttribute('data-analysis-link-title')}
-            dataLinkTitle={el.getAttribute('data-data-link-title')}
-            dataLinkGeoId={el.getAttribute('data-data-geoid')}
+            showInsight={el.getAttribute(SHOW_INSIGHT) === 'true'}
+            showStatVisual={
+              (el.getAttribute(SHOW_STATVISUAL) ||
+                el.getAttribute(SHOW_STAT_VISUAL)) === 'true'
+            }
+            insightTitle={el.getAttribute(INSIGHT_TITLE)}
+            insightSummary={el.getAttribute(INSIGHT_SUMMARY)}
+            analysisLinkCountrySlug={el.getAttribute(ANALYSIS_COUNTRY)}
+            analysisLinkTitle={el.getAttribute(ANALYSIS_LINK_TITLTE)}
+            dataLinkTitle={el.getAttribute(ANALYSIS_LINK_TITLTE)}
+            dataLinkGeoId={
+              el.getAttribute(DATA_GEOID) || el.getAttribute(DATA_GEO_ID)
+            }
           />,
           el
         )
