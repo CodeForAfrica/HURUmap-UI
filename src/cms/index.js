@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import Card from '../components/Card';
 
 import {
+  TITLE,
+  DESCRIPTION,
   CHART_ID,
   CHART_TITLE,
   CHART_DESCRIPTION,
@@ -51,6 +53,10 @@ export function dataProps(
     postType
   }
 ) {
+  /**
+   * NOTE:
+   * Only use none deprecated attributes below
+   */
   return {
     id: `${type}-${chartId}`,
     style: {
@@ -58,9 +64,10 @@ export function dataProps(
       marginBottom: 10,
       width: chartWidth
     },
-    [CHART_ID]: chartId,
-    [CHART_TITLE]: title,
-    [CHART_DESCRIPTION]: description,
+    [POST_ID]: chartId || postId,
+    [POST_TYPE]: postType,
+    [TITLE]: title,
+    [DESCRIPTION]: description,
     [SHOW_INSIGHT]: showInsight,
     [INSIGHT_TITLE]: insightTitle,
     [INSIGHT_SUMMARY]: insightSummary,
@@ -70,9 +77,7 @@ export function dataProps(
     [GEO_ID]: geoId,
     [DATA_GEO_ID]: dataGeoId,
     [SHOW_STAT_VISUAL]: showStatVisual,
-    [WIDTH]: chartWidth,
-    [POST_TYPE]: postType,
-    [POST_ID]: postId
+    [WIDTH]: chartWidth
   };
 }
 
@@ -114,9 +119,11 @@ export function renderBlocks({
             flourishURL={flourishURL}
             fetchDefinition={fetchDefinition}
             fetchDefinitionUrl={fetchDefinitionUrl}
-            id={el.getAttribute(CHART_ID)}
-            title={el.getAttribute(CHART_TITLE)}
-            description={el.getAttribute(CHART_DESCRIPTION)}
+            id={el.getAttribute(CHART_ID) || el.getAttribute(POST_ID)}
+            title={el.getAttribute(CHART_TITLE) || el.getAttribute(TITLE)}
+            description={
+              el.getAttribute(CHART_DESCRIPTION) || el.getAttribute(DESCRIPTION)
+            }
             showInsight={el.getAttribute(SHOW_INSIGHT) === 'true'}
             insightTitle={el.getAttribute(INSIGHT_TITLE)}
             insightSummary={el.getAttribute(INSIGHT_SUMMARY)}
@@ -140,7 +147,7 @@ export function renderBlocks({
             logo={logo}
             fetchDefinition={fetchDefinition}
             fetchDefinitionUrl={fetchDefinitionUrl}
-            chartId={el.getAttribute(CHART_ID)}
+            chartId={el.getAttribute(CHART_ID) || el.getAttribute(POST_ID)}
             geoId={
               el.getAttribute(GEO_TYPE) ||
               el.getAttribute(GEOID) ||
