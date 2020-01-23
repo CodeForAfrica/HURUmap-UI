@@ -42,6 +42,7 @@ function EmbedDropDown({
       onClose={onClose}
       open={open}
       classes={{ root: classes.dropDownRoot, paper: classes.dropDownPaper }}
+      {...props}
     >
       <Container className={classes.root}>
         {title && <DialogTitle className={classes.title}>{title}</DialogTitle>}
