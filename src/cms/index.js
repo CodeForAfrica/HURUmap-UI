@@ -154,7 +154,7 @@ export function renderBlocks({
             insightTitle={el.getAttribute(INSIGHT_TITLE)}
             insightSummary={el.getAttribute(INSIGHT_SUMMARY)}
             analysisLinkCountrySlug={el.getAttribute(ANALYSIS_COUNTRY)}
-            analysisLinkTitle={el.getAttribute(ANALYSIS_LINK_TITLTE)}
+            analysisLinkTitle={el.getAttribute(ANALYSIS_LINK_TITLE)}
             dataLinkTitle={el.getAttribute(ANALYSIS_LINK_TITLE)}
             dataLinkGeoId={
               el.getAttribute(DATA_GEOID) || el.getAttribute(DATA_GEO_ID)
