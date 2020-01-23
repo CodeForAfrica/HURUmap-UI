@@ -1,48 +1,52 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, select, text } from '@storybook/addon-knobs';
+import { withKnobs, select, text, object } from '@storybook/addon-knobs';
+
+import { ApolloProvider } from '@apollo/react-hooks';
+import ApolloClient from 'apollo-boost';
 
 import { CenterDecorator } from './common';
 import Card from '../src/components/Card';
-
-import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from '@apollo/react-hooks';
 
 storiesOf('HURUmap UI|Components/Card', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('Default', () => {
     const type = select('type', ['hurumap', 'flourish', 'snippet'], 'hurumap');
+    const uri = text('graphql', 'https://graphql.takwimu.africa/graphql');
+    const geoId = text('geoId', 'country-KE');
+    const hurumapJson = object('hurumap definition', {
+      id: '1234',
+      title: 'HURUmap Chart',
+      stat: {
+        type: 'number',
+        subtitle: '',
+        description: '',
+        aggregate: 'sum',
+        unique: true,
+        unit: 'percent',
+        queryAlias: 'v1448'
+      },
+      visual: {
+        typeProps: [],
+        type: 'column',
+        table: 'allAccessToBasicServices',
+        x: 'accessToBasicServicesYear',
+        y: 'total',
+        queryAlias: 'v1448'
+      }
+    });
+    const flourishJson = object('flourish definition', {
+      id: '1234',
+      title: 'Flourish Chart',
+      description: 'Embeded flourish chart example'
+    });
     const definition =
       // eslint-disable-next-line no-nested-ternary
       type === 'flourish'
-        ? {
-            id: '1234',
-            title: 'Flourish Chart',
-            description: 'Embeded flourish chart example'
-          }
+        ? flourishJson
         : type === 'hurumap'
-        ? {
-            id: '1234',
-            title: 'HURUmap Chart',
-            stat: {
-              type: 'number',
-              subtitle: '',
-              description: '',
-              aggregate: 'sum',
-              unique: true,
-              unit: 'percent',
-              queryAlias: 'v1448'
-            },
-            visual: {
-              typeProps: [],
-              type: 'column',
-              table: 'allAccessToBasicServices',
-              x: 'accessToBasicServicesYear',
-              y: 'total',
-              queryAlias: 'v1448'
-            }
-          }
+        ? hurumapJson
         : {
             id: '1234',
             title: {
@@ -64,7 +68,7 @@ storiesOf('HURUmap UI|Components/Card', module)
       <ApolloProvider
         client={
           new ApolloClient({
-            uri: text('graphql', 'https://graphql.hurumap.africa/graphql')
+            uri
           })
         }
       >
@@ -73,7 +77,7 @@ storiesOf('HURUmap UI|Components/Card', module)
             id="1234"
             key={type}
             type={type}
-            geoId="country-KE"
+            geoId={geoId}
             definition={definition}
             flourishURL=""
           />
