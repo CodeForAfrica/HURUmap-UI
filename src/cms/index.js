@@ -66,7 +66,7 @@ export function dataProps(
     [INSIGHT_SUMMARY]: insightSummary,
     [DATA_LINK_TITLE]: dataLinkTitle,
     [ANALYSIS_COUNTRY]: analysisCountry,
-    [ANALYSIS_LINK_TITLTE]: analysisLinkTitle,
+    [ANALYSIS_LINK_TITLE]: analysisLinkTitle,
     [GEO_ID]: geoId,
     [DATA_GEO_ID]: dataGeoId,
     [SHOW_STAT_VISUAL]: showStatVisual,
