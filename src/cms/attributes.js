@@ -22,7 +22,7 @@ export const GEO_TYPE = 'data-geo-type';
 /**
  * @deprecated
  */
-export const SHOW_STATVISUAL = 'data-show-stat-visual';
+export const SHOW_STATVISUAL = 'data-show-statvisual';
 
 /**
  * @deprecated
