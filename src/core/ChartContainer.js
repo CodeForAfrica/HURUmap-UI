@@ -19,7 +19,7 @@ import DownloadIcon from './assets/icons/download.svg';
 import EmbedIcon from './assets/icons/code.svg';
 import ShareIcon from './assets/icons/network-connection.svg';
 
-const useStyles = makeStyles(({ palette }) => ({
+const useStyles = makeStyles(({ breakpoints, palette }) => ({
   root: {
     backgroundColor: '#f1f1ed'
   },
@@ -94,7 +94,12 @@ const useStyles = makeStyles(({ palette }) => ({
   descriptionWrapper: {
     marginTop: '1.75rem'
   },
-  description: {}
+  description: {
+    [breakpoints.up('md')]: {
+      display: 'block',
+      width: '62.36%' // golden-ratio
+    }
+  }
 }));
 
 function ChartContainer({
