@@ -62,8 +62,9 @@ function ShareDropDown({
       onClose={onClose}
       open={open}
       classes={{ root: classes.dropDownRoot, paper: classes.dropDownPaper }}
+      {...props}
     >
-      <Grid className={classes.root} container justify="center" {...props}>
+      <Grid className={classes.root} container justify="center">
         {title && <DialogTitle className={classes.title}>{title}</DialogTitle>}
         <DialogContent>
           <Grid
@@ -147,9 +148,9 @@ ShareDropDown.propTypes = {
 
 ShareDropDown.defaultProps = {
   anchorEl: null,
-  open: undefined,
   email: null,
   facebook: null,
+  open: undefined,
   shareIcon: {
     round: false,
     size: 40

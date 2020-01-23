@@ -33,6 +33,8 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
   .addDecorator(withKnobs)
   .add('Default', () =>
     React.createElement(() => {
+      const loading = boolean('loading', true);
+      const variant = select('variant', ['data', 'analysis'], 'data');
       const chartType = select('chartType', ['bar', 'pie'], 'pie');
       const classes = makeStyles(({ breakpoints }) => ({
         title: {
@@ -68,7 +70,7 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
             )}
           >
             <ChartContainer
-              loading={boolean('loading', true)}
+              loading={loading}
               title={text('title', 'Lorem ipsum dolor sit amet.')}
               subtitle={text(
                 'Subtitle',
@@ -80,7 +82,7 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
               })}
               sourceTitle={text(
                 'sourceTitle',
-                'Census 2011: Statistics South Africa (2011) South African Population Census 2011. Indicators derived from the full population Census'
+                'Census 2011: Statistics South Africa (2011) South African Population Census 2011'
               )}
               sourceLink="http://dev.dominion.africa"
               content={object('content', { height: 400, width: '100%' })}
@@ -92,6 +94,7 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                 title: classes.title,
                 embedDropDownRoot: classes.embedModal
               }}
+              variant={variant}
             >
               {chartType === 'pie' && (
                 <div style={{ height: 350, width: 350 }}>
@@ -122,13 +125,13 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
               )}
 
               {chartType === 'bar' && (
-                <div style={{ width: 500, height: 300 }}>
+                <div style={{ width: 350, height: 350 }}>
                   <BarChart
                     horizontal={boolean('horizontal', false)}
-                    width={500}
-                    height={300}
+                    width={350}
+                    height={350}
                     domainPadding={object('domainPadding', { x: 15 })}
-                    data={Array(number('data', 10))
+                    data={Array(number('data', 5))
                       .fill(null)
                       .map((_, index) => ({
                         x: `${index} wrap label`,
@@ -180,6 +183,8 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
         anchorEl: null
       };
 
+      const loading = boolean('loading', true);
+      const variant = select('variant', ['data', 'analysis'], 'data');
       const share = boolean('Share', true);
       const download = boolean('Download', true);
       const embed = boolean('Embed', true);
@@ -190,7 +195,7 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
           container
           justify="center"
           alignItems="center"
-          style={{ background: 'whitesmoke', height: '100%' }}
+          style={{ background: 'whitesmoke', height: '50rem' }}
         >
           <Grid
             item
@@ -206,10 +211,8 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
             )}
           >
             <ChartContainer
-              content={{
-                height: 338
-              }}
-              loading={boolean('loading', false)}
+              content={object('content', { height: 400, width: '100%' })}
+              loading={loading}
               onClickShare={
                 share ? anchorEl => onClick(anchorEl, 'Share') : null
               }
@@ -228,27 +231,30 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
                 'Subtitle',
                 'Praesent at dignissim est. Integer porta consectetur ante, ut congue erat.'
               )}
+              variant={variant}
             >
-              <BarChart
-                horizontal={boolean('horizontal', false)}
-                width={500}
-                height={300}
-                data={Array(number('data', 10))
-                  .fill(null)
-                  .map((_, index) => ({
-                    x: `${index}-${index}`,
-                    y: rand()
-                  }))}
-                domainPadding={{ x: 40 }}
-                parts={{
-                  axis: {
-                    dependent: {
-                      tickValues: [10, 50, 90],
-                      tickFormat: ['10%', '50%', '90%']
+              <div style={{ width: 350, height: 350 }}>
+                <BarChart
+                  horizontal={boolean('horizontal', false)}
+                  width={350}
+                  height={350}
+                  domainPadding={object('domainPadding', { x: 15 })}
+                  data={Array(number('data', 5))
+                    .fill(null)
+                    .map((_, index) => ({
+                      x: `${index}-${index}`,
+                      y: rand()
+                    }))}
+                  parts={{
+                    axis: {
+                      dependent: {
+                        tickValues: [10, 50, 90],
+                        tickFormat: ['10%', '50%', '90%']
+                      }
                     }
-                  }
-                }}
-              />
+                  }}
+                />
+              </div>
               <CustomPopover
                 open={el != null}
                 anchorEl={el}

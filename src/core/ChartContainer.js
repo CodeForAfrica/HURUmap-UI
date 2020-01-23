@@ -19,7 +19,7 @@ import DownloadIcon from './assets/icons/download.svg';
 import EmbedIcon from './assets/icons/code.svg';
 import ShareIcon from './assets/icons/network-connection.svg';
 
-const useStyles = makeStyles(({ palette }) => ({
+const useStyles = makeStyles(({ breakpoints, palette }) => ({
   root: {
     backgroundColor: '#f1f1ed'
   },
@@ -46,8 +46,12 @@ const useStyles = makeStyles(({ palette }) => ({
     height: '2.5rem',
     width: '2.5rem'
   },
-  title: {},
-  subtitle: {},
+  title: props => ({
+    textAlign: props.variant === 'analysis' ? 'center' : 'inherit'
+  }),
+  subtitle: props => ({
+    textAlign: props.variant === 'analysis' ? 'center' : 'inherit'
+  }),
   source: {
     width: '100%'
   },
@@ -90,7 +94,12 @@ const useStyles = makeStyles(({ palette }) => ({
   descriptionWrapper: {
     marginTop: '1.75rem'
   },
-  description: {}
+  description: {
+    [breakpoints.up('md')]: {
+      display: 'block',
+      width: '62.36%' // golden-ratio
+    }
+  }
 }));
 
 function ChartContainer({
@@ -113,6 +122,7 @@ function ChartContainer({
   ...props
 }) {
   const classes = useStyles(props);
+  const { variant } = props;
   const getReferenceObject = ref => {
     const { current } = ref;
     if (current) {
@@ -244,132 +254,151 @@ function ChartContainer({
       }));
   const logo = logoProp || defaultLogo;
 
+  const titleComponents = (
+    <>
+      <TypographyLoader
+        loading={loading}
+        loader={{
+          primaryOpacity: 0.5,
+          secondaryOpacity: 1
+        }}
+        className={classes.title}
+        variant="body1"
+      >
+        {title}
+      </TypographyLoader>
+      {subtitle && subtitle.length > 0 && (
+        <TypographyLoader
+          loading={loading}
+          loader={{
+            primaryOpacity: 0.5,
+            secondaryOpacity: 1
+          }}
+          className={classes.subtitle}
+          variant="caption"
+        >
+          {subtitle}
+        </TypographyLoader>
+      )}
+    </>
+  );
+  const actionComponents = (
+    <>
+      {onClickShare && (
+        <BlockLoader loading={loading} width={40} height={40}>
+          <ButtonBase
+            className={classes.actionButton}
+            onClick={() => onClickShare(getReferenceObject(shareButtonRef))}
+            ref={shareButtonRef}
+          >
+            <ShareIcon />
+          </ButtonBase>
+        </BlockLoader>
+      )}
+
+      {onClickEmbed && (
+        <BlockLoader loading={loading} width={40} height={40}>
+          <ButtonBase
+            className={classes.actionButton}
+            onClick={() => onClickEmbed(getReferenceObject(embedButtonRef))}
+            ref={embedButtonRef}
+          >
+            <EmbedIcon />
+          </ButtonBase>
+        </BlockLoader>
+      )}
+
+      {onClickDownload && (
+        <BlockLoader loading={loading} width={40} height={40}>
+          <ButtonBase
+            className={classes.actionButton}
+            onClick={() =>
+              toPng().then(
+                onClickDownload.bind(
+                  null,
+                  getReferenceObject(downloadButtonRef)
+                )
+              )
+            }
+            ref={downloadButtonRef}
+          >
+            <DownloadIcon />
+          </ButtonBase>
+        </BlockLoader>
+      )}
+
+      {onClickCompare && (
+        <BlockLoader loading={loading} width={40} height={40}>
+          <ButtonBase
+            className={classes.actionButton}
+            onClick={() => onClickCompare(getReferenceObject(compareButtonRef))}
+            ref={compareButtonRef}
+          >
+            <CompareIcon />
+          </ButtonBase>
+        </BlockLoader>
+      )}
+
+      {onClickData && (
+        <BlockLoader loading={loading} width={40} height={40}>
+          <ButtonBase
+            className={classes.actionButton}
+            onClick={() => onClickData(getReferenceObject(dataButtonRef))}
+            ref={dataButtonRef}
+          >
+            <DataIcon />
+          </ButtonBase>
+        </BlockLoader>
+      )}
+
+      {embedDropDown}
+      {shareDropDown}
+    </>
+  );
   return (
     <div ref={chartRef} className={classes.root}>
       <Grid container className={classes.containerRoot}>
         <Grid item xs={12} container className={classes.chart}>
-          <Grid
-            item
-            xs={12}
-            container
-            wrap="nowrap"
-            direction="row"
-            alignItems="flex-start"
-            justify="space-between"
-          >
-            <Grid item xs={8}>
-              <TypographyLoader
-                loading={loading}
-                loader={{
-                  primaryOpacity: 0.5,
-                  secondaryOpacity: 1
-                }}
-                className={classes.title}
-                variant="body1"
-              >
-                {title}
-              </TypographyLoader>
-              <TypographyLoader
-                loading={loading}
-                loader={{
-                  primaryOpacity: 0.5,
-                  secondaryOpacity: 1
-                }}
-                className={classes.subtitle}
-                variant="caption"
-              >
-                {subtitle}
-              </TypographyLoader>
-            </Grid>
-
+          {variant === 'data' && (
             <Grid
               item
-              xs={4}
+              xs={12}
               container
               wrap="nowrap"
               direction="row"
-              justify="flex-end"
-              className={`${downloadHiddenClassName} ${classes.actions}`}
+              alignItems="flex-start"
+              justify="space-between"
             >
-              {onClickShare && (
-                <BlockLoader loading={loading} width={40} height={40}>
-                  <ButtonBase
-                    className={classes.actionButton}
-                    onClick={() =>
-                      onClickShare(getReferenceObject(shareButtonRef))
-                    }
-                    ref={shareButtonRef}
-                  >
-                    <ShareIcon />
-                  </ButtonBase>
-                </BlockLoader>
-              )}
+              <Grid item xs={8}>
+                {titleComponents}
+              </Grid>
 
-              {onClickEmbed && (
-                <BlockLoader loading={loading} width={40} height={40}>
-                  <ButtonBase
-                    className={classes.actionButton}
-                    onClick={() =>
-                      onClickEmbed(getReferenceObject(embedButtonRef))
-                    }
-                    ref={embedButtonRef}
-                  >
-                    <EmbedIcon />
-                  </ButtonBase>
-                </BlockLoader>
-              )}
-
-              {onClickDownload && (
-                <BlockLoader loading={loading} width={40} height={40}>
-                  <ButtonBase
-                    className={classes.actionButton}
-                    onClick={() =>
-                      toPng().then(
-                        onClickDownload.bind(
-                          null,
-                          getReferenceObject(downloadButtonRef)
-                        )
-                      )
-                    }
-                    ref={downloadButtonRef}
-                  >
-                    <DownloadIcon />
-                  </ButtonBase>
-                </BlockLoader>
-              )}
-
-              {onClickCompare && (
-                <BlockLoader loading={loading} width={40} height={40}>
-                  <ButtonBase
-                    className={classes.actionButton}
-                    onClick={() =>
-                      onClickCompare(getReferenceObject(compareButtonRef))
-                    }
-                    ref={compareButtonRef}
-                  >
-                    <CompareIcon />
-                  </ButtonBase>
-                </BlockLoader>
-              )}
-
-              {onClickData && (
-                <BlockLoader loading={loading} width={40} height={40}>
-                  <ButtonBase
-                    className={classes.actionButton}
-                    onClick={() =>
-                      onClickData(getReferenceObject(dataButtonRef))
-                    }
-                    ref={dataButtonRef}
-                  >
-                    <DataIcon />
-                  </ButtonBase>
-                </BlockLoader>
-              )}
-
-              {embedDropDown}
-              {shareDropDown}
+              <Grid
+                item
+                xs={4}
+                container
+                wrap="nowrap"
+                direction="row"
+                justify="flex-end"
+                className={`${downloadHiddenClassName} ${classes.actions}`}
+              >
+                {actionComponents}
+              </Grid>
             </Grid>
-          </Grid>
+          )}
+          {variant === 'analysis' && (
+            <Grid
+              item
+              xs={12}
+              container
+              wrap="nowrap"
+              direction="row"
+              alignItems="center"
+              justify="center"
+            >
+              <Grid item>{titleComponents}</Grid>
+            </Grid>
+          )}
           <Grid
             item
             xs={12}
@@ -395,13 +424,31 @@ function ChartContainer({
                 className={`${downloadHiddenClassName} ${classes.source}`}
               >
                 {sourceLink && (
-                  <A className={classes.sourceLink} href={sourceLink}>
+                  <A
+                    variant="caption"
+                    className={classes.sourceLink}
+                    href={sourceLink}
+                  >
                     {`Source: ${sourceTitle || sourceLink}`}
                   </A>
                 )}
               </TypographyLoader>
             </div>
           </Grid>
+          {variant === 'analysis' && (
+            <Grid
+              item
+              xs={12}
+              container
+              wrap="nowrap"
+              direction="row"
+              alignItems="center"
+              justify="center"
+              className={downloadHiddenClassName}
+            >
+              <Grid item>{actionComponents}</Grid>
+            </Grid>
+          )}
         </Grid>
       </Grid>
       {description && (
@@ -411,9 +458,11 @@ function ChartContainer({
           wrap="nowrap"
           className={classes.descriptionWrapper}
         >
-          <Typography variant="caption" className={classes.description}>
-            {description}
-          </Typography>
+          <Grid item>
+            <Typography variant="caption" className={classes.description}>
+              {description}
+            </Typography>
+          </Grid>
         </Grid>
       )}
       <Grid
@@ -437,15 +486,21 @@ function ChartContainer({
 }
 
 ChartContainer.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired,
+  content: PropTypes.shape({
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  }),
+  description: PropTypes.string,
   embed: PropTypes.shape({
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.string,
     code: PropTypes.string
   }),
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ]).isRequired,
+  loading: PropTypes.bool,
   logo: PropTypes.string,
   onClickCompare: PropTypes.func,
   onClickData: PropTypes.func,
@@ -473,16 +528,11 @@ ChartContainer.propTypes = {
       hashtags: PropTypes.string
     })
   }),
-  subtitle: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string,
   sourceLink: PropTypes.string,
   sourceTitle: PropTypes.string,
-  loading: PropTypes.bool,
-  content: PropTypes.shape({
-    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-  })
+  subtitle: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  variant: PropTypes.oneOf(['data', 'analysis'])
 };
 
 ChartContainer.defaultProps = {
@@ -519,7 +569,9 @@ style="margin: 1em; max-width: 18.75rem;"
   content: {
     width: '100%',
     height: '100%'
-  }
+  },
+  subtitle: undefined,
+  variant: 'data'
 };
 
 export default ChartContainer;
