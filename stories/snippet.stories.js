@@ -9,7 +9,7 @@ function decodeHTML(str) {
   const doc = new DOMParser().parseFromString(str, 'text/html');
   return doc.documentElement.textContent;
 }
-storiesOf('HURUmap UI|Cards/Snippet', module)
+storiesOf('HURUmap UI|Snippets/Default', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('Default', () => (
