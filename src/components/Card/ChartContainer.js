@@ -41,24 +41,20 @@ function ChartContainer({
           ? {
               description: insightSummary,
               title: insightTitle,
-              analysisLink: analysisLinkCountrySlug
-                ? {
-                    href:
-                      typeof analysisLinkHref === 'string'
-                        ? analysisLinkHref
-                        : analysisLinkHref(analysisLinkCountrySlug),
-                    title: analysisLinkTitle
-                  }
-                : null,
-              dataLink: dataLinkGeoId
-                ? {
-                    href:
-                      typeof dataLinkHref === 'string'
-                        ? dataLinkHref
-                        : dataLinkHref(dataLinkGeoId),
-                    title: dataLinkTitle
-                  }
-                : null
+              analysisLink: {
+                href:
+                  typeof analysisLinkHref === 'string'
+                    ? analysisLinkHref
+                    : analysisLinkHref(analysisLinkCountrySlug),
+                title: analysisLinkTitle
+              },
+              dataLink: {
+                href:
+                  typeof dataLinkHref === 'string'
+                    ? dataLinkHref
+                    : dataLinkHref(dataLinkGeoId),
+                title: dataLinkTitle
+              }
             }
           : {}
       }
