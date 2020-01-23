@@ -23,7 +23,11 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: 'whitesmoke',
     width: expand ? '100%' : width || 500,
     height: 'auto',
-    padding: 20
+    padding: 20,
+    '& > img': {
+      maxWidth: '100%',
+      objectFit: 'cover'
+    }
   }),
   cardButton: {}
 }));
@@ -175,11 +179,11 @@ function Card({
   };
   return (
     <Grid
-      className={classes.root}
       container
+      ref={cardRef}
+      className={classes.root}
       direction="column"
       spacing={2}
-      ref={cardRef}
     >
       {/* eslint-disable-next-line no-nested-ternary */}
       {post ? (
