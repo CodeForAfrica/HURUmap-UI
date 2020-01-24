@@ -208,7 +208,7 @@ function Snippet({
 
 Snippet.propTypes = {
   download: propTypes.shape({
-    onDownload: propTypes.func.isRequired,
+    onDownload: propTypes.func,
     subtitle: propTypes.string,
     title: propTypes.string
   }),
