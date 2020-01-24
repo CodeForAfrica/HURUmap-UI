@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import { pickBy } from 'lodash';
 import Card from '../components/Card';
 
 import {
@@ -23,7 +24,6 @@ import {
   POST_TYPE,
   GEO_TYPE,
   SHOW_STATVISUAL,
-  GEOID,
   DATA_GEOID
 } from './attributes';
 
@@ -38,6 +38,7 @@ export function dataProps(
   {
     chartId,
     chartWidth,
+    cardWidth,
     title,
     description,
     showInsight,
@@ -55,30 +56,97 @@ export function dataProps(
 ) {
   /**
    * NOTE:
-   * Only use none deprecated attributes below
+   * - Only use *none* deprecated attributes below
+   * - The order of attributes matter
    */
-  return {
-    id: `${type}-${chartId}`,
-    style: {
-      marginLeft: 10,
-      marginBottom: 10,
-      width: chartWidth
+  return pickBy(
+    {
+      id: `${type}-${chartId || postId}`,
+      style: {
+        width:
+          chartWidth ||
+          cardWidth ||
+          (type === TYPES.FLOURISH_CHART ? '100%' : undefined)
+      },
+      [POST_ID]: chartId || postId,
+      [POST_TYPE]: postType,
+      [GEO_ID]: geoId,
+      [TITLE]: title,
+      [DESCRIPTION]: description,
+      [SHOW_INSIGHT]: showInsight,
+      [INSIGHT_TITLE]: insightTitle,
+      [INSIGHT_SUMMARY]: insightSummary,
+      [DATA_GEO_ID]: dataGeoId,
+      [DATA_LINK_TITLE]: dataLinkTitle,
+      [ANALYSIS_COUNTRY]: analysisCountry,
+      [ANALYSIS_LINK_TITLE]: analysisLinkTitle,
+      [SHOW_STAT_VISUAL]: showStatVisual,
+      [WIDTH]: chartWidth || cardWidth
     },
-    [POST_ID]: chartId || postId,
-    [POST_TYPE]: postType,
-    [TITLE]: title,
-    [DESCRIPTION]: description,
-    [SHOW_INSIGHT]: showInsight,
-    [INSIGHT_TITLE]: insightTitle,
-    [INSIGHT_SUMMARY]: insightSummary,
-    [DATA_LINK_TITLE]: dataLinkTitle,
-    [ANALYSIS_COUNTRY]: analysisCountry,
-    [ANALYSIS_LINK_TITLE]: analysisLinkTitle,
-    [GEO_ID]: geoId,
-    [DATA_GEO_ID]: dataGeoId,
-    [SHOW_STAT_VISUAL]: showStatVisual,
-    [WIDTH]: chartWidth
-  };
+    v => v !== undefined && v !== null
+  );
+}
+
+export function deprecatedProps(
+  type,
+  {
+    id,
+    chartId,
+    chartWidth,
+    cardWidth,
+    title,
+    description,
+    showInsight,
+    insightTitle,
+    insightSummary,
+    dataLinkTitle,
+    analysisCountry,
+    analysisLinkTitle,
+    dataGeoId,
+    geoId,
+    showStatVisual,
+    postId,
+    postType
+  }
+) {
+  /**
+   * NOTE:
+   * - The order of attributes matter
+   */
+  return pickBy(
+    {
+      id: `${type}-${chartId || id}`,
+      style: pickBy(
+        {
+          // Margins are deprecated in favor of wp align classnames
+          marginLeft: type === TYPES.HURUMAP_CARD ? 10 : undefined,
+          marginBottom: type === TYPES.HURUMAP_CARD ? 10 : undefined,
+          width:
+            chartWidth ||
+            cardWidth ||
+            (type === TYPES.FLOURISH_CHART ? '100%' : undefined)
+        },
+        v => v !== undefined && v !== null
+      ),
+      [CHART_ID]: chartId,
+      [CHART_TITLE]: title,
+      [CHART_DESCRIPTION]: description,
+      [POST_TYPE]: postType,
+      [POST_ID]: postId,
+      [GEO_TYPE]: geoId,
+      [SHOW_INSIGHT]: showInsight,
+      [SHOW_STATVISUAL]: showStatVisual,
+      [INSIGHT_TITLE]: insightTitle,
+      [INSIGHT_SUMMARY]: insightSummary,
+      [DATA_LINK_TITLE]: dataLinkTitle,
+      [ANALYSIS_COUNTRY]: analysisCountry,
+      [ANALYSIS_LINK_TITLE]: analysisLinkTitle,
+      [DATA_GEOID]: type === TYPES.HURUMAP_CHART ? dataGeoId : undefined,
+      [DATA_GEO_ID]: type === TYPES.FLOURISH_CHART ? dataGeoId : undefined,
+      [WIDTH]: chartWidth || cardWidth
+    },
+    v => v !== undefined && v !== null
+  );
 }
 
 // No SSR Support
@@ -148,11 +216,7 @@ export function renderBlocks({
             fetchDefinition={fetchDefinition}
             fetchDefinitionUrl={fetchDefinitionUrl}
             chartId={el.getAttribute(CHART_ID) || el.getAttribute(POST_ID)}
-            geoId={
-              el.getAttribute(GEO_TYPE) ||
-              el.getAttribute(GEOID) ||
-              el.getAttribute(GEO_ID)
-            }
+            geoId={el.getAttribute(GEO_TYPE) || el.getAttribute(GEO_ID)}
             showInsight={el.getAttribute(SHOW_INSIGHT) === 'true'}
             showStatVisual={
               (el.getAttribute(SHOW_STATVISUAL) ||

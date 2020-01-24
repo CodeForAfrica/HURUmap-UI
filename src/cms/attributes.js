@@ -45,9 +45,4 @@ export const SHOW_STATVISUAL = 'data-show-statvisual';
 /**
  * @deprecated
  */
-export const GEOID = 'data-geoid';
-
-/**
- * @deprecated
- */
 export const DATA_GEOID = 'data-data-geoid';
