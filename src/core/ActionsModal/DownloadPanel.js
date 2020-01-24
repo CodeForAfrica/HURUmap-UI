@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   title: {}
 });
 
-function DownloadPanel({ children, subtitle, title, onDownload, ...props }) {
+function DownloadPanel({ subtitle, title, onDownload, ...props }) {
   const classes = useStyles(props);
 
   return (
@@ -44,10 +44,6 @@ function DownloadPanel({ children, subtitle, title, onDownload, ...props }) {
 }
 
 DownloadPanel.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ]).isRequired,
   onDownload: PropTypes.func.isRequired,
   subtitle: PropTypes.string,
   title: PropTypes.string
