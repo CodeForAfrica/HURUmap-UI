@@ -184,6 +184,7 @@ export function renderBlocks({
           <Card
             parentEl={el}
             logo={logo}
+            type="flourish"
             flourishURL={flourishURL}
             fetchDefinition={fetchDefinition}
             fetchDefinitionUrl={fetchDefinitionUrl}
@@ -213,9 +214,10 @@ export function renderBlocks({
             parentEl={el}
             fetch={fetch}
             logo={logo}
+            type="hurumap"
             fetchDefinition={fetchDefinition}
             fetchDefinitionUrl={fetchDefinitionUrl}
-            chartId={el.getAttribute(CHART_ID) || el.getAttribute(POST_ID)}
+            id={el.getAttribute(CHART_ID) || el.getAttribute(POST_ID)}
             geoId={el.getAttribute(GEO_TYPE) || el.getAttribute(GEO_ID)}
             showInsight={el.getAttribute(SHOW_INSIGHT) === 'true'}
             showStatVisual={
