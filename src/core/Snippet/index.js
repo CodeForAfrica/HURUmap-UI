@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     width: expand ? '100%' : width || 500,
     height: 'auto',
     padding: 20,
-    '& > img': {
+    '& img': {
       maxWidth: '100%',
       objectFit: 'cover'
     }
