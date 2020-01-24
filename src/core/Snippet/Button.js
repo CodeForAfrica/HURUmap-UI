@@ -15,7 +15,7 @@ const useStyles = makeStyles(({ palette }) => ({
   }
 }));
 
-function CardButton({ children, ...props }) {
+function SnippetButton({ children, ...props }) {
   const classes = useStyles(props);
 
   return (
@@ -25,8 +25,8 @@ function CardButton({ children, ...props }) {
   );
 }
 
-CardButton.propTypes = {
+SnippetButton.propTypes = {
   children: propTypes.children.isRequired
 };
 
-export default CardButton;
+export default SnippetButton;
