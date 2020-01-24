@@ -1,3 +1,2 @@
+// eslint-disable-next-line import/prefer-default-export
 export { default as aggregateData } from './aggregateData';
-export { default as assignQueryAlias } from './assignQueryAlias';
-export { default as visualLoader } from './visualLoader';

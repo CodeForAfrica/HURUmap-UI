@@ -12,6 +12,7 @@ import NumberVisuals from '../core/NumberVisuals';
 import aggregateData, { isSelectFunc } from './utils/aggregateData';
 import propTypes from '../core/propTypes';
 import withVictoryTheme from '../core/styles/withVictoryTheme';
+import { DOWNLOAD_HIDDEN_CLASSNAME } from '../core/utils';
 
 const ChartFactory = React.memo(
   ({
@@ -455,7 +456,7 @@ const ChartFactory = React.memo(
           ['column', 'grouped_column'].includes(visualType) &&
           dataLength > 5 && (
             <ButtonBase
-              className="Download--hidden"
+              className={DOWNLOAD_HIDDEN_CLASSNAME}
               onClick={() => setShow(show === 0 ? -5 : 0)}
             >
               {show === 0 ? 'Show Less' : 'Show More'}

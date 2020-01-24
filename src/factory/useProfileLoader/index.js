@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useApolloClient } from '@apollo/react-hooks';
-import { buildProfileQuery } from './queries';
-import visualLoader from '../utils/visualLoader';
+import buildProfileQuery from './buildProfileQuery';
+import useVisualLoader from '../useVisualLoader';
 
 export default ({ geoId, comparisonGeoId, visuals, populationTables }) => {
   const client = useApolloClient();
@@ -53,7 +53,8 @@ export default ({ geoId, comparisonGeoId, visuals, populationTables }) => {
             query,
             variables: {
               geoCode: comparisonGeoId.split('-')[1],
-              geoLevel: comparisonGeoId.split('-')[0]
+              geoLevel: comparisonGeoId.split('-')[0],
+              countryCode: comparisonGeoId.split('-')[1].slice(0, 2)
             }
           });
 
@@ -75,7 +76,7 @@ export default ({ geoId, comparisonGeoId, visuals, populationTables }) => {
     }
   }, [client, geoId, comparisonGeoId, populationTables]);
 
-  const chartData = visualLoader({
+  const chartData = useVisualLoader({
     geoId,
     comparisonGeoId,
     visuals,

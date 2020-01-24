@@ -17,4 +17,4 @@ export { default as NumberVisuals } from './NumberVisuals';
 export { default as PieChart } from './PieChart';
 export { default as ShareDropDown } from './ShareDropDown';
 export { default as TypographyLoader } from './TypographyLoader';
-export { default as Card } from './Card';
+export { default as Snippet } from './Snippet';

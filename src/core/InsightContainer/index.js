@@ -5,7 +5,11 @@ import { Box, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
-import { domToPng } from '../utils';
+import {
+  domToPng,
+  isDowloadHiddenElement,
+  DOWNLOAD_HIDDEN_CLASSNAME
+} from '../utils';
 
 import BlockLoader from '../BlockLoader';
 import TypographyLoader from '../TypographyLoader';
@@ -138,7 +142,6 @@ function InsightContainer({
     rootWidth: rootNode ? rootNode.getBoundingClientRect().width : 300
   });
 
-  const downloadHiddenClassName = 'Download--hidden';
   const toPng = () => {
     const filter = n => {
       const { classList, tagName } = n;
@@ -154,7 +157,7 @@ function InsightContainer({
         const { style: nodeStyle } = n;
         nodeStyle.display = 'flex';
       }
-      return !classList.contains(downloadHiddenClassName);
+      return isDowloadHiddenElement(n);
     };
 
     return domToPng(rootNode, { filter });
@@ -267,7 +270,7 @@ function InsightContainer({
                 height: 20
               }}
               component="span"
-              className={`${classes.sourceGrid} ${downloadHiddenClassName}`}
+              className={`${classes.sourceGrid} ${DOWNLOAD_HIDDEN_CLASSNAME}`}
             >
               {source && (
                 <A className={classes.sourceLink} href={source.href}>
@@ -283,7 +286,7 @@ function InsightContainer({
               display="flex"
               justifyContent="center"
               marginTop="1.25rem"
-              className={downloadHiddenClassName}
+              className={DOWNLOAD_HIDDEN_CLASSNAME}
             >
               {actionsChildren}
             </Box>
@@ -296,12 +299,12 @@ function InsightContainer({
               analysisLink={insight.analysisLink}
               classes={{
                 root: classes.insight,
-                actions: `Download--hidden`,
+                actions: DOWNLOAD_HIDDEN_CLASSNAME,
                 analysisLink: classes.insightAnalysis,
                 dataLink: classes.insightDataLink,
                 description: classes.insightDescription,
                 insight: classes.insightContent,
-                links: downloadHiddenClassName,
+                links: DOWNLOAD_HIDDEN_CLASSNAME,
                 title: classes.insightTitle
               }}
               dataLink={insight.dataLink}

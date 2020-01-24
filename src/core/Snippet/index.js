@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Box from '@material-ui/core/Box';
+import React, { useRef, useState, useMemo } from 'react';
+
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
@@ -9,11 +9,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import shortid from 'shortid';
 import { Link } from '@material-ui/core';
 
-import { domToPng } from '../utils';
+import {
+  domToPng,
+  DOWNLOAD_HIDDEN_CLASSNAME,
+  isDowloadHiddenElement
+} from '../utils';
 import propTypes from '../propTypes';
 import ActionsModal, { EMBED_TAB, SHARE_TAB } from '../ActionsModal';
-import CardButton from './Button';
-import CardActions from './Actions';
+import SnippetButton from './Button';
+import SnippetActions from './Actions';
 import ContentLoader from '../ContentLoader';
 
 const useStyles = makeStyles(theme => ({
@@ -32,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   cardButton: {}
 }));
 
-function Card({
+function Snippet({
   download,
   fullWidth,
   id: idProp,
@@ -44,48 +48,45 @@ function Card({
   onExpand,
   ...props
 }) {
+  const cardRef = useRef(null);
+  const id = idProp || shortid.generate();
+
   const [expand, setExpand] = useState(false);
   const classes = useStyles({
     width: fullWidth ? '100%' : width,
     expand,
     ...props
   });
-  const id = idProp || shortid.generate();
+
   const [activeTab, setActiveTab] = useState(SHARE_TAB);
   const [modalOpen, setModalOpen] = useState(false);
-  const [url, setUrl] = useState();
-  const cardRef = useRef(null);
-  const downloadHiddenClassName = 'Download--hidden';
-  const toPng = () => {
-    const filter = node => {
-      const { classList } = node;
-      if (classList) {
-        return !classList.contains(downloadHiddenClassName);
-      }
-      return true;
-    };
 
-    return domToPng(cardRef.current, { filter });
-  };
-  const defaultHandleDownload = dataUrl => {
-    if (dataUrl) {
-      const a = document.createElement('a');
-      a.download = `${id}.png`;
-      a.href = dataUrl;
+  const defaultShareURL = useMemo(() => {
+    const { origin, pathname, search, hash } = window ? window.location : {};
+    const searchParams = new URLSearchParams(search);
+    searchParams.append('indicatorId', id);
+    const query = searchParams.toString();
 
-      document.body.appendChild(a); // Firefox requires this
-      a.click();
-      document.body.removeChild(a);
-    }
-  };
+    return `${origin}${pathname}${query ? `?${query}` : ''}${hash}`;
+  }, [id]);
+
   const { onDownload: onDownloadProp } = download || {};
-  const handleDownload = onDownloadProp || defaultHandleDownload;
-  const onDownload = () => toPng().then(handleDownload);
-  useEffect(() => {
-    const href = window && window.location.href.replace(/\/$/, '');
-    const hash = id && id.length > 0 ? `/#{id}` : '';
-    setUrl(`${href}${hash}`);
-  }, [id, setUrl]);
+  const onDownload = () =>
+    domToPng(cardRef.current, { filter: isDowloadHiddenElement }).then(
+      onDownloadProp ||
+        (dataUrl => {
+          if (dataUrl) {
+            const a = document.createElement('a');
+            a.download = `${id}.png`;
+            a.href = dataUrl;
+
+            document.body.appendChild(a); // Firefox requires this
+            a.click();
+            document.body.removeChild(a);
+          }
+        })
+    );
+
   const showActionsModal = tab => {
     setActiveTab(tab);
     setModalOpen(true);
@@ -96,46 +97,50 @@ function Card({
   const renderPost = () => {
     return (
       <>
-        {!link && (
-          <>
-            <Box
-              position="absolute"
-              top={20}
-              right={20}
-              className={downloadHiddenClassName}
-            >
-              <CardActions
-                onEmbed={e => showActionsModal(EMBED_TAB, e)}
-                onShare={e => showActionsModal(SHARE_TAB, e)}
-              />
-            </Box>
-            <ActionsModal
-              download={{ ...download, onDownload }}
-              embed={{ url, ...embed }}
-              id={id}
-              onClose={handleActionsModalClose}
-              open={modalOpen}
-              share={{ url, ...share }}
-              tab={activeTab}
-              classes={{
-                embedCode: classes.embedCode,
-                embedCodeContainer: classes.embedCodeContainer,
-                embedContent: classes.embedContent,
-                embedSubtitle: classes.embedSubtitle,
-                embedTitle: classes.embedTitle,
-                shareSocial: classes.shareSocial,
-                shareSocialIcon: classes.shareSocialIcon,
-                shareSubtitle: classes.shareSubtitle,
-                shareTitle: classes.shareTitle,
-                shareUrl: classes.shareUrl,
-                shareUrlContainer: classes.shareUrlContainer
-              }}
-            />
-          </>
-        )}
         <Grid item container direction="column" spacing={1}>
           <Grid item>
-            <Typography dangerouslySetInnerHTML={{ __html: post.title }} />
+            <Grid
+              container
+              direction="row"
+              wrap="nowrap"
+              justify="space-between"
+            >
+              <Grid item>
+                <Typography dangerouslySetInnerHTML={{ __html: post.title }} />
+              </Grid>
+              <Grid item className={DOWNLOAD_HIDDEN_CLASSNAME}>
+                {!link && (
+                  <>
+                    <SnippetActions
+                      onEmbed={e => showActionsModal(EMBED_TAB, e)}
+                      onShare={e => showActionsModal(SHARE_TAB, e)}
+                    />
+                    <ActionsModal
+                      id={id}
+                      embed={embed}
+                      open={modalOpen}
+                      download={{ ...download, onDownload }}
+                      onClose={handleActionsModalClose}
+                      share={{ url: defaultShareURL, ...share }}
+                      tab={activeTab}
+                      classes={{
+                        embedCode: classes.embedCode,
+                        embedCodeContainer: classes.embedCodeContainer,
+                        embedContent: classes.embedContent,
+                        embedSubtitle: classes.embedSubtitle,
+                        embedTitle: classes.embedTitle,
+                        shareSocial: classes.shareSocial,
+                        shareSocialIcon: classes.shareSocialIcon,
+                        shareSubtitle: classes.shareSubtitle,
+                        shareTitle: classes.shareTitle,
+                        shareUrl: classes.shareUrl,
+                        shareUrlContainer: classes.shareUrlContainer
+                      }}
+                    />
+                  </>
+                )}
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item>
             <Typography
@@ -150,8 +155,8 @@ function Card({
         </Grid>
 
         {!link && post.content.includes('<p><!--more--></p>') && (
-          <Grid item className={downloadHiddenClassName}>
-            <CardButton
+          <Grid item className={DOWNLOAD_HIDDEN_CLASSNAME}>
+            <SnippetButton
               onClick={() => {
                 if (onExpand) {
                   onExpand(!expand);
@@ -171,7 +176,7 @@ function Card({
                   Read More
                 </>
               )}
-            </CardButton>
+            </SnippetButton>
           </Grid>
         )}
       </>
@@ -201,7 +206,7 @@ function Card({
   );
 }
 
-Card.propTypes = {
+Snippet.propTypes = {
   download: propTypes.shape({
     onDownload: propTypes.func.isRequired,
     subtitle: propTypes.string,
@@ -248,7 +253,7 @@ Card.propTypes = {
   })
 };
 
-Card.defaultProps = {
+Snippet.defaultProps = {
   download: {
     subtitle: 'For offline viewing or using it in print media.',
     title: 'Download this as an image'
@@ -268,8 +273,9 @@ Card.defaultProps = {
   width: undefined,
   share: {
     facebook: {},
-    twitter: {}
+    twitter: {},
+    url: undefined
   }
 };
 
-export default Card;
+export default Snippet;
