@@ -35,7 +35,7 @@ function ChartContainer({
     <InsightContainer
       classes={classes}
       hideInsight={hideInsight}
-      variant={hideInsight || hideStat ? 'analysis' : 'data'}
+      variant={hideInsight && hideStat ? 'analysis' : 'data'}
       insight={
         !hideInsight
           ? {

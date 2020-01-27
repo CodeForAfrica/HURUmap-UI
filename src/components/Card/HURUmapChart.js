@@ -108,7 +108,7 @@ function HURUmapChart({
       {!chartData.isLoading && (
         <ChartFactory
           profiles={profiles}
-          definition={{ id: `data-indicator-${chart.id}`, ...chart.visual }}
+          definition={chart.visual}
           data={chartData.profileVisualsData[chart.visual.queryAlias].nodes}
         />
       )}

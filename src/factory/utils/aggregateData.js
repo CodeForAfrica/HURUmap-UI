@@ -22,6 +22,15 @@ function getGroupId(data) {
   return result.join('_').toLocaleLowerCase();
 }
 
+export const groupData = data => {
+  if (data[0].groupBy) {
+    return [...new Set(data.map(d => getGroupId(d)))].map(groupId =>
+      data.filter(d => getGroupId(d) === groupId)
+    );
+  }
+  return [data];
+};
+
 const computeData = (func, data) =>
   // eslint-disable-next-line no-nested-ternary
   selectFunc[func]
@@ -34,12 +43,6 @@ const computeData = (func, data) =>
       data[0];
 
 function aggregate(option, data, unique = true) {
-  if (data[0].groupBy) {
-    return [...new Set(data.map(d => getGroupId(d)))].map(groupId =>
-      data.filter(d => getGroupId(d) === groupId)
-    );
-  }
-
   if (!option || option === 'raw') {
     return data;
   }

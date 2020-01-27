@@ -9,7 +9,7 @@ import PieChart from '../core/PieChart';
 import NestedProportionalAreaChart from '../core/NestedProportionalAreaChart';
 import NumberVisuals from '../core/NumberVisuals';
 
-import aggregateData, { isSelectFunc } from './utils/aggregateData';
+import aggregateData, { isSelectFunc, groupData } from './utils/aggregateData';
 import propTypes from '../core/propTypes';
 import withVictoryTheme from '../core/styles/withVictoryTheme';
 import { DOWNLOAD_HIDDEN_CLASSNAME } from '../core/utils';
@@ -142,39 +142,46 @@ const ChartFactory = React.memo(
         }));
       }
 
-      /**
-       * Group the data based on groupBy
-       */
-      let groupedData = [];
-      if (data[0].groupBy) {
-        groupedData = aggregateData(aggregate, data);
-      }
-
-      if (groupedData.length) {
+      if (visualType === 'grouped_column') {
         /**
-         * Change `x` to be the `groupBy` value
-         * to plot group labels on the dependent axis
+         * Group the data based on groupBy
+         * Then aggregate the groupped data
          */
-        groupedData = groupedData.map(g =>
-          g.map(gd => ({
-            ...gd,
-            tooltip: labels(gd),
-            x: gd.groupBy
-          }))
-        );
+        let groupedData = groupData(data);
 
-        /**
-         * Reverse grouped data
-         * since victory plots inversely
-         */
-        groupedData = groupedData[0].map((_c, i) => groupedData.map(r => r[i]));
-      }
+        if (groupedData.length) {
+          /**
+           * Change `x` to be the `groupBy` value
+           * to plot group labels on the dependent axis
+           */
+          groupedData = groupedData.map(g =>
+            g.map(gd => ({
+              ...gd,
+              tooltip: labels(gd),
+              x: gd.groupBy
+            }))
+          );
 
-      if (visualType === 'grouped_column' && toggleSize && groupedData.length) {
-        setDataLength(groupedData[0].length);
-        return groupedData.map(gd => gd.slice(show));
+          /**
+           * Reverse grouped data
+           * since victory plots inversely
+           */
+          groupedData = groupedData[0].map((_c, i) =>
+            groupedData.map(r => r[i])
+          );
+        }
+
+        if (
+          visualType === 'grouped_column' &&
+          toggleSize &&
+          groupedData.length
+        ) {
+          setDataLength(groupedData[0].length);
+          return groupedData.map(gd => gd.slice(show));
+        }
+        return groupedData;
       }
-      return groupedData;
+      return [];
     }, [aggregate, data, format, show, toggleSize, visualType]);
 
     if (!data) {
@@ -452,7 +459,14 @@ const ChartFactory = React.memo(
 
     return (
       <Box display="flex" flexDirection="column" id={id}>
-        {primaryData.length ? renderChart() : null}
+        {primaryData.length ||
+        [
+          'circle_nested_proportional_area',
+          'circle_nested_proportional_area',
+          'number'
+        ].includes(visualType)
+          ? renderChart()
+          : null}
         {toggleSize &&
           ['column', 'grouped_column'].includes(visualType) &&
           dataLength > 5 && (
