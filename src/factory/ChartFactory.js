@@ -145,11 +145,7 @@ const ChartFactory = React.memo(
       /**
        * Group the data based on groupBy
        */
-      let groupedData = [...new Set(data.map(d => d.groupBy))].map(group =>
-        data.filter(d => d.groupBy === group)
-      );
-
-      groupedData = aggregateData(aggregate, groupedData);
+      let groupedData = aggregateData(aggregate, data);
 
       /**
        * Change `x` to be the `groupBy` value

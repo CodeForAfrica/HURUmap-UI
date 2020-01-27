@@ -12,6 +12,16 @@ const selectFunc = {
 
 export const isSelectFunc = func => Boolean(selectFunc[func]);
 
+function getGroupId(data) {
+  const result = [];
+  Object.keys(data).forEach(property => {
+    if (property.includes('groupBy')) {
+      result.push(data[property]);
+    }
+  });
+  return result.join('_').toLocaleLowerCase();
+}
+
 const computeData = (func, data) =>
   // eslint-disable-next-line no-nested-ternary
   selectFunc[func]
@@ -23,10 +33,18 @@ const computeData = (func, data) =>
        */
       data[0];
 
-function aggregate(option, data, unique = true) {
-  if (!option) {
+function aggregate(option, providedData, unique = true) {
+  let data = providedData;
+  if (data[0].groupBy) {
+    data = [...new Set(providedData.map(d => getGroupId(d)))].map(groupId =>
+      providedData.filter(d => getGroupId(d) === groupId)
+    );
+  }
+
+  if (!option || option === 'raw') {
     return data;
   }
+
   const [func, unit] = option.split(':');
 
   const reduced = {};
@@ -67,7 +85,7 @@ function aggregate(option, data, unique = true) {
   return reducedArray;
 }
 
-export default function aggregateData(option, data, unique = false) {
+export default function aggregateData(option, data, unique) {
   const isGroups = Array.isArray(data[0]);
   if (isGroups) {
     return data.map(gd => aggregate(option, gd, unique));
