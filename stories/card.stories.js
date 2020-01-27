@@ -15,7 +15,7 @@ storiesOf('HURUmap UI|Components/Card', module)
     const type = select('type', ['hurumap', 'flourish', 'snippet'], 'hurumap');
     const uri = text('graphql', 'https://graphql.takwimu.africa/graphql');
     const geoId = text('geoId', 'country-KE');
-    const hurumapJson = object('hurumap definition', {
+    const hurumapJson = {
       id: '1234',
       title: 'HURUmap Chart',
       stat: {
@@ -35,18 +35,18 @@ storiesOf('HURUmap UI|Components/Card', module)
         y: 'total',
         queryAlias: 'v1448'
       }
-    });
-    const flourishJson = object('flourish definition', {
+    };
+    const flourishJson = {
       id: '1234',
       title: 'Flourish Chart',
       description: 'Embeded flourish chart example'
-    });
+    };
     const definition =
       // eslint-disable-next-line no-nested-ternary
       type === 'flourish'
-        ? flourishJson
+        ? object('Flourish definition', flourishJson)
         : type === 'hurumap'
-        ? hurumapJson
+        ? object('HURUmap definition', hurumapJson)
         : {
             id: '1234',
             title: {
