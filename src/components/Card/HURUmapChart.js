@@ -41,6 +41,7 @@ function HURUmapChart({
   );
 
   const visuals = useMemo(() => (chart ? [chart.visual] : []), [chart]);
+
   const { profiles, chartData } = useProfileLoader({ geoId, visuals });
 
   const source = useMemo(() => {

@@ -145,27 +145,32 @@ const ChartFactory = React.memo(
       /**
        * Group the data based on groupBy
        */
-      let groupedData = aggregateData(aggregate, data);
+      let groupedData = [];
+      if (data[0].groupBy) {
+        groupedData = aggregateData(aggregate, data);
+      }
 
-      /**
-       * Change `x` to be the `groupBy` value
-       * to plot group labels on the dependent axis
-       */
-      groupedData = groupedData.map(g =>
-        g.map(gd => ({
-          ...gd,
-          tooltip: labels(gd),
-          x: gd.groupBy
-        }))
-      );
+      if (groupedData.length) {
+        /**
+         * Change `x` to be the `groupBy` value
+         * to plot group labels on the dependent axis
+         */
+        groupedData = groupedData.map(g =>
+          g.map(gd => ({
+            ...gd,
+            tooltip: labels(gd),
+            x: gd.groupBy
+          }))
+        );
 
-      /**
-       * Reverse grouped data
-       * since victory plots inversely
-       */
-      groupedData = groupedData[0].map((_c, i) => groupedData.map(r => r[i]));
+        /**
+         * Reverse grouped data
+         * since victory plots inversely
+         */
+        groupedData = groupedData[0].map((_c, i) => groupedData.map(r => r[i]));
+      }
 
-      if (visualType === 'grouped_column' && toggleSize) {
+      if (visualType === 'grouped_column' && toggleSize && groupedData.length) {
         setDataLength(groupedData[0].length);
         return groupedData.map(gd => gd.slice(show));
       }
@@ -447,7 +452,7 @@ const ChartFactory = React.memo(
 
     return (
       <Box display="flex" flexDirection="column" id={id}>
-        {renderChart()}
+        {primaryData.length ? renderChart() : null}
         {toggleSize &&
           ['column', 'grouped_column'].includes(visualType) &&
           dataLength > 5 && (

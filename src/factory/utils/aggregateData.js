@@ -33,11 +33,10 @@ const computeData = (func, data) =>
        */
       data[0];
 
-function aggregate(option, providedData, unique = true) {
-  let data = providedData;
+function aggregate(option, data, unique = true) {
   if (data[0].groupBy) {
-    data = [...new Set(providedData.map(d => getGroupId(d)))].map(groupId =>
-      providedData.filter(d => getGroupId(d) === groupId)
+    return [...new Set(data.map(d => getGroupId(d)))].map(groupId =>
+      data.filter(d => getGroupId(d) === groupId)
     );
   }
 
