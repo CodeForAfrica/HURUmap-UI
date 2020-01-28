@@ -2,6 +2,8 @@ import React, { useMemo, useRef, useState, useCallback } from 'react';
 
 import { Box, ButtonBase } from '@material-ui/core';
 
+import { Helpers } from 'victory';
+
 import LineChart from '../core/LineChart';
 import BulletChart from '../core/BulletChart';
 import BarChart from '../core/BarChart';
@@ -53,6 +55,7 @@ const ChartFactory = React.memo(
       height: heightProp,
       horizontal: horizontalProp,
       offset: offsetProp,
+      padding: paddingProp,
       ...chartProps
     } = typeProps || {};
     const key =
@@ -314,6 +317,12 @@ const ChartFactory = React.memo(
         case 'grouped_column': {
           const barCount = primaryData[0].length;
           const offset = offsetProp || theme.bar.offset;
+          const padding = paddingProp
+            ? Helpers.getPadding({ padding: paddingProp })
+            : Helpers.getPadding(theme.bar);
+          const paddingSize = horizontalProp
+            ? padding.top + padding.bottom
+            : padding.left + padding.right;
           const {
             domainPadding: {
               x: [x0, x1]
@@ -324,6 +333,7 @@ const ChartFactory = React.memo(
           };
           const computedSize =
             primaryData.length * barCount * offset +
+            paddingSize +
             domainPadding.x[0] +
             domainPadding.x[1];
           const height = heightProp || theme.bar.height;
@@ -343,6 +353,7 @@ const ChartFactory = React.memo(
                 horizontal={computedHorizontal}
                 domainPadding={domainPadding}
                 labels={({ datum }) => format(datum.y)}
+                padding={paddingProp}
                 theme={theme}
                 {...chartProps}
               />
@@ -358,8 +369,15 @@ const ChartFactory = React.memo(
             }
           } = theme.bar;
           const domainPadding = { x: [x0 * barCount, x1 * barCount] };
+          const padding = paddingProp
+            ? Helpers.getPadding({ padding: paddingProp })
+            : Helpers.getPadding(theme.bar);
+          const paddingSize = horizontalProp
+            ? padding.top + padding.bottom
+            : padding.left + padding.right;
           const computedSize =
             primaryData.length * barCount * offset +
+            paddingSize +
             domainPadding.x[0] +
             domainPadding.x[1] +
             // Bug when 2 bars only
@@ -380,8 +398,8 @@ const ChartFactory = React.memo(
                   data={[primaryData, processedComparisonData]}
                   key={key}
                   offset={offset}
-                  height={computedWidth}
-                  width={computedHeight}
+                  height={computedHeight}
+                  width={computedWidth}
                   horizontal={computedHorizontal}
                   domainPadding={domainPadding}
                   labels={({ datum }) => format(datum.y)}
