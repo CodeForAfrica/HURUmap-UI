@@ -18,8 +18,9 @@ export const uploadImage = (id, dataUrl, endPoint) =>
     return false;
   });
 
-export const shareIndicator = (id, endPoint, e, dataUrl) => {
-  uploadImage(id, dataUrl, endPoint).then(success => {
+export const shareIndicator = (id, geoId, endPoint, e, dataUrl) => {
+  const uniqueId = geoId ? `${geoId}_${id}` : id;
+  uploadImage(uniqueId, dataUrl, endPoint).then(success => {
     if (success) {
       const url = new URL(window.location);
       url.searchParams.set('indicatorId', id);

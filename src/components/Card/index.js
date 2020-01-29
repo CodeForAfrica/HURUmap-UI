@@ -68,7 +68,7 @@ export default function Card({
           dataLinkHref={dataLinkHref}
           analysisLinkHref={analysisLinkHref}
           // eslint-disable-next-line react/jsx-no-bind
-          handleShare={shareIndicator.bind(null, id, shareEndPoint)}
+          handleShare={shareIndicator.bind(null, id, geoId, shareEndPoint)}
           embedCode={
             typeof embedCode === 'string'
               ? embedCode
@@ -98,7 +98,7 @@ export default function Card({
           dataLinkHref={dataLinkHref}
           analysisLinkHref={analysisLinkHref}
           // eslint-disable-next-line react/jsx-no-bind
-          handleShare={shareIndicator.bind(null, id, shareEndPoint)}
+          handleShare={shareIndicator.bind(null, id, geoId, shareEndPoint)}
           chart={
             definition && {
               ...definition,
