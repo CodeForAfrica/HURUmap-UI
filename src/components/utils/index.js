@@ -19,11 +19,11 @@ export const uploadImage = (id, dataUrl, endPoint) =>
   });
 
 export const shareIndicator = (id, geoId, endPoint, e, dataUrl) => {
-  const uniqueId = geoId ? `${geoId}_${id}` : id;
-  uploadImage(uniqueId, dataUrl, endPoint).then(success => {
+  const indicatorId = geoId ? `${geoId}_${id}` : id;
+  uploadImage(indicatorId, dataUrl, endPoint).then(success => {
     if (success) {
       const url = new URL(window.location);
-      url.searchParams.set('indicatorId', id);
+      url.searchParams.set('indicatorId', indicatorId);
       window.open(`https://twitter.com/intent/tweet?url=${escape(url.href)}`);
     }
   });
