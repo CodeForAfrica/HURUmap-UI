@@ -32,6 +32,7 @@ function HURUmapChart({
   analysisLinkTitle,
   analysisLinkHref,
   embedCode,
+  handleShare,
   ...props
 }) {
   const classes = useStyles(props);
@@ -73,6 +74,7 @@ function HURUmapChart({
       </Grid>
     );
   }
+
   return (
     <ChartContainer
       key={chart.id}
@@ -84,9 +86,7 @@ function HURUmapChart({
       classes={!showStatVisual && { highlightGrid: classes.statViz }}
       source={source}
       embedCode={embedCode}
-      action={{
-        handleShare: () => {}
-      }}
+      actions={{ handleShare }}
       insightSummary={insightSummary}
       insightTitle={insightTitle}
       dataLinkGeoId={dataLinkGeoId}
@@ -152,7 +152,8 @@ HURUmapChart.propTypes = {
   analysisLinkCountrySlug: propTypes.string,
   analysisLinkTitle: propTypes.string,
   analysisLinkHref: propTypes.oneOfType([propTypes.string, propTypes.func]),
-  embedCode: propTypes.string
+  embedCode: propTypes.string,
+  handleShare: propTypes.func
 };
 
 HURUmapChart.defaultProps = {
@@ -170,7 +171,8 @@ HURUmapChart.defaultProps = {
   analysisLinkCountrySlug: undefined,
   analysisLinkTitle: undefined,
   analysisLinkHref: countrySlug => `/profiles/${countrySlug}`,
-  embedCode: ''
+  embedCode: '',
+  handleShare: () => {}
 };
 
 export default HURUmapChart;

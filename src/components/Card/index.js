@@ -31,7 +31,8 @@ export default function Card({
   parentEl,
   flourishURL,
   fetchDefinition,
-  fetchDefinitionUrl
+  fetchDefinitionUrl,
+  shareEndPoint
 }) {
   const [definition, setDefinition] = useState(propDefinition);
   useEffect(() => {
@@ -67,7 +68,7 @@ export default function Card({
           dataLinkHref={dataLinkHref}
           analysisLinkHref={analysisLinkHref}
           // eslint-disable-next-line react/jsx-no-bind
-          handleShare={shareIndicator.bind(null, id)}
+          handleShare={shareIndicator.bind(null, id, geoId, shareEndPoint)}
           embedCode={
             typeof embedCode === 'string'
               ? embedCode
@@ -97,7 +98,7 @@ export default function Card({
           dataLinkHref={dataLinkHref}
           analysisLinkHref={analysisLinkHref}
           // eslint-disable-next-line react/jsx-no-bind
-          handleShare={shareIndicator.bind(null, id)}
+          handleShare={shareIndicator.bind(null, id, geoId, shareEndPoint)}
           chart={
             definition && {
               ...definition,
@@ -214,7 +215,8 @@ Card.propTypes = {
   geoId: propTypes.string,
   fetchDefinition: propTypes.func,
   fetchDefinitionUrl: propTypes.oneOfType([propTypes.string, propTypes.func]),
-  logo: propTypes.string
+  logo: propTypes.string,
+  shareEndPoint: propTypes.string
 };
 
 Card.defaultProps = {
@@ -261,5 +263,6 @@ Card.defaultProps = {
       default:
         return '';
     }
-  }
+  },
+  shareEndPoint: undefined
 };
