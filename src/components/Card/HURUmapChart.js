@@ -75,6 +75,10 @@ function HURUmapChart({
     );
   }
 
+  const rawData = !chartData.isLoading
+    ? chartData.profileVisualsData[chart.visual.queryAlias].nodes
+    : [];
+
   return (
     <ChartContainer
       key={chart.id}
@@ -95,12 +99,19 @@ function HURUmapChart({
       analysisLinkCountrySlug={analysisLinkCountrySlug}
       analysisLinkTitle={analysisLinkTitle}
       analysisLinkHref={analysisLinkHref}
+      dataTable={{
+        tableTitle: chart.visual.table,
+        groupByTitle: chart.visual.groupBy,
+        dataLabelTitle: chart.visual.x,
+        dataValueTitle: chart.visual.y,
+        rawData
+      }}
     >
       {!chartData.isLoading && showStatVisual ? (
         <ChartFactory
           profiles={profiles}
           definition={chart.stat}
-          data={chartData.profileVisualsData[chart.visual.queryAlias].nodes}
+          data={rawData}
         />
       ) : (
         <div />
@@ -109,7 +120,7 @@ function HURUmapChart({
         <ChartFactory
           profiles={profiles}
           definition={chart.visual}
-          data={chartData.profileVisualsData[chart.visual.queryAlias].nodes}
+          data={rawData}
         />
       )}
     </ChartContainer>
@@ -126,7 +137,10 @@ HURUmapChart.propTypes = {
     type: propTypes.string,
     visual: propTypes.shape({
       queryAlias: propTypes.string,
-      table: propTypes.string
+      table: propTypes.string,
+      groupBy: propTypes.string,
+      x: propTypes.string,
+      y: propTypes.string
     }),
     description: propTypes.shape({}),
     stat: propTypes.shape({
