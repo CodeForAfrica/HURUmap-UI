@@ -43,17 +43,18 @@ const ChartFactory = React.memo(
       unit,
       ...numberFormat
     },
-    toggleSize,
+    disableShowMore,
     data,
     isComparison,
     comparisonData,
     referenceData,
     profiles
   }) => {
+    const [rootRef, setRootRef] = useState(null);
     const {
+      horizontal,
       width: widthProp,
       height: heightProp,
-      horizontal: horizontalProp,
       offset: offsetProp,
       padding: paddingProp,
       ...chartProps
@@ -63,8 +64,7 @@ const ChartFactory = React.memo(
       Math.random()
         .toString(36)
         .substring(2) + Date.now().toString(36);
-    const [dataLength, setDataLength] = useState(-5);
-    const [show, setShow] = useState(-5);
+    const [showMore, setShowMore] = useState(false);
     const numberFormatter = useRef(
       (() => {
         try {
@@ -128,8 +128,7 @@ const ChartFactory = React.memo(
           // Bullet charts only use first two data
           visualType === 'bullet' ? data.slice(0, 2) : data
         );
-        setDataLength(computedData.length);
-        return computedData.slice(toggleSize ? show : 0).map(cD => ({
+        return computedData.map(cD => ({
           ...cD,
           tooltip: labels(cD)
         }));
@@ -174,18 +173,159 @@ const ChartFactory = React.memo(
           );
         }
 
-        if (
-          visualType === 'grouped_column' &&
-          toggleSize &&
-          groupedData.length
-        ) {
-          setDataLength(groupedData[0].length);
-          return groupedData.map(gd => gd.slice(show));
-        }
         return groupedData;
       }
       return [];
-    }, [aggregate, data, format, show, toggleSize, visualType]);
+    }, [aggregate, data, format, visualType]);
+
+    const calculations = useMemo(() => {
+      switch (visualType) {
+        case 'bullet':
+        case 'number':
+        case 'square_nested_proportional_area':
+        case 'circle_nested_proportional_area':
+          return {};
+        case 'pie':
+          return {
+            width: widthProp || theme.pie.width,
+            height: heightProp || theme.pie.height
+          };
+        case 'grouped_column': {
+          const barCount = primaryData[0].length;
+          const offset = offsetProp || theme.bar.offset;
+          const padding = paddingProp
+            ? Helpers.getPadding({ padding: paddingProp })
+            : Helpers.getPadding(theme.bar);
+          const paddingSize = horizontal
+            ? padding.top + padding.bottom
+            : padding.left + padding.right;
+          const {
+            domainPadding: {
+              x: [x0, x1]
+            }
+          } = theme.bar;
+          const domainPadding = {
+            x: [x0 * primaryData.length, x1 * primaryData.length]
+          };
+
+          const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
+
+          let dataCount;
+          let computedSize;
+          // eslint-disable-next-line no-plusplus
+          for (dataCount = barCount; dataCount > 0; --dataCount) {
+            computedSize =
+              primaryData.length * dataCount * offset +
+              paddingSize +
+              domainPadding.x[0] +
+              domainPadding.x[1];
+
+            if (!rootWidth || showMore || horizontal) {
+              break;
+            }
+
+            if (computedSize < rootWidth) {
+              break;
+            }
+          }
+          const height = heightProp || theme.bar.height;
+          const width = computedSize > rootWidth ? rootWidth : computedSize;
+          const computedHeight = horizontal || showMore ? computedSize : height;
+
+          return {
+            width,
+            offset,
+            dataCount,
+            domainPadding,
+            height: computedHeight
+          };
+        }
+        case 'column': {
+          const barCount = isComparison ? 2 : 1;
+          const offset = offsetProp || theme.bar.offset;
+          const {
+            domainPadding: {
+              x: [x0, x1]
+            }
+          } = theme.bar;
+          const domainPadding = { x: [x0 * barCount, x1 * barCount] };
+          const padding = paddingProp
+            ? Helpers.getPadding({ padding: paddingProp })
+            : Helpers.getPadding(theme.bar);
+
+          const paddingSize = horizontal
+            ? padding.top + padding.bottom
+            : padding.left + padding.right;
+
+          const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
+
+          let dataCount;
+          let computedSize;
+          // eslint-disable-next-line no-plusplus
+          for (dataCount = primaryData.length; dataCount > 0; --dataCount) {
+            computedSize =
+              dataCount * barCount * offset +
+              paddingSize +
+              domainPadding.x[0] +
+              domainPadding.x[1] +
+              // Bug when 2 bars only
+              (dataCount === 2 ? offset : 0);
+
+            if (!rootWidth || showMore || horizontal) {
+              break;
+            }
+
+            if (rootWidth && computedSize < rootWidth) {
+              break;
+            }
+          }
+          const height = heightProp || theme.bar.height;
+          const width =
+            horizontal || computedSize > rootWidth ? rootWidth : computedSize;
+          const computedHeight = horizontal || showMore ? computedSize : height;
+
+          return {
+            width,
+            offset,
+            dataCount,
+            domainPadding,
+            height: computedHeight
+          };
+        }
+        case 'line': {
+          let offset = offsetProp || theme.line.offset;
+          const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
+          if (rootWidth) {
+            offset = rootWidth / primaryData.length;
+          }
+          const height = heightProp || theme.line.height;
+          const computedWidth = primaryData.length * offset;
+          return {
+            height,
+            offset,
+            width: computedWidth
+          };
+        }
+        default:
+          return {};
+      }
+    }, [
+      rootRef,
+      heightProp,
+      horizontal,
+      isComparison,
+      offsetProp,
+      paddingProp,
+      primaryData,
+      showMore,
+      theme.bar,
+      theme.line.height,
+      theme.line.offset,
+      theme.pie.height,
+      theme.pie.width,
+      visualType,
+      widthProp
+    ]);
 
     if (!data) {
       return null;
@@ -258,9 +398,7 @@ const ChartFactory = React.memo(
           );
         }
         case 'pie': {
-          const height = heightProp || theme.pie.height;
-          const width = widthProp || theme.pie.width;
-
+          const { height, width } = calculations;
           return (
             <div style={{ height, width }}>
               <PieChart
@@ -315,42 +453,23 @@ const ChartFactory = React.memo(
           );
         }
         case 'grouped_column': {
-          const barCount = primaryData[0].length;
-          const offset = offsetProp || theme.bar.offset;
-          const padding = paddingProp
-            ? Helpers.getPadding({ padding: paddingProp })
-            : Helpers.getPadding(theme.bar);
-          const paddingSize = horizontalProp
-            ? padding.top + padding.bottom
-            : padding.left + padding.right;
           const {
-            domainPadding: {
-              x: [x0, x1]
-            }
-          } = theme.bar;
-          const domainPadding = {
-            x: [x0 * primaryData.length, x1 * primaryData.length]
-          };
-          const computedSize =
-            primaryData.length * barCount * offset +
-            paddingSize +
-            domainPadding.x[0] +
-            domainPadding.x[1];
-          const height = heightProp || theme.bar.height;
-          const width = widthProp || theme.bar.width;
-          const computedHorizontal = computedSize > width || horizontalProp;
-          const computedWidth = computedHorizontal ? width : computedSize;
-          const computedHeight = computedHorizontal ? computedSize : height;
+            offset,
+            height,
+            width,
+            dataCount,
+            domainPadding
+          } = calculations;
 
           return (
-            <div style={{ width: computedWidth, height: computedHeight }}>
+            <div style={{ width, height }}>
               <BarChart
                 key={key}
-                data={primaryData}
+                data={primaryData.map(d => d.slice(0, dataCount))}
                 offset={offset}
-                width={computedWidth}
-                height={computedHeight}
-                horizontal={computedHorizontal}
+                width={width}
+                height={height}
+                horizontal={showMore || horizontal}
                 domainPadding={domainPadding}
                 labels={({ datum }) => format(datum.y)}
                 padding={paddingProp}
@@ -361,46 +480,30 @@ const ChartFactory = React.memo(
           );
         }
         case 'column': {
-          const barCount = isComparison ? 2 : 1;
-          const offset = offsetProp || theme.bar.offset;
           const {
-            domainPadding: {
-              x: [x0, x1]
-            }
-          } = theme.bar;
-          const domainPadding = { x: [x0 * barCount, x1 * barCount] };
-          const padding = paddingProp
-            ? Helpers.getPadding({ padding: paddingProp })
-            : Helpers.getPadding(theme.bar);
-          const paddingSize = horizontalProp
-            ? padding.top + padding.bottom
-            : padding.left + padding.right;
-          const computedSize =
-            primaryData.length * barCount * offset +
-            paddingSize +
-            domainPadding.x[0] +
-            domainPadding.x[1] +
-            // Bug when 2 bars only
-            (primaryData.length === 2 ? offset : 0);
-          const height = heightProp || theme.bar.height;
-          const width = widthProp || theme.bar.width;
-          const computedHorizontal = computedSize > width || horizontalProp;
-          const computedWidth = computedHorizontal ? width : computedSize;
-          const computedHeight = computedHorizontal ? computedSize : height;
+            offset,
+            height,
+            width,
+            dataCount,
+            domainPadding
+          } = calculations;
           if (isComparison) {
             const processedComparisonData = aggregate
               ? aggregateData(aggregate, comparisonData)
               : comparisonData;
 
             return (
-              <div style={{ width: computedWidth, height: computedHeight }}>
+              <div style={{ width, height }}>
                 <BarChart
-                  data={[primaryData, processedComparisonData]}
+                  data={[
+                    primaryData.slice(0, dataCount),
+                    processedComparisonData.slice(0, dataCount)
+                  ]}
                   key={key}
                   offset={offset}
-                  height={computedHeight}
-                  width={computedWidth}
-                  horizontal={computedHorizontal}
+                  height={height}
+                  width={width}
+                  horizontal={showMore || horizontal}
                   domainPadding={domainPadding}
                   labels={({ datum }) => format(datum.y)}
                   theme={theme}
@@ -410,14 +513,14 @@ const ChartFactory = React.memo(
             );
           }
           return (
-            <div style={{ width: computedWidth, height: computedHeight }}>
+            <div style={{ width, height }}>
               <BarChart
                 key={key}
-                data={primaryData}
+                data={primaryData.slice(0, dataCount)}
                 offset={offset}
-                height={computedHeight}
-                width={computedWidth}
-                horizontal={computedHorizontal}
+                height={height}
+                width={width}
+                horizontal={showMore || horizontal}
                 domainPadding={domainPadding}
                 labels={({ datum }) => format(datum.y)}
                 theme={theme}
@@ -444,20 +547,13 @@ const ChartFactory = React.memo(
           );
         }
         case 'line': {
-          const offset = offsetProp || theme.line.offset;
-          const computedSize = primaryData.length * offset;
-          const height = heightProp || theme.line.height;
-          const width = widthProp || theme.line.width;
-          const computedHorizontal = computedSize > width || horizontalProp;
-          const computedWidth = computedHorizontal ? width : computedSize;
-          const computedHeight = computedHorizontal ? computedSize : height;
+          const { height, width } = calculations;
           return (
             <LineChart
               key={key}
               responsive
-              horizontal={computedHorizontal}
-              height={computedHeight}
-              width={computedWidth}
+              height={height}
+              width={width}
               data={!isComparison ? primaryData : [primaryData, comparisonData]}
               parts={{
                 container: {
@@ -467,6 +563,7 @@ const ChartFactory = React.memo(
               }}
               theme={theme}
               {...chartProps}
+              horizontal={false}
             />
           );
         }
@@ -474,9 +571,16 @@ const ChartFactory = React.memo(
           return null;
       }
     };
-
     return (
-      <Box display="flex" flexDirection="column" id={id}>
+      <Box
+        id={id}
+        ref={setRootRef}
+        flexGrow={1}
+        component="div"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+      >
         {primaryData.length ||
         [
           'circle_nested_proportional_area',
@@ -485,14 +589,18 @@ const ChartFactory = React.memo(
         ].includes(visualType)
           ? renderChart()
           : null}
-        {toggleSize &&
+        {!disableShowMore &&
           ['column', 'grouped_column'].includes(visualType) &&
-          dataLength > 5 && (
+          calculations.dataCount &&
+          (showMore ||
+            (Array.isArray(primaryData[0]) &&
+              calculations.dataCount !== primaryData[0].length) ||
+            calculations.dataCount !== primaryData.length) && (
             <ButtonBase
               className={DOWNLOAD_HIDDEN_CLASSNAME}
-              onClick={() => setShow(show === 0 ? -5 : 0)}
+              onClick={() => setShowMore(!showMore)}
             >
-              {show === 0 ? 'Show Less' : 'Show More'}
+              {showMore ? 'Show Less' : 'Show More'}
             </ButtonBase>
           )}
       </Box>
@@ -550,7 +658,7 @@ ChartFactory.propTypes = {
     profile: propTypes.shape({}),
     comparison: propTypes.shape({})
   }),
-  toggleSize: propTypes.bool
+  disableShowMore: propTypes.bool
 };
 
 ChartFactory.defaultProps = {
@@ -562,7 +670,7 @@ ChartFactory.defaultProps = {
     comparison: {}
   },
   referenceData: [],
-  toggleSize: true
+  disableShowMore: false
 };
 
 export default withVictoryTheme(ChartFactory);
