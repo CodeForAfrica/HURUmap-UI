@@ -100,10 +100,7 @@ function HURUmapChart({
       analysisLinkTitle={analysisLinkTitle}
       analysisLinkHref={analysisLinkHref}
       dataTable={{
-        tableTitle: (chart.visual.table || '')
-          .slice(3) // skip the all...
-          .replace(/[A-Z]/g, val => ` ${val}`) // Camelcase to spaces
-          .trim(),
+        tableTitle: (chart.visual.table || '').slice(3),
         groupByTitle: chart.visual.groupBy,
         dataLabelTitle: chart.visual.x,
         dataValueTitle: chart.visual.y,
