@@ -14,6 +14,8 @@ import {
 import BlockLoader from '../BlockLoader';
 import TypographyLoader from '../TypographyLoader';
 
+import DataTable from '../DataTable';
+
 import A from '../A';
 import Actions from './Action';
 import Insight from './Insight';
@@ -123,6 +125,7 @@ function InsightContainer({
   source,
   title,
   description,
+  dataTable = {},
   ...props
 }) {
   const { variant } = props;
@@ -136,6 +139,7 @@ function InsightContainer({
   } = actions || {};
 
   const [rootNode, setRootNode] = useState();
+  const [showData, setShowData] = useState(false);
 
   const classes = useStyles({
     ...props,
@@ -186,7 +190,8 @@ function InsightContainer({
       onDownload={
         handleDownload && (e => toPng().then(handleDownload.bind(null, e)))
       }
-      onShowData={handleShowData}
+      showingData={showData}
+      onShowData={handleShowData || (() => setShowData(!showData))}
       onCompare={handleCompare}
       gaEvents={gaEvents}
       embedCode={embedCode}
@@ -317,6 +322,8 @@ function InsightContainer({
             </Insight>
           </Grid>
         )}
+
+        {showData && <DataTable data={dataTable} />}
       </Grid>
       {description && (
         <Grid
@@ -356,6 +363,9 @@ function InsightContainer({
 }
 
 InsightContainer.propTypes = {
+  dataTable: PropTypes.shape({
+    rawData: propTypes.arrayOf(propTypes.shape({}))
+  }),
   hideInsight: propTypes.bool,
   actions: PropTypes.shape({
     handleShare: PropTypes.func,
@@ -401,6 +411,7 @@ InsightContainer.propTypes = {
 };
 
 InsightContainer.defaultProps = {
+  dataTable: { rawData: [] },
   hideInsight: false,
   actions: undefined,
   embedCode: undefined,

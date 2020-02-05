@@ -12,29 +12,35 @@ storiesOf('HURUmap UI|Components/Card', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('Default', () => {
+    const width = text('width', '100%');
     const type = select('type', ['hurumap', 'flourish', 'snippet'], 'hurumap');
     const uri = text('graphql', 'https://graphql.takwimu.africa/graphql');
     const geoId = text('geoId', 'country-KE');
     const hurumapJson = {
-      id: '1234',
-      title: 'HURUmap Chart',
+      id: 668,
+      title: 'Contribution by principal donor',
+      subtitle: 'Development Assistance',
+      visual: {
+        horizontal: true,
+        type: 'column',
+        table: 'allDonors',
+        x: 'donor',
+        y: 'total',
+        typeProps: {
+          horizontal: true
+        },
+        queryAlias: 'v668'
+      },
       stat: {
         type: 'number',
-        subtitle: '',
-        description: '',
+        subtitle: 'Development Assistance',
+        description: 'Donor Contribution',
+        unique: false,
         aggregate: 'sum',
-        unique: true,
-        unit: 'percent',
-        queryAlias: 'v1448'
+        queryAlias: 'v668'
       },
-      visual: {
-        typeProps: [],
-        type: 'column',
-        table: 'allAccessToBasicServices',
-        x: 'accessToBasicServicesYear',
-        y: 'total',
-        queryAlias: 'v1448'
-      }
+      source: [],
+      description: []
     };
     const flourishJson = {
       id: '1234',
@@ -74,7 +80,7 @@ storiesOf('HURUmap UI|Components/Card', module)
           })
         }
       >
-        <div style={{ width: '100%', height: '100%' }}>
+        <div style={{ width, height: '100%' }}>
           <Card
             id="1234"
             key={type}
