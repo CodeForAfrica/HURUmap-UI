@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Box,
   Grid,
   Table,
   TableBody,
@@ -8,7 +7,10 @@ import {
   TableCell,
   TableRow,
   Button,
-  Typography
+  Typography,
+  TableContainer,
+  Paper,
+  Box
 } from '@material-ui/core';
 import propTypes from '../propTypes';
 
@@ -18,58 +20,58 @@ export default function DataTable({
   data: { tableTitle, dataLabelTitle, dataValueTitle, groupByTitle, rawData }
 }) {
   return (
-    <Grid container direction="column">
-      <Grid item>
-        <Box padding="10px 20px" bgcolor="#fdf9f2" clone>
-          <Grid container justify="space-between" alignItems="center">
-            <Typography>
-              Raw Data:&nbsp;
-              {tableTitle}
-            </Typography>
-            <Button
-              onClick={() =>
-                exportCSV(
-                  {
-                    groupBy: groupByTitle,
-                    x: dataLabelTitle,
-                    y: dataValueTitle
-                  },
-                  rawData,
-                  tableTitle
-                )
-              }
-            >
-              Download CSV
-            </Button>
-          </Grid>
-        </Box>
+    <Box borderRadius="0" clone>
+      <Grid container direction="column" component={Paper} elevation="0">
+        <Grid item>
+          <Box padding="5px 15px" clone>
+            <Grid container justify="space-between" alignItems="center">
+              <Typography>
+                Table:&nbsp;
+                {tableTitle}
+              </Typography>
+              <Button
+                onClick={() =>
+                  exportCSV(
+                    {
+                      groupBy: groupByTitle,
+                      x: dataLabelTitle,
+                      y: dataValueTitle
+                    },
+                    rawData,
+                    tableTitle
+                  )
+                }
+              >
+                Download CSV
+              </Button>
+            </Grid>
+          </Box>
+        </Grid>
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableCell>#</TableCell>
+              {groupByTitle !== undefined && (
+                <TableCell>{groupByTitle || 'Group'}</TableCell>
+              )}
+              <TableCell>{dataLabelTitle || 'Label'}</TableCell>
+              <TableCell>{dataValueTitle || 'Value'}</TableCell>
+            </TableHead>
+            <TableBody>
+              {rawData.map(({ groupBy, x, y }, i) => (
+                <TableRow>
+                  <TableCell>{i}</TableCell>
+                  {groupBy !== undefined && <TableCell>{groupBy}</TableCell>}
+                  <TableCell>{x}</TableCell>
+                  <TableCell>{y}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            <Grid item />
+          </Table>
+        </TableContainer>
       </Grid>
-      <Table>
-        <Box padding="0 20px" bgcolor="#fffaf0" clone>
-          <TableHead>
-            <TableCell>#</TableCell>
-            {groupByTitle !== undefined && (
-              <TableCell>{groupByTitle || 'Group'}</TableCell>
-            )}
-            <TableCell>{dataLabelTitle || 'Label'}</TableCell>
-            <TableCell>{dataValueTitle || 'Value'}</TableCell>
-          </TableHead>
-        </Box>
-        <TableBody>
-          {rawData.map(({ groupBy, x, y }, i) => (
-            <Box bgcolor={i % 2 ? '#fffaf0' : '#fdf9f2'} clone>
-              <TableRow>
-                <TableCell>{i}</TableCell>
-                {groupBy !== undefined && <TableCell>{groupBy}</TableCell>}
-                <TableCell>{x}</TableCell>
-                <TableCell>{y}</TableCell>
-              </TableRow>
-            </Box>
-          ))}
-        </TableBody>
-        <Grid item />
-      </Table>
-    </Grid>
+    </Box>
   );
 }
 

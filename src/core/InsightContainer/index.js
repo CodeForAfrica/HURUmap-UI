@@ -190,6 +190,7 @@ function InsightContainer({
       onDownload={
         handleDownload && (e => toPng().then(handleDownload.bind(null, e)))
       }
+      showingData={showData}
       onShowData={handleShowData || (() => setShowData(!showData))}
       onCompare={handleCompare}
       gaEvents={gaEvents}

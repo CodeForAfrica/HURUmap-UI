@@ -209,6 +209,7 @@ const ChartFactory = React.memo(
           };
 
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
+          const height = heightProp || theme.bar.height;
 
           let dataCount;
           let computedSize;
@@ -224,11 +225,13 @@ const ChartFactory = React.memo(
               break;
             }
 
-            if (computedSize < rootWidth) {
+            if (
+              (horizontal && computedSize < height) ||
+              (rootWidth && computedSize < rootWidth)
+            ) {
               break;
             }
           }
-          const height = heightProp || theme.bar.height;
           const width = computedSize > rootWidth ? rootWidth : computedSize;
           const computedHeight = horizontal || showMore ? computedSize : height;
 
@@ -258,6 +261,7 @@ const ChartFactory = React.memo(
             : padding.left + padding.right;
 
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
+          const height = heightProp || theme.bar.height;
 
           let dataCount;
           let computedSize;
@@ -271,15 +275,17 @@ const ChartFactory = React.memo(
               // Bug when 2 bars only
               (dataCount === 2 ? offset : 0);
 
-            if (!rootWidth || showMore || horizontal) {
+            if (!rootWidth || showMore) {
               break;
             }
 
-            if (rootWidth && computedSize < rootWidth) {
+            if (
+              (horizontal && computedSize < height) ||
+              (rootWidth && computedSize < rootWidth)
+            ) {
               break;
             }
           }
-          const height = heightProp || theme.bar.height;
           const width =
             horizontal || computedSize > rootWidth ? rootWidth : computedSize;
           const computedHeight = horizontal || showMore ? computedSize : height;
