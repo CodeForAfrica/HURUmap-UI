@@ -62,6 +62,7 @@ function Actions({
   loading,
   onShare,
   onDownload,
+  showingData,
   onShowData,
   onCompare,
   embedCode,
@@ -167,7 +168,7 @@ function Actions({
             >
               <DataIcon />
               <Typography className={classes.actionButtonText}>
-                Show Data
+                {showingData ? 'Hide Data' : 'Show Data'}
               </Typography>
             </ActionButton>
           </>
@@ -194,6 +195,7 @@ function Actions({
 }
 
 Actions.propTypes = {
+  showingData: PropTypes.bool,
   loading: PropTypes.bool,
   onDownload: PropTypes.func,
   onShare: PropTypes.func,
@@ -210,6 +212,7 @@ Actions.propTypes = {
 };
 
 Actions.defaultProps = {
+  showingData: false,
   loading: false,
   onDownload: null,
   onShare: null,

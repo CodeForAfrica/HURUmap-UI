@@ -34,7 +34,7 @@ export default function Card({
   fetchDefinitionUrl,
   shareEndPoint
 }) {
-  const [definition, setDefinition] = useState(propDefinition);
+  const [definition, setDefinition] = useState();
   useEffect(() => {
     if (fetchDefinition) {
       fetchDefinition(type, id).then(setDefinition);
@@ -47,9 +47,9 @@ export default function Card({
         .then(res => res.json())
         .then(setDefinition);
     } else {
-      // Nothing
+      setDefinition(propDefinition);
     }
-  }, [id, type, fetchDefinition, fetchDefinitionUrl]);
+  }, [id, type, fetchDefinition, fetchDefinitionUrl, propDefinition]);
   switch (type) {
     case 'flourish':
       return (
