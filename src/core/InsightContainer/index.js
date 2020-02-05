@@ -84,6 +84,9 @@ const useStyles = makeStyles(({ palette }) => ({
   actionsActionButtonIconGrid: {},
   actionsActionButtonVerticalDivider: {},
   actionsActionButtonText: {},
+  dataTableRoot: {},
+  dataTableActionButton: {},
+  dataTableActionButtons: {},
   attribution: {
     display: 'none',
     backgroundColor: palette.primary.main,
@@ -323,7 +326,13 @@ function InsightContainer({
           </Grid>
         )}
 
-        {showData && <DataTable data={dataTable} />}
+        {showData && (
+          <DataTable
+            classes={classes}
+            data={dataTable}
+            onHide={() => setShowData(false)}
+          />
+        )}
       </Grid>
       {description && (
         <Grid
