@@ -232,12 +232,14 @@ const ChartFactory = React.memo(
 
             if (
               (horizontal && computedSize < height) ||
-              (rootWidth && computedSize < rootWidth)
+              (!horizontal && rootWidth && computedSize < rootWidth)
             ) {
               break;
             }
           }
-          const width = computedSize > rootWidth ? rootWidth : computedSize;
+
+          const width =
+            horizontal || computedSize > rootWidth ? rootWidth : computedSize;
           const computedHeight = horizontal || showMore ? computedSize : height;
 
           return {
@@ -246,7 +248,12 @@ const ChartFactory = React.memo(
             dataCount,
             domainPadding,
             height: computedHeight,
-            enableShowMore: Boolean(height) && fullSize > height
+            enableShowMore:
+              Boolean(height) &&
+              // It can't fit the desired height
+              fullSize > height &&
+              // It can't fit the dynamic width
+              fullSize > rootWidth
           };
         }
         case 'column': {
@@ -306,7 +313,12 @@ const ChartFactory = React.memo(
             dataCount,
             domainPadding,
             height: computedHeight,
-            enableShowMore: Boolean(height) && fullSize > height
+            enableShowMore:
+              Boolean(height) &&
+              // It can't fit the desired height
+              fullSize > height &&
+              // It can't fit the dynamic width
+              fullSize > rootWidth
           };
         }
         case 'line': {
