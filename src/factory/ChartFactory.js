@@ -211,6 +211,7 @@ const ChartFactory = React.memo(
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
           const height = heightProp || theme.bar.height;
 
+          let fullSize;
           let dataCount;
           let computedSize;
           // eslint-disable-next-line no-plusplus
@@ -221,18 +222,24 @@ const ChartFactory = React.memo(
               domainPadding.x[0] +
               domainPadding.x[1];
 
+            if (!fullSize) {
+              fullSize = computedSize;
+            }
+
             if (!rootWidth || showMore || horizontal) {
               break;
             }
 
             if (
               (horizontal && computedSize < height) ||
-              (rootWidth && computedSize < rootWidth)
+              (!horizontal && rootWidth && computedSize < rootWidth)
             ) {
               break;
             }
           }
-          const width = computedSize > rootWidth ? rootWidth : computedSize;
+
+          const width =
+            horizontal || computedSize > rootWidth ? rootWidth : computedSize;
           const computedHeight = horizontal || showMore ? computedSize : height;
 
           return {
@@ -240,7 +247,13 @@ const ChartFactory = React.memo(
             offset,
             dataCount,
             domainPadding,
-            height: computedHeight
+            height: computedHeight,
+            enableShowMore:
+              Boolean(height) &&
+              // It can't fit the desired height
+              fullSize > height &&
+              // It can't fit the dynamic width
+              fullSize > rootWidth
           };
         }
         case 'column': {
@@ -263,6 +276,7 @@ const ChartFactory = React.memo(
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
           const height = heightProp || theme.bar.height;
 
+          let fullSize;
           let dataCount;
           let computedSize;
           // eslint-disable-next-line no-plusplus
@@ -275,13 +289,17 @@ const ChartFactory = React.memo(
               // Bug when 2 bars only
               (dataCount === 2 ? offset : 0);
 
+            if (!fullSize) {
+              fullSize = computedSize;
+            }
+
             if (!rootWidth || showMore) {
               break;
             }
 
             if (
               (horizontal && computedSize < height) ||
-              (rootWidth && computedSize < rootWidth)
+              (!horizontal && rootWidth && computedSize < rootWidth)
             ) {
               break;
             }
@@ -289,13 +307,18 @@ const ChartFactory = React.memo(
           const width =
             horizontal || computedSize > rootWidth ? rootWidth : computedSize;
           const computedHeight = horizontal || showMore ? computedSize : height;
-
           return {
             width,
             offset,
             dataCount,
             domainPadding,
-            height: computedHeight
+            height: computedHeight,
+            enableShowMore:
+              Boolean(height) &&
+              // It can't fit the desired height
+              fullSize > height &&
+              // It can't fit the dynamic width
+              fullSize > rootWidth
           };
         }
         case 'line': {
@@ -597,11 +620,7 @@ const ChartFactory = React.memo(
           : null}
         {!disableShowMore &&
           ['column', 'grouped_column'].includes(visualType) &&
-          calculations.dataCount &&
-          (showMore ||
-            (Array.isArray(primaryData[0]) &&
-              calculations.dataCount !== primaryData[0].length) ||
-            calculations.dataCount !== primaryData.length) && (
+          calculations.enableShowMore && (
             <ButtonBase
               className={DOWNLOAD_HIDDEN_CLASSNAME}
               onClick={() => setShowMore(!showMore)}
