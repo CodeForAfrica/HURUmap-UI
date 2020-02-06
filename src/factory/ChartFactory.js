@@ -122,29 +122,10 @@ const ChartFactory = React.memo(
         return `${formatedX}${format(y)}`;
       };
 
-      if (['column', 'line', 'bullet'].includes(visualType)) {
-        const computedData = aggregateData(
-          aggregate,
-          // Bullet charts only use first two data
-          visualType === 'bullet' ? data.slice(0, 2) : data
-        );
-        return computedData.map(cD => ({
-          ...cD,
-          tooltip: labels(cD)
-        }));
-      }
-
-      if (visualType === 'pie') {
-        return aggregateData(aggregate, data).map(d => ({
-          ...d,
-          donutLabel: labels(d, '\n'),
-          label: labels(d),
-          name: d.x,
-          tooltip: labels(d)
-        }));
-      }
-
-      if (visualType === 'grouped_column') {
+      if (
+        visualType === 'grouped_column' ||
+        (visualType === 'line' && data[0] && data[0].groupBy)
+      ) {
         /**
          * Group the data based on groupBy
          * Then aggregate the groupped data
@@ -174,6 +155,27 @@ const ChartFactory = React.memo(
         }
 
         return groupedData;
+      }
+
+      if (['column', 'line', 'bullet'].includes(visualType)) {
+        const computedData = aggregateData(
+          aggregate,
+          // Bullet charts only use first two data
+          visualType === 'bullet' ? data.slice(0, 2) : data
+        );
+        return computedData.map(cD => ({
+          ...cD,
+          tooltip: labels(cD)
+        }));
+      }
+      if (visualType === 'pie') {
+        return aggregateData(aggregate, data).map(d => ({
+          ...d,
+          donutLabel: labels(d, '\n'),
+          label: labels(d),
+          name: d.x,
+          tooltip: labels(d)
+        }));
       }
       return [];
     }, [aggregate, data, format, visualType]);
