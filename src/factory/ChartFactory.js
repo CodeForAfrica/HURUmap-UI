@@ -240,7 +240,8 @@ const ChartFactory = React.memo(
             offset,
             dataCount,
             domainPadding,
-            height: computedHeight
+            height: computedHeight,
+            enableShowMore: Boolean(height) && computedSize > height
           };
         }
         case 'column': {
@@ -295,7 +296,8 @@ const ChartFactory = React.memo(
             offset,
             dataCount,
             domainPadding,
-            height: computedHeight
+            height: computedHeight,
+            enableShowMore: Boolean(height) && computedSize > height
           };
         }
         case 'line': {
@@ -597,11 +599,7 @@ const ChartFactory = React.memo(
           : null}
         {!disableShowMore &&
           ['column', 'grouped_column'].includes(visualType) &&
-          calculations.dataCount &&
-          (showMore ||
-            (Array.isArray(primaryData[0]) &&
-              calculations.dataCount !== primaryData[0].length) ||
-            calculations.dataCount !== primaryData.length) && (
+          calculations.enableShowMore && (
             <ButtonBase
               className={DOWNLOAD_HIDDEN_CLASSNAME}
               onClick={() => setShowMore(!showMore)}

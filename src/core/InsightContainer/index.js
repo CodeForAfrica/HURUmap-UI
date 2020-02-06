@@ -194,7 +194,11 @@ function InsightContainer({
         handleDownload && (e => toPng().then(handleDownload.bind(null, e)))
       }
       showingData={showData}
-      onShowData={handleShowData || (() => setShowData(!showData))}
+      onShowData={
+        dataTable &&
+        dataTable.rawData &&
+        (handleShowData || (() => setShowData(!showData)))
+      }
       onCompare={handleCompare}
       gaEvents={gaEvents}
       embedCode={embedCode}
@@ -326,7 +330,7 @@ function InsightContainer({
           </Grid>
         )}
 
-        {showData && (
+        {dataTable && dataTable.rawData && showData && (
           <DataTable
             classes={classes}
             data={dataTable}
@@ -420,7 +424,7 @@ InsightContainer.propTypes = {
 };
 
 InsightContainer.defaultProps = {
-  dataTable: { rawData: [] },
+  dataTable: undefined,
   hideInsight: false,
   actions: undefined,
   embedCode: undefined,
