@@ -211,6 +211,7 @@ const ChartFactory = React.memo(
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
           const height = heightProp || theme.bar.height;
 
+          let fullSize;
           let dataCount;
           let computedSize;
           // eslint-disable-next-line no-plusplus
@@ -220,6 +221,10 @@ const ChartFactory = React.memo(
               paddingSize +
               domainPadding.x[0] +
               domainPadding.x[1];
+
+            if (!fullSize) {
+              fullSize = computedSize;
+            }
 
             if (!rootWidth || showMore || horizontal) {
               break;
@@ -241,7 +246,7 @@ const ChartFactory = React.memo(
             dataCount,
             domainPadding,
             height: computedHeight,
-            enableShowMore: Boolean(height) && computedSize > height
+            enableShowMore: Boolean(height) && fullSize > height
           };
         }
         case 'column': {
@@ -264,6 +269,7 @@ const ChartFactory = React.memo(
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
           const height = heightProp || theme.bar.height;
 
+          let fullSize;
           let dataCount;
           let computedSize;
           // eslint-disable-next-line no-plusplus
@@ -276,13 +282,17 @@ const ChartFactory = React.memo(
               // Bug when 2 bars only
               (dataCount === 2 ? offset : 0);
 
+            if (!fullSize) {
+              fullSize = computedSize;
+            }
+
             if (!rootWidth || showMore) {
               break;
             }
 
             if (
               (horizontal && computedSize < height) ||
-              (rootWidth && computedSize < rootWidth)
+              (!horizontal && rootWidth && computedSize < rootWidth)
             ) {
               break;
             }
@@ -290,14 +300,13 @@ const ChartFactory = React.memo(
           const width =
             horizontal || computedSize > rootWidth ? rootWidth : computedSize;
           const computedHeight = horizontal || showMore ? computedSize : height;
-
           return {
             width,
             offset,
             dataCount,
             domainPadding,
             height: computedHeight,
-            enableShowMore: Boolean(height) && computedSize > height
+            enableShowMore: Boolean(height) && fullSize > height
           };
         }
         case 'line': {
