@@ -273,8 +273,7 @@ Snippet.defaultProps = {
   width: undefined,
   share: {
     facebook: {},
-    twitter: {},
-    url: undefined
+    twitter: {}
   }
 };
 

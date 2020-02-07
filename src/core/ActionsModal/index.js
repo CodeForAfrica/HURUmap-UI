@@ -153,7 +153,8 @@ ActionsModel.propTypes = {
       title: PropTypes.string,
       hashtags: PropTypes.string
     }),
-    title: PropTypes.string
+    title: PropTypes.string,
+    url: PropTypes.string
   }),
   tab: PropTypes.number
 };
