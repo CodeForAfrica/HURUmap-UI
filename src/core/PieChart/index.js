@@ -209,7 +209,6 @@ function PieChart({
               colorScale={colorScale}
               highlightIndex={chart.donutHighlightIndex}
               highlightStyle={chart.donutHighlightStyle}
-              index={donutLabelKey.columnIndex}
               sortKey={donutLabelKey.sortKey}
               style={donutLabelStyle}
               text={
