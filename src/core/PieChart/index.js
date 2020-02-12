@@ -121,7 +121,8 @@ function PieChart({
   };
 
   // Label & tooltip
-  const donutLabelData = data2 ? data[donutLabelKey.dataIndex] : data1;
+  const donutLabelData =
+    data2 && donutLabelKey.dataIndex ? data[donutLabelKey.dataIndex] : data1;
   const { style: suggestedStyle } = props;
   const donutLabelStyle = {
     textAnchor: 'middle',
@@ -287,7 +288,7 @@ PieChart.propTypes = {
   data: propTypes.groupedData,
   donut: PropTypes.bool,
   donutLabelKey: PropTypes.shape({
-    dataIndex: PropTypes.number.isRequired,
+    dataIndex: PropTypes.number,
     columnIndex: PropTypes.number,
     sortKey: PropTypes.oneOf(['value', '-value'])
   }),
