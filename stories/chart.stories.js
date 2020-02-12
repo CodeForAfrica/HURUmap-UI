@@ -291,7 +291,11 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
             }
           ])}
           donut={boolean('donut', true)}
-          donutLabelKey={object('donutLabelKey', { dataIndex: 0 })}
+          donutLabelKey={object('donutLabelKey', {
+            dataIndex: 0,
+            columnIndex: 0,
+            sortKey: 'value'
+          })}
           height={height}
           labels={({ datum }) => labels(datum)}
           legendWidth={legendWidth}
@@ -359,7 +363,11 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
             ]
           ])}
           donut={boolean('donut', true)}
-          donutLabelKey={object('donutLabelKey', { dataIndex: 0 })}
+          donutLabelKey={object('donutLabelKey', {
+            dataIndex: 0,
+            columnIndex: 0,
+            sortKey: 'value'
+          })}
           groupSpacing={number('groupSpacing', 4)}
           height={height}
           parts={{
