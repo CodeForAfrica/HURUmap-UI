@@ -209,9 +209,13 @@ function PieChart({
               colorScale={colorScale}
               highlightIndex={chart.donutHighlightIndex}
               highlightStyle={chart.donutHighlightStyle}
+              index={donutLabelKey.columnIndex}
               sortKey={donutLabelKey.sortKey}
               style={donutLabelStyle}
-              text={data1[0].donutLabel || data1[0].label}
+              text={
+                donutLabelData[donutLabelKey.columnIndex || 0].donutLabel ||
+                donutLabelData[donutLabelKey.columnIndex || 0].label
+              }
               width={chartInnerRadius * 2}
               x={origin.x}
               y={origin.y}
@@ -285,6 +289,7 @@ PieChart.propTypes = {
   donut: PropTypes.bool,
   donutLabelKey: PropTypes.shape({
     dataIndex: PropTypes.number.isRequired,
+    columnIndex: PropTypes.number,
     sortKey: PropTypes.oneOf(['value', '-value'])
   }),
   groupSpacing: PropTypes.number,
@@ -325,7 +330,7 @@ PieChart.defaultProps = {
   colorScale: undefined,
   data: undefined,
   donut: undefined,
-  donutLabelKey: { dataIndex: 0, sortKey: undefined },
+  donutLabelKey: { dataIndex: 0, columnIndex: 0, sortKey: undefined },
   groupSpacing: undefined,
   height: undefined,
   innerRadius: undefined,
