@@ -253,9 +253,9 @@ const ChartFactory = React.memo(
             enableShowMore:
               Boolean(height) &&
               // It can't fit the desired height
-              fullSize > height &&
+              // or
               // It can't fit the dynamic width
-              fullSize > rootWidth
+              (fullSize > height || fullSize > rootWidth)
           };
         }
         case 'column': {
@@ -318,9 +318,9 @@ const ChartFactory = React.memo(
             enableShowMore:
               Boolean(height) &&
               // It can't fit the desired height
-              fullSize > height &&
+              // or
               // It can't fit the dynamic width
-              fullSize > rootWidth
+              (fullSize > height || fullSize > rootWidth)
           };
         }
         case 'line': {
