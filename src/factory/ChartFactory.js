@@ -4,6 +4,7 @@ import { Box, ButtonBase } from '@material-ui/core';
 
 import { Helpers } from 'victory';
 
+import useResizeAware from 'react-resize-aware';
 import LineChart from '../core/LineChart';
 import BulletChart from '../core/BulletChart';
 import BarChart from '../core/BarChart';
@@ -51,6 +52,7 @@ const ChartFactory = React.memo(
     profiles
   }) => {
     const [rootRef, setRootRef] = useState(null);
+    const [rootResizeListener, rootSize] = useResizeAware();
     const {
       horizontal,
       width: widthProp,
@@ -210,7 +212,7 @@ const ChartFactory = React.memo(
             x: [x0 * primaryData.length, x1 * primaryData.length]
           };
 
-          const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
+          const rootWidth = rootSize.width;
           const height = heightProp || theme.bar.height;
 
           let fullSize;
@@ -275,7 +277,7 @@ const ChartFactory = React.memo(
             ? padding.top + padding.bottom
             : padding.left + padding.right;
 
-          const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
+          const rootWidth = rootSize.width - (theme.axis.labelWidth || 0);
           const height = heightProp || theme.bar.height;
 
           let fullSize;
@@ -341,21 +343,23 @@ const ChartFactory = React.memo(
           return {};
       }
     }, [
-      rootRef,
+      rootSize,
+      visualType,
+      widthProp,
+      theme.pie.width,
+      theme.pie.height,
+      theme.bar,
+      theme.axis.labelWidth,
+      theme.line.offset,
+      theme.line.height,
       heightProp,
-      horizontal,
-      isComparison,
+      primaryData,
       offsetProp,
       paddingProp,
-      primaryData,
+      horizontal,
+      rootRef,
       showMore,
-      theme.bar,
-      theme.line.height,
-      theme.line.offset,
-      theme.pie.height,
-      theme.pie.width,
-      visualType,
-      widthProp
+      isComparison
     ]);
 
     if (!data) {
@@ -612,6 +616,7 @@ const ChartFactory = React.memo(
         flexDirection="column"
         alignItems="center"
       >
+        {rootResizeListener}
         {primaryData.length ||
         [
           'circle_nested_proportional_area',

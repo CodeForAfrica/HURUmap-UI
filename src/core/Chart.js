@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { VictoryChart, VictoryContainer } from 'victory';
 
 import withVictoryTheme from './styles/withVictoryTheme';
+import propTypes from './propTypes';
 
 export const toChartAxisProps = prop => {
   if (!prop) {
@@ -16,7 +17,14 @@ export const toChartAxisProps = prop => {
   return { independent: prop, dependent: prop };
 };
 
-function Chart({ children, overflow, responsive = true, events: e, ...props }) {
+function Chart({
+  children,
+  overflow,
+  responsive = true,
+  events: e,
+  theme,
+  ...props
+}) {
   // `events`, `height` and `width` are the only props passed to the
   // chart container SVG, `style` isn't.
   // https://github.com/FormidableLabs/victory/blob/c0bff5240ce25d51a6fb6b9db091a2c27e0f5903/packages/victory-core/src/victory-container/victory-container.js#L118-L159
@@ -30,6 +38,7 @@ function Chart({ children, overflow, responsive = true, events: e, ...props }) {
           style={{ height: 'auto' }}
         />
       }
+      theme={theme}
       {...props}
     >
       {children}
@@ -44,7 +53,8 @@ Chart.propTypes = {
   ]).isRequired,
   events: PropTypes.shape({}),
   overflow: PropTypes.oneOf(['auto', 'hidden', 'scroll', 'visible']),
-  responsive: PropTypes.bool
+  responsive: PropTypes.bool,
+  theme: propTypes.theme.isRequired
 };
 
 Chart.defaultProps = {

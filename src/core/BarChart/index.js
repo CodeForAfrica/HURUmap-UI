@@ -93,6 +93,8 @@ function BarChart({
     originalPadding
   );
 
+  padding.left += (theme.axis.labelWidth || 0) / 2;
+
   const chartProps = {
     domain,
     domainPadding,
