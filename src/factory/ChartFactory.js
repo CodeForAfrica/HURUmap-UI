@@ -4,7 +4,6 @@ import { Box, ButtonBase } from '@material-ui/core';
 
 import { Helpers } from 'victory';
 
-import useResizeAware from 'react-resize-aware';
 import LineChart from '../core/LineChart';
 import BulletChart from '../core/BulletChart';
 import BarChart from '../core/BarChart';
@@ -52,7 +51,6 @@ const ChartFactory = React.memo(
     profiles
   }) => {
     const [rootRef, setRootRef] = useState(null);
-    const [rootResizeListener, rootSize] = useResizeAware();
     const {
       horizontal,
       width: widthProp,
@@ -212,7 +210,9 @@ const ChartFactory = React.memo(
             x: [x0 * primaryData.length, x1 * primaryData.length]
           };
 
-          const rootWidth = rootSize.width;
+          const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
+          const adjustedRootWidth =
+            rootRef && rootWidth - (theme.axis.labelWidth || 0);
           const height = heightProp || theme.bar.height;
 
           let fullSize;
@@ -230,20 +230,22 @@ const ChartFactory = React.memo(
               fullSize = computedSize;
             }
 
-            if (!rootWidth || showMore || horizontal) {
+            if (!adjustedRootWidth || showMore) {
               break;
             }
 
             if (
               (horizontal && computedSize < height) ||
-              (!horizontal && rootWidth && computedSize < rootWidth)
+              (!horizontal && computedSize < adjustedRootWidth)
             ) {
               break;
             }
           }
 
           const width =
-            horizontal || computedSize > rootWidth ? rootWidth : computedSize;
+            horizontal || computedSize > adjustedRootWidth
+              ? adjustedRootWidth
+              : computedSize;
           const computedHeight = horizontal || showMore ? computedSize : height;
 
           return {
@@ -257,7 +259,7 @@ const ChartFactory = React.memo(
               // It can't fit the desired height
               // or
               // It can't fit the dynamic width
-              (fullSize > height || fullSize > rootWidth)
+              (fullSize > height || fullSize > adjustedRootWidth)
           };
         }
         case 'column': {
@@ -277,7 +279,9 @@ const ChartFactory = React.memo(
             ? padding.top + padding.bottom
             : padding.left + padding.right;
 
-          const rootWidth = rootSize.width - (theme.axis.labelWidth || 0);
+          const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
+          const adjustedRootWidth =
+            rootWidth && rootWidth - (theme.axis.labelWidth || 0);
           const height = heightProp || theme.bar.height;
 
           let fullSize;
@@ -297,19 +301,23 @@ const ChartFactory = React.memo(
               fullSize = computedSize;
             }
 
-            if (!rootWidth || showMore) {
+            if (!adjustedRootWidth || showMore) {
               break;
             }
 
             if (
-              (horizontal && computedSize < height) ||
-              (!horizontal && rootWidth && computedSize < rootWidth)
+              horizontal
+                ? computedSize < height
+                : computedSize < adjustedRootWidth
             ) {
               break;
             }
           }
           const width =
-            horizontal || computedSize > rootWidth ? rootWidth : computedSize;
+            horizontal ||
+            (adjustedRootWidth && computedSize > adjustedRootWidth)
+              ? adjustedRootWidth
+              : computedSize;
           const computedHeight = horizontal || showMore ? computedSize : height;
           return {
             width,
@@ -322,7 +330,7 @@ const ChartFactory = React.memo(
               // It can't fit the desired height
               // or
               // It can't fit the dynamic width
-              (fullSize > height || fullSize > rootWidth)
+              (fullSize > height || fullSize > adjustedRootWidth)
           };
         }
         case 'line': {
@@ -343,7 +351,6 @@ const ChartFactory = React.memo(
           return {};
       }
     }, [
-      rootSize,
       visualType,
       widthProp,
       theme.pie.width,
@@ -616,7 +623,6 @@ const ChartFactory = React.memo(
         flexDirection="column"
         alignItems="center"
       >
-        {rootResizeListener}
         {primaryData.length ||
         [
           'circle_nested_proportional_area',

@@ -1,4 +1,6 @@
-export default (textElement, text, width) => {
+export default (textElement, text, width, onMaxDimmension, horizontal) => {
+  let maxDimmension = 0;
+
   const words = text.split(/\s+/).reverse();
   let word = words.pop();
   let line = [];
@@ -29,6 +31,14 @@ export default (textElement, text, width) => {
       tspan.textContent = line.join(' ');
       line = [word];
 
+      if (horizontal) {
+        maxDimmension += tspan.getBoundingClientRect().height;
+      } else if (tspan.getBoundingClientRect().width > maxDimmension) {
+        maxDimmension = tspan.getBoundingClientRect().width;
+      } else {
+        // Nothing
+      }
+
       tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
       tspan.textContent = word;
       tspan.setAttribute('text-anchor', textAnchor || 'middle');
@@ -41,7 +51,16 @@ export default (textElement, text, width) => {
         tspan.setAttribute('dx', dx);
       }
       textElement.appendChild(tspan);
+    } else if (horizontal) {
+      maxDimmension += tspan.getBoundingClientRect().height;
+    } else if (tspan.getBoundingClientRect().width > maxDimmension) {
+      maxDimmension = tspan.getBoundingClientRect().width;
+    } else {
+      // Nothing
     }
+
     word = words.pop();
   }
+
+  onMaxDimmension(maxDimmension);
 };
