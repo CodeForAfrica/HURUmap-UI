@@ -32,7 +32,8 @@ export default function Card({
   flourishURL,
   fetchDefinition,
   fetchDefinitionUrl,
-  shareEndPoint
+  shareEndPoint,
+  ...props
 }) {
   const [definition, setDefinition] = useState();
   useEffect(() => {
@@ -78,6 +79,7 @@ export default function Card({
                 })
           }
           src={flourishURL}
+          {...props}
         />
       );
     case 'hurumap':
@@ -121,6 +123,7 @@ export default function Card({
                   geoId
                 })
           }
+          {...props}
         />
       );
     case 'snippet':
@@ -161,6 +164,7 @@ export default function Card({
               content: definition.content && definition.content.rendered
             }
           }
+          {...props}
         />
       );
     default:
@@ -242,7 +246,12 @@ Card.defaultProps = {
   flourishURL: id => `/wp-json/hurumap-data/flourish/${id}/`,
   embedCode: (
     type,
-    { baseUrl = window.location.origin, title = '', geoId, id }
+    {
+      baseUrl = typeof window !== 'undefined' ? window.location.origin : '',
+      title = '',
+      geoId,
+      id
+    }
   ) => {
     switch (type) {
       case 'hurumap':

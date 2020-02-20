@@ -16,7 +16,8 @@ export function getLegendProps(
   // Show legend if a legend prop is provided or data contains objects with
   // `name` attribute.
   // https://formidable.com/open-source/victory/docs/victory-legend/#data
-  const legendData = legendDataProp || (data && data[0].name && data);
+  const legendData =
+    legendDataProp || (data && data[0] && data[0].name && data);
   let chartHeight = height;
   let chartWidth = width;
   let legendHeight = height;

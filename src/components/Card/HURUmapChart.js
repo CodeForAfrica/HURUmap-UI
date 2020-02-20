@@ -106,6 +106,7 @@ function HURUmapChart({
         dataValueTitle: chart.visual.y,
         rawData
       }}
+      {...props}
     >
       {!chartData.isLoading && showStatVisual ? (
         <ChartFactory

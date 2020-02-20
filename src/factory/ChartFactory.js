@@ -211,6 +211,8 @@ const ChartFactory = React.memo(
           };
 
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
+          const adjustedRootWidth =
+            rootRef && rootWidth - (theme.axis.labelWidth || 0);
           const height = heightProp || theme.bar.height;
 
           let fullSize;
@@ -228,20 +230,22 @@ const ChartFactory = React.memo(
               fullSize = computedSize;
             }
 
-            if (!rootWidth || showMore || horizontal) {
+            if (!adjustedRootWidth || showMore) {
               break;
             }
 
             if (
               (horizontal && computedSize < height) ||
-              (!horizontal && rootWidth && computedSize < rootWidth)
+              (!horizontal && computedSize < adjustedRootWidth)
             ) {
               break;
             }
           }
 
           const width =
-            horizontal || computedSize > rootWidth ? rootWidth : computedSize;
+            horizontal || computedSize > adjustedRootWidth
+              ? adjustedRootWidth
+              : computedSize;
           const computedHeight = horizontal || showMore ? computedSize : height;
 
           return {
@@ -253,9 +257,9 @@ const ChartFactory = React.memo(
             enableShowMore:
               Boolean(height) &&
               // It can't fit the desired height
-              fullSize > height &&
+              // or
               // It can't fit the dynamic width
-              fullSize > rootWidth
+              (fullSize > height || fullSize > adjustedRootWidth)
           };
         }
         case 'column': {
@@ -276,6 +280,8 @@ const ChartFactory = React.memo(
             : padding.left + padding.right;
 
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
+          const adjustedRootWidth =
+            rootWidth && rootWidth - (theme.axis.labelWidth || 0);
           const height = heightProp || theme.bar.height;
 
           let fullSize;
@@ -295,19 +301,23 @@ const ChartFactory = React.memo(
               fullSize = computedSize;
             }
 
-            if (!rootWidth || showMore) {
+            if (!adjustedRootWidth || showMore) {
               break;
             }
 
             if (
-              (horizontal && computedSize < height) ||
-              (!horizontal && rootWidth && computedSize < rootWidth)
+              horizontal
+                ? computedSize < height
+                : computedSize < adjustedRootWidth
             ) {
               break;
             }
           }
           const width =
-            horizontal || computedSize > rootWidth ? rootWidth : computedSize;
+            horizontal ||
+            (adjustedRootWidth && computedSize > adjustedRootWidth)
+              ? adjustedRootWidth
+              : computedSize;
           const computedHeight = horizontal || showMore ? computedSize : height;
           return {
             width,
@@ -318,9 +328,9 @@ const ChartFactory = React.memo(
             enableShowMore:
               Boolean(height) &&
               // It can't fit the desired height
-              fullSize > height &&
+              // or
               // It can't fit the dynamic width
-              fullSize > rootWidth
+              (fullSize > height || fullSize > adjustedRootWidth)
           };
         }
         case 'line': {
@@ -341,21 +351,22 @@ const ChartFactory = React.memo(
           return {};
       }
     }, [
-      rootRef,
+      visualType,
+      widthProp,
+      theme.pie.width,
+      theme.pie.height,
+      theme.bar,
+      theme.axis.labelWidth,
+      theme.line.offset,
+      theme.line.height,
       heightProp,
-      horizontal,
-      isComparison,
+      primaryData,
       offsetProp,
       paddingProp,
-      primaryData,
+      horizontal,
+      rootRef,
       showMore,
-      theme.bar,
-      theme.line.height,
-      theme.line.offset,
-      theme.pie.height,
-      theme.pie.width,
-      visualType,
-      widthProp
+      isComparison
     ]);
 
     if (!data) {

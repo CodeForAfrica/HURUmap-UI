@@ -31,7 +31,6 @@ const useStyles = makeStyles(() => ({
     fontSize: '1.25em'
   },
   description: {
-    wordBreak: 'break-all',
     fontSize: '1.5em'
   },
   comparison: {

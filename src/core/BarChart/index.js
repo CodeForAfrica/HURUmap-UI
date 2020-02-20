@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -33,6 +33,7 @@ function BarChart({
   width: suggestedWidth,
   ...props
 }) {
+  const [maxLabelDimmension, setMaxLabelDimmesion] = useState(0);
   const {
     axis: { labelWidth: themeLabelWidth },
     bar: chart,
@@ -50,13 +51,14 @@ function BarChart({
   const { colorScale } = groupChart;
 
   const groupData = Array.isArray(d[0]) ? d : [d];
-  let labelWidth = propLabelWidth || themeLabelWidth;
-  if (groupData.length > 1 && !propLabelWidth) {
-    const barSpacing = offset || barWidth;
-    if (barSpacing) {
-      labelWidth = barSpacing * groupData.length;
-    }
+  const barSpacing = offset || barWidth;
+  let labelWidth = barSpacing * groupData.length;
+
+  const desiredLabelWidth = propLabelWidth || themeLabelWidth;
+  if (horizontal && desiredLabelWidth) {
+    labelWidth = desiredLabelWidth;
   }
+
   const axisProps = (parts && toChartAxisProps(parts.axis)) || {};
   const { tickFormat: propTickFormat } = axisProps.independent || {};
   const tickFormat =
@@ -93,6 +95,11 @@ function BarChart({
     originalPadding
   );
 
+  padding.left =
+    horizontal && maxLabelDimmension ? maxLabelDimmension / 2 : padding.left;
+  padding.bottom =
+    !horizontal && maxLabelDimmension ? maxLabelDimmension * 2 : padding.bottom;
+
   const chartProps = {
     domain,
     domainPadding,
@@ -106,6 +113,12 @@ function BarChart({
   };
 
   const numberFormatter = new Intl.NumberFormat('en-GB');
+
+  const handleMaxDimmesion = dimmension => {
+    if (dimmension > maxLabelDimmension) {
+      setMaxLabelDimmesion(dimmension);
+    }
+  };
 
   return (
     <Chart {...chartProps}>
@@ -142,7 +155,13 @@ function BarChart({
       </VictoryGroup>
       <VictoryAxis
         tickFormat={tickFormat}
-        tickLabelComponent={<WrapLabel width={labelWidth} />}
+        tickLabelComponent={
+          <WrapLabel
+            width={labelWidth}
+            horizontal={horizontal}
+            onMaxDimmension={handleMaxDimmesion}
+          />
+        }
         {...axisProps.independent}
       />
 
