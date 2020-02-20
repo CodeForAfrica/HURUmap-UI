@@ -1,11 +1,11 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core';
 import propTypes from '../propTypes';
 
 import ActionButton from '../ActionButton';
 import EmbedIcon from '../assets/icons/code.svg';
 import ShareIcon from '../assets/icons/network-connection.svg';
+import makeStyles from '../styles/makeStyles';
 
 const useStyles = makeStyles({
   actionsContainer: {

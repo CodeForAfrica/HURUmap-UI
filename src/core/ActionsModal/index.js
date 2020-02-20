@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { makeStyles } from '@material-ui/core/styles';
 import { Dialog, Tabs, Tab } from '@material-ui/core';
 import DownloadPanel from './DownloadPanel';
 import EmbedPanel from './EmbedPanel';
 import SharePanel from './SharePanel';
 import TabPanel, { a11yProps } from './TabPanel';
+import makeStyles from '../styles/makeStyles';
 
 export const SHARE_TAB = 0;
 export const EMBED_TAB = 1;

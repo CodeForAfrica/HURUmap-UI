@@ -116,7 +116,9 @@ function BarChart({
 
   const handleMaxDimmesion = dimmension => {
     if (dimmension > maxLabelDimmension) {
-      setMaxLabelDimmesion(dimmension);
+      setTimeout(() => {
+        setMaxLabelDimmesion(dimmension);
+      }, 500);
     }
   };
 

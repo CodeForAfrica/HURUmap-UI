@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { ButtonBase, Grid, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 
 import {
   domToPng,
@@ -22,6 +21,7 @@ import DataIcon from './assets/icons/tablet-reader.svg';
 import DownloadIcon from './assets/icons/download.svg';
 import EmbedIcon from './assets/icons/code.svg';
 import ShareIcon from './assets/icons/network-connection.svg';
+import makeStyles from './styles/makeStyles';
 
 const useStyles = makeStyles(({ breakpoints, palette }) => ({
   root: {

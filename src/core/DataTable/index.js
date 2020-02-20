@@ -10,12 +10,12 @@ import {
   TableContainer,
   Paper,
   Box,
-  ButtonBase,
-  makeStyles
+  ButtonBase
 } from '@material-ui/core';
 import propTypes from '../propTypes';
 
 import exportCSV from './exportCSV';
+import makeStyles from '../styles/makeStyles';
 
 const useStyles = makeStyles({
   dataTableRoot: {

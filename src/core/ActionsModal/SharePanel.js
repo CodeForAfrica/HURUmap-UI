@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { makeStyles } from '@material-ui/core/styles';
 import {
   DialogContent,
   DialogContentText,
@@ -17,6 +16,7 @@ import {
   TwitterIcon,
   TwitterShareButton
 } from 'react-share';
+import makeStyles from '../styles/makeStyles';
 
 const useStyles = makeStyles(() => ({
   content: {},

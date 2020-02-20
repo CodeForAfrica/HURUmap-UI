@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import MinimizeIcon from '@material-ui/icons/Remove';
 
-import { makeStyles } from '@material-ui/core/styles';
 import shortid from 'shortid';
 import { Link } from '@material-ui/core';
 
@@ -19,6 +18,7 @@ import ActionsModal, { EMBED_TAB, SHARE_TAB } from '../ActionsModal';
 import SnippetButton from './Button';
 import SnippetActions from './Actions';
 import ContentLoader from '../ContentLoader';
+import makeStyles from '../styles/makeStyles';
 
 const useStyles = makeStyles(theme => ({
   root: ({ expand, width }) => ({

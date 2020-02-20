@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
 import ButtonBase from '@material-ui/core/ButtonBase';
 
 import propTypes from '../propTypes';
+import makeStyles from '../styles/makeStyles';
 
 const useStyles = makeStyles(({ palette }) => ({
   root: {

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
 
 import { Typography, Grid, Popover } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 
 import ActionButton from '../../ActionButton';
 import EmbedCodeTextArea from './EmbedCodeTextArea';
@@ -13,6 +12,7 @@ import DownloadIcon from '../../assets/icons/download.svg';
 import EmbedIcon from '../../assets/icons/code.svg';
 import ShareIcon from '../../assets/icons/network-connection.svg';
 import BlockLoader from '../../BlockLoader';
+import makeStyles from '../../styles/makeStyles';
 
 const useStyles = makeStyles({
   root: {
