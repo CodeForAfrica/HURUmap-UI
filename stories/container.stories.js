@@ -11,18 +11,16 @@ import {
   withKnobs
 } from '@storybook/addon-knobs';
 
-import { Grid, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Grid, Typography, makeStyles } from '@material-ui/core';
 
+import { BarChart, PieChart } from '@hurumap/charts';
 import {
-  BarChart,
   ChartContainer,
   DropDown,
-  InsightContainer,
-  PieChart
-} from '../src/core';
+  InsightContainer
+} from '@hurumap/components';
+import { ChartFactory } from '@hurumap/factory';
 import { CenterDecorator } from './common';
-import { ChartFactory } from '../src/factory';
 
 import logo from './assets/dominion-logo.png';
 

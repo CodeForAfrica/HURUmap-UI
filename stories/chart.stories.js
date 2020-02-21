@@ -8,7 +8,6 @@ import {
   number
 } from '@storybook/addon-knobs';
 
-import { labels } from '../src/core/utils';
 import {
   BarChart,
   BulletChart,
@@ -16,7 +15,8 @@ import {
   PieChart,
   NestedProportionalAreaChart,
   ComparisonBarChart
-} from '../src/core';
+} from '@hurumap/charts';
+import { labels } from '@hurumap/charts/utils';
 import { CenterDecorator } from './common';
 
 const rand = () => Number((Math.random() * 100).toFixed(1));

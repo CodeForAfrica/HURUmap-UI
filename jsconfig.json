@@ -1,0 +1,13 @@
+  
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"@hurumap/*": ["./*", "./packages/*/src"]
+		}
+	},
+	"exclude": [
+		"build",
+		"node_modules"
+	]
+}

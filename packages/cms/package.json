@@ -1,0 +1,32 @@
+{
+    "name": "@hurumap/cms",
+    "version": "9.2.0",
+    "description": "CMS functions for HURUmap Dashboard.",
+    "author": "CodeForAfrica",
+    "license": "GPL-2.0-or-later",
+    "keywords": [
+        "hurumap",
+        "cms"
+    ],
+    "homepage": "https://github.com/CodeForAfrica/HURUmap-UI/tree/master/packages/cms/README.md",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/CodeForAfrica/HURUmap-UI.git",
+        "directory": "packages/cms"
+    },
+    "bugs": {
+        "url": "https://github.com/CodeForAfrica/HURUmap-UI/issues"
+    },
+    "main": "build/index.js",
+    "dependencies": {
+        "@hurumap/components": "file:../components",
+        "lodash": "^4.17.15",
+        "prop-types": "^15.7.2"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "devDependencies": {
+        "react": "^16.12.0"
+    }
+}
