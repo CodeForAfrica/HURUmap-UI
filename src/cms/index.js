@@ -37,7 +37,7 @@ export const TYPES = {
   HURUMAP_CARD: 'hurumap-card',
   HURUMAP_CHART: 'indicator-hurumap',
   FLOURISH_CHART: 'indicator-flourish',
-  INDICATOR_WIDGET: 'indicator-widget'
+  INDICATOR_WIDGET: 'indicator-block'
 };
 
 export function dataProps(
@@ -187,13 +187,14 @@ export function renderBlocks({
         ReactDOM.createPortal(
           <Card
             id={el.getAttribute(BLOCK_ID)}
+            type="indicator"
             parentEl={el}
             logo={logo}
             title={el.getAttribute(TITLE)}
             description={el.getAttribute(DESCRIPTION)}
             sourceTitle={el.getAttribute(SOURCE_TITLE)}
             sourceLink={el.getAttribute(SOURCE_LINK)}
-            documentSrc={el.getAttribute(SRC)}
+            blockSrc={el.getAttribute(SRC)}
             widget={el.getAttribute(WIDGET) || el.getAttribute(LAYOUT)}
           />,
           el

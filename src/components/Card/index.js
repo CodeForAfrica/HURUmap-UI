@@ -36,7 +36,7 @@ export default function Card({
   fetchDefinition,
   fetchDefinitionUrl,
   shareEndPoint,
-  documentSrc,
+  blockSrc,
   sourceLink,
   sourceTitle,
   widget,
@@ -59,7 +59,7 @@ export default function Card({
     }
   }, [id, type, fetchDefinition, fetchDefinitionUrl, propDefinition]);
   switch (type) {
-    case 'indicator-widget':
+    case 'indicator':
       return (
         <ChartContainer
           logo={logo}
@@ -79,11 +79,18 @@ export default function Card({
           {...props}
         >
           <div />
-          {widget === 'document' || widget === 'document_widget' ? (
-            <PDFDataContainer title={title} source={documentSrc} />
-          ) : (
-            parentEl.innerChild
-          )}
+          <>
+            {widget === 'image' && (
+              <img style={{ width: '100%' }} src={blockSrc} alt="indicator" />
+            )}
+            {widget === 'html' && (
+              <div dangerouslySetInnerHTML={{ __html: blockSrc }} />
+            )}
+            {widget === 'document' ||
+              (widget === 'document_widget' && (
+                <PDFDataContainer title={title} source={blockSrc} />
+              ))}
+          </>
         </ChartContainer>
       );
     case 'flourish':
@@ -207,7 +214,8 @@ export default function Card({
 }
 
 Card.propTypes = {
-  type: propTypes.oneOf(['hurumap', 'flourish', 'snippet']).isRequired,
+  type: propTypes.oneOf(['hurumap', 'flourish', 'snippet', 'indicator'])
+    .isRequired,
   parentEl: propTypes.shape({
     style: propTypes.shape({
       width: propTypes.string
@@ -256,7 +264,7 @@ Card.propTypes = {
   fetchDefinitionUrl: propTypes.oneOfType([propTypes.string, propTypes.func]),
   logo: propTypes.string,
   shareEndPoint: propTypes.string,
-  documentSrc: propTypes.string,
+  blockSrc: propTypes.string,
   sourceLink: propTypes.string,
   sourceTitle: propTypes.string,
   widget: propTypes.string
@@ -280,7 +288,7 @@ Card.defaultProps = {
   analysisLinkTitle: undefined,
   fetchDefinition: undefined,
   fetchDefinitionUrl: undefined,
-  documentSrc: undefined,
+  blockSrc: undefined,
   sourceLink: undefined,
   sourceTitle: undefined,
   widget: undefined,
