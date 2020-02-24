@@ -1126,7 +1126,7 @@
 "@hurumap/cms@file:packages/cms":
   version "9.2.0"
   dependencies:
-    "@hurumap/components" "file:../../../Library/Caches/Yarn/v4/npm-@hurumap-cms-9.2.0-00bdb5a2-b38a-4dc8-90a2-47d0e6c0e844-1582553537266/node_modules/@hurumap/components"
+    "@hurumap/components" "file:../../../Library/Caches/Yarn/v4/npm-@hurumap-cms-9.2.0-da473833-2fa8-4e56-8326-a0df61a7945a-1582555005700/node_modules/@hurumap/components"
     lodash "^4.17.15"
     prop-types "^15.7.2"
 
@@ -1134,8 +1134,8 @@
   version "9.2.0"
   dependencies:
     "@apollo/react-hooks" "^3.1.3"
-    "@hurumap/charts" "file:../../../Library/Caches/Yarn/v4/npm-@hurumap-components-9.2.0-4a8c6fce-82bc-4e9b-9400-5b9b2f8c240c-1582553537269/node_modules/@hurumap/charts"
-    "@hurumap/factory" "file:../../../Library/Caches/Yarn/v4/npm-@hurumap-components-9.2.0-4a8c6fce-82bc-4e9b-9400-5b9b2f8c240c-1582553537269/node_modules/@hurumap/factory"
+    "@hurumap/charts" "file:../../../Library/Caches/Yarn/v4/npm-@hurumap-components-9.2.0-b5c1915b-73f1-4ee8-a47c-e35d5f640711-1582555005702/node_modules/@hurumap/charts"
+    "@hurumap/factory" "file:../../../Library/Caches/Yarn/v4/npm-@hurumap-components-9.2.0-b5c1915b-73f1-4ee8-a47c-e35d5f640711-1582555005702/node_modules/@hurumap/factory"
     "@material-ui/core" "^4.9.3"
     "@material-ui/icons" "^4.9.1"
     dom-to-image "^2.6.0"
@@ -1149,13 +1149,13 @@
 "@hurumap/config@file:packages/config":
   version "9.2.0"
   dependencies:
-    "@hurumap/config" "file:../../../Library/Caches/Yarn/v4/npm-@hurumap-config-9.2.0-5f9e0e54-8fce-43fd-9f97-278b396189ec-1582553537288/node_modules/@hurumap/config"
+    "@hurumap/config" "file:../../../Library/Caches/Yarn/v4/npm-@hurumap-config-9.2.0-f7a14e90-ee70-4c7e-8ae2-66b69ac9be9c-1582555005713/node_modules/@hurumap/config"
 
 "@hurumap/factory@file:packages/factory":
   version "9.2.0"
   dependencies:
     "@apollo/react-hooks" "^3.1.3"
-    "@hurumap/charts" "file:../../../Library/Caches/Yarn/v4/npm-@hurumap-factory-9.2.0-f1706c37-4589-48df-b722-174cdc1a42ed-1582553537282/node_modules/@hurumap/charts"
+    "@hurumap/charts" "file:../../../Library/Caches/Yarn/v4/npm-@hurumap-factory-9.2.0-2cae19ac-02e5-495c-b807-8fb05ff2febc-1582555005708/node_modules/@hurumap/charts"
     "@material-ui/core" "^4.9.3"
     graphql "^14.5.8"
     graphql-tag "^2.10.1"
@@ -1166,7 +1166,7 @@
 "@hurumap/mapit@file:packages/mapit":
   version "9.2.0"
   dependencies:
-    "@hurumap/components" "file:../../../Library/Caches/Yarn/v4/npm-@hurumap-mapit-9.2.0-da32df7f-b235-4068-9f37-2e264fd16818-1582553537290/node_modules/@hurumap/components"
+    "@hurumap/components" "file:../../../Library/Caches/Yarn/v4/npm-@hurumap-mapit-9.2.0-da6bd7f5-cc0b-4903-9d8c-8d1418f45174-1582555005714/node_modules/@hurumap/components"
     dequal "^1.0.0"
     leaflet "^1.5.1"
     lodash "^4.17.15"
@@ -6809,6 +6809,11 @@ eslint-import-resolver-babel-module@^5.1.2:
   dependencies:
     pkg-up "^2.0.0"
     resolve "^1.10.0"
+
+eslint-import-resolver-lerna@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-import-resolver-lerna/-/eslint-import-resolver-lerna-1.1.0.tgz#4069a41742651de953ea1063a455aec952388a69"
+  integrity sha512-4olD03ngUo7Q7yRuOF5Gb9WxOc+CLEnw+rt95TnjUWQJ4pn0h9XWSybAr2gswOhre0NHXwwhAhPE8CAiwISFyw==
 
 eslint-import-resolver-node@^0.3.2:
   version "0.3.3"

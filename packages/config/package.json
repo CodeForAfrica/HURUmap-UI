@@ -1,33 +1,24 @@
 {
     "name": "@hurumap/config",
-    "version": "9.2.0",
+    "version": "0.0.1",
     "description": "HURUmap configuration of supported values and more",
     "author": "CodeForAfrica",
     "license": "GPL-2.0-or-later",
     "keywords": [
         "hurumap",
-        "cms"
+        "config"
     ],
     "homepage": "https://github.com/CodeForAfrica/HURUmap-UI/tree/master/packages/config/README.md",
     "repository": {
         "type": "git",
         "url": "https://github.com/CodeForAfrica/HURUmap-UI.git",
-        "directory": "packages/cms"
+        "directory": "packages/config"
     },
     "bugs": {
         "url": "https://github.com/CodeForAfrica/HURUmap-UI/issues"
     },
     "main": "build/index.js",
-    "dependencies": {
-        "@hurumap/config": "file:../config"
-    },
     "publishConfig": {
         "access": "public"
-    },
-    "devDependencies": {
-        "react": "^16.12.0"
-    },
-    "scripts": {
-        "publish:local": "mkdir -p ../publish-local && yarn pack --filename ../publish-local/$npm_package_name-$npm_package_version.tar && cd ../publish-local && tar xopf $npm_package_name-$npm_package_version.tar --one-top-level=$npm_package_name && cd $npm_package_name && yarn link"
     }
 }

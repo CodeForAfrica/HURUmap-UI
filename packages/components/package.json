@@ -1,6 +1,6 @@
 {
     "name": "@hurumap/components",
-    "version": "9.2.0",
+    "version": "0.0.1",
     "description": "UI components for HURUmap.",
     "author": "CodeForAfrica",
     "license": "GPL-2.0-or-later",
@@ -20,8 +20,8 @@
     "main": "build/index.js",
     "dependencies": {
         "@apollo/react-hooks": "^3.1.3",
-        "@hurumap/charts": "file:../charts",
-        "@hurumap/factory": "file:../factory",
+        "@hurumap/charts": "^0.0.1",
+        "@hurumap/factory": "^0.0.1",
         "@material-ui/core": "^4.9.3",
         "@material-ui/icons": "^4.9.1",
         "dom-to-image": "^2.6.0",
@@ -49,8 +49,5 @@
     },
     "publishConfig": {
         "access": "public"
-    },
-    "scripts": {
-        "publish:local": "mkdir -p ../publish-local && yarn pack --filename ../publish-local/$npm_package_name-$npm_package_version.tar && cd ../publish-local && tar xopf $npm_package_name-$npm_package_version.tar --one-top-level=$npm_package_name && cd $npm_package_name && yarn link"
     }
 }

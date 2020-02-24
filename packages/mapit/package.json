@@ -1,6 +1,6 @@
 {
     "name": "@hurumap/mapit",
-    "version": "9.2.0",
+    "version": "0.0.1",
     "description": "HURUmap map",
     "author": "CodeForAfrica",
     "license": "GPL-2.0-or-later",
@@ -19,7 +19,7 @@
     },
     "main": "build/index.js",
     "dependencies": {
-        "@hurumap/components": "file:../components",
+        "@hurumap/components": "^0.0.1",
         "prop-types": "^15.7.2",
         "leaflet": "^1.5.1",
         "lodash": "^4.17.15",
@@ -35,8 +35,5 @@
     "peerDependencies": {
         "react": "^16.10.2",
         "react-dom": "^16.10.2"
-    },
-    "scripts": {
-        "publish:local": "mkdir -p ../publish-local && yarn pack --filename ../publish-local/$npm_package_name-$npm_package_version.tar && cd ../publish-local && tar xopf $npm_package_name-$npm_package_version.tar --one-top-level=$npm_package_name && cd $npm_package_name && yarn link"
     }
 }
