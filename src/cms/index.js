@@ -182,7 +182,9 @@ export function renderBlocks({
   return (
     <>
       {Array.from(
-        document.querySelectorAll(`div[id^=${TYPES.INDICATOR_WIDGET}]`)
+        document.querySelectorAll(
+          `div[data-block-id^=${TYPES.INDICATOR_WIDGET}]`
+        )
       ).map(el =>
         ReactDOM.createPortal(
           <Card
