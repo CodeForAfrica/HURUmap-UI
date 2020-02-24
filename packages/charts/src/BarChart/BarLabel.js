@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import { VictoryLabel } from 'victory';
 
-import { labels as defaultLabels } from '../../utils';
-import Tooltip from '../../Tooltip';
+import { labels as defaultLabels } from '../utils';
+import Tooltip from '../Tooltip';
 
 function BarLabel({
   datum,

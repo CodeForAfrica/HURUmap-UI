@@ -12,7 +12,7 @@ import {
 } from 'react-share';
 
 import DropDown from './DropDown';
-import makeStyles from '../../common/src/makeStyles';
+import makeStyles from './makeStyles';
 
 const useStyles = makeStyles(() => ({
   root: {},

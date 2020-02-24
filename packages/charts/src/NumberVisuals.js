@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Typography, List, ListItem, ListItemText } from '@material-ui/core';
-import makeStyles from '../../common/src/makeStyles';
+import makeStyles from './styles/makeStyles';
 
 const useStyles = makeStyles(() => ({
   root: {

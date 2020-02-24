@@ -4,21 +4,33 @@ import PropTypes from 'prop-types';
 import leaflet from 'leaflet';
 
 import 'leaflet/dist/leaflet.css';
+import makeStyles from '@hurumap/components/makeStyles';
+import BlockLoader from '@hurumap/components/BlockLoader';
 import useDeepRef from './useDeepRef';
-import makeStyles from '../makeStyles';
-import BlockLoader from '../BlockLoader';
 
 const useStyles = makeStyles({
   root: {
+    position: 'relative'
+  },
+  overlay: {
+    position: 'absolute',
+    right: 0,
+    left: 0,
+    top: 0,
+    bottom: 0,
+    zIndex: 401
+  },
+  map: {
     width: '100%',
-    height: '100vh',
-    maxHeight: '100%'
+    height: '100%'
   }
 });
 
 function MapIt({
   id,
   url = 'https://mapit.hurumap.org',
+  width = '100%',
+  height = '100%',
   tolerance = 0.001,
   zoom = 3,
   generation = '1',
@@ -296,23 +308,25 @@ function MapIt({
   const classes = useStyles();
 
   return (
-    <>
+    <div className={classes.root} style={{ width, height, overflow: 'hidden' }}>
       {!featuresToDraw && (
-        <div className={classes.root}>
+        <div className={classes.overlay}>
           <BlockLoader loading />
         </div>
       )}
       <div
         id={mapId}
-        className={classes.root}
+        className={classes.map}
         style={{ display: !featuresToDraw ? 'hidden' : 'block' }}
       />
-    </>
+    </div>
   );
 }
 
 MapIt.propTypes = {
   id: PropTypes.string,
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   url: PropTypes.string,
   tolerance: PropTypes.number,
   zoom: PropTypes.number,
@@ -331,6 +345,8 @@ MapIt.propTypes = {
 };
 
 MapIt.defaultProps = {
+  width: '100%',
+  height: '100%',
   id: undefined,
   url: undefined,
   tolerance: undefined,

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Border, Rect, Selection, VictoryLabel, VictoryTooltip } from 'victory';
 
-import propTypes from '../../propTypes';
+import propTypes from '../propTypes';
 
 function BulletBar({
   barWidth,

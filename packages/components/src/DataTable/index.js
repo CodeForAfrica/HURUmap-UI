@@ -12,10 +12,10 @@ import {
   Box,
   ButtonBase
 } from '@material-ui/core';
-import propTypes from '../../propTypes';
+import propTypes from '../propTypes';
 
 import exportCSV from './exportCSV';
-import makeStyles from '../../../common/src/makeStyles';
+import makeStyles from '../makeStyles';
 
 const useStyles = makeStyles({
   dataTableRoot: {

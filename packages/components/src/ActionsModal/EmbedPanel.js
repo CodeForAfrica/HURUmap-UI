@@ -7,7 +7,7 @@ import {
   DialogContentText,
   Typography
 } from '@material-ui/core';
-import makeStyles from '../styles/makeStyles';
+import makeStyles from '../makeStyles';
 
 const useStyles = makeStyles({
   content: {},

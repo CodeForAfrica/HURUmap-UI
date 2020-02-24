@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text, object } from '@storybook/addon-knobs';
 
-import Snippet from '../src/core/Snippet';
+import Snippet from '@hurumap/components/Snippet';
 import { CenterDecorator } from './common';
 
 function decodeHTML(str) {

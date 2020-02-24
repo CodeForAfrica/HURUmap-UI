@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import { Border, Selection, VictoryLabel, VictoryTooltip } from 'victory';
 
-import { labels as defaultLabels } from '../utils';
-import propTypes from '../propTypes';
-import { toReferenceProps } from '../ReferableChart';
+import { labels as defaultLabels } from './utils';
+import propTypes from './propTypes';
+import { toReferenceProps } from './ReferableChart';
 import withVictoryTheme from './styles/withVictoryTheme';
 import CustomContainer from './CustomContainer';
 

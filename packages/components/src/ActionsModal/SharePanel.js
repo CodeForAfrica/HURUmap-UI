@@ -16,7 +16,7 @@ import {
   TwitterIcon,
   TwitterShareButton
 } from 'react-share';
-import makeStyles from '../styles/makeStyles';
+import makeStyles from '../makeStyles';
 
 const useStyles = makeStyles(() => ({
   content: {},

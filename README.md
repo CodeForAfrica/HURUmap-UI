@@ -39,13 +39,37 @@ HURUmap uses Storybook to view and work with the UI components developed in the 
 
 View online at: https://codeforafrica.github.io/HURUmap-UI/
 
-Run locally in your development environment running: `yarn storybook:dev` from the top-level Gutenberg directory.
+Run locally in your development environment running: `yarn start` from the top-level Gutenberg directory.
 
-## StoryShots Integration
+# Development
 
-> [StoryShots](https://www.npmjs.com/package/@storybook/addon-storyshots) adds automatic Jest Snapshot Testing for [Storybook](https://storybook.js.org/).
+When adding a new package, be sure to add the alias to the babel.config.js:
 
-Please refer to [Testing Overview](/docs/contributors/testing-overview.md#storyshots) to learn how to maintain auto-generated unit tests from stories added to Storybook.
+```
+module.exports = {
+  presets: ['@babel/preset-react', '@babel/preset-env'],
+  plugins: ['inline-react-svg'],
+  env: {
+    development: {
+      plugins: [
+        [
+          'babel-plugin-module-resolver',
+          {
+            alias: {
+              '@hurumap/cms': './packages/cms/src',
+              '@hurumap/charts': './packages/charts/src',
+              '@hurumap/factory': './packages/factory/src',
+              '@hurumap/components': './packages/components/src',
+              '@hurumap/config': './packages/config/src',
+              '@hurumap/mapit': './packages/mapit/src'
+            }
+          }
+        ]
+      ]
+    }
+  }
+};
+```
 
 ---
 

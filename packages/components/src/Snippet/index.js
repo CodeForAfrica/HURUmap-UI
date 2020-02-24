@@ -18,7 +18,7 @@ import ActionsModal, { EMBED_TAB, SHARE_TAB } from '../ActionsModal';
 import SnippetButton from './Button';
 import SnippetActions from './Actions';
 import ContentLoader from '../ContentLoader';
-import makeStyles from '../styles/makeStyles';
+import makeStyles from '../makeStyles';
 
 const useStyles = makeStyles(theme => ({
   root: ({ expand, width }) => ({

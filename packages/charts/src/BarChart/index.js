@@ -9,8 +9,8 @@ import {
   VictoryLegend
 } from 'victory';
 
-import { getLegendProps } from '../../utils';
-import propTypes from '../../propTypes';
+import { getLegendProps } from '../utils';
+import propTypes from '../propTypes';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import BarLabel from './BarLabel';
 import Chart, { toChartAxisProps } from '../Chart';

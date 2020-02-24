@@ -1,47 +1,40 @@
 {
-    "name": "@hurumap/factory",
+    "name": "@hurumap/mapit",
     "version": "9.2.0",
-    "description": "HURUmap charts factory and data fetching",
+    "description": "HURUmap map",
     "author": "CodeForAfrica",
     "license": "GPL-2.0-or-later",
     "keywords": [
         "hurumap",
-        "factory"
+        "mapit"
     ],
-    "homepage": "https://github.com/CodeForAfrica/HURUmap-UI/tree/master/packages/factory/README.md",
+    "homepage": "https://github.com/CodeForAfrica/HURUmap-UI/tree/master/packages/mapit/README.md",
     "repository": {
         "type": "git",
         "url": "https://github.com/CodeForAfrica/HURUmap-UI.git",
-        "directory": "packages/factory"
+        "directory": "packages/mapit"
     },
     "bugs": {
         "url": "https://github.com/CodeForAfrica/HURUmap-UI/issues"
     },
     "main": "build/index.js",
     "dependencies": {
-        "@apollo/react-hooks": "^3.1.3",
-        "@hurumap/charts": "file:../charts",
-        "@material-ui/core": "^4.9.3",
-        "lodash": "^4.17.15",
+        "@hurumap/components": "file:../components",
         "prop-types": "^15.7.2",
-        "victory": "^34.1.1",
-        "graphql": "^14.5.8",
-        "graphql-tag": "^2.10.1"
+        "leaflet": "^1.5.1",
+        "lodash": "^4.17.15",
+        "dequal": "^1.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
     },
     "devDependencies": {
         "react": "^16.10.2",
         "react-dom": "^16.10.2"
     },
     "peerDependencies": {
-      "@apollo/react-hooks": "^3.1.3",
-      "@material-ui/core": "^4.9.3",
-      "graphql": "^14.5.8",
-      "graphql-tag": "^2.10.1",
-      "react": "^16.10.2",
-      "react-dom": "^16.10.2"
-    },
-    "publishConfig": {
-        "access": "public"
+        "react": "^16.10.2",
+        "react-dom": "^16.10.2"
     },
     "scripts": {
         "publish:local": "mkdir -p ../publish-local && yarn pack --filename ../publish-local/$npm_package_name-$npm_package_version.tar && cd ../publish-local && tar xopf $npm_package_name-$npm_package_version.tar --one-top-level=$npm_package_name && cd $npm_package_name && yarn link"

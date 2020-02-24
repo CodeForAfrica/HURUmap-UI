@@ -7,13 +7,13 @@ import {
   domToPng,
   isDowloadHiddenElement,
   DOWNLOAD_HIDDEN_CLASSNAME
-} from '../utils';
+} from './utils';
 
 import A from './A';
 import BlockLoader from './BlockLoader';
 import EmbedDropDown from './EmbedDropDown';
-import ShareDropDown from '../ShareDropDown';
-import TypographyLoader from '../TypographyLoader';
+import ShareDropDown from './ShareDropDown';
+import TypographyLoader from './TypographyLoader';
 
 import defaultLogo from './assets/logo.png';
 import CompareIcon from './assets/icons/compare.svg';
@@ -21,7 +21,7 @@ import DataIcon from './assets/icons/tablet-reader.svg';
 import DownloadIcon from './assets/icons/download.svg';
 import EmbedIcon from './assets/icons/code.svg';
 import ShareIcon from './assets/icons/network-connection.svg';
-import makeStyles from '../../common/src/makeStyles';
+import makeStyles from './makeStyles';
 
 const useStyles = makeStyles(({ breakpoints, palette }) => ({
   root: {

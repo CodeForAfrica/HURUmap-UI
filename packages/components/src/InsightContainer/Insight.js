@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import { Button, Grid, Box } from '@material-ui/core';
 
 import BlockLoader from '../BlockLoader';
-import TypographyLoader from '../../TypographyLoader';
-import makeStyles from '../../../common/src/makeStyles';
+import TypographyLoader from '../TypographyLoader';
+import makeStyles from '../makeStyles';
 
 const useStyles = makeStyles({
   root: {

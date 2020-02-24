@@ -1,14 +1,14 @@
 {
-    "name": "@hurumap/cms",
+    "name": "@hurumap/config",
     "version": "9.2.0",
-    "description": "CMS functions for HURUmap Dashboard.",
+    "description": "HURUmap configuration of supported values and more",
     "author": "CodeForAfrica",
     "license": "GPL-2.0-or-later",
     "keywords": [
         "hurumap",
         "cms"
     ],
-    "homepage": "https://github.com/CodeForAfrica/HURUmap-UI/tree/master/packages/cms/README.md",
+    "homepage": "https://github.com/CodeForAfrica/HURUmap-UI/tree/master/packages/config/README.md",
     "repository": {
         "type": "git",
         "url": "https://github.com/CodeForAfrica/HURUmap-UI.git",
@@ -19,9 +19,7 @@
     },
     "main": "build/index.js",
     "dependencies": {
-        "@hurumap/components": "file:../components",
-        "lodash": "^4.17.15",
-        "prop-types": "^15.7.2"
+        "@hurumap/config": "file:../config"
     },
     "publishConfig": {
         "access": "public"

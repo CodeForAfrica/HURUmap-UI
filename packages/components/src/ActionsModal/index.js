@@ -6,7 +6,7 @@ import DownloadPanel from './DownloadPanel';
 import EmbedPanel from './EmbedPanel';
 import SharePanel from './SharePanel';
 import TabPanel, { a11yProps } from './TabPanel';
-import makeStyles from '../styles/makeStyles';
+import makeStyles from '../makeStyles';
 
 export const SHARE_TAB = 0;
 export const EMBED_TAB = 1;

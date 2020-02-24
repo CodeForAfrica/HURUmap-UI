@@ -1,9 +1,9 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
 
-import makeStyles from '../../../core/src/styles/makeStyles';
+import makeStyles from '../makeStyles';
 
-import InsightContainer from '../../../core/src/InsightContainer';
+import InsightContainer from '../InsightContainer';
 
 import propTypes from '../propTypes';
 

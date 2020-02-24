@@ -9,13 +9,13 @@ import {
   VictoryVoronoiContainer
 } from 'victory';
 
-import { getLegendProps } from '../utils';
+import { getLegendProps } from './utils';
 import withVictoryTheme from './styles/withVictoryTheme';
 import Chart, { toChartAxisProps } from './Chart';
 import LegendLabel from './LegendLabel';
 import WrapLabel from './WrapLabel';
-import Tooltip from '../Tooltip';
-import propTypes from '../propTypes';
+import Tooltip from './Tooltip';
+import propTypes from './propTypes';
 
 /**
  * HURUmap UI Line chart is made up of VictoryChart, VictoryVoronoiContainer,

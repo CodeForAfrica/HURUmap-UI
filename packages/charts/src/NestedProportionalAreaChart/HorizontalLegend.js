@@ -10,7 +10,7 @@ import {
   referenceDataStyle,
   referenceLabelsStyle
 } from './ScaledArea';
-import propTypes from '../../propTypes';
+import propTypes from '../propTypes';
 
 /**
  *

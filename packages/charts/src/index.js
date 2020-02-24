@@ -1,4 +1,3 @@
-export { default as countries } from './countries';
 export { default as createTheme } from './styles/createTheme';
 export { default as BarChart } from './BarChart';
 export { default as BulletChart } from './BulletChart';

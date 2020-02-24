@@ -8,20 +8,20 @@ import {
   domToPng,
   isDowloadHiddenElement,
   DOWNLOAD_HIDDEN_CLASSNAME
-} from '../../utils';
+} from '../utils';
 
 import BlockLoader from '../BlockLoader';
-import TypographyLoader from '../../TypographyLoader';
+import TypographyLoader from '../TypographyLoader';
 
 import DataTable from '../DataTable';
 
 import A from '../A';
 import Actions from './Action';
 import Insight from './Insight';
-import propTypes from '../../propTypes';
+import propTypes from '../propTypes';
 
 import defaultLogo from '../assets/logo.png';
-import makeStyles from '../../../common/src/makeStyles';
+import makeStyles from '../makeStyles';
 
 const useStyles = makeStyles(({ palette }) => ({
   root: {

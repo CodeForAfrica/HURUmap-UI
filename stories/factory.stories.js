@@ -9,7 +9,7 @@ import {
   boolean
 } from '@storybook/addon-knobs';
 
-import { ChartFactory } from '../src/factory';
+import { ChartFactory } from '@hurumap/factory';
 import { CenterDecorator } from './common';
 
 const rand = () => Number((Math.random() * 100).toFixed(1));

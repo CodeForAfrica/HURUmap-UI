@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import { VictoryTooltip } from 'victory';
 
-import { labels } from '../utils';
-import propTypes from '../propTypes';
+import { labels } from './utils';
+import propTypes from './propTypes';
 import Label from './Label';
 
 /**

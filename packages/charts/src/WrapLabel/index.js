@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import shortid from 'shortid';
 
 import wrapSVGText from './wrapSVGText';
-import propTypes from '../../propTypes';
+import propTypes from '../propTypes';
 
 const WrapLabel = React.memo(
   ({

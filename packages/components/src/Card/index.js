@@ -1,7 +1,6 @@
-
 import React, { useEffect, useState } from 'react';
 
-import Snippet from '../../../core/src/Snippet';
+import Snippet from '../Snippet';
 import FlourishChart from './FlourishChart';
 import HURUmapChart from './HURUmapChart';
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { VictoryLabel } from 'victory';
 
-import propTypes from '../propTypes';
+import propTypes from './propTypes';
 
 const getFont = (style = {}) => {
   const { font, fontFamily, fontSize } = Array.isArray(style)

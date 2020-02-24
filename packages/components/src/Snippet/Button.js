@@ -3,7 +3,7 @@ import React from 'react';
 import ButtonBase from '@material-ui/core/ButtonBase';
 
 import propTypes from '../propTypes';
-import makeStyles from '../styles/makeStyles';
+import makeStyles from '../makeStyles';
 
 const useStyles = makeStyles(({ palette }) => ({
   root: {

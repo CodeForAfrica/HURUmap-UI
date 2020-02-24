@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { labels as defaultLabels } from '../../utils';
+import { labels as defaultLabels } from '../utils';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import BulletBar from './BulletBar';
 import CustomContainer from '../CustomContainer';
-import propTypes from '../../propTypes';
+import propTypes from '../propTypes';
 
 const toOffset = (prop, { offset }) => {
   if (prop) {

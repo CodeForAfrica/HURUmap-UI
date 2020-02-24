@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 
 import DownloadIcon from '../assets/icons/download.svg';
-import makeStyles from '../styles/makeStyles';
+import makeStyles from '../makeStyles';
 
 const useStyles = makeStyles({
   content: {},
