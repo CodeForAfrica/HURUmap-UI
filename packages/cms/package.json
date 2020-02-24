@@ -23,11 +23,16 @@
         "lodash": "^4.17.15",
         "prop-types": "^15.7.2"
     },
+    "devDependencies": {
+        "react": "^16.10.2",
+        "react-dom": "^16.10.2"
+    },
+    "peerDependencies": {
+        "react": "^16.10.2",
+        "react-dom": "^16.10.2"
+    },
     "publishConfig": {
         "access": "public"
-    },
-    "devDependencies": {
-        "react": "^16.12.0"
     },
     "scripts": {
         "publish:local": "mkdir -p ../publish-local && yarn pack --filename ../publish-local/$npm_package_name-$npm_package_version.tar && cd ../publish-local && tar xopf $npm_package_name-$npm_package_version.tar --one-top-level=$npm_package_name && cd $npm_package_name && yarn link"

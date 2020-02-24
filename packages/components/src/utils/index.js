@@ -1,3 +1,5 @@
+import domToImage from 'dom-to-image';
+
 const DEFAULT_SHARE_ENDPOINT = '/api/share';
 
 export const uploadImage = (id, dataUrl, endPoint) =>
