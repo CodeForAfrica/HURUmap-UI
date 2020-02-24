@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 import Snippet from '../../core/Snippet';
 import FlourishChart from './FlourishChart';
 import HURUmapChart from './HURUmapChart';
+import ChartContainer from './ChartContainer';
+
+import PDFDataContainer from '../../core/PDFDataContainer';
 
 import { shareIndicator } from '../utils';
 
@@ -33,6 +36,9 @@ export default function Card({
   fetchDefinition,
   fetchDefinitionUrl,
   shareEndPoint,
+  documentSrc,
+  sourceLink,
+  sourceTitle,
   ...props
 }) {
   const [definition, setDefinition] = useState();
@@ -52,6 +58,29 @@ export default function Card({
     }
   }, [id, type, fetchDefinition, fetchDefinitionUrl, propDefinition]);
   switch (type) {
+    case 'indicator-widget':
+      return (
+        <ChartContainer
+          logo={logo}
+          hideInsight
+          title={title}
+          description={description}
+          variant="analysis"
+          actions={{ handleDownload: null }}
+          source={
+            sourceLink || sourceTitle
+              ? {
+                  title: sourceTitle,
+                  href: sourceLink
+                }
+              : undefined
+          }
+          {...props}
+        >
+          <div />
+          <PDFDataContainer title={title} source={documentSrc} />
+        </ChartContainer>
+      );
     case 'flourish':
       return (
         <FlourishChart
@@ -220,7 +249,10 @@ Card.propTypes = {
   fetchDefinition: propTypes.func,
   fetchDefinitionUrl: propTypes.oneOfType([propTypes.string, propTypes.func]),
   logo: propTypes.string,
-  shareEndPoint: propTypes.string
+  shareEndPoint: propTypes.string,
+  documentSrc: propTypes.string,
+  sourceLink: propTypes.string,
+  sourceTitle: propTypes.string
 };
 
 Card.defaultProps = {
@@ -241,6 +273,9 @@ Card.defaultProps = {
   analysisLinkTitle: undefined,
   fetchDefinition: undefined,
   fetchDefinitionUrl: undefined,
+  documentSrc: undefined,
+  sourceLink: undefined,
+  sourceTitle: undefined,
   dataLinkHref: geoId => `/profiles/${geoId}`,
   analysisLinkHref: countrySlug => `/profiles/${countrySlug}`,
   flourishURL: id => `/wp-json/hurumap-data/flourish/${id}/`,
