@@ -86,10 +86,9 @@ export default function Card({
             {widget === 'html' && (
               <div dangerouslySetInnerHTML={{ __html: blockSrc }} />
             )}
-            {widget === 'document' ||
-              (widget === 'document_widget' && (
-                <PDFDataContainer title={title} source={blockSrc} />
-              ))}
+            {(widget === 'document' || widget === 'document_widget') && (
+              <PDFDataContainer title={title} source={blockSrc} />
+            )}
           </>
         </ChartContainer>
       );
