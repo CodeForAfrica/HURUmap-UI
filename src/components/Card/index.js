@@ -64,9 +64,9 @@ export default function Card({
         <ChartContainer
           logo={logo}
           hideInsight
+          hideStat
           title={title}
           description={description}
-          variant="analysis"
           actions={{ handleDownload: null }}
           source={
             sourceLink || sourceTitle
