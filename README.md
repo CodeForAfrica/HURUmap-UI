@@ -43,7 +43,9 @@ Run locally in your development environment running: `yarn start` from the top-l
 
 # Development
 
-When adding a new package, be sure to add the alias to the babel.config.js:
+When adding a new package, be sure to add the alias to the babel.config.js and .eslintrc.js:
+
+- babel.config.js
 
 ```
 module.exports = {
@@ -53,7 +55,7 @@ module.exports = {
     development: {
       plugins: [
         [
-          'babel-plugin-module-resolver',
+          'module-resolver',
           {
             alias: {
               '@hurumap/cms': './packages/cms/src',
@@ -69,6 +71,29 @@ module.exports = {
     }
   }
 };
+```
+
+- .eslintrc.js
+
+```
+module.exports = {
+  ...,
+  settings: {
+    'import/resolver': {
+      'babel-module': {
+        alias: {
+          '@hurumap/cms': './packages/cms/src',
+          '@hurumap/charts': './packages/charts/src',
+          '@hurumap/factory': './packages/factory/src',
+          '@hurumap/components': './packages/components/src',
+          '@hurumap/config': './packages/config/src',
+          '@hurumap/mapit': './packages/mapit/src'
+        }
+      }
+    }
+  }
+};
+
 ```
 
 ---
