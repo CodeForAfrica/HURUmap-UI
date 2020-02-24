@@ -29,7 +29,8 @@ import {
   SOURCE_TITLE,
   SRC,
   WIDGET,
-  LAYOUT
+  LAYOUT,
+  BLOCK_ID
 } from './attributes';
 
 export const TYPES = {
@@ -58,6 +59,7 @@ export function dataProps(
     showStatVisual,
     postId,
     postType,
+    blockId,
     sourceLink,
     sourceTitle,
     src,
@@ -92,6 +94,7 @@ export function dataProps(
       [ANALYSIS_LINK_TITLE]: analysisLinkTitle,
       [SHOW_STAT_VISUAL]: showStatVisual,
       [WIDTH]: chartWidth || cardWidth,
+      [BLOCK_ID]: blockId,
       [SOURCE_LINK]: sourceLink,
       [SOURCE_TITLE]: sourceTitle,
       [WIDGET]: widget,
@@ -179,27 +182,23 @@ export function renderBlocks({
   return (
     <>
       {Array.from(
-        document.querySelectorAll('div[class*="indicator-widget"]')
-      ).map(el => {
-        if (
-          el.getAttribute(WIDGET) === 'document' ||
-          el.getAttribute(LAYOUT) === 'document_widget'
-        ) {
-          return ReactDOM.createPortal(
-            <Card
-              parentEl={el}
-              logo={logo}
-              title={el.getAttribute(TITLE)}
-              description={el.getAttribute(DESCRIPTION)}
-              sourceTitle={el.getAttribute(SOURCE_TITLE)}
-              sourceLink={el.getAttribute(SOURCE_LINK)}
-              documentSrc={el.getAttribute(SRC)}
-            />,
-            el
-          );
-        }
-        return null;
-      })}
+        document.querySelectorAll(`div[id^=${TYPES.INDICATOR_WIDGET}]`)
+      ).map(el =>
+        ReactDOM.createPortal(
+          <Card
+            id={el.getAttribute(BLOCK_ID)}
+            parentEl={el}
+            logo={logo}
+            title={el.getAttribute(TITLE)}
+            description={el.getAttribute(DESCRIPTION)}
+            sourceTitle={el.getAttribute(SOURCE_TITLE)}
+            sourceLink={el.getAttribute(SOURCE_LINK)}
+            documentSrc={el.getAttribute(SRC)}
+            widget={el.getAttribute(WIDGET) || el.getAttribute(LAYOUT)}
+          />,
+          el
+        )
+      )}
       {Array.from(
         document.querySelectorAll(`div[id^=${TYPES.HURUMAP_CARD}]`)
       ).map(el =>

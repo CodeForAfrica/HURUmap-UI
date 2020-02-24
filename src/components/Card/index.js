@@ -39,6 +39,7 @@ export default function Card({
   documentSrc,
   sourceLink,
   sourceTitle,
+  widget,
   ...props
 }) {
   const [definition, setDefinition] = useState();
@@ -78,7 +79,11 @@ export default function Card({
           {...props}
         >
           <div />
-          <PDFDataContainer title={title} source={documentSrc} />
+          {widget === 'document' || widget === 'document_widget' ? (
+            <PDFDataContainer title={title} source={documentSrc} />
+          ) : (
+            parentEl.innerChild
+          )}
         </ChartContainer>
       );
     case 'flourish':
@@ -210,7 +215,8 @@ Card.propTypes = {
     getAttribute: propTypes.func,
     firstChild: propTypes.shape({
       scrollIntoView: propTypes.func
-    })
+    }),
+    innerChild: propTypes.children
   }),
   id: propTypes.string.isRequired,
   title: propTypes.string,
@@ -252,7 +258,8 @@ Card.propTypes = {
   shareEndPoint: propTypes.string,
   documentSrc: propTypes.string,
   sourceLink: propTypes.string,
-  sourceTitle: propTypes.string
+  sourceTitle: propTypes.string,
+  widget: propTypes.string
 };
 
 Card.defaultProps = {
@@ -276,6 +283,7 @@ Card.defaultProps = {
   documentSrc: undefined,
   sourceLink: undefined,
   sourceTitle: undefined,
+  widget: undefined,
   dataLinkHref: geoId => `/profiles/${geoId}`,
   analysisLinkHref: countrySlug => `/profiles/${countrySlug}`,
   flourishURL: id => `/wp-json/hurumap-data/flourish/${id}/`,
