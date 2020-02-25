@@ -41,6 +41,10 @@ View online at: https://codeforafrica.github.io/HURUmap-UI/
 
 Run locally in your development environment running: `yarn start` from the top-level Gutenberg directory.
 
+# Publishing
+
+Run `yarn publish:packages` otherwise always publish using lerna `--contents` argument like so `yarn lerna publish --contents build`.
+
 # Development
 
 When adding a new package, be sure to add the alias to the babel.config.js and .eslintrc.js:

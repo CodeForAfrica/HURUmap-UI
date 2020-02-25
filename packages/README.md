@@ -25,7 +25,7 @@ When creating a new package, you need to provide at least the following:
 		"bugs": {
 			"url": "https://github.com/CodeForAfrica/HURUmap-UI/issues"
 		},
-		"main": "build/index.js",
+		"main": "index.js",
 		"dependencies": {
 			"@babel/runtime": "^7.8.3"
 		},
