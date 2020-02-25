@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import leaflet from 'leaflet';
 
 import 'leaflet/dist/leaflet.css';
-import { BlockLoader, makeStyles } from '@hurumap/components';
+import { BlockLoader, makeStyles } from '@hurumaptest/components';
 import useDeepRef from './useDeepRef';
 
 const useStyles = makeStyles({

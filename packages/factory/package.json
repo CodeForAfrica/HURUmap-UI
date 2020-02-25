@@ -1,5 +1,5 @@
 {
-    "name": "@hurumap/factory",
+    "name": "@hurumaptest/factory",
     "version": "0.0.1",
     "description": "HURUmap charts factory and data fetching",
     "author": "CodeForAfrica",
@@ -20,7 +20,7 @@
     "main": "build/index.js",
     "dependencies": {
         "@apollo/react-hooks": "^3.1.3",
-        "@hurumap/charts": "^0.0.1",
+        "@hurumaptest/charts": "^0.0.1",
         "@material-ui/core": "^4.9.3",
         "graphql": "^14.5.8",
         "graphql-tag": "^2.10.1",

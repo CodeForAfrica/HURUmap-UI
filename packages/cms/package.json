@@ -1,5 +1,5 @@
 {
-    "name": "@hurumap/cms",
+    "name": "@hurumaptest/cms",
     "version": "0.0.1",
     "description": "CMS functions for HURUmap Dashboard.",
     "author": "CodeForAfrica",
@@ -19,7 +19,7 @@
     },
     "main": "build/index.js",
     "dependencies": {
-        "@hurumap/components": "^0.0.1",
+        "@hurumaptest/components": "^0.0.1",
         "lodash": "^4.17.15",
         "prop-types": "^15.7.2"
     },

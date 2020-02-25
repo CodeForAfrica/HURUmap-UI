@@ -7,7 +7,7 @@ Utility to render responsive HURUmap components and/or core elements in place of
 Install the module
 
 ```bash
-npm install @hurumap/cms --save
+npm install @hurumaptest/cms --save
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ These functions can be accessed by importing from the `cms` root directory:
 /**
  * HURUmap dependencies
  */
-import { renderBlocks } from '@hurumap/cms';
+import { renderBlocks } from '@hurumaptest/cms';
 
 export default function MyVisual() {
     return (

@@ -6,12 +6,12 @@ module.exports = {
       'module-resolver',
       {
         alias: {
-          '@hurumap/cms': './packages/cms/src',
-          '@hurumap/charts': './packages/charts/src',
-          '@hurumap/factory': './packages/factory/src',
-          '@hurumap/components': './packages/components/src',
-          '@hurumap/config': './packages/config/src',
-          '@hurumap/mapit': './packages/mapit/src'
+          '@hurumaptest/cms': './packages/cms/src',
+          '@hurumaptest/charts': './packages/charts/src',
+          '@hurumaptest/factory': './packages/factory/src',
+          '@hurumaptest/components': './packages/components/src',
+          '@hurumaptest/config': './packages/config/src',
+          '@hurumaptest/mapit': './packages/mapit/src'
         }
       }
     ]

@@ -13,7 +13,7 @@ import {
   NumberVisuals,
   propTypes,
   withVictoryTheme
-} from '@hurumap/charts';
+} from '@hurumaptest/charts';
 
 import aggregateData, { isSelectFunc, groupData } from './utils/aggregateData';
 

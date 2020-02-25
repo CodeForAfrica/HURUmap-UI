@@ -7,7 +7,7 @@ This packages includes a library of generic HURUmap components to be used for cr
 Install the module
 
 ```bash
-npm install @hurumap/components --save
+npm install @hurumaptest/components --save
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ These components can be accessed by importing from the `components` root directo
 /**
  * HURUmap dependencies
  */
-import { Card } from '@hurumap/components';
+import { Card } from '@hurumaptest/components';
 
 export default function MyVisual() {
 	return <Card
