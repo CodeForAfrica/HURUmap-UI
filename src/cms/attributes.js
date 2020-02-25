@@ -47,7 +47,6 @@ export const SHOW_STATVISUAL = 'data-show-statvisual';
  */
 export const DATA_GEOID = 'data-data-geoid';
 
-export const BLOCK_ID = 'data-block-id';
 export const SOURCE_TITLE = 'data-source-title';
 export const SOURCE_LINK = 'data-source-link';
 export const SRC = 'data-src';

@@ -29,8 +29,7 @@ import {
   SOURCE_TITLE,
   SRC,
   WIDGET,
-  LAYOUT,
-  BLOCK_ID
+  LAYOUT
 } from './attributes';
 
 export const TYPES = {
@@ -59,7 +58,6 @@ export function dataProps(
     showStatVisual,
     postId,
     postType,
-    blockId,
     sourceLink,
     sourceTitle,
     src,
@@ -94,7 +92,6 @@ export function dataProps(
       [ANALYSIS_LINK_TITLE]: analysisLinkTitle,
       [SHOW_STAT_VISUAL]: showStatVisual,
       [WIDTH]: chartWidth || cardWidth,
-      [BLOCK_ID]: blockId,
       [SOURCE_LINK]: sourceLink,
       [SOURCE_TITLE]: sourceTitle,
       [WIDGET]: widget,
@@ -182,13 +179,14 @@ export function renderBlocks({
   return (
     <>
       {Array.from(
-        document.querySelectorAll(
-          `div[data-block-id^=${TYPES.INDICATOR_WIDGET}]`
-        )
-      ).map(el =>
-        ReactDOM.createPortal(
+        document.querySelectorAll(`div[id^=${TYPES.INDICATOR_WIDGET}]`)
+      ).map(el => {
+        // deprecated php indicator used to have innerhtml in its container div
+        // eslint-disable-next-line no-param-reassign
+        el.innerHTML = '';
+        return ReactDOM.createPortal(
           <Card
-            id={el.getAttribute(BLOCK_ID)}
+            id={el.getAttribute('id')}
             type="indicator"
             parentEl={el}
             logo={logo}
@@ -200,8 +198,8 @@ export function renderBlocks({
             widget={el.getAttribute(WIDGET) || el.getAttribute(LAYOUT)}
           />,
           el
-        )
-      )}
+        );
+      })}
       {Array.from(
         document.querySelectorAll(`div[id^=${TYPES.HURUMAP_CARD}]`)
       ).map(el =>

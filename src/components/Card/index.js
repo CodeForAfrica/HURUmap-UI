@@ -80,10 +80,10 @@ export default function Card({
         >
           <div />
           <>
-            {widget === 'image' && (
+            {(widget === 'image' || widget === 'image_widget') && (
               <img style={{ width: '100%' }} src={blockSrc} alt="indicator" />
             )}
-            {widget === 'html' && (
+            {(widget === 'html' || widget === 'raw_html_widget') && (
               <div dangerouslySetInnerHTML={{ __html: blockSrc }} />
             )}
             {(widget === 'document' || widget === 'document_widget') && (
