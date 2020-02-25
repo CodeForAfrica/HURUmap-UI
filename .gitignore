@@ -193,8 +193,4 @@ $RECYCLE.BIN/
 ### Storybook ###
 
 # Build folders
-/core
-/factory
-/core
-/cms
 build/
