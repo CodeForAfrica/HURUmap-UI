@@ -7,7 +7,7 @@ This packages includes a library of core HURUmap charts.
 Install the module
 
 ```bash
-npm install @hurumaptest/charts --save
+npm install @hurumap/charts --save
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ These components can be accessed by importing from the `components` root directo
 /**
  * HURUmap dependencies
  */
-import { Card } from '@hurumaptest/components';
+import { Card } from '@hurumap/core';
 
 export default function MyVisual() {
 	return <Card
@@ -56,4 +56,4 @@ export default function MyVisual() {
 }
 ```
 
-<br/><br/><p align="center"><img src="https://hurumap.org/static/img/logo-white.png" alt="Hurumap" /></p>
+<br/><br/><p align="center" style="background-color:#084a49;"><img src="https://hurumap.org/static/img/logo-white.png" alt="Hurumap" /></p>

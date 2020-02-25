@@ -58,12 +58,12 @@ module.exports = {
           'module-resolver',
           {
             alias: {
-              '@hurumaptest/cms': './packages/cms/src',
-              '@hurumaptest/charts': './packages/charts/src',
-              '@hurumaptest/factory': './packages/factory/src',
-              '@hurumaptest/components': './packages/components/src',
-              '@hurumaptest/config': './packages/config/src',
-              '@hurumaptest/mapit': './packages/mapit/src'
+              '@hurumap/cms': './packages/cms/src',
+              '@hurumap/charts': './packages/charts/src',
+              '@hurumap/factory': './packages/factory/src',
+              '@hurumap/core': './packages/core/src',
+              '@hurumap/config': './packages/config/src',
+              '@hurumap/mapit': './packages/mapit/src'
             }
           }
         ]
@@ -82,12 +82,12 @@ module.exports = {
     'import/resolver': {
       'babel-module': {
         alias: {
-          '@hurumaptest/cms': './packages/cms/src',
-          '@hurumaptest/charts': './packages/charts/src',
-          '@hurumaptest/factory': './packages/factory/src',
-          '@hurumaptest/components': './packages/components/src',
-          '@hurumaptest/config': './packages/config/src',
-          '@hurumaptest/mapit': './packages/mapit/src'
+          '@hurumap/cms': './packages/cms/src',
+          '@hurumap/charts': './packages/charts/src',
+          '@hurumap/factory': './packages/factory/src',
+          '@hurumap/core': './packages/core/src',
+          '@hurumap/config': './packages/config/src',
+          '@hurumap/mapit': './packages/mapit/src'
         }
       }
     }

@@ -1,18 +1,18 @@
 {
-    "name": "@hurumaptest/components",
-    "version": "0.0.1",
+    "name": "@hurumap/core",
+    "version": "0.0.0",
     "description": "UI components for HURUmap.",
     "author": "CodeForAfrica",
     "license": "GPL-2.0-or-later",
     "keywords": [
         "hurumap",
-        "components"
+        "core"
     ],
-    "homepage": "https://github.com/CodeForAfrica/HURUmap-UI/tree/master/packages/components/README.md",
+    "homepage": "https://github.com/CodeForAfrica/HURUmap-UI/tree/master/packages/core/README.md",
     "repository": {
         "type": "git",
         "url": "https://github.com/CodeForAfrica/HURUmap-UI.git",
-        "directory": "packages/components"
+        "directory": "packages/core"
     },
     "bugs": {
         "url": "https://github.com/CodeForAfrica/HURUmap-UI/issues"
@@ -20,32 +20,35 @@
     "main": "build/index.js",
     "dependencies": {
         "@apollo/react-hooks": "^3.1.3",
-        "@hurumaptest/charts": "^0.0.1",
-        "@hurumaptest/factory": "^0.0.1",
         "@material-ui/core": "^4.9.3",
         "@material-ui/icons": "^4.9.1",
+        "dequal": "^1.0.0",
         "dom-to-image": "^2.6.0",
         "leaflet": "^1.5.1",
         "lodash": "^4.17.15",
         "prop-types": "^15.7.2",
         "react-content-loader": "^5.0.1",
         "react-share": "^4.0.0",
-        "shortid": "^2.2.15"
+        "shortid": "^2.2.15",
+        "@hurumap/charts": "^0.0.0",
+        "graphql": "^14.5.8",
+        "graphql-tag": "^2.10.1",
+        "victory": "^34.1.1"
     },
     "devDependencies": {
         "react": "^16.10.2",
         "react-dom": "^16.10.2"
     },
     "peerDependencies": {
-      "@apollo/react-hooks": "^3.1.3",
-      "@material-ui/core": "^4.5.1",
-      "@material-ui/icons": "^4.5.1",
-      "apollo-client": "^2.6.8",
-      "apollo-utilities": "^1.3.3",
-      "graphql": "^14.5.8",
-      "graphql-tag": "^2.10.1",
-      "react": "^16.10.2",
-      "react-dom": "^16.10.2"
+        "@apollo/react-hooks": "^3.1.3",
+        "@material-ui/core": "^4.5.1",
+        "@material-ui/icons": "^4.5.1",
+        "apollo-client": "^2.6.8",
+        "apollo-utilities": "^1.3.3",
+        "graphql": "^14.5.8",
+        "graphql-tag": "^2.10.1",
+        "react": "^16.10.2",
+        "react-dom": "^16.10.2"
     },
     "publishConfig": {
         "access": "public"

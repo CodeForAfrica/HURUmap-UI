@@ -9,7 +9,7 @@ When creating a new package, you need to provide at least the following:
 1. `package.json` based on the template:
 	```json
 	{
-		"name": "@hurumaptest/package-name",
+		"name": "@hurumap/package-name",
 		"version": "1.0.0-beta.0",
 		"description": "Package description.",
 		"author": "CodeForAfrica",
@@ -64,7 +64,7 @@ _Example:_
 lerna add lodash packages/charts
 ```
 
-This command adds the latest version of `lodash` as a dependency to the `@hurumaptest/charts` package, which is located in `packages/charts` folder.
+This command adds the latest version of `lodash` as a dependency to the `@hurumap/charts` package, which is located in `packages/charts` folder.
 
 #### Removing Existing Dependencies
 

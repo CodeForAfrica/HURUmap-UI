@@ -195,6 +195,6 @@ $RECYCLE.BIN/
 # Build folders
 /core
 /factory
-/components
+/core
 /cms
 build/

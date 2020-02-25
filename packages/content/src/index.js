@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { pickBy } from 'lodash';
-import { Card } from '@hurumaptest/components';
+import { Card } from '@hurumap/core';
 
 import {
   TITLE,

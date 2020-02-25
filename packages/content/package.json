@@ -1,32 +1,27 @@
 {
-    "name": "@hurumaptest/mapit",
-    "version": "0.0.1",
-    "description": "HURUmap map",
+    "name": "@hurumap/content",
+    "version": "0.0.0",
+    "description": "CMS functions for HURUmap Dashboard.",
     "author": "CodeForAfrica",
     "license": "GPL-2.0-or-later",
     "keywords": [
         "hurumap",
-        "mapit"
+        "content"
     ],
-    "homepage": "https://github.com/CodeForAfrica/HURUmap-UI/tree/master/packages/mapit/README.md",
+    "homepage": "https://github.com/CodeForAfrica/HURUmap-UI/tree/master/packages/content/README.md",
     "repository": {
         "type": "git",
         "url": "https://github.com/CodeForAfrica/HURUmap-UI.git",
-        "directory": "packages/mapit"
+        "directory": "packages/content"
     },
     "bugs": {
         "url": "https://github.com/CodeForAfrica/HURUmap-UI/issues"
     },
     "main": "build/index.js",
     "dependencies": {
-        "@hurumaptest/components": "^0.0.1",
-        "prop-types": "^15.7.2",
-        "leaflet": "^1.5.1",
+        "@hurumap/core": "^0.0.0",
         "lodash": "^4.17.15",
-        "dequal": "^1.0.0"
-    },
-    "publishConfig": {
-        "access": "public"
+        "prop-types": "^15.7.2"
     },
     "devDependencies": {
         "react": "^16.10.2",
@@ -35,5 +30,8 @@
     "peerDependencies": {
         "react": "^16.10.2",
         "react-dom": "^16.10.2"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }

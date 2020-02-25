@@ -2,9 +2,9 @@ import React, { useMemo } from 'react';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@hurumaptest/charts';
+import { makeStyles } from '@hurumap/charts';
 
-import { ChartFactory, useProfileLoader } from '@hurumaptest/factory';
+import { ChartFactory, useProfileLoader } from '@hurumap/core';
 
 import propTypes from '../propTypes';
 import ChartContainer from './ChartContainer';

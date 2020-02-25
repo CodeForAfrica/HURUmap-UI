@@ -13,13 +13,13 @@ import {
 
 import { Grid, Typography, makeStyles } from '@material-ui/core';
 
-import { BarChart, PieChart } from '@hurumaptest/charts';
+import { BarChart, PieChart } from '@hurumap/charts';
 import {
   ChartContainer,
   DropDown,
-  InsightContainer
-} from '@hurumaptest/components';
-import { ChartFactory } from '@hurumaptest/factory';
+  InsightContainer,
+  ChartFactory
+} from '@hurumap/core';
 import { CenterDecorator } from './common';
 
 import logo from './assets/dominion-logo.png';

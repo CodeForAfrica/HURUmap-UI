@@ -67,12 +67,10 @@
     "deploy:storybook": "storybook-to-ghpages"
   },
   "dependencies": {
-    "@hurumaptest/charts": "file:packages/charts",
-    "@hurumaptest/cms": "file:packages/cms",
-    "@hurumaptest/components": "file:packages/components",
-    "@hurumaptest/config": "file:packages/config",
-    "@hurumaptest/factory": "file:packages/factory",
-    "@hurumaptest/mapit": "file:packages/mapit"
+    "@hurumap/charts": "file:packages/charts",
+    "@hurumap/content": "file:packages/content",
+    "@hurumap/core": "file:packages/core",
+    "@hurumap/config": "file:packages/config"
   },
   "husky": {
     "hooks": {

@@ -1,24 +1,24 @@
-# Component Reference
+# Core Components Reference
 
-This packages includes a library of generic HURUmap components to be used for creating common UI elements shared between applications and the HURUmap dashboard.
+This packages includes a library of generic HURUmap core components to be used for creating common UI elements shared between applications and the HURUmap dashboard.
 
 ## Installation
 
 Install the module
 
 ```bash
-npm install @hurumaptest/components --save
+npm install @hurumap/core --save
 ```
 
 ## Usage
 
-These components can be accessed by importing from the `components` root directory:
+These components can be accessed by importing from the `core` root directory:
 
 ```jsx
 /**
  * HURUmap dependencies
  */
-import { Card } from '@hurumaptest/components';
+import { Card } from '@hurumap/core';
 
 export default function MyVisual() {
 	return <Card
@@ -56,4 +56,4 @@ export default function MyVisual() {
 }
 ```
 
-<br/><br/><p align="center"><img src="https://hurumap.org/static/img/logo-white.png" alt="Hurumap" /></p>
+<br/><br/><p align="center" style="background-color:#084a49;"><img src="https://hurumap.org/static/img/logo-white.png" alt="Hurumap" /></p>

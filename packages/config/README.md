@@ -7,7 +7,7 @@ Configuration values for HURUmap suppoert.
 Install the module
 
 ```bash
-npm install @hurumaptest/config --save
+npm install @hurumap/config --save
 ```
 
 ## Usage
@@ -18,11 +18,11 @@ These configurations can be accessed by importing from the `config` root directo
 /**
  * HURUmap dependencies
  */
-import { countries } from '@hurumaptest/config';
+import { countries } from '@hurumap/config';
 
 /**
  * countries supported by HURUmap
  */
 ```
 
-<br/><br/><p align="center"><img src="https://hurumap.org/static/img/logo-white.png" alt="Hurumap" /></p>
+<br/><br/><p align="center" style="background-color:#084a49;"><img src="https://hurumap.org/static/img/logo-white.png" alt="Hurumap" /></p>

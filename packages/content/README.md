@@ -1,4 +1,4 @@
-# CMS (Content Management System)
+# Content
 
 Utility to render responsive HURUmap components and/or core elements in place of of html placeholders coming from the Wordpress dashboard using the Gutenberg blocks.
 
@@ -7,18 +7,18 @@ Utility to render responsive HURUmap components and/or core elements in place of
 Install the module
 
 ```bash
-npm install @hurumaptest/cms --save
+npm install @hurumap/content --save
 ```
 
 ## Usage
 
-These functions can be accessed by importing from the `cms` root directory:
+These functions can be accessed by importing from the `content` root directory:
 
 ```jsx
 /**
  * HURUmap dependencies
  */
-import { renderBlocks } from '@hurumaptest/cms';
+import { renderBlocks } from '@hurumap/content';
 
 export default function MyVisual() {
     return (
@@ -106,4 +106,4 @@ registerBlockType('hurumap/card-block', {
 
 ```
 
-<br/><br/><p align="center"><img src="https://hurumap.org/static/img/logo-white.png" alt="Hurumap" /></p>
+<br/><br/><p align="center" style="background-color:#084a49;"><img src="https://hurumap.org/static/img/logo-white.png" alt="Hurumap" /></p>
