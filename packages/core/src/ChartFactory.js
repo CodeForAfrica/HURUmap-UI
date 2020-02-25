@@ -11,8 +11,8 @@ import {
   PieChart,
   NestedProportionalAreaChart,
   NumberVisuals,
-  propTypes,
-  withVictoryTheme
+  withVictoryTheme,
+  propTypes
 } from '@hurumap/charts';
 
 import aggregateData, { isSelectFunc, groupData } from './utils/aggregateData';
