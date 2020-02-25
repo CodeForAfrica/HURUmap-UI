@@ -5,8 +5,8 @@ import { ButtonBase, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Pdf from '@mikecousins/react-pdf';
-import leftArrow from './assets/icons/left-arrow.svg';
-import rightArrow from './assets/icons/right-arrow.svg';
+import LeftArrow from './assets/icons/left-arrow.svg';
+import RightArrow from './assets/icons/right-arrow.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -44,7 +44,7 @@ function DataContainer({ source }) {
           className={classes.pageButton}
           onClick={() => setPage(page - 1)}
         >
-          <img alt="" src={leftArrow} />
+          <LeftArrow />
         </ButtonBase>
       </Grid>
       <Grid item>
@@ -63,7 +63,7 @@ function DataContainer({ source }) {
           className={classes.pageButton}
           onClick={() => setPage(page + 1)}
         >
-          <img alt="" src={rightArrow} />
+          <RightArrow />
         </ButtonBase>
       </Grid>
     </Grid>
