@@ -59,10 +59,9 @@
     "start": "start-storybook -s ./",
     "deploy": "yarn deploy:storybook",
     "deploy:storybook": "storybook-to-ghpages",
-    "preversion": "yarn lint && yarn build",
     "lint": "yarn eslint --fix --ignore-path './.gitignore' --ext '.js,.json' './'",
     "lint-staged": "yarn eslint --fix --ignore-path './.gitignore' --ext '.js,.json'",
-    "build": "lerna exec --parallel -- babel --root-mode upward src -d ../../build/\\$LERNA_PACKAGE_NAME --copy-files --ignore **/*.story.js,**/*.spec.js && lerna exec --parallel -- cp ./package.json ./README.md ./CHANGELOG.md ../../build/\\$LERNA_PACKAGE_NAME"
+    "build": "lerna exec --parallel -- babel --root-mode upward src -d build --copy-files --ignore **/*.story.js,**/*.spec.js && lerna exec --parallel -- cp ./package.json ./README.md ./CHANGELOG.md ./build"
   },
   "dependencies": {
     "@hurumap/charts": "file:packages/charts",
