@@ -58,6 +58,7 @@
   "scripts": {
     "preversion": "yarn lint",
     "postversion": "yarn build",
+    "hurumap:publish": "yarn lerna publish --contents build",
     "start": "start-storybook -s ./",
     "deploy": "yarn deploy:storybook",
     "deploy:storybook": "storybook-to-ghpages",
