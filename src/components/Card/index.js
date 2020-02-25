@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import Snippet from '../../core/Snippet';
 import FlourishChart from './FlourishChart';
 import HURUmapChart from './HURUmapChart';
@@ -10,6 +11,15 @@ import PDFDataContainer from '../../core/PDFDataContainer';
 import { shareIndicator } from '../utils';
 
 import propTypes from '../propTypes';
+
+const useStyles = makeStyles({
+  htmlDiv: {
+    width: '100%'
+  },
+  image: {
+    width: '100%'
+  }
+});
 
 export default function Card({
   id,
@@ -42,6 +52,7 @@ export default function Card({
   widget,
   ...props
 }) {
+  const classes = useStyles(props);
   const [definition, setDefinition] = useState();
   useEffect(() => {
     if (fetchDefinition) {
@@ -81,10 +92,13 @@ export default function Card({
           <div />
           <>
             {(widget === 'image' || widget === 'image_widget') && (
-              <img style={{ width: '100%' }} src={blockSrc} alt="indicator" />
+              <img className={classes.image} src={blockSrc} alt="indicator" />
             )}
             {(widget === 'html' || widget === 'raw_html_widget') && (
-              <div dangerouslySetInnerHTML={{ __html: blockSrc }} />
+              <div
+                className={classes.htmlDiv}
+                dangerouslySetInnerHTML={{ __html: blockSrc }}
+              />
             )}
             {(widget === 'document' || widget === 'document_widget') && (
               <PDFDataContainer title={title} source={blockSrc} />
