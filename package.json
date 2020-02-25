@@ -56,15 +56,13 @@
     "webpack": "^4.39.2"
   },
   "scripts": {
+    "start": "start-storybook -s ./",
+    "deploy": "yarn deploy:storybook",
+    "deploy:storybook": "storybook-to-ghpages",
     "preversion": "yarn lint && yarn build",
-    "postversion": "yarn publish --access public --new-version $npm_package_version . && git push --tags && (git diff-index --quiet HEAD || git push) && echo \"Successfully released version $npm_package_version!\"",
-    "postpublish": "yarn deploy",
     "lint": "yarn eslint --fix --ignore-path './.gitignore' --ext '.js,.json' './'",
     "lint-staged": "yarn eslint --fix --ignore-path './.gitignore' --ext '.js,.json'",
-    "start": "start-storybook -s ./",
-    "build": "lerna exec --parallel -- babel --root-mode upward src -d build --copy-files --ignore **/*.story.js,**/*.spec.js",
-    "deploy": "yarn deploy:storybook",
-    "deploy:storybook": "storybook-to-ghpages"
+    "build": "lerna exec --parallel -- babel --root-mode upward src -d ../../build/\\$LERNA_PACKAGE_NAME --copy-files --ignore **/*.story.js,**/*.spec.js && lerna exec --parallel -- cp ./package.json ./README.md ./CHANGELOG.md ../../build/\\$LERNA_PACKAGE_NAME"
   },
   "dependencies": {
     "@hurumap/charts": "file:packages/charts",
