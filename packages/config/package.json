@@ -17,7 +17,7 @@
     "bugs": {
         "url": "https://github.com/CodeForAfrica/HURUmap-UI/issues"
     },
-    "main": "build/index.js",
+    "main": "index.js",
     "publishConfig": {
         "access": "public"
     }

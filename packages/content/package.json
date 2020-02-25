@@ -17,7 +17,7 @@
     "bugs": {
         "url": "https://github.com/CodeForAfrica/HURUmap-UI/issues"
     },
-    "main": "build/index.js",
+    "main": "index.js",
     "dependencies": {
         "@hurumap/core": "^0.0.0",
         "lodash": "^4.17.15",
