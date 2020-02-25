@@ -23,8 +23,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function DataContainer({ source }) {
-  const classes = useStyles();
+function DataContainer({ source, ...props }) {
+  const classes = useStyles(props);
   const [page, setPage] = useState(1);
   const [numberOfPages, setNumberOfPages] = useState(0);
 
