@@ -28,6 +28,7 @@ import {
   SOURCE_LINK,
   SOURCE_TITLE,
   SRC,
+  ID,
   WIDGET,
   LAYOUT
 } from './attributes';
@@ -60,6 +61,7 @@ export function dataProps(
     postType,
     sourceLink,
     sourceTitle,
+    id,
     src,
     widget
   }
@@ -95,6 +97,7 @@ export function dataProps(
       [SOURCE_LINK]: sourceLink,
       [SOURCE_TITLE]: sourceTitle,
       [WIDGET]: widget,
+      [ID]: id,
       [SRC]: src
     },
     v => v !== undefined && v !== null
@@ -186,7 +189,7 @@ export function renderBlocks({
         el.innerHTML = '';
         return ReactDOM.createPortal(
           <Card
-            id={el.getAttribute('id')}
+            id={el.getAttribute(ID)}
             type="indicator"
             parentEl={el}
             logo={logo}
