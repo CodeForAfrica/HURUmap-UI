@@ -69,8 +69,7 @@
   "dependencies": {
     "@hurumap-ui/charts": "file:packages/charts",
     "@hurumap-ui/content": "file:packages/content",
-    "@hurumap-ui/core": "file:packages/core",
-    "@hurumap-ui/config": "file:packages/config"
+    "@hurumap-ui/core": "file:packages/core"
   },
   "husky": {
     "hooks": {
