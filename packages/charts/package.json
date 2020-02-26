@@ -37,8 +37,5 @@
     },
     "publishConfig": {
         "access": "public"
-    },
-    "scripts": {
-        "publish:local": "mkdir -p ../publish-local && yarn pack --filename ../publish-local/$npm_package_name-$npm_package_version.tar && cd ../publish-local && tar xopf $npm_package_name-$npm_package_version.tar --one-top-level=$npm_package_name && cd $npm_package_name && yarn link"
     }
 }
