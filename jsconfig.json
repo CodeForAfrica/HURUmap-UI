@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
-			"@hurumap/*": ["./*", "./packages/*/src"]
+			"@hurumap-ui/*": ["./*", "./packages/*/src"]
 		}
 	},
 	"exclude": [

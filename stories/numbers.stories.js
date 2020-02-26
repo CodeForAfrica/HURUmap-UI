@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text, object } from '@storybook/addon-knobs';
-import { NumberVisuals } from '@hurumap/charts';
+import { NumberVisuals } from '@hurumap-ui/charts';
 import { CenterDecorator } from './common';
 
 storiesOf('HURUmap UI/NumberVisuals', module)

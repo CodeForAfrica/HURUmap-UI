@@ -1,5 +1,5 @@
 {
-    "name": "@hurumap/core",
+    "name": "@hurumap-ui/core",
     "version": "0.0.0",
     "description": "UI components for HURUmap.",
     "author": "CodeForAfrica",
@@ -30,7 +30,7 @@
         "react-content-loader": "^5.0.1",
         "react-share": "^4.0.0",
         "shortid": "^2.2.15",
-        "@hurumap/charts": "^0.0.0",
+        "@hurumap-ui/charts": "^0.0.0",
         "graphql": "^14.5.8",
         "graphql-tag": "^2.10.1",
         "victory": "^34.1.1"

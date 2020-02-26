@@ -7,7 +7,7 @@ Utility to render responsive HURUmap components and/or core elements in place of
 Install the module
 
 ```bash
-npm install @hurumap/content --save
+npm install @hurumap-ui/content --save
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ These functions can be accessed by importing from the `content` root directory:
 /**
  * HURUmap dependencies
  */
-import { renderBlocks } from '@hurumap/content';
+import { renderBlocks } from '@hurumap-ui/content';
 
 export default function MyVisual() {
     return (

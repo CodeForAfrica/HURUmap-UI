@@ -7,7 +7,7 @@ This packages includes a library of generic HURUmap core components to be used f
 Install the module
 
 ```bash
-npm install @hurumap/core --save
+npm install @hurumap-ui/core --save
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ These components can be accessed by importing from the `core` root directory:
 /**
  * HURUmap dependencies
  */
-import { Card } from '@hurumap/core';
+import { Card } from '@hurumap-ui/core';
 
 export default function MyVisual() {
 	return <Card

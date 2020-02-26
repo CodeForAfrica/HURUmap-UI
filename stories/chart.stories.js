@@ -15,8 +15,8 @@ import {
   PieChart,
   NestedProportionalAreaChart,
   ComparisonBarChart
-} from '@hurumap/charts';
-import { labels } from '@hurumap/charts/utils';
+} from '@hurumap-ui/charts';
+import { labels } from '@hurumap-ui/charts/utils';
 import { CenterDecorator } from './common';
 
 const rand = () => Number((Math.random() * 100).toFixed(1));

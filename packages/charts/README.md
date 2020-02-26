@@ -7,7 +7,7 @@ This packages includes a library of core HURUmap charts.
 Install the module
 
 ```bash
-npm install @hurumap/charts --save
+npm install @hurumap-ui/charts --save
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ These components can be accessed by importing from the `components` root directo
 /**
  * HURUmap dependencies
  */
-import { Card } from '@hurumap/core';
+import { Card } from '@hurumap-ui/core';
 
 export default function MyVisual() {
 	return <Card

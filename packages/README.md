@@ -9,7 +9,7 @@ When creating a new package, you need to provide at least the following:
 1. `package.json` based on the template:
 	```json
 	{
-		"name": "@hurumap/package-name",
+		"name": "@hurumap-ui/package-name",
 		"version": "1.0.0-beta.0",
 		"description": "Package description.",
 		"author": "CodeForAfrica",
@@ -25,7 +25,6 @@ When creating a new package, you need to provide at least the following:
 		"bugs": {
 			"url": "https://github.com/CodeForAfrica/HURUmap-UI/issues"
 		},
-		"main": "index.js",
 		"dependencies": {
 			"@babel/runtime": "^7.8.3"
 		},
@@ -64,7 +63,7 @@ _Example:_
 lerna add lodash packages/charts
 ```
 
-This command adds the latest version of `lodash` as a dependency to the `@hurumap/charts` package, which is located in `packages/charts` folder.
+This command adds the latest version of `lodash` as a dependency to the `@hurumap-ui/charts` package, which is located in `packages/charts` folder.
 
 #### Removing Existing Dependencies
 
@@ -84,7 +83,7 @@ _Example:_
                 "npm-package-json-lint": "^3.6.0",
 ```
 
-Next, you need to run `npm install` in the root of the project to ensure that `package-lock.json` file gets properly regenerated.
+Next, you need to run `yarn` in the root of the project to ensure that `yarn.lock` file gets properly regenerated.
 
 #### Updating Existing Dependencies
 
@@ -94,12 +93,12 @@ This is the most confusing part of working with [lerna] which causes a lot of ha
  
 ### Development Dependencies
 
-In contrast to production dependencies, development dependencies shouldn't be stored in individual WordPress packages. Instead they should be installed in the project's `package.json` file using the usual `npm install` command. In effect, all development tools are configured to work with every package at the same time to ensure they share the same characteristics and integrate correctly with each other.
+In contrast to production dependencies, development dependencies shouldn't be stored in the individual packages. Instead they should be installed in the project's `package.json` file using the usual `yarn add` command. In effect, all development tools are configured to work with every package at the same time to ensure they share the same characteristics and integrate correctly with each other.
 
 _Example:_
 
 ```bash
-npm install glob --save-dev
+yarn add glob -D
 ```
 
 This commands adds the latest version of `glob` as a development dependency to the `package.json` file. It has to be executed from the root of the project.
@@ -132,8 +131,6 @@ While other section naming can be used when appropriate, it's important that are
 
 When in doubt, refer to [Semantic Versioning specification](https://semver.org/).
 
-If you are publishing new versions of packages, note that there are versioning recommendations outlined in the [Gutenberg Release Process document](https://github.com/WordPress/gutenberg/blob/master/docs/contributors/release.md) which prescribe _minimum_ version bumps for specific types of releases. The chosen version should be the greater of the two between the semantic versioning and Gutenberg release minimum version bumps.
-
 ## Releasing Packages
 
 Lerna automatically releases all outdated packages. To check which packages are outdated and will be released, type `npm run publish:check`.
@@ -154,17 +151,15 @@ If you're publishing a new package, ensure that its `package.json` file contains
 }
 ```
 
-You can check your package configs by running `npm run lint-pkg-json`.
-
 ### Development Release
 
 Run the following command to release a dev version of the outdated packages.
 
 ```bash
-npm run publish:dev
+yarn publish:packages
 ```
 
-Lerna will ask you which version number you want to choose for each package. For a `dev` release, you'll more likely want to choose the "prerelease" option. Repeat the same for all the outdated packages and confirm your version updates.
+Lerna will ask you which version number you want to choose for each package. For a `dev` release, you'll more likely want to choose the `prerelease` option. Repeat the same for all the outdated packages and confirm your version updates.
 
 Lerna will then publish to [npm], commit the `package.json` changes and create the git tags.
 
@@ -173,7 +168,7 @@ Lerna will then publish to [npm], commit the `package.json` changes and create t
 To release a production version for the outdated packages, run the following command:
 
 ```bash
-npm run publish:prod
+yarn publish:packages
 ```
 
 Choose the correct version based on `CHANGELOG.md` files, confirm your choices and let Lerna do its magic.
@@ -183,10 +178,10 @@ Choose the correct version based on `CHANGELOG.md` files, confirm your choices a
 To release a patch for the older major or minor version of packages, run the following command:
 
 ```bash
-npm run publish:legacy
+npm run publish:packages
 ```
 
-This is usually necessary when adding bug fixes or security patches to the earlier versions of WordPress.
+This is usually necessary when adding bug fixes or security patches to the earlier versions of HURUmap.
 
 [lerna]: https://lerna.js.org/
 [npm]: https://www.npmjs.com/
