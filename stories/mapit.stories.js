@@ -11,7 +11,7 @@ import {
 import { action } from '@storybook/addon-actions';
 
 import { TileLayer } from 'leaflet';
-import { countries } from '@hurumap-ui/config';
+import countries from '@hurumap-ui/content/countries';
 import MapIt from '@hurumap-ui/core/MapIt';
 import { CenterDecorator } from './common';
 
