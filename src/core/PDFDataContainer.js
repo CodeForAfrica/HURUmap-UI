@@ -12,7 +12,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
     padding: '0.625rem',
-    display: 'flex',
     overflow: 'hidden',
     [theme.breakpoints.up('md')]: {
       padding: '1.25rem'
