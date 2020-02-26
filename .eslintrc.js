@@ -36,10 +36,9 @@ module.exports = {
     'import/resolver': {
       'babel-module': {
         alias: {
-          '@hurumap-ui/cms': './packages/cms/src',
+          '@hurumap-ui/content': './packages/content/src',
           '@hurumap-ui/charts': './packages/charts/src',
-          '@hurumap-ui/core': './packages/core/src',
-          '@hurumap-ui/config': './packages/config/src'
+          '@hurumap-ui/core': './packages/core/src'
         }
       }
     }

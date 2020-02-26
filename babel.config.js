@@ -8,8 +8,7 @@ module.exports = {
         alias: {
           '@hurumap-ui/content': './packages/content/src',
           '@hurumap-ui/charts': './packages/charts/src',
-          '@hurumap-ui/core': './packages/core/src',
-          '@hurumap-ui/config': './packages/config/src'
+          '@hurumap-ui/core': './packages/core/src'
         }
       }
     ]

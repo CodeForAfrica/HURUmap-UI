@@ -62,12 +62,9 @@ module.exports = {
           'module-resolver',
           {
             alias: {
-              '@hurumap-ui/cms': './packages/cms/src',
+              '@hurumap-ui/content': './packages/content/src',
               '@hurumap-ui/charts': './packages/charts/src',
-              '@hurumap-ui/factory': './packages/factory/src',
-              '@hurumap-ui/core': './packages/core/src',
-              '@hurumap-ui/config': './packages/config/src',
-              '@hurumap-ui/mapit': './packages/mapit/src'
+              '@hurumap-ui/core': './packages/core/src'
             }
           }
         ]
@@ -86,12 +83,9 @@ module.exports = {
     'import/resolver': {
       'babel-module': {
         alias: {
-          '@hurumap-ui/cms': './packages/cms/src',
+          '@hurumap-ui/content': './packages/content/src',
           '@hurumap-ui/charts': './packages/charts/src',
-          '@hurumap-ui/factory': './packages/factory/src',
-          '@hurumap-ui/core': './packages/core/src',
-          '@hurumap-ui/config': './packages/config/src',
-          '@hurumap-ui/mapit': './packages/mapit/src'
+          '@hurumap-ui/core': './packages/core/src'
         }
       }
     }
