@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
 import Snippet from '../Snippet';
+import { shareIndicator } from '../utils';
+import propTypes from '../propTypes';
 import FlourishChart from './FlourishChart';
 import HURUmapChart from './HURUmapChart';
-
-import { shareIndicator } from '../utils';
-
-import propTypes from '../propTypes';
 
 export default function Card({
   id,

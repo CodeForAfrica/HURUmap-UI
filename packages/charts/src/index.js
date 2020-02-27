@@ -11,3 +11,5 @@ export { default as propTypes } from './propTypes';
 export { default as createTheme } from './styles/createTheme';
 export { default as withVictoryTheme } from './styles/withVictoryTheme';
 export { default as createVictoryTheme } from './styles/createVictoryTheme';
+
+export { default as ChartFactory } from './ChartFactory';

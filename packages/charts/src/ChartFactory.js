@@ -4,18 +4,17 @@ import { Box, ButtonBase } from '@material-ui/core';
 
 import { Helpers } from 'victory';
 
-import {
-  LineChart,
-  BulletChart,
-  BarChart,
-  PieChart,
-  NestedProportionalAreaChart,
-  NumberVisuals,
-  withVictoryTheme,
-  propTypes
-} from '@hurumap-ui/charts';
-
 import aggregateData, { isSelectFunc, groupData } from './utils/aggregateData';
+
+import BarChart from './BarChart';
+import BulletChart from './BulletChart';
+import LineChart from './LineChart';
+import NestedProportionalAreaChart from './NestedProportionalAreaChart';
+import PieChart from './PieChart';
+import NumberVisuals from './NumberVisuals';
+
+import propTypes from './propTypes';
+import withVictoryTheme from './styles/withVictoryTheme';
 
 const DOWNLOAD_HIDDEN_CLASSNAME = 'Download--hidden';
 

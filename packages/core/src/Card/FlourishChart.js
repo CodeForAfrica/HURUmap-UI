@@ -2,8 +2,8 @@
 import React from 'react';
 
 import makeStyles from '../makeStyles';
-
 import propTypes from '../propTypes';
+
 import ChartContainer from './ChartContainer';
 
 const useStyles = makeStyles({
