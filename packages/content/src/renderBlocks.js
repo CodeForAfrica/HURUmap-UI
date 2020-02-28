@@ -21,13 +21,20 @@ import {
   POST_TYPE,
   GEO_TYPE,
   SHOW_STATVISUAL,
-  DATA_GEOID
+  DATA_GEOID,
+  SOURCE_LINK,
+  SOURCE_TITLE,
+  SRC,
+  ID,
+  WIDGET,
+  LAYOUT
 } from './attributes';
 
 export const TYPES = {
   HURUMAP_CARD: 'hurumap-card',
   HURUMAP_CHART: 'indicator-hurumap',
-  FLOURISH_CHART: 'indicator-flourish'
+  FLOURISH_CHART: 'indicator-flourish',
+  INDICATOR_WIDGET: 'indicator-block'
 };
 
 // No SSR Support
@@ -43,6 +50,28 @@ export default function renderBlocks({
 }) {
   return (
     <>
+      {Array.from(
+        document.querySelectorAll(`div[id^=${TYPES.INDICATOR_WIDGET}]`)
+      ).map(el => {
+        // deprecated php indicator used to have innerhtml in its container div
+        // eslint-disable-next-line no-param-reassign
+        el.innerHTML = '';
+        return ReactDOM.createPortal(
+          <Card
+            id={el.getAttribute(ID)}
+            type="indicator"
+            parentEl={el}
+            logo={logo}
+            title={el.getAttribute(TITLE)}
+            description={el.getAttribute(DESCRIPTION)}
+            sourceTitle={el.getAttribute(SOURCE_TITLE)}
+            sourceLink={el.getAttribute(SOURCE_LINK)}
+            blockSrc={el.getAttribute(SRC)}
+            widget={el.getAttribute(WIDGET) || el.getAttribute(LAYOUT)}
+          />,
+          el
+        );
+      })}
       {Array.from(
         document.querySelectorAll(`div[id^=${TYPES.HURUMAP_CARD}]`)
       ).map(el =>

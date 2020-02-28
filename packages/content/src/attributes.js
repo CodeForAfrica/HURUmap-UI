@@ -46,3 +46,14 @@ export const SHOW_STATVISUAL = 'data-show-statvisual';
  * @deprecated
  */
 export const DATA_GEOID = 'data-data-geoid';
+
+export const SOURCE_TITLE = 'data-source-title';
+export const SOURCE_LINK = 'data-source-link';
+export const SRC = 'data-src';
+export const WIDGET = 'data-widget';
+export const ID = 'id';
+
+/**
+ * @deprecated Use Widget instead
+ */
+export const LAYOUT = 'data-layout';

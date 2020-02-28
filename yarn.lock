@@ -912,6 +912,11 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@base2/pretty-print-object/-/pretty-print-object-1.0.0.tgz#860ce718b0b73f4009e153541faff2cb6b85d047"
   integrity sha512-4Th98KlMHr5+JkxfcoDT//6vY8vM+iSPrLNpHhRyLx2CFYi8e2RfqPLdpbnpo0Q5lQC5hNB79yes07zb02fvCw==
+  
+"@bundled-es-modules/pdfjs-dist@^2.2.228-alpha1":
+  version "2.2.228-alpha1"
+  resolved "https://registry.yarnpkg.com/@bundled-es-modules/pdfjs-dist/-/pdfjs-dist-2.2.228-alpha1.tgz#7b86d623973c3ba0bd688f9650b10f79ab8e69d2"
+  integrity sha512-fXr94eQWCFcG31nGBP7nI5+Oa/BJWCwItB4wGVkXuS1qhFyo486y0jZ+XSUJYpo0A15FJ5c/fmewLWDq9IorAA==
 
 "@chromaui/localtunnel@1.10.1":
   version "1.10.1"
@@ -2110,6 +2115,13 @@
   version "1.5.6"
   resolved "https://registry.yarnpkg.com/@mdx-js/util/-/util-1.5.6.tgz#321e28d4177a06992464f0feba9dc00028b3556f"
   integrity sha512-kFa2uwlMPCQrsFTPbKwB395SPSrs++VqFWbs4+Qu/XyY+aXZkpFubqWcjVcXus7n3B2+ki4snxKluXKkPF7kbQ==
+
+"@mikecousins/react-pdf@^5.5.1":
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/@mikecousins/react-pdf/-/react-pdf-5.5.1.tgz#80ce071d54872b9f4b1888d78932b92a8f6bc91b"
+  integrity sha512-QnR2FdSjNUCl6LaUbajff7OJhj93xCIpdf5h+fBDyx5iahM74jVh0XVG4YOu+ml6rRS/7OE4NOcbVDBBVPzrtg==
+  dependencies:
+    "@bundled-es-modules/pdfjs-dist" "^2.2.228-alpha1"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"

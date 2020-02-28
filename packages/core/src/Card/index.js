@@ -1,10 +1,24 @@
 import React, { useEffect, useState } from 'react';
 
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import Snippet from '../Snippet';
-import { shareIndicator } from '../utils';
-import propTypes from '../propTypes';
 import FlourishChart from './FlourishChart';
 import HURUmapChart from './HURUmapChart';
+import ChartContainer from './ChartContainer';
+
+import PDFDataContainer from '../PDFDataContainer';
+
+import { shareIndicator } from '../utils';
+import propTypes from '../propTypes';
+
+const useStyles = makeStyles({
+  htmlDiv: {
+    width: '100%'
+  },
+  image: {
+    width: '100%'
+  }
+});
 
 export default function Card({
   id,
@@ -31,8 +45,13 @@ export default function Card({
   fetchDefinition,
   fetchDefinitionUrl,
   shareEndPoint,
+  blockSrc,
+  sourceLink,
+  sourceTitle,
+  widget,
   ...props
 }) {
+  const classes = useStyles(props);
   const [definition, setDefinition] = useState();
   useEffect(() => {
     if (fetchDefinition) {
@@ -50,6 +69,42 @@ export default function Card({
     }
   }, [id, type, fetchDefinition, fetchDefinitionUrl, propDefinition]);
   switch (type) {
+    case 'indicator':
+      return (
+        <ChartContainer
+          logo={logo}
+          hideInsight
+          hideStat
+          title={title}
+          description={description}
+          actions={{ handleDownload: null }}
+          source={
+            sourceLink || sourceTitle
+              ? {
+                  title: sourceTitle,
+                  href: sourceLink
+                }
+              : undefined
+          }
+          {...props}
+        >
+          <div />
+          <>
+            {(widget === 'image' || widget === 'image_widget') && (
+              <img className={classes.image} src={blockSrc} alt="indicator" />
+            )}
+            {(widget === 'html' || widget === 'raw_html_widget') && (
+              <div
+                className={classes.htmlDiv}
+                dangerouslySetInnerHTML={{ __html: blockSrc }}
+              />
+            )}
+            {(widget === 'document' || widget === 'document_widget') && (
+              <PDFDataContainer title={title} source={blockSrc} />
+            )}
+          </>
+        </ChartContainer>
+      );
     case 'flourish':
       return (
         <FlourishChart
@@ -171,7 +226,8 @@ export default function Card({
 }
 
 Card.propTypes = {
-  type: propTypes.oneOf(['hurumap', 'flourish', 'snippet']).isRequired,
+  type: propTypes.oneOf(['hurumap', 'flourish', 'snippet', 'indicator'])
+    .isRequired,
   parentEl: propTypes.shape({
     style: propTypes.shape({
       width: propTypes.string
@@ -179,7 +235,8 @@ Card.propTypes = {
     getAttribute: propTypes.func,
     firstChild: propTypes.shape({
       scrollIntoView: propTypes.func
-    })
+    }),
+    innerChild: propTypes.children
   }),
   id: propTypes.string.isRequired,
   title: propTypes.string,
@@ -220,7 +277,11 @@ Card.propTypes = {
   fetchDefinition: propTypes.func,
   fetchDefinitionUrl: propTypes.oneOfType([propTypes.string, propTypes.func]),
   logo: propTypes.string,
-  shareEndPoint: propTypes.string
+  shareEndPoint: propTypes.string,
+  blockSrc: propTypes.string,
+  sourceLink: propTypes.string,
+  sourceTitle: propTypes.string,
+  widget: propTypes.string
 };
 
 Card.defaultProps = {
@@ -241,6 +302,10 @@ Card.defaultProps = {
   analysisLinkTitle: undefined,
   fetchDefinition: undefined,
   fetchDefinitionUrl: undefined,
+  blockSrc: undefined,
+  sourceLink: undefined,
+  sourceTitle: undefined,
+  widget: undefined,
   dataLinkHref: geoId => `/profiles/${geoId}`,
   analysisLinkHref: countrySlug => `/profiles/${countrySlug}`,
   flourishURL: id => `/wp-json/hurumap-data/flourish/${id}/`,

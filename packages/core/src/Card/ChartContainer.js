@@ -77,12 +77,10 @@ ChartContainer.propTypes = {
   embedCode: propTypes.string,
   dataLinkGeoId: propTypes.string,
   dataLinkTitle: propTypes.string,
-  dataLinkHref: propTypes.oneOfType([propTypes.string, propTypes.func])
-    .isRequired,
+  dataLinkHref: propTypes.oneOfType([propTypes.string, propTypes.func]),
   analysisLinkCountrySlug: propTypes.string,
   analysisLinkTitle: propTypes.string,
-  analysisLinkHref: propTypes.oneOfType([propTypes.string, propTypes.func])
-    .isRequired,
+  analysisLinkHref: propTypes.oneOfType([propTypes.string, propTypes.func]),
   children: propTypes.children.isRequired
 };
 
@@ -98,8 +96,10 @@ ChartContainer.defaultProps = {
   handleShare: () => {},
   dataLinkGeoId: undefined,
   dataLinkTitle: undefined,
+  dataLinkHref: undefined,
   analysisLinkCountrySlug: undefined,
-  analysisLinkTitle: undefined
+  analysisLinkTitle: undefined,
+  analysisLinkHref: undefined
 };
 
 export default ChartContainer;

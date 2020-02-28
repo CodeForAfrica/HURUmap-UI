@@ -20,7 +20,13 @@ import {
   POST_TYPE,
   GEO_TYPE,
   SHOW_STATVISUAL,
-  DATA_GEOID
+  DATA_GEOID,
+  SOURCE_LINK,
+  SOURCE_TITLE,
+  SRC,
+  ID,
+  WIDGET,
+  LAYOUT
 } from './attributes';
 
 export const TYPES = {
@@ -47,7 +53,12 @@ export function dataProps(
     geoId,
     showStatVisual,
     postId,
-    postType
+    postType,
+    sourceLink,
+    sourceTitle,
+    id,
+    src,
+    widget
   }
 ) {
   /**
@@ -77,7 +88,12 @@ export function dataProps(
       [ANALYSIS_COUNTRY]: analysisCountry,
       [ANALYSIS_LINK_TITLE]: analysisLinkTitle,
       [SHOW_STAT_VISUAL]: showStatVisual,
-      [WIDTH]: chartWidth || cardWidth
+      [WIDTH]: chartWidth || cardWidth,
+      [SOURCE_LINK]: sourceLink,
+      [SOURCE_TITLE]: sourceTitle,
+      [WIDGET]: widget,
+      [ID]: id,
+      [SRC]: src
     },
     v => v !== undefined && v !== null
   );
@@ -102,7 +118,8 @@ export function deprecatedProps(
     geoId,
     showStatVisual,
     postId,
-    postType
+    postType,
+    widget
   }
 ) {
   /**
@@ -139,7 +156,8 @@ export function deprecatedProps(
       [ANALYSIS_LINK_TITLE]: analysisLinkTitle,
       [DATA_GEOID]: type === TYPES.HURUMAP_CHART ? dataGeoId : undefined,
       [DATA_GEO_ID]: type === TYPES.FLOURISH_CHART ? dataGeoId : undefined,
-      [WIDTH]: chartWidth || cardWidth
+      [WIDTH]: chartWidth || cardWidth,
+      [LAYOUT]: widget
     },
     v => v !== undefined && v !== null
   );
