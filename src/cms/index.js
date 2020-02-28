@@ -73,7 +73,7 @@ export function dataProps(
    */
   return pickBy(
     {
-      id: `${type}-${chartId || postId}`,
+      id: `${type}-${chartId || postId || id}`,
       style: {
         width:
           chartWidth ||
@@ -97,7 +97,6 @@ export function dataProps(
       [SOURCE_LINK]: sourceLink,
       [SOURCE_TITLE]: sourceTitle,
       [WIDGET]: widget,
-      [ID]: id,
       [SRC]: src
     },
     v => v !== undefined && v !== null
