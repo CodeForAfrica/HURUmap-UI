@@ -18,3 +18,4 @@ export { default as PieChart } from './PieChart';
 export { default as ShareDropDown } from './ShareDropDown';
 export { default as TypographyLoader } from './TypographyLoader';
 export { default as Snippet } from './Snippet';
+export { default as PDFDataContainer } from './PDFDataContainer';
