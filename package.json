@@ -57,7 +57,7 @@
   },
   "scripts": {
     "preversion": "yarn lint",
-    "postversion": "yarn build",
+    "postversion": "NODE_ENV=production yarn build",
     "publish:packages": "yarn lerna publish --contents build",
     "start": "start-storybook -s ./",
     "deploy": "yarn deploy:storybook",
