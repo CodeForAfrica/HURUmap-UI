@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   env: {
     browser: true,
@@ -40,6 +42,9 @@ module.exports = {
           '@hurumap-ui/charts': './packages/charts/src',
           '@hurumap-ui/core': './packages/core/src'
         }
+      },
+      'eslint-import-resolver-lerna': {
+        packages: path.resolve(__dirname, 'packages')
       }
     }
   }

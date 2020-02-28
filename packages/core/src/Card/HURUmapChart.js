@@ -2,13 +2,12 @@ import React, { useMemo } from 'react';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import { ChartFactory } from '@hurumap-ui/charts';
 import useProfileLoader from '../useProfileLoader';
 import makeStyles from '../makeStyles';
 import propTypes from '../propTypes';
 
 import ChartContainer from './ChartContainer';
-
-import { ChartFactory } from '@hurumap-ui/charts';
 
 const useStyles = makeStyles({
   statViz: {
