@@ -15,7 +15,6 @@ export { default as ContentLoader } from './ContentLoader';
 export { default as ShareDropDown } from './ShareDropDown';
 export { default as TypographyLoader } from './TypographyLoader';
 
-export { default as ChartFactory } from '../../charts/src/ChartFactory';
 export { default as useProfileLoader } from './useProfileLoader';
 export { default as useVisualLoader } from './useVisualLoader';
 
