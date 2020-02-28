@@ -56,4 +56,4 @@ export default function MyVisual() {
 }
 ```
 
-<br/><br/><p align="center" style="background-color:#084a49;"><img src="https://hurumap.org/static/img/logo-white.png" alt="Hurumap" /></p>
+<br/><br/><p align="center"><img src="https://hurumap.org/static/img/logo-white.png" alt="Hurumap" width="200px" style="background-color:#084a49;" /></p>

@@ -20,7 +20,7 @@ These functions can be accessed by importing from the `content` root directory:
  */
 import { renderBlocks } from '@hurumap-ui/content';
 
-export default function MyVisual() {
+export default function Post() {
     return (
         <div>
             <div dangerouslySetInnerHTML={{ __html: `
@@ -106,4 +106,4 @@ registerBlockType('hurumap/card-block', {
 
 ```
 
-<br/><br/><p align="center" style="background-color:#084a49;"><img src="https://hurumap.org/static/img/logo-white.png" alt="Hurumap" /></p>
+<br/><br/><p align="center"><img src="https://hurumap.org/static/img/logo-white.png" alt="Hurumap" width="200px" style="background-color:#084a49;" /></p>
