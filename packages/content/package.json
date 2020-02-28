@@ -1,6 +1,6 @@
 {
     "name": "@hurumap-ui/content",
-    "version": "0.0.1-alpha.1",
+    "version": "0.0.1-alpha.2",
     "description": "CMS functions for HURUmap Dashboard.",
     "author": "CodeForAfrica",
     "license": "GPL-2.0-or-later",
@@ -20,7 +20,7 @@
     "main": "index.js",
     "dependencies": {
         "@apollo/react-hooks": "^3.1.3",
-        "@hurumap-ui/core": "^0.0.1-alpha.1",
+        "@hurumap-ui/core": "^0.0.1-alpha.2",
         "@material-ui/core": "^4.9.3",
         "@material-ui/icons": "^4.9.1",
         "graphql": "^14.5.8",
