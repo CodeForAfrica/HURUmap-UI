@@ -6800,6 +6800,11 @@ eslint-import-resolver-babel-module@^5.1.2:
     pkg-up "^2.0.0"
     resolve "^1.10.0"
 
+eslint-import-resolver-lerna@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-import-resolver-lerna/-/eslint-import-resolver-lerna-1.1.0.tgz#4069a41742651de953ea1063a455aec952388a69"
+  integrity sha512-4olD03ngUo7Q7yRuOF5Gb9WxOc+CLEnw+rt95TnjUWQJ4pn0h9XWSybAr2gswOhre0NHXwwhAhPE8CAiwISFyw==
+
 eslint-import-resolver-node@^0.3.2:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/eslint-import-resolver-node/-/eslint-import-resolver-node-0.3.3.tgz#dbaa52b6b2816b50bc6711af75422de808e98404"

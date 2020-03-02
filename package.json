@@ -35,6 +35,7 @@
     "eslint": "^6.5.1",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.0.0",
+    "eslint-import-resolver-lerna": "^1.1.0",
     "eslint-import-resolver-babel-module": "^5.1.2",
     "eslint-plugin-import": "^2.18.0",
     "eslint-plugin-json": "^2.0.1",
