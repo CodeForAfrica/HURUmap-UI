@@ -96,6 +96,7 @@ export default function Card({
             {(widget === 'html' || widget === 'raw_html_widget') && (
               <div
                 className={classes.htmlDiv}
+                // eslint-disable-next-line react/no-danger
                 dangerouslySetInnerHTML={{ __html: blockSrc }}
               />
             )}
