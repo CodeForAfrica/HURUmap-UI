@@ -15,7 +15,6 @@ import EmbedDropDown from './EmbedDropDown';
 import ShareDropDown from './ShareDropDown';
 import TypographyLoader from './TypographyLoader';
 
-import defaultLogo from './assets/logo.png';
 import CompareIcon from './assets/icons/compare.svg';
 import DataIcon from './assets/icons/tablet-reader.svg';
 import DownloadIcon from './assets/icons/download.svg';
@@ -111,7 +110,7 @@ function ChartContainer({
   content,
   embed,
   loading,
-  logo: logoProp,
+  logo,
   onClickCompare,
   onClickData,
   onClickDownload: onClickDownloadProp,
@@ -255,7 +254,6 @@ function ChartContainer({
         setEmbedAnchorEl(null);
         setShareAnchorEl(anchorEl);
       }));
-  const logo = logoProp || defaultLogo;
 
   const titleComponents = (
     <>

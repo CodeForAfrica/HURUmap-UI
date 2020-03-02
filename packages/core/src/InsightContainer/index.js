@@ -20,7 +20,6 @@ import Actions from './Action';
 import Insight from './Insight';
 import propTypes from '../propTypes';
 
-import defaultLogo from '../assets/logo.png';
 import makeStyles from '../makeStyles';
 
 const useStyles = makeStyles(({ palette }) => ({
@@ -123,7 +122,7 @@ function InsightContainer({
   embedCode,
   gaEvents,
   insight: insightProp,
-  logo: logoProp,
+  logo,
   loading,
   source,
   title,
@@ -216,7 +215,6 @@ function InsightContainer({
     />
   );
   const insight = insightProp || {};
-  const logo = logoProp || defaultLogo;
 
   return (
     <div ref={setRootNode} className={classes.root}>
