@@ -353,22 +353,18 @@ function InsightContainer({
           </Grid>
         </Grid>
       )}
-      <Grid
-        container
-        alignItems="center"
-        justify="space-between"
-        wrap="wrap"
-        className={classes.attribution}
-      >
-        <Grid item className={classes.attributionSource}>
-          {source && (
-            <Typography variant="caption">{`Source ${source.href}`}</Typography>
-          )}
+      <div className={classes.attribution}>
+        <Grid container wrap="wrap" alignItems="center" justify="space-between">
+          <Grid item className={classes.attributionSource}>
+            {source && (
+              <Typography variant="caption">{`Source ${source.href}`}</Typography>
+            )}
+          </Grid>
+          <Grid item className={classes.attributionLogo}>
+            <img src={logo} alt="logo" />
+          </Grid>
         </Grid>
-        <Grid item className={classes.attributionLogo}>
-          <img src={logo} alt="logo" />
-        </Grid>
-      </Grid>
+      </div>
     </div>
   );
 }
