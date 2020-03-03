@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -8,6 +8,8 @@ import {
   VictoryGroup,
   VictoryLegend
 } from 'victory';
+
+import { computeMaxLabelDimmension } from '../WrapLabel/wrapSVGText';
 
 import { getLegendProps } from '../utils';
 import propTypes from '../propTypes';
@@ -20,7 +22,7 @@ import WrapLabel from '../WrapLabel';
 function BarChart({
   barWidth,
   labelWidth: propLabelWidth,
-  data: d,
+  data: propData,
   domain,
   domainPadding,
   height: suggestedHeight,
@@ -33,13 +35,35 @@ function BarChart({
   width: suggestedWidth,
   ...props
 }) {
-  const [maxLabelDimmension, setMaxLabelDimmesion] = useState(0);
   const {
-    axis: { labelWidth: themeLabelWidth },
     bar: chart,
-    group: groupChart
+    group: groupChart,
+    axis: { labelWidth: themeLabelWidth }
   } = theme;
-  if (!d || !groupChart) {
+
+  const groupData = useMemo(
+    // eslint-disable-next-line no-nested-ternary
+    () => (!propData ? [] : Array.isArray(propData[0]) ? propData : [propData]),
+    [propData]
+  );
+  const barSpacing = offset || barWidth;
+  let labelWidth = barSpacing * groupData.length;
+  const desiredLabelWidth = propLabelWidth || themeLabelWidth;
+  if (horizontal && desiredLabelWidth) {
+    labelWidth = desiredLabelWidth;
+  }
+
+  const maxLabelDimmension = useMemo(
+    () =>
+      computeMaxLabelDimmension({
+        labelWidth,
+        horizontal,
+        texts: groupData.reduce((a, b) => a.concat(b.map(({ x }) => x)), [])
+      }),
+    [labelWidth, horizontal, groupData]
+  );
+
+  if (!propData || !groupChart) {
     return null;
   }
 
@@ -49,15 +73,6 @@ function BarChart({
   const groupProps = parts && parts.group ? [].concat(parts.group) : [];
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
   const { colorScale } = groupChart;
-
-  const groupData = Array.isArray(d[0]) ? d : [d];
-  const barSpacing = offset || barWidth;
-  let labelWidth = barSpacing * groupData.length;
-
-  const desiredLabelWidth = propLabelWidth || themeLabelWidth;
-  if (horizontal && desiredLabelWidth) {
-    labelWidth = desiredLabelWidth;
-  }
 
   const axisProps = (parts && toChartAxisProps(parts.axis)) || {};
   const { tickFormat: propTickFormat } = axisProps.independent || {};
@@ -114,12 +129,6 @@ function BarChart({
 
   const numberFormatter = new Intl.NumberFormat('en-GB');
 
-  const handleMaxDimmesion = dimmension => {
-    if (dimmension > maxLabelDimmension) {
-      setMaxLabelDimmesion(dimmension);
-    }
-  };
-
   return (
     <Chart {...chartProps}>
       <VictoryAxis
@@ -155,13 +164,7 @@ function BarChart({
       </VictoryGroup>
       <VictoryAxis
         tickFormat={tickFormat}
-        tickLabelComponent={
-          <WrapLabel
-            width={labelWidth}
-            horizontal={horizontal}
-            onMaxDimmension={handleMaxDimmesion}
-          />
-        }
+        tickLabelComponent={<WrapLabel width={labelWidth} />}
         {...axisProps.independent}
       />
 
