@@ -97,7 +97,7 @@ export default function Card({
             {(widget === 'html' || widget === 'raw_html_widget') && (
               <div
                 className={classes.htmlDiv}
-                dangerouslySetInnerHTML={{ __html: blockSrc }}
+                dangerouslySetInnerHTML={{ __html: parentEl.innerHTML }}
               />
             )}
             {(widget === 'document' || widget === 'document_widget') && (
@@ -237,7 +237,7 @@ Card.propTypes = {
     firstChild: propTypes.shape({
       scrollIntoView: propTypes.func
     }),
-    innerChild: propTypes.children
+    innerHTML: propTypes.string
   }),
   id: propTypes.string.isRequired,
   title: propTypes.string,

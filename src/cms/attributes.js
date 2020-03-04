@@ -50,7 +50,6 @@ export const DATA_GEOID = 'data-data-geoid';
 export const SOURCE_TITLE = 'data-source-title';
 export const SOURCE_LINK = 'data-source-link';
 export const SRC = 'data-src';
-export const HTML_SRC = 'data-html-src';
 export const WIDGET = 'data-widget';
 export const ID = 'id';
 
