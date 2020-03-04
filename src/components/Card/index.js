@@ -236,8 +236,7 @@ Card.propTypes = {
     getAttribute: propTypes.func,
     firstChild: propTypes.shape({
       scrollIntoView: propTypes.func
-    }),
-    innerChild: propTypes.children
+    })
   }),
   id: propTypes.string.isRequired,
   title: propTypes.string,

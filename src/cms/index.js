@@ -28,9 +28,10 @@ import {
   SOURCE_LINK,
   SOURCE_TITLE,
   SRC,
-  ID,
   WIDGET,
-  LAYOUT
+  LAYOUT,
+  BLOCK_ID,
+  ID
 } from './attributes';
 
 export const TYPES = {
@@ -61,7 +62,7 @@ export function dataProps(
     postType,
     sourceLink,
     sourceTitle,
-    id,
+    blockId,
     src,
     widget
   }
@@ -73,7 +74,7 @@ export function dataProps(
    */
   return pickBy(
     {
-      id: `${type}-${chartId || postId || id}`,
+      id: `${type}-${chartId || postId || blockId}`,
       style: {
         width:
           chartWidth ||
@@ -97,6 +98,7 @@ export function dataProps(
       [SOURCE_LINK]: sourceLink,
       [SOURCE_TITLE]: sourceTitle,
       [WIDGET]: widget,
+      [BLOCK_ID]: blockId,
       [SRC]: src
     },
     v => v !== undefined && v !== null
@@ -161,7 +163,8 @@ export function deprecatedProps(
       [DATA_GEOID]: type === TYPES.HURUMAP_CHART ? dataGeoId : undefined,
       [DATA_GEO_ID]: type === TYPES.FLOURISH_CHART ? dataGeoId : undefined,
       [WIDTH]: chartWidth || cardWidth,
-      [LAYOUT]: widget
+      [LAYOUT]: widget,
+      [ID]: id
     },
     v => v !== undefined && v !== null
   );
@@ -183,12 +186,12 @@ export function renderBlocks({
       {Array.from(
         document.querySelectorAll(`div[id^=${TYPES.INDICATOR_WIDGET}]`)
       ).map(el => {
-        // deprecated php indicator used to have innerhtml in its container div
+        const htmlSrc = el.innerHTML;
         // eslint-disable-next-line no-param-reassign
         el.innerHTML = '';
         return ReactDOM.createPortal(
           <Card
-            id={el.getAttribute(ID)}
+            id={el.getAttribute(BLOCK_ID) || el.getAttribute(ID)}
             type="indicator"
             parentEl={el}
             logo={logo}
@@ -196,7 +199,7 @@ export function renderBlocks({
             description={el.getAttribute(DESCRIPTION)}
             sourceTitle={el.getAttribute(SOURCE_TITLE)}
             sourceLink={el.getAttribute(SOURCE_LINK)}
-            blockSrc={el.getAttribute(SRC)}
+            blockSrc={el.getAttribute(SRC) || htmlSrc}
             widget={el.getAttribute(WIDGET) || el.getAttribute(LAYOUT)}
           />,
           el
