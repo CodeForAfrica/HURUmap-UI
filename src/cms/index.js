@@ -30,7 +30,8 @@ import {
   SRC,
   WIDGET,
   LAYOUT,
-  BLOCK_ID
+  BLOCK_ID,
+  ID
 } from './attributes';
 
 export const TYPES = {
@@ -162,7 +163,8 @@ export function deprecatedProps(
       [DATA_GEOID]: type === TYPES.HURUMAP_CHART ? dataGeoId : undefined,
       [DATA_GEO_ID]: type === TYPES.FLOURISH_CHART ? dataGeoId : undefined,
       [WIDTH]: chartWidth || cardWidth,
-      [LAYOUT]: widget
+      [LAYOUT]: widget,
+      [ID]: id
     },
     v => v !== undefined && v !== null
   );
@@ -189,7 +191,7 @@ export function renderBlocks({
         el.innerHTML = '';
         return ReactDOM.createPortal(
           <Card
-            id={el.getAttribute(BLOCK_ID)}
+            id={el.getAttribute(BLOCK_ID) || el.getAttribute(ID)}
             type="indicator"
             parentEl={el}
             logo={logo}

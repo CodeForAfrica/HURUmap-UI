@@ -57,3 +57,4 @@ export const BLOCK_ID = 'blockId';
  * @deprecated Use Widget instead
  */
 export const LAYOUT = 'data-layout';
+export const ID = 'id';
