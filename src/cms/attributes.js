@@ -51,7 +51,7 @@ export const SOURCE_TITLE = 'data-source-title';
 export const SOURCE_LINK = 'data-source-link';
 export const SRC = 'data-src';
 export const WIDGET = 'data-widget';
-export const ID = 'id';
+export const BLOCK_ID = 'blockId';
 
 /**
  * @deprecated Use Widget instead

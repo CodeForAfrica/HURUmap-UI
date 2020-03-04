@@ -28,9 +28,9 @@ import {
   SOURCE_LINK,
   SOURCE_TITLE,
   SRC,
-  ID,
   WIDGET,
-  LAYOUT
+  LAYOUT,
+  BLOCK_ID
 } from './attributes';
 
 export const TYPES = {
@@ -61,7 +61,7 @@ export function dataProps(
     postType,
     sourceLink,
     sourceTitle,
-    id,
+    blockId,
     src,
     widget
   }
@@ -73,7 +73,7 @@ export function dataProps(
    */
   return pickBy(
     {
-      id: `${type}-${chartId || postId || id}`,
+      id: `${type}-${chartId || postId || blockId}`,
       style: {
         width:
           chartWidth ||
@@ -97,6 +97,7 @@ export function dataProps(
       [SOURCE_LINK]: sourceLink,
       [SOURCE_TITLE]: sourceTitle,
       [WIDGET]: widget,
+      [BLOCK_ID]: blockId,
       [SRC]: src
     },
     v => v !== undefined && v !== null
@@ -185,7 +186,7 @@ export function renderBlocks({
       ).map(el =>
         ReactDOM.createPortal(
           <Card
-            id={el.getAttribute(ID)}
+            id={el.getAttribute(BLOCK_ID)}
             type="indicator"
             parentEl={el}
             logo={logo}

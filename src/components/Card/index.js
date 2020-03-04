@@ -98,7 +98,9 @@ export default function Card({
               <div
                 className={classes.htmlDiv}
                 dangerouslySetInnerHTML={{ __html: parentEl.innerHTML }}
-              />
+              >
+                {parentEl.innerHTML}
+              </div>
             )}
             {(widget === 'document' || widget === 'document_widget') && (
               <PDFDataContainer title={title} source={blockSrc} />
