@@ -28,6 +28,7 @@ import {
   SOURCE_LINK,
   SOURCE_TITLE,
   SRC,
+  HTML_SRC,
   ID,
   WIDGET,
   LAYOUT
@@ -63,6 +64,7 @@ export function dataProps(
     sourceTitle,
     id,
     src,
+    htmlSrc,
     widget
   }
 ) {
@@ -97,7 +99,8 @@ export function dataProps(
       [SOURCE_LINK]: sourceLink,
       [SOURCE_TITLE]: sourceTitle,
       [WIDGET]: widget,
-      [SRC]: src
+      [SRC]: src,
+      [HTML_SRC]: htmlSrc
     },
     v => v !== undefined && v !== null
   );
@@ -196,7 +199,7 @@ export function renderBlocks({
             description={el.getAttribute(DESCRIPTION)}
             sourceTitle={el.getAttribute(SOURCE_TITLE)}
             sourceLink={el.getAttribute(SOURCE_LINK)}
-            blockSrc={el.getAttribute(SRC)}
+            blockSrc={el.getAttribute(SRC) || el.getAttribute(HTML_SRC)}
             widget={el.getAttribute(WIDGET) || el.getAttribute(LAYOUT)}
           />,
           el
