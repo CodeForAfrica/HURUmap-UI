@@ -97,10 +97,8 @@ export default function Card({
             {(widget === 'html' || widget === 'raw_html_widget') && (
               <div
                 className={classes.htmlDiv}
-                dangerouslySetInnerHTML={{ __html: parentEl.innerHTML }}
-              >
-                {parentEl.innerHTML}
-              </div>
+                dangerouslySetInnerHTML={{ __html: blockSrc }}
+              />
             )}
             {(widget === 'document' || widget === 'document_widget') && (
               <PDFDataContainer title={title} source={blockSrc} />
@@ -238,8 +236,7 @@ Card.propTypes = {
     getAttribute: propTypes.func,
     firstChild: propTypes.shape({
       scrollIntoView: propTypes.func
-    }),
-    innerHTML: propTypes.string
+    })
   }),
   id: propTypes.string.isRequired,
   title: propTypes.string,
