@@ -57,15 +57,15 @@
     "webpack": "^4.39.2"
   },
   "scripts": {
-    "preversion": "yarn lint",
-    "postversion": "NODE_ENV=production yarn build",
+    "preversion": "yarn lint && NODE_ENV=production yarn build",
+    "postversion": "lerna exec --parallel -- cp ./package.json ./README.md ../../LICENSE.md ./build",
     "publish:packages": "yarn lerna publish --contents build",
     "start": "start-storybook -s ./",
     "deploy": "yarn deploy:storybook",
     "deploy:storybook": "storybook-to-ghpages",
     "lint": "yarn eslint --fix --ignore-path './.gitignore' --ext '.js,.json' './'",
     "lint-staged": "yarn eslint --fix --ignore-path './.gitignore' --ext '.js,.json'",
-    "build": "lerna exec --parallel -- babel --root-mode upward src -d build --copy-files --ignore **/*.story.js,**/*.spec.js && lerna exec --parallel -- cp ./package.json ./README.md ./CHANGELOG.md ../../LICENSE.md ./build"
+    "build": "lerna exec --parallel -- babel --root-mode upward src -d build --copy-files --ignore **/*.story.js,**/*.spec.js"
   },
   "dependencies": {
     "@hurumap-ui/charts": "file:packages/charts",
