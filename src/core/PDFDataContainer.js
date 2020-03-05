@@ -4,7 +4,7 @@ import { PropTypes } from 'prop-types';
 import { ButtonBase, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Document, Page } from 'react-pdf';
+import Pdf from '@mikecousins/react-pdf';
 import LeftArrow from './assets/icons/left-arrow.svg';
 import RightArrow from './assets/icons/right-arrow.svg';
 
@@ -47,12 +47,14 @@ function DataContainer({ source, ...props }) {
         </ButtonBase>
       </Grid>
       <Grid item>
-        <Document
-          file={source}
-          onLoadSuccess={({ numPages }) => setNumberOfPages(numPages)}
-        >
-          <Page pageNumber={page} />
-        </Document>
+        <Pdf file={source} page={page} onDocumentComplete={setNumberOfPages}>
+          {({ pdfDocument, canvas }) => (
+            <>
+              {!pdfDocument && <div>Loading...</div>}
+              {canvas}
+            </>
+          )}
+        </Pdf>
       </Grid>
       <Grid item>
         <ButtonBase
