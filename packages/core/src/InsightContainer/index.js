@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { Box, Grid, Typography } from '@material-ui/core';
@@ -140,33 +140,37 @@ function InsightContainer({
     handleShowData
   } = actions || {};
 
-  const [rootNode, setRootNode] = useState();
+  const rootRef = useRef();
   const [showData, setShowData] = useState(false);
 
   const classes = useStyles({
     ...props,
-    rootWidth: rootNode ? rootNode.getBoundingClientRect().width : 300
+    rootWidth: rootRef.current
+      ? rootRef.current.getBoundingClientRect().width
+      : 300
   });
 
   const toPng = () => {
-    const filter = n => {
-      const { classList, tagName } = n;
-      if (tagName === 'SCRIPT') {
-        return false;
-      }
+    console.log(rootRef.current);
 
-      if (!classList) {
-        return true;
-      }
+    return domToPng(rootRef.current, {
+      filter: n => {
+        const { classList, tagName } = n;
+        if (tagName === 'SCRIPT') {
+          return false;
+        }
 
-      if (classList.contains(classes.attribution)) {
-        const { style: nodeStyle } = n;
-        nodeStyle.display = 'flex';
-      }
-      return isDowloadHiddenElement(n);
-    };
+        if (!classList) {
+          return true;
+        }
 
-    return domToPng(rootNode, { filter });
+        if (classList.contains(classes.attribution)) {
+          const { style: nodeStyle } = n;
+          nodeStyle.display = 'flex';
+        }
+        return isDowloadHiddenElement(n);
+      }
+    });
   };
 
   const defaultHandleDownload = (e, dataUrl) => {
@@ -217,7 +221,7 @@ function InsightContainer({
   const insight = insightProp || {};
 
   return (
-    <div ref={setRootNode} className={classes.root}>
+    <div ref={rootRef} className={classes.root}>
       <Grid container className={classes.containerRoot}>
         <Box
           display="flex"

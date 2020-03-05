@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { ButtonBase, Grid, Typography } from '@material-ui/core';
 
+import classNames from 'classnames';
 import {
   domToPng,
   isDowloadHiddenElement,
@@ -22,9 +23,10 @@ import EmbedIcon from './assets/icons/code.svg';
 import ShareIcon from './assets/icons/network-connection.svg';
 import makeStyles from './makeStyles';
 
+const DOWNLOAD_ONLY_CLASSNAME = 'Download--only';
 const useStyles = makeStyles(({ breakpoints, palette }) => ({
   root: {
-    backgroundColor: '#f1f1ed'
+    backgroundColor: 'transparent'
   },
   containerRoot: {
     backgroundColor: '#fff',
@@ -76,7 +78,6 @@ const useStyles = makeStyles(({ breakpoints, palette }) => ({
   shareDropDownRoot: {},
   shareDropDownPaper: {},
   attribution: {
-    display: 'none',
     backgroundColor: palette.primary.main,
     padding: '1.5625rem 1.25rem'
   },
@@ -102,6 +103,9 @@ const useStyles = makeStyles(({ breakpoints, palette }) => ({
       display: 'block',
       width: '62.36%' // golden-ratio
     }
+  },
+  [DOWNLOAD_ONLY_CLASSNAME]: {
+    display: 'none'
   }
 }));
 
@@ -145,20 +149,23 @@ function ChartContainer({
   const downloadButtonRef = useRef(null);
   const chartRef = useRef(null);
   const toPng = () => {
-    const filter = node => {
-      const { classList } = node;
-      if (classList) {
-        if (classList.contains(classes.attribution)) {
-          const { style: nodeStyle } = node;
-          nodeStyle.display = 'flex';
+    return domToPng(chartRef.current, {
+      filter: node => {
+        if (node.nodeName === 'IMG' && !node.getAttribute('src')) {
+          return false;
         }
+        const { classList } = node;
+        if (classList) {
+          if (classList.contains(DOWNLOAD_ONLY_CLASSNAME)) {
+            const { style: nodeStyle } = node;
+            nodeStyle.display = 'flex';
+          }
 
-        return isDowloadHiddenElement(node);
+          return isDowloadHiddenElement(node);
+        }
+        return true;
       }
-      return true;
-    };
-
-    return domToPng(chartRef.current, { filter });
+    });
   };
 
   const handleDownload = (anchorEl, dataUrl) => {
@@ -239,6 +246,23 @@ function ChartContainer({
         setEmbedAnchorEl(null);
         setShareAnchorEl(anchorEl);
       }));
+
+  // eslint-disable-next-line react/prop-types
+  const renderDescription = c =>
+    description && (
+      <Grid
+        container
+        wrap="nowrap"
+        alignItems="flex-start"
+        className={classNames([classes.descriptionWrapper, ...c])}
+      >
+        <Grid item>
+          <Typography variant="caption" className={classes.description}>
+            {description}
+          </Typography>
+        </Grid>
+      </Grid>
+    );
 
   const titleComponents = (
     <>
@@ -436,28 +460,19 @@ function ChartContainer({
               <Grid item>{actionComponents}</Grid>
             </Grid>
           )}
+          {renderDescription([classes[DOWNLOAD_ONLY_CLASSNAME]])}
         </Grid>
       </Grid>
-      {description && (
-        <Grid
-          container
-          alignItems="flex-start"
-          wrap="nowrap"
-          className={classes.descriptionWrapper}
-        >
-          <Grid item>
-            <Typography variant="caption" className={classes.description}>
-              {description}
-            </Typography>
-          </Grid>
-        </Grid>
-      )}
+      {renderDescription([DOWNLOAD_HIDDEN_CLASSNAME])}
       <Grid
         container
+        wrap="wrap"
         alignItems="center"
         justify="space-between"
-        wrap="wrap"
-        className={classes.attribution}
+        className={classNames([
+          classes.attribution,
+          classes[DOWNLOAD_ONLY_CLASSNAME]
+        ])}
       >
         <Grid item className={classes.attributionSource}>
           {sourceLink && (
