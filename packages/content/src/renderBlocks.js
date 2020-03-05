@@ -25,9 +25,10 @@ import {
   SOURCE_LINK,
   SOURCE_TITLE,
   SRC,
-  ID,
   WIDGET,
-  LAYOUT
+  LAYOUT,
+  BLOCK_ID,
+  ID
 } from './attributes';
 
 export const TYPES = {
@@ -53,12 +54,12 @@ export default function renderBlocks({
       {Array.from(
         document.querySelectorAll(`div[id^=${TYPES.INDICATOR_WIDGET}]`)
       ).map(el => {
-        // deprecated php indicator used to have innerhtml in its container div
+        const htmlSrc = el.innerHTML;
         // eslint-disable-next-line no-param-reassign
         el.innerHTML = '';
         return ReactDOM.createPortal(
           <Card
-            id={el.getAttribute(ID)}
+            id={el.getAttribute(BLOCK_ID) || el.getAttribute(ID)}
             type="indicator"
             parentEl={el}
             logo={logo}
@@ -66,7 +67,7 @@ export default function renderBlocks({
             description={el.getAttribute(DESCRIPTION)}
             sourceTitle={el.getAttribute(SOURCE_TITLE)}
             sourceLink={el.getAttribute(SOURCE_LINK)}
-            blockSrc={el.getAttribute(SRC)}
+            blockSrc={el.getAttribute(SRC) || htmlSrc}
             widget={el.getAttribute(WIDGET) || el.getAttribute(LAYOUT)}
           />,
           el

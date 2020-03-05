@@ -24,7 +24,7 @@ import {
   SOURCE_LINK,
   SOURCE_TITLE,
   SRC,
-  ID,
+  BLOCK_ID,
   WIDGET,
   LAYOUT
 } from './attributes';
@@ -56,7 +56,7 @@ export function dataProps(
     postType,
     sourceLink,
     sourceTitle,
-    id,
+    blockId,
     src,
     widget
   }
@@ -68,7 +68,7 @@ export function dataProps(
    */
   return pickBy(
     {
-      id: `${type}-${chartId || postId}`,
+      id: `${type}-${chartId || postId || blockId}`,
       style: {
         width:
           chartWidth ||
@@ -92,7 +92,7 @@ export function dataProps(
       [SOURCE_LINK]: sourceLink,
       [SOURCE_TITLE]: sourceTitle,
       [WIDGET]: widget,
-      [ID]: id,
+      [BLOCK_ID]: blockId,
       [SRC]: src
     },
     v => v !== undefined && v !== null
@@ -128,7 +128,7 @@ export function deprecatedProps(
    */
   return pickBy(
     {
-      id: `${type}-${chartId || id}`,
+      id: id || `${type}-${chartId}`,
       style: pickBy(
         {
           // Margins are deprecated in favor of wp align classnames
