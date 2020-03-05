@@ -5,8 +5,8 @@ import { withKnobs, select, text, object } from '@storybook/addon-knobs';
 import { ApolloProvider } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
 
+import { Card } from '@hurumap-ui/core';
 import { CenterDecorator } from './common';
-import Card from '../src/components/Card';
 
 storiesOf('HURUmap UI|Components/Card', module)
   .addDecorator(CenterDecorator)

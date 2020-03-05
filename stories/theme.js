@@ -1,4 +1,4 @@
-import createTheme from '../src/core/styles/createTheme';
+import createTheme from '@hurumap-ui/charts/styles/createTheme';
 
 export default createTheme({
   chart: {

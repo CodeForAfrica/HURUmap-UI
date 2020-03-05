@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { storiesOf } from '@storybook/react';
 import {
   withKnobs,
@@ -11,8 +11,8 @@ import {
 import { action } from '@storybook/addon-actions';
 
 import { TileLayer } from 'leaflet';
-import { Grid } from '@material-ui/core';
-import { countries, MapIt } from '../src/core';
+import countries from '@hurumap-ui/content/countries';
+import MapIt from '@hurumap-ui/core/MapIt';
 import { CenterDecorator } from './common';
 
 storiesOf('HURUmap UI|MapIt/Geography', module)
@@ -20,6 +20,7 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
   .addDecorator(withKnobs)
   .add('ContinentRoot', () => (
     <MapIt
+      height="100vh"
       tolerance={number('tolerance', 0.01)}
       url={text('url', 'https://mapit.hurumap.org')}
       drawChildren={boolean('drawChildren', true)}
@@ -53,7 +54,6 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
   ))
   .add('CountryRoot', () =>
     React.createElement(() => {
-      const [count, setCount] = useState(0);
       /**
        * If tileLayer keeps changing it will trigger rerender
        */
@@ -70,46 +70,34 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
        */
       const onClickLayer = useCallback(action('onClickGeoLayer'), []);
       return (
-        <>
-          <Grid container direction="column" style={{ width: 200 }}>
-            <p>
-              Clicking this button,
-              <strong>
-                <em>the map should not glitch</em>
-              </strong>
-            </p>
-            <button type="button" onClick={() => setCount(count + 1)}>
-              Click Count:
-              {count}
-            </button>
-          </Grid>
-          <MapIt
-            tolerance={number('tolerance', 0.001)}
-            url={text('url', 'https://mapit.hurumap.org')}
-            drawChildren={boolean('drawChildren', true)}
-            filterCountries={array('filterCountries', [])}
-            drawProfile={boolean('drawProfile', false)}
-            codeType={text('codeType', 'KEN')}
-            geoLevel={text('geoLevel', 'country')}
-            geoCode={text('geoCode', 'KE')}
-            zoom={number('zoom', 3)}
-            center={array('center', [8.7832, 34.5085])}
-            tileLayer={tileLayer.current}
-            geoLayerBlurStyle={object('geoLayerBlurStyle', {
-              color: '#00d',
-              fillColor: '#ccc',
-              weight: 1.0,
-              opacity: 0.3,
-              fillOpacity: 0.3
-            })}
-            onClickGeoLayer={onClickLayer}
-          />
-        </>
+        <MapIt
+          height="100vh"
+          tolerance={number('tolerance', 0.001)}
+          url={text('url', 'https://mapit.hurumap.org')}
+          drawChildren={boolean('drawChildren', true)}
+          filterCountries={array('filterCountries', [])}
+          drawProfile={boolean('drawProfile', false)}
+          codeType={text('codeType', 'KEN')}
+          geoLevel={text('geoLevel', 'country')}
+          geoCode={text('geoCode', 'KE')}
+          zoom={number('zoom', 3)}
+          center={array('center', [8.7832, 34.5085])}
+          tileLayer={tileLayer.current}
+          geoLayerBlurStyle={object('geoLayerBlurStyle', {
+            color: '#00d',
+            fillColor: '#ccc',
+            weight: 1.0,
+            opacity: 0.3,
+            fillOpacity: 0.3
+          })}
+          onClickGeoLayer={onClickLayer}
+        />
       );
     })
   )
   .add('DefaultProfile', () => (
     <MapIt
+      height="100vh"
       tolerance={number('tolerance', 0.001)}
       url={text('url', 'https://mapit.hurumap.org')}
       drawChildren={boolean('drawChildren', false)}
@@ -140,6 +128,7 @@ storiesOf('HURUmap UI|MapIt/Geography', module)
   ))
   .add('ProfileChildren', () => (
     <MapIt
+      height="100vh"
       tolerance={number('tolerance', 0.001)}
       url={text('url', 'https://mapit.hurumap.org')}
       drawChildren={boolean('drawChildren', true)}

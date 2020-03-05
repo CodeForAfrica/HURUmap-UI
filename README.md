@@ -31,6 +31,69 @@ To publish a new release, we use the excellent [yarn version](https://yarnpkg.co
 yarn version
 ```
 
+# Storybook 
+
+Storybook is an open-source tool that provides a sandbox to develop and visualize components in isolation. See the [Storybook site](https://storybook.js.org/) for more information about the tool. 
+
+HURUmap uses Storybook to view and work with the UI components developed in the HURUmap packages.
+
+View online at: https://codeforafrica.github.io/HURUmap-UI/
+
+Run locally in your development environment running: `yarn start` from the top-level Gutenberg directory.
+
+# Publishing
+
+Run `yarn publish:packages` otherwise always publish using lerna `--contents` argument like so `yarn lerna publish --contents build`.
+
+# Development
+
+When adding a new package, be sure to add the alias to the babel.config.js and .eslintrc.js:
+
+- babel.config.js
+
+```
+module.exports = {
+  presets: ['@babel/preset-react', '@babel/preset-env'],
+  plugins: ['inline-react-svg'],
+  env: {
+    development: {
+      plugins: [
+        [
+          'module-resolver',
+          {
+            alias: {
+              '@hurumap-ui/content': './packages/content/src',
+              '@hurumap-ui/charts': './packages/charts/src',
+              '@hurumap-ui/core': './packages/core/src'
+            }
+          }
+        ]
+      ]
+    }
+  }
+};
+```
+
+- .eslintrc.js
+
+```
+module.exports = {
+  ...,
+  settings: {
+    'import/resolver': {
+      'babel-module': {
+        alias: {
+          '@hurumap-ui/content': './packages/content/src',
+          '@hurumap-ui/charts': './packages/charts/src',
+          '@hurumap-ui/core': './packages/core/src'
+        }
+      }
+    }
+  }
+};
+
+```
+
 ---
 
 ## License
