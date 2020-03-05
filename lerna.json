@@ -5,7 +5,7 @@
         }
     },
     "ignoreChanges": [
-        "**/CHANGELOG.md",
+        "**/*.md",
         "**/{storybook,stories}/**"
     ],
     "packages": [
