@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { ButtonBase, Grid, Typography } from '@material-ui/core';
@@ -177,67 +177,52 @@ function ChartContainer({
 
   const [embedAnchorEl, setEmbedAnchorEl] = useState(null);
   const embedButtonRef = useRef(null);
-  const [embedDropDown, setEmbedDropDown] = useState(null);
   const handleCloseEmbed = () => setEmbedAnchorEl(null);
-  useEffect(() => {
-    if (typeof onClickEmbedProp === 'undefined') {
-      const dropDown = embedAnchorEl ? (
-        <EmbedDropDown
-          anchorEl={embedAnchorEl}
-          onClose={handleCloseEmbed}
-          open={embedAnchorEl === null}
-          title={embed.title}
-          subtitle={embed.subtitle}
-          classes={{
-            root: classes.embedRoot,
-            title: classes.embedTitle,
-            subtitle: classes.embedSubtitle,
-            code: classes.embedCode,
-            dropDownRoot: classes.embedDropDownRoot,
-            dropDownPaper: classes.embedDropDownPaper
-          }}
-        >
-          {embed.code}
-        </EmbedDropDown>
-      ) : null;
-      setEmbedDropDown(dropDown);
-    }
-  }, [classes, embed, embedAnchorEl, onClickEmbedProp]);
+  const renderEmbedDropDown = () => {
+    return typeof onClickEmbedProp === 'undefined' ? (
+      <EmbedDropDown
+        anchorEl={embedAnchorEl}
+        onClose={handleCloseEmbed}
+        open={embedAnchorEl === null}
+        title={embed.title}
+        subtitle={embed.subtitle}
+        classes={{
+          root: classes.embedRoot,
+          title: classes.embedTitle,
+          subtitle: classes.embedSubtitle,
+          code: classes.embedCode,
+          dropDownRoot: classes.embedDropDownRoot,
+          dropDownPaper: classes.embedDropDownPaper
+        }}
+      >
+        {embed.code}
+      </EmbedDropDown>
+    ) : null;
+  };
 
   const shareButtonRef = useRef(null);
   const [shareAnchorEl, setShareAnchorEl] = useState(null);
-  const [shareDropDown, setShareDropDown] = useState(null);
   const handleCloseShare = () => setShareAnchorEl(null);
-  useEffect(() => {
-    if (typeof onClickShareProp === 'undefined') {
-      const dropDown = shareAnchorEl ? (
-        <ShareDropDown
-          {...share}
-          anchorEl={shareAnchorEl}
-          classes={{
-            root: classes.shareRoot,
-            title: classes.shareTitle,
-            social: classes.shareSocial,
-            url: classes.shareUrl,
-            urlInput: classes.shareUrlInput,
-            dropDownRoot: classes.shareDropDownRoot,
-            dropDownPaper: classes.shareDropDownPaper
-          }}
-          onClose={handleCloseShare}
-        >
-          Explore Data
-        </ShareDropDown>
-      ) : null;
-      setShareDropDown(dropDown);
-    }
-  }, [
-    classes,
-    onClickShareProp,
-    share,
-    shareAnchorEl,
-    sourceLink,
-    sourceTitle
-  ]);
+  const renderShareDropDown = () => {
+    return typeof onClickShareProp === 'undefined' ? (
+      <ShareDropDown
+        {...share}
+        anchorEl={shareAnchorEl}
+        classes={{
+          root: classes.shareRoot,
+          title: classes.shareTitle,
+          social: classes.shareSocial,
+          url: classes.shareUrl,
+          urlInput: classes.shareUrlInput,
+          dropDownRoot: classes.shareDropDownRoot,
+          dropDownPaper: classes.shareDropDownPaper
+        }}
+        onClose={handleCloseShare}
+      >
+        Explore Data
+      </ShareDropDown>
+    ) : null;
+  };
 
   const onClickEmbed =
     onClickEmbedProp ||
@@ -352,8 +337,8 @@ function ChartContainer({
         </BlockLoader>
       )}
 
-      {embedDropDown}
-      {shareDropDown}
+      {renderEmbedDropDown()}
+      {renderShareDropDown()}
     </>
   );
   return (
