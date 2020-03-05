@@ -67,7 +67,6 @@
     "lodash": "^4.17.14",
     "prop-types": "^15.7.2",
     "react-content-loader": "^5.0.1",
-    "react-pdf": "^4.1.0",
     "react-share": "^4.0.0",
     "shortid": "^2.2.15",
     "victory": "^34.1.1"
