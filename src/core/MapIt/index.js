@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import leaflet from 'leaflet';
-import { makeStyles } from '@material-ui/core';
 
 import 'leaflet/dist/leaflet.css';
 import BlockLoader from '../BlockLoader';
 import useDeepRef from './useDeepRef';
+import makeStyles from '../styles/makeStyles';
 
 const useStyles = makeStyles({
   root: {

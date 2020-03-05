@@ -1,7 +1,7 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
 
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import makeStyles from '../../core/styles/makeStyles';
 
 import propTypes from '../propTypes';
 import ChartContainer from './ChartContainer';

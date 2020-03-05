@@ -8,9 +8,9 @@ import {
   DialogContentText,
   Typography
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 
 import DropDown from './DropDown';
+import makeStyles from './styles/makeStyles';
 
 const useStyles = makeStyles({
   root: {},

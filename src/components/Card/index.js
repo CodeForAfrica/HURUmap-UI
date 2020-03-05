@@ -160,11 +160,11 @@ export default function Card({
               ...definition,
               visual: {
                 ...definition.visual,
-                queryAlias: 'viz'
+                queryAlias: definition.visual.queryAlias || `viz${id}`
               },
               stat: {
                 ...definition.stat,
-                queryAlias: 'viz'
+                queryAlias: definition.visual.queryAlias || `viz${id}`
               }
             }
           }
@@ -264,8 +264,10 @@ Card.propTypes = {
         rendered: propTypes.string
       })
     ]),
-    description: propTypes.string,
-    visual: propTypes.shape({}),
+    description: propTypes.oneOfType([propTypes.shape({}), propTypes.string]),
+    visual: propTypes.shape({
+      queryAlias: propTypes.string
+    }),
     stat: propTypes.shape({})
   }),
   embedCode: propTypes.oneOfType([propTypes.string, propTypes.func]),
@@ -293,7 +295,7 @@ Card.defaultProps = {
   chartWidth: '',
   geoId: '',
   title: '',
-  description: '',
+  description: undefined,
   dataLinkGeoId: undefined,
   dataLinkTitle: undefined,
   analysisLinkCountrySlug: undefined,

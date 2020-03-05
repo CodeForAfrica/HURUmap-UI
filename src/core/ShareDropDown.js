@@ -10,9 +10,9 @@ import {
   TwitterIcon,
   TwitterShareButton
 } from 'react-share';
-import { makeStyles } from '@material-ui/core/styles';
 
 import DropDown from './DropDown';
+import makeStyles from './styles/makeStyles';
 
 const useStyles = makeStyles(() => ({
   root: {},

@@ -7,9 +7,9 @@ import {
   DialogContent,
   DialogContentText
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 
 import DownloadIcon from '../assets/icons/download.svg';
+import makeStyles from '../styles/makeStyles';
 
 const useStyles = makeStyles({
   content: {},

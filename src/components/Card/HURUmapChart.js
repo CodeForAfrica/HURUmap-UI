@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import makeStyles from '../../core/styles/makeStyles';
 
 import ChartFactory from '../../factory/ChartFactory';
 import useProfileLoader from '../../factory/useProfileLoader';
@@ -33,6 +33,7 @@ function HURUmapChart({
   analysisLinkHref,
   embedCode,
   handleShare,
+  useLoader,
   ...props
 }) {
   const classes = useStyles(props);
@@ -43,7 +44,7 @@ function HURUmapChart({
 
   const visuals = useMemo(() => (chart ? [chart.visual] : []), [chart]);
 
-  const { profiles, chartData } = useProfileLoader({ geoId, visuals });
+  const { profiles, chartData } = useLoader({ geoId, visuals });
 
   const source = useMemo(() => {
     const { isLoading, profileVisualsData } = chartData;
@@ -168,7 +169,8 @@ HURUmapChart.propTypes = {
   analysisLinkTitle: propTypes.string,
   analysisLinkHref: propTypes.oneOfType([propTypes.string, propTypes.func]),
   embedCode: propTypes.string,
-  handleShare: propTypes.func
+  handleShare: propTypes.func,
+  useLoader: propTypes.func
 };
 
 HURUmapChart.defaultProps = {
@@ -187,7 +189,8 @@ HURUmapChart.defaultProps = {
   analysisLinkTitle: undefined,
   analysisLinkHref: countrySlug => `/profiles/${countrySlug}`,
   embedCode: '',
-  handleShare: () => {}
+  handleShare: () => {},
+  useLoader: useProfileLoader
 };
 
 export default HURUmapChart;

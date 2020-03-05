@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { ClickAwayListener, Fade, Paper, Popper } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from './styles/makeStyles';
 
 const useStyles = makeStyles(({ breakpoints }) => ({
   root: {
