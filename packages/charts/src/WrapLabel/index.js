@@ -3,28 +3,13 @@ import PropTypes from 'prop-types';
 import shortid from 'shortid';
 
 import wrapSVGText from './wrapSVGText';
-import propTypes from '../propTypes';
 
 const WrapLabel = React.memo(
-  ({
-    width,
-    text,
-    x,
-    y,
-    style,
-    transform,
-    textAnchor,
-    horizontal,
-    onMaxDimmension
-  }) => {
+  ({ width, text, x, y, style, transform, textAnchor }) => {
     return (
       <text
         key={shortid.generate()}
-        ref={node => {
-          if (node) {
-            wrapSVGText(node, text, width, onMaxDimmension, horizontal);
-          }
-        }}
+        ref={node => wrapSVGText(node, text, width)}
         x={x}
         y={y}
         style={style}
@@ -49,14 +34,10 @@ WrapLabel.propTypes = {
   transform: PropTypes.string,
   width: PropTypes.number.isRequired,
   x: PropTypes.number,
-  y: PropTypes.number,
-  horizontal: propTypes.bool,
-  onMaxDimmension: propTypes.func
+  y: PropTypes.number
 };
 
 WrapLabel.defaultProps = {
-  horizontal: false,
-  onMaxDimmension: () => {},
   text: undefined,
   style: undefined,
   textAnchor: undefined,
