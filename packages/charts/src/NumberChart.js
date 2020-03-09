@@ -10,32 +10,27 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     height: 'auto'
   },
-  hidden: {
-    display: 'none'
-  },
-  mainStatistic: {
+  valueContainer: {
     marginTop: '1em'
   },
-  statistic: {
+  value: {
     fontSize: '2.25rem'
   },
-  statisticDeviation: {
+  aside: ({ onHover }) => ({
     fontSize: '0.4em',
     color: '#777',
-    display: 'inlineBlock'
-  },
-  secondaryDeviation: {
+    display: onHover ? 'inline-block' : 'none'
+  }),
+  note: ({ onHover }) => ({
     fontSize: '1em',
-    color: '#777'
-  },
-  subtitle: {
+    color: '#777',
+    display: onHover ? 'block' : 'none'
+  }),
+  title: {
     fontSize: '1.25em'
   },
   description: {
     fontSize: '1.5em'
-  },
-  comparison: {
-    fontWeight: 'bold'
   },
   list: {
     padding: 0
@@ -79,32 +74,22 @@ function NumberChart({
   breakdowns,
   ...props
 }) {
-  const classes = useStyles(props);
   const [onHover, setOnHover] = useState(false);
+  const classes = useStyles({ ...props, onHover });
   const toggleHover = () => setOnHover(!onHover);
   return (
     <div className={classes.root}>
-      {title && <Typography className={classes.subtitle}>{title}</Typography>}
-      <div className={classes.mainStatistic}>
+      {title && <Typography className={classes.title}>{title}</Typography>}
+      <div className={classes.valueContainer}>
         <Typography
-          className={classes.statistic}
+          className={classes.value}
           onMouseEnter={toggleHover}
           onMouseLeave={toggleHover}
         >
           {value}
-          <span
-            className={!onHover ? classes.hidden : classes.statisticDeviation}
-          >
-            {aside}
-          </span>
+          <span className={classes.aside}>{aside}</span>
         </Typography>
-        {note && (
-          <Typography
-            className={!onHover ? classes.hidden : classes.secondaryDeviation}
-          >
-            {note}
-          </Typography>
-        )}
+        {note && <Typography className={classes.note}>{note}</Typography>}
       </div>
       <Typography className={classes.description}>{description}</Typography>
 
@@ -124,9 +109,7 @@ function NumberChart({
                 <span> </span>
                 {breakdown.aside && (
                   <span
-                    className={
-                      !onHover ? classes.hidden : classes.secondaryDeviation
-                    }
+                    className={classes.aside}
                     dangerouslySetInnerHTML={{
                       __html: decodeHTMLEntities(breakdown.aside)
                     }}
