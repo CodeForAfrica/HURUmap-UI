@@ -1,35 +1,35 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text, object } from '@storybook/addon-knobs';
-import { NumberVisuals } from '@hurumap-ui/charts';
+import { NumberChart } from '@hurumap-ui/charts';
 import { CenterDecorator } from './common';
 
-storiesOf('HURUmap UI/NumberVisuals', module)
+storiesOf('HURUmap UI/NumberChart', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('Default', () => {
     return (
-      <NumberVisuals
-        subtitle={text('Subtitle', 'Income')}
-        statistic={text('Statistic', '$60,336')}
-        statisticDeviation={text('Statistic Deviation', '±0.1% ')}
-        secondaryDeviation={text(
-          'Secondary Deviation',
+      <NumberChart
+        title={text('Title', 'Income')}
+        value={text('Value', '$60,336')}
+        aside={text('Aside (Appears when hovering over value)', '±0.1%')}
+        note={text(
+          'Note (Appears when hovering over value)',
           '(194, 667, 872 ±241, 381.6)'
         )}
         description={text('Description', 'Median household income')}
-        comparisonData={object('Comparison Data', [
+        breakdowns={object('Breakdowns', [
           {
             id: 0,
-            parentComparison: 'about 90 percent',
-            parentDescription: 'of the amount in United States: $32,397',
-            parentDeviation: '±0.24%'
+            description:
+              '<b>about 90 percent</b> of the amount in United States: $32,397',
+            aside: '±0.1%'
           },
           {
             id: 1,
-            parentComparison: 'about 60 percent',
-            parentDescription: 'of the amount in United States: $32,397',
-            parentDeviation: '±0.13%'
+            description:
+              '<b>about 60 percent</b> of the amount in United States: $32,397',
+            aside: '±0.1%'
           }
         ])}
       />

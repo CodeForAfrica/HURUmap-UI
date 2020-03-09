@@ -11,7 +11,7 @@ import BulletChart from './BulletChart';
 import LineChart from './LineChart';
 import NestedProportionalAreaChart from './NestedProportionalAreaChart';
 import PieChart from './PieChart';
-import NumberVisuals from './NumberVisuals';
+import NumberChart from './NumberChart';
 
 import propTypes from './propTypes';
 import withVictoryTheme from './styles/withVictoryTheme';
@@ -485,13 +485,11 @@ const ChartFactory = React.memo(
             : `${xDesc}`;
 
           return (
-            <NumberVisuals
+            <NumberChart
               key={key}
-              subtitle={subtitle}
-              statistic={dataStatY}
+              title={subtitle}
+              value={dataStatY}
               description={`${description} ${xDesc}`}
-              comparisonData={[]} // TODO: pending NumberVisuals components (HURUmap-UI) fix on this propTypes
-              classes={{}} // TODO: pending NumberVisuals style configurations - update root margin
               {...chartProps}
             />
           );
