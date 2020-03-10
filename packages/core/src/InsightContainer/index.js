@@ -151,19 +151,12 @@ function InsightContainer({
   });
 
   const toPng = () => {
-    console.log(rootRef.current);
-
     return domToPng(rootRef.current, {
       filter: n => {
-        const { classList, tagName } = n;
-        if (tagName === 'SCRIPT') {
-          return false;
-        }
-
+        const { classList } = n;
         if (!classList) {
           return true;
         }
-
         if (classList.contains(classes.attribution)) {
           const { style: nodeStyle } = n;
           nodeStyle.display = 'flex';
