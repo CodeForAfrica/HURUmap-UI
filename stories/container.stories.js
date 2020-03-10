@@ -22,7 +22,7 @@ import {
 } from '@hurumap-ui/core';
 import { CenterDecorator } from './common';
 
-import logo from './assets/dominion-logo.png';
+import logo from './assets/hurumap-logo-white.png';
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
 
@@ -68,6 +68,7 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
             )}
           >
             <ChartContainer
+              logo={logo}
               loading={loading}
               title={text('title', 'Lorem ipsum dolor sit amet.')}
               subtitle={text(
@@ -209,6 +210,7 @@ storiesOf('HURUmap UI|ChartContainers/ChartContainer', module)
             )}
           >
             <ChartContainer
+              logo={logo}
               content={object('content', { height: 400, width: '100%' })}
               loading={loading}
               onClickShare={
