@@ -151,12 +151,9 @@ function ChartContainer({
   const toPng = () => {
     return domToPng(chartRef.current, {
       filter: node => {
-        if (node.nodeName === 'IMG' && !node.getAttribute('src')) {
-          return false;
-        }
         const { classList } = node;
         if (classList) {
-          if (classList.contains(DOWNLOAD_ONLY_CLASSNAME)) {
+          if (typeof node.className === 'string' && node.className.includes(DOWNLOAD_ONLY_CLASSNAME)){
             const { style: nodeStyle } = node;
             nodeStyle.display = 'flex';
           }

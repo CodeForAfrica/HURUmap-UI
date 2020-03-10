@@ -8,6 +8,8 @@ import ApolloClient from 'apollo-boost';
 import { Card } from '@hurumap-ui/core';
 import { CenterDecorator } from './common';
 
+import logo from './assets/hurumap-logo-white.png';
+
 storiesOf('HURUmap UI|Components/Card', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
@@ -83,6 +85,7 @@ storiesOf('HURUmap UI|Components/Card', module)
         <div style={{ width, height: '100%' }}>
           <Card
             id="1234"
+            logo={logo}
             key={type}
             type={type}
             geoId={geoId}

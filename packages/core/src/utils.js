@@ -41,13 +41,13 @@ export const isDowloadHiddenElement = node => {
   return true;
 };
 
-export function domToPng(node, { style: nodeStyle, ...options }) {
+export function domToPng(node, { style: nodeStyle, filter, ...options }) {
   if (node) {
     // To avoid any flicking, it's best to clone the node and run the `filter`
     // function, which may modify the node, on the cloned node.
     const clonedNode = node.cloneNode(true);
     const { left, position } = clonedNode.style;
-    clonedNode.style.left = '-999px';
+    clonedNode.style.left = '-9999px';
     clonedNode.style.position = 'absolute';
     clonedNode.style.width = `${node.scrollWidth}px`;
 
@@ -55,16 +55,24 @@ export function domToPng(node, { style: nodeStyle, ...options }) {
 
     const toPng = () => {
       document.body.appendChild(clonedNode);
-
       return domToImage
         .toPng(clonedNode, {
           ...options,
+          filter: n => {
+            if (n.tagName === 'SCRIPT') {
+              return false;
+            }
+            if (n.nodeName === 'IMG' && !n.getAttribute('src')) {
+              return false;
+            }
+            return filter(n);
+          },
           style
         })
         .then(dataUrl => {
-          document.body.removeChild(clonedNode);
           return dataUrl;
-        });
+        })
+        .finally(() => clonedNode.remove());
     };
 
     // Use the original node since the clonedNode's iframe wouldn't have
