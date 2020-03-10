@@ -153,7 +153,10 @@ function ChartContainer({
       filter: node => {
         const { classList } = node;
         if (classList) {
-          if (typeof node.className === 'string' && node.className.includes(DOWNLOAD_ONLY_CLASSNAME)){
+          if (
+            typeof node.className === 'string' &&
+            node.className.includes(DOWNLOAD_ONLY_CLASSNAME)
+          ) {
             const { style: nodeStyle } = node;
             nodeStyle.display = 'flex';
           }
