@@ -16,6 +16,8 @@ import NumberVisuals from './NumberVisuals';
 import propTypes from './propTypes';
 import withVictoryTheme from './styles/withVictoryTheme';
 
+import { computeMaxLabelDimmension } from './WrapLabel/wrapSVGText';
+
 const DOWNLOAD_HIDDEN_CLASSNAME = 'Download--hidden';
 
 const ChartFactory = React.memo(
@@ -208,34 +210,36 @@ const ChartFactory = React.memo(
             x: [x0 * primaryData.length, x1 * primaryData.length]
           };
 
-          const paddingSize =
-            (horizontal
-              ? padding.top + padding.bottom
-              : padding.left + padding.right) +
-            domainPadding.x[0] +
-            domainPadding.x[1];
+          const paddingSize = horizontal
+            ? padding.top + padding.bottom
+            : padding.left + padding.right;
 
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
+          const labelWidth = computeMaxLabelDimmension({
+            horizontal,
+            labelWidth: theme.axis.labelWidth,
+            texts: primaryData.reduce(
+              (a, b) => a.concat(b.map(({ x }) => x)),
+              []
+            )
+          });
+
           const adjustedRootWidth =
-            rootRef && rootWidth - (theme.axis.labelWidth || 0);
+            rootWidth && rootWidth - (horizontal ? labelWidth || 0 : 0);
           const height = heightProp || theme.bar.height;
 
-          let dataCount = primaryData[0].length;
-          let barCount = showMore
-            ? primaryData.length
-            : Math.floor(
-                (adjustedRootWidth - paddingSize) / (offset * dataCount)
-              );
+          const totalColumnCount = showMore
+            ? primaryData.length * primaryData[0].length
+            : Math.floor((adjustedRootWidth - paddingSize) / offset);
 
-          if (barCount === 0) {
-            barCount = 1;
-            dataCount =
-              Math.floor(
-                (adjustedRootWidth - paddingSize) / (offset * barCount)
-              ) || 1;
-          }
+          const columnCount =
+            totalColumnCount > primaryData.length
+              ? primaryData.length
+              : totalColumnCount;
 
-          const computedSize = dataCount * barCount * offset + paddingSize;
+          const groupCount = Math.round(totalColumnCount / primaryData.length);
+
+          const computedSize = totalColumnCount * offset + paddingSize;
 
           const width =
             horizontal || computedSize > adjustedRootWidth
@@ -245,14 +249,13 @@ const ChartFactory = React.memo(
           return {
             width,
             offset,
-            barCount,
-            dataCount,
+            groupCount,
+            columnCount,
             domainPadding,
             height: computedHeight,
             enableShowMore:
               showMore ||
-              barCount !== primaryData.length ||
-              dataCount !== primaryData[0].length
+              totalColumnCount !== primaryData.length * primaryData[0].length
           };
         }
         case 'column': {
@@ -472,8 +475,8 @@ const ChartFactory = React.memo(
             offset,
             height,
             width,
-            barCount,
-            dataCount,
+            groupCount,
+            columnCount,
             domainPadding
           } = calculations;
 
@@ -482,8 +485,8 @@ const ChartFactory = React.memo(
               <BarChart
                 key={key}
                 data={primaryData
-                  .map(d => d.slice(0, dataCount))
-                  .slice(0, barCount)}
+                  .map(d => d.slice(0, groupCount))
+                  .slice(0, columnCount)}
                 offset={offset}
                 width={width}
                 height={height}
