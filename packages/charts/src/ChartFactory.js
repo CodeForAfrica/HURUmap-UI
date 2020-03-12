@@ -195,14 +195,10 @@ const ChartFactory = React.memo(
             height: heightProp || theme.pie.height
           };
         case 'grouped_column': {
-          const barCount = primaryData[0].length;
           const offset = offsetProp || theme.bar.offset;
           const padding = paddingProp
             ? Helpers.getPadding({ padding: paddingProp })
             : Helpers.getPadding(theme.bar);
-          const paddingSize = horizontal
-            ? padding.top + padding.bottom
-            : padding.left + padding.right;
           const {
             domainPadding: {
               x: [x0, x1]
@@ -212,56 +208,51 @@ const ChartFactory = React.memo(
             x: [x0 * primaryData.length, x1 * primaryData.length]
           };
 
+          const paddingSize =
+            (horizontal
+              ? padding.top + padding.bottom
+              : padding.left + padding.right) +
+            domainPadding.x[0] +
+            domainPadding.x[1];
+
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
           const adjustedRootWidth =
             rootRef && rootWidth - (theme.axis.labelWidth || 0);
           const height = heightProp || theme.bar.height;
 
-          let fullSize;
-          let dataCount;
-          let computedSize;
-          // eslint-disable-next-line no-plusplus
-          for (dataCount = barCount; dataCount > 0; --dataCount) {
-            computedSize =
-              primaryData.length * dataCount * offset +
-              paddingSize +
-              domainPadding.x[0] +
-              domainPadding.x[1];
+          let dataCount = primaryData[0].length;
+          let barCount = showMore
+            ? primaryData.length
+            : Math.floor(
+                (adjustedRootWidth - paddingSize) / (offset * dataCount)
+              );
 
-            if (!fullSize) {
-              fullSize = computedSize;
-            }
-
-            if (!adjustedRootWidth || showMore) {
-              break;
-            }
-
-            if (
-              (horizontal && computedSize < height) ||
-              (!horizontal && computedSize < adjustedRootWidth)
-            ) {
-              break;
-            }
+          if (barCount === 0) {
+            barCount = 1;
+            dataCount =
+              Math.floor(
+                (adjustedRootWidth - paddingSize) / (offset * barCount)
+              ) || 1;
           }
+
+          const computedSize = dataCount * barCount * offset + paddingSize;
 
           const width =
             horizontal || computedSize > adjustedRootWidth
               ? adjustedRootWidth
               : computedSize;
           const computedHeight = horizontal || showMore ? computedSize : height;
-
           return {
             width,
             offset,
+            barCount,
             dataCount,
             domainPadding,
             height: computedHeight,
             enableShowMore:
-              Boolean(height) &&
-              // It can't fit the desired height
-              // or
-              // It can't fit the dynamic width
-              (fullSize > height || fullSize > adjustedRootWidth)
+              showMore ||
+              barCount !== primaryData.length ||
+              dataCount !== primaryData[0].length
           };
         }
         case 'column': {
@@ -286,35 +277,20 @@ const ChartFactory = React.memo(
             rootWidth && rootWidth - (theme.axis.labelWidth || 0);
           const height = heightProp || theme.bar.height;
 
-          let fullSize;
-          let dataCount;
-          let computedSize;
-          // eslint-disable-next-line no-plusplus
-          for (dataCount = primaryData.length; dataCount > 0; --dataCount) {
-            computedSize =
-              dataCount * barCount * offset +
-              paddingSize +
-              domainPadding.x[0] +
-              domainPadding.x[1] +
-              // Bug when 2 bars only
-              (dataCount === 2 ? offset : 0);
+          const dataCount = showMore
+            ? primaryData.length
+            : Math.floor(
+                (adjustedRootWidth -
+                  (primaryData.length === 2 ? offset : 0) -
+                  paddingSize) /
+                  (offset * barCount)
+              );
+          const computedSize =
+            primaryData.length * barCount * offset +
+            paddingSize +
+            // Bug when 2 bars only
+            (primaryData.length === 2 ? offset : 0);
 
-            if (!fullSize) {
-              fullSize = computedSize;
-            }
-
-            if (!adjustedRootWidth || showMore) {
-              break;
-            }
-
-            if (
-              horizontal
-                ? computedSize < height
-                : computedSize < adjustedRootWidth
-            ) {
-              break;
-            }
-          }
           const width =
             horizontal ||
             (adjustedRootWidth && computedSize > adjustedRootWidth)
@@ -327,12 +303,7 @@ const ChartFactory = React.memo(
             dataCount,
             domainPadding,
             height: computedHeight,
-            enableShowMore:
-              Boolean(height) &&
-              // It can't fit the desired height
-              // or
-              // It can't fit the dynamic width
-              (fullSize > height || fullSize > adjustedRootWidth)
+            enableShowMore: showMore || dataCount !== primaryData.length
           };
         }
         case 'line': {
@@ -501,6 +472,7 @@ const ChartFactory = React.memo(
             offset,
             height,
             width,
+            barCount,
             dataCount,
             domainPadding
           } = calculations;
@@ -509,7 +481,9 @@ const ChartFactory = React.memo(
             <div style={{ width, height }}>
               <BarChart
                 key={key}
-                data={primaryData.map(d => d.slice(0, dataCount))}
+                data={primaryData
+                  .map(d => d.slice(0, dataCount))
+                  .slice(0, barCount)}
                 offset={offset}
                 width={width}
                 height={height}
