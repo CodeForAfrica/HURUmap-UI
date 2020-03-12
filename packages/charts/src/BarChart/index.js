@@ -111,9 +111,13 @@ function BarChart({
   );
 
   padding.left =
-    horizontal && maxLabelDimmension ? maxLabelDimmension / 2 : padding.left;
+    horizontal && maxLabelDimmension && maxLabelDimmension > padding.left
+      ? maxLabelDimmension
+      : padding.left;
   padding.bottom =
-    !horizontal && maxLabelDimmension ? maxLabelDimmension * 2 : padding.bottom;
+    !horizontal && maxLabelDimmension && maxLabelDimmension > padding.bottom
+      ? maxLabelDimmension
+      : padding.bottom;
 
   const chartProps = {
     domain,
