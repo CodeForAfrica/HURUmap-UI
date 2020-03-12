@@ -32,7 +32,8 @@ import {
 export const TYPES = {
   HURUMAP_CARD: 'hurumap-card',
   HURUMAP_CHART: 'indicator-hurumap',
-  FLOURISH_CHART: 'indicator-flourish'
+  FLOURISH_CHART: 'indicator-flourish',
+  INDICATOR_WIDGET: 'indicator-block'
 };
 
 export function dataProps(
@@ -128,7 +129,7 @@ export function deprecatedProps(
    */
   return pickBy(
     {
-      id: id || `${type}-${chartId}`,
+      id: id || `${type}-${chartId || postId }`,
       style: pickBy(
         {
           // Margins are deprecated in favor of wp align classnames
