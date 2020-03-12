@@ -32,6 +32,7 @@ function BarChart({
   parts,
   responsive,
   theme,
+  maxLabelDimmension: propMaxLabelDimmension,
   width: suggestedWidth,
   ...props
 }) {
@@ -46,21 +47,24 @@ function BarChart({
     () => (!propData ? [] : Array.isArray(propData[0]) ? propData : [propData]),
     [propData]
   );
-  const barSpacing = offset || barWidth;
-  let labelWidth = barSpacing * groupData.length;
+
+  let labelWidth;
   const desiredLabelWidth = propLabelWidth || themeLabelWidth;
   if (horizontal && desiredLabelWidth) {
     labelWidth = desiredLabelWidth;
+  } else {
+    labelWidth = (offset || barWidth) * groupData.length;
   }
 
   const maxLabelDimmension = useMemo(
     () =>
+      propMaxLabelDimmension ||
       computeMaxLabelDimmension({
         labelWidth,
         horizontal,
         texts: groupData.reduce((a, b) => a.concat(b.map(({ x }) => x)), [])
       }),
-    [labelWidth, horizontal, groupData]
+    [labelWidth, propMaxLabelDimmension, horizontal, groupData]
   );
 
   if (!propData || !groupChart) {
@@ -192,6 +196,7 @@ function BarChart({
 BarChart.propTypes = {
   data: propTypes.groupedData,
   barWidth: PropTypes.number,
+  maxLabelDimmension: PropTypes.number,
   labelWidth: PropTypes.number,
   domain: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
   domainPadding: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
@@ -214,6 +219,7 @@ BarChart.propTypes = {
 };
 
 BarChart.defaultProps = {
+  maxLabelDimmension: undefined,
   barWidth: undefined,
   labelWidth: undefined,
   data: undefined,

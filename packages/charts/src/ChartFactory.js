@@ -215,7 +215,7 @@ const ChartFactory = React.memo(
             : padding.left + padding.right;
 
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
-          const labelWidth = computeMaxLabelDimmension({
+          const maxLabelDimmension = computeMaxLabelDimmension({
             horizontal,
             labelWidth: theme.axis.labelWidth,
             texts: primaryData.reduce(
@@ -225,7 +225,7 @@ const ChartFactory = React.memo(
           });
 
           const adjustedRootWidth =
-            rootWidth && rootWidth - (horizontal ? labelWidth || 0 : 0);
+            rootWidth && rootWidth - (horizontal ? maxLabelDimmension || 0 : 0);
           const height = heightProp || theme.bar.height;
 
           const totalColumnCount = showMore
@@ -253,6 +253,7 @@ const ChartFactory = React.memo(
             columnCount,
             domainPadding,
             height: computedHeight,
+            maxLabelDimmension,
             enableShowMore:
               showMore ||
               totalColumnCount !== primaryData.length * primaryData[0].length
@@ -276,8 +277,14 @@ const ChartFactory = React.memo(
             : padding.left + padding.right;
 
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
+          const maxLabelDimmension = computeMaxLabelDimmension({
+            horizontal,
+            labelWidth: theme.axis.labelWidth,
+            texts: primaryData.map(({ x }) => x)
+          });
+
           const adjustedRootWidth =
-            rootWidth && rootWidth - (theme.axis.labelWidth || 0);
+            rootWidth && rootWidth - (maxLabelDimmension || 0);
           const height = heightProp || theme.bar.height;
 
           const dataCount = showMore
@@ -305,6 +312,7 @@ const ChartFactory = React.memo(
             offset,
             dataCount,
             domainPadding,
+            maxLabelDimmension,
             height: computedHeight,
             enableShowMore: showMore || dataCount !== primaryData.length
           };
@@ -477,7 +485,8 @@ const ChartFactory = React.memo(
             width,
             groupCount,
             columnCount,
-            domainPadding
+            domainPadding,
+            maxLabelDimmension
           } = calculations;
 
           return (
@@ -495,6 +504,7 @@ const ChartFactory = React.memo(
                 labels={({ datum }) => format(datum.y)}
                 padding={paddingProp}
                 theme={theme}
+                maxLabelDimmension={maxLabelDimmension}
                 {...chartProps}
               />
             </div>
@@ -506,7 +516,8 @@ const ChartFactory = React.memo(
             height,
             width,
             dataCount,
-            domainPadding
+            domainPadding,
+            maxLabelDimmension
           } = calculations;
           if (isComparison) {
             const processedComparisonData = aggregate
@@ -528,6 +539,7 @@ const ChartFactory = React.memo(
                   domainPadding={domainPadding}
                   labels={({ datum }) => format(datum.y)}
                   theme={theme}
+                  maxLabelDimmension={maxLabelDimmension}
                   {...chartProps}
                 />
               </div>
@@ -545,6 +557,7 @@ const ChartFactory = React.memo(
                 domainPadding={domainPadding}
                 labels={({ datum }) => format(datum.y)}
                 theme={theme}
+                maxLabelDimmension={maxLabelDimmension}
                 {...chartProps}
               />
             </div>
