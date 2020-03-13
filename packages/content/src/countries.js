@@ -154,7 +154,7 @@ export default [
         name: 'District'
       },
       level3: {
-        name: 'Division'
+        name: 'Ward'
       }
     }
   },
