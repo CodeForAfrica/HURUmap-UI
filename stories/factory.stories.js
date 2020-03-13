@@ -25,7 +25,7 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     );
     const horizontal = boolean('horizontal');
     const data = Array(number('data', 3)).fill(null);
-    const toggleSize = type === 'column' && boolean('toggleSize', true);
+    const disableShowMore = type === 'column' && boolean('disableShowMore', true);
     const customUnit = text('customUnit', 'unit');
     const aggregate = select('aggregate', [':percent', ''], '');
     const subtitle = text('subtitle', 'Subtitle');
@@ -61,7 +61,7 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
             y
           };
         })}
-        toggleSize={toggleSize}
+        disableShowMore={disableShowMore}
       />
     );
   })
