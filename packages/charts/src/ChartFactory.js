@@ -16,6 +16,8 @@ import NumberVisuals from './NumberVisuals';
 import propTypes from './propTypes';
 import withVictoryTheme from './styles/withVictoryTheme';
 
+import { computeMaxLabelDimmension } from './WrapLabel/wrapSVGText';
+
 const DOWNLOAD_HIDDEN_CLASSNAME = 'Download--hidden';
 
 const ChartFactory = React.memo(
@@ -195,14 +197,10 @@ const ChartFactory = React.memo(
             height: heightProp || theme.pie.height
           };
         case 'grouped_column': {
-          const barCount = primaryData[0].length;
           const offset = offsetProp || theme.bar.offset;
           const padding = paddingProp
             ? Helpers.getPadding({ padding: paddingProp })
             : Helpers.getPadding(theme.bar);
-          const paddingSize = horizontal
-            ? padding.top + padding.bottom
-            : padding.left + padding.right;
           const {
             domainPadding: {
               x: [x0, x1]
@@ -212,56 +210,62 @@ const ChartFactory = React.memo(
             x: [x0 * primaryData.length, x1 * primaryData.length]
           };
 
+          const paddingSize = horizontal
+            ? padding.top + padding.bottom
+            : padding.left + padding.right;
+
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
-          const adjustedRootWidth =
-            rootRef && rootWidth - (theme.axis.labelWidth || 0);
+          const { maxLabelHeight, maxLabelWidth } = computeMaxLabelDimmension({
+            labelWidth: theme.axis.labelWidth,
+            texts: primaryData.reduce(
+              (a, b) => a.concat(b.map(({ x }) => x)),
+              []
+            )
+          });
+
           const height = heightProp || theme.bar.height;
+          const adjustedHeight = height - maxLabelHeight;
+          const adjustedWidth = rootWidth && rootWidth - maxLabelWidth;
+          const adjustedDimmension = horizontal
+            ? adjustedHeight
+            : adjustedWidth;
 
-          let fullSize;
-          let dataCount;
-          let computedSize;
-          // eslint-disable-next-line no-plusplus
-          for (dataCount = barCount; dataCount > 0; --dataCount) {
-            computedSize =
-              primaryData.length * dataCount * offset +
-              paddingSize +
-              domainPadding.x[0] +
-              domainPadding.x[1];
+          const totalColumnCount =
+            showMore || disableShowMore
+              ? primaryData.length * primaryData[0].length
+              : Math.floor((adjustedDimmension - paddingSize) / offset);
 
-            if (!fullSize) {
-              fullSize = computedSize;
-            }
+          const columnCount =
+            totalColumnCount > primaryData.length
+              ? primaryData.length
+              : totalColumnCount;
 
-            if (!adjustedRootWidth || showMore) {
-              break;
-            }
+          const groupCount = Math.ceil(totalColumnCount / primaryData.length);
 
-            if (
-              (horizontal && computedSize < height) ||
-              (!horizontal && computedSize < adjustedRootWidth)
-            ) {
-              break;
-            }
-          }
+          const computedSize =
+            (totalColumnCount > primaryData.length * primaryData[0].length
+              ? primaryData.length * primaryData[0].length
+              : totalColumnCount) *
+              offset +
+            paddingSize;
 
-          const width =
-            horizontal || computedSize > adjustedRootWidth
-              ? adjustedRootWidth
-              : computedSize;
-          const computedHeight = horizontal || showMore ? computedSize : height;
-
+          const showHorizontal =
+            horizontal || computedSize > adjustedDimmension;
+          const width = showHorizontal ? adjustedWidth : computedSize;
+          const computedHeight = showHorizontal ? computedSize : height;
           return {
             width,
             offset,
-            dataCount,
+            groupCount,
+            columnCount,
             domainPadding,
             height: computedHeight,
+            maxLabelDimmension: { maxLabelHeight, maxLabelWidth },
+            showHorizontal,
             enableShowMore:
-              Boolean(height) &&
-              // It can't fit the desired height
-              // or
-              // It can't fit the dynamic width
-              (fullSize > height || fullSize > adjustedRootWidth)
+              !disableShowMore &&
+              (showMore ||
+                totalColumnCount < primaryData.length * primaryData[0].length)
           };
         }
         case 'column': {
@@ -277,62 +281,53 @@ const ChartFactory = React.memo(
             ? Helpers.getPadding({ padding: paddingProp })
             : Helpers.getPadding(theme.bar);
 
+          const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
+          const { maxLabelHeight, maxLabelWidth } = computeMaxLabelDimmension({
+            labelWidth: theme.axis.labelWidth,
+            texts: primaryData.map(({ x }) => x)
+          });
+
+          const height = heightProp || theme.bar.height;
+          const adjustedHeight = height - maxLabelHeight;
+          const adjustedWidth = rootWidth && rootWidth - maxLabelWidth;
+          const adjustedDimmension = horizontal
+            ? adjustedHeight
+            : adjustedWidth;
+
+          const dataCount =
+            showMore || disableShowMore
+              ? primaryData.length
+              : Math.floor(
+                  (adjustedDimmension -
+                    offset -
+                    (padding.left + padding.right)) /
+                    offset
+                );
+
           const paddingSize = horizontal
             ? padding.top + padding.bottom
             : padding.left + padding.right;
+          const computedSize =
+            (dataCount > primaryData.length ? primaryData.length : dataCount) *
+              barCount *
+              offset +
+            paddingSize +
+            offset;
 
-          const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
-          const adjustedRootWidth =
-            rootWidth && rootWidth - (theme.axis.labelWidth || 0);
-          const height = heightProp || theme.bar.height;
-
-          let fullSize;
-          let dataCount;
-          let computedSize;
-          // eslint-disable-next-line no-plusplus
-          for (dataCount = primaryData.length; dataCount > 0; --dataCount) {
-            computedSize =
-              dataCount * barCount * offset +
-              paddingSize +
-              domainPadding.x[0] +
-              domainPadding.x[1] +
-              // Bug when 2 bars only
-              (dataCount === 2 ? offset : 0);
-
-            if (!fullSize) {
-              fullSize = computedSize;
-            }
-
-            if (!adjustedRootWidth || showMore) {
-              break;
-            }
-
-            if (
-              horizontal
-                ? computedSize < height
-                : computedSize < adjustedRootWidth
-            ) {
-              break;
-            }
-          }
-          const width =
-            horizontal ||
-            (adjustedRootWidth && computedSize > adjustedRootWidth)
-              ? adjustedRootWidth
-              : computedSize;
-          const computedHeight = horizontal || showMore ? computedSize : height;
+          const showHorizontal =
+            horizontal || computedSize > adjustedDimmension;
+          const width = showHorizontal ? adjustedWidth : computedSize;
+          const computedHeight = showHorizontal ? computedSize : height;
           return {
             width,
             offset,
             dataCount,
             domainPadding,
+            maxLabelDimmension: { maxLabelHeight, maxLabelWidth },
             height: computedHeight,
+            showHorizontal,
             enableShowMore:
-              Boolean(height) &&
-              // It can't fit the desired height
-              // or
-              // It can't fit the dynamic width
-              (fullSize > height || fullSize > adjustedRootWidth)
+              !disableShowMore && (showMore || dataCount < primaryData.length)
           };
         }
         case 'line': {
@@ -362,12 +357,13 @@ const ChartFactory = React.memo(
       theme.line.offset,
       theme.line.height,
       heightProp,
-      primaryData,
       offsetProp,
       paddingProp,
+      primaryData,
       horizontal,
       rootRef,
       showMore,
+      disableShowMore,
       isComparison
     ]);
 
@@ -501,23 +497,29 @@ const ChartFactory = React.memo(
             offset,
             height,
             width,
-            dataCount,
-            domainPadding
+            groupCount,
+            columnCount,
+            domainPadding,
+            maxLabelDimmension,
+            showHorizontal
           } = calculations;
 
           return (
             <div style={{ width, height }}>
               <BarChart
                 key={key}
-                data={primaryData.map(d => d.slice(0, dataCount))}
+                data={primaryData
+                  .map(d => d.slice(0, groupCount))
+                  .slice(0, columnCount)}
                 offset={offset}
                 width={width}
                 height={height}
-                horizontal={showMore || horizontal}
+                horizontal={showHorizontal}
                 domainPadding={domainPadding}
                 labels={({ datum }) => format(datum.y)}
                 padding={paddingProp}
                 theme={theme}
+                maxLabelDimmension={maxLabelDimmension}
                 {...chartProps}
               />
             </div>
@@ -529,7 +531,9 @@ const ChartFactory = React.memo(
             height,
             width,
             dataCount,
-            domainPadding
+            domainPadding,
+            maxLabelDimmension,
+            showHorizontal
           } = calculations;
           if (isComparison) {
             const processedComparisonData = aggregate
@@ -547,10 +551,11 @@ const ChartFactory = React.memo(
                   offset={offset}
                   height={height}
                   width={width}
-                  horizontal={showMore || horizontal}
+                  horizontal={showHorizontal}
                   domainPadding={domainPadding}
                   labels={({ datum }) => format(datum.y)}
                   theme={theme}
+                  maxLabelDimmension={maxLabelDimmension}
                   {...chartProps}
                 />
               </div>
@@ -564,10 +569,11 @@ const ChartFactory = React.memo(
                 offset={offset}
                 height={height}
                 width={width}
-                horizontal={showMore || horizontal}
+                horizontal={showHorizontal}
                 domainPadding={domainPadding}
                 labels={({ datum }) => format(datum.y)}
                 theme={theme}
+                maxLabelDimmension={maxLabelDimmension}
                 {...chartProps}
               />
             </div>

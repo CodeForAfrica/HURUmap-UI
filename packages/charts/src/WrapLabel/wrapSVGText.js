@@ -1,5 +1,6 @@
-export function computeMaxLabelDimmension({ initialWidth, horizontal, texts }) {
-  let maxDimmension = 0;
+export function computeMaxLabelDimmension({ initialWidth, texts }) {
+  let maxLabelWidth = 0;
+  let maxLabelHeight = 0;
 
   const lineHeight = '14';
 
@@ -32,24 +33,20 @@ export function computeMaxLabelDimmension({ initialWidth, horizontal, texts }) {
       line = [word];
 
       ({ width, height } = tspan.getBoundingClientRect());
-      if (horizontal) {
-        maxDimmension += height;
-      } else if (width > maxDimmension) {
-        maxDimmension = width;
-      } else {
-        // Nothing
+      maxLabelHeight += height;
+      if (width > maxLabelWidth) {
+        maxLabelWidth = width;
       }
 
       tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
       tspan.setAttribute('text-anchor', 'middle');
       tspan.setAttribute('dy', lineHeight);
       tspan.textContent = word;
-    } else if (horizontal) {
-      maxDimmension += height;
-    } else if (width > maxDimmension) {
-      maxDimmension = width;
     } else {
-      // Nothing
+      maxLabelHeight += height;
+      if (width > maxLabelWidth) {
+        maxLabelWidth = width;
+      }
     }
 
     word = words.pop();
@@ -57,7 +54,7 @@ export function computeMaxLabelDimmension({ initialWidth, horizontal, texts }) {
 
   document.body.removeChild(svg);
 
-  return maxDimmension;
+  return { maxLabelWidth, maxLabelHeight };
 }
 
 export default (textElement, text, initialWidth) => {

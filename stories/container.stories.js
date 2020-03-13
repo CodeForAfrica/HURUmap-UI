@@ -302,7 +302,12 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
         aggregate: 'raw'
       });
 
-      const dataArray = Array(((definition.groupBy && groups) || 1) * data)
+      const dataArray = Array(
+        ((definition.groupBy &&
+          definition.type === 'grouped_column' &&
+          groups) ||
+          1) * data
+      )
         .fill(null)
         .map((_, index) => ({
           groupBy:

@@ -32,6 +32,7 @@ function BarChart({
   parts,
   responsive,
   theme,
+  maxLabelDimmension: propMaxLabelDimmension,
   width: suggestedWidth,
   ...props
 }) {
@@ -46,21 +47,24 @@ function BarChart({
     () => (!propData ? [] : Array.isArray(propData[0]) ? propData : [propData]),
     [propData]
   );
-  const barSpacing = offset || barWidth;
-  let labelWidth = barSpacing * groupData.length;
+
+  let labelWidth;
   const desiredLabelWidth = propLabelWidth || themeLabelWidth;
   if (horizontal && desiredLabelWidth) {
     labelWidth = desiredLabelWidth;
+  } else {
+    labelWidth = (offset || barWidth) * groupData.length;
   }
 
-  const maxLabelDimmension = useMemo(
+  const { maxLabelHeight, maxLabelWidth } = useMemo(
     () =>
+      propMaxLabelDimmension ||
       computeMaxLabelDimmension({
         labelWidth,
         horizontal,
         texts: groupData.reduce((a, b) => a.concat(b.map(({ x }) => x)), [])
       }),
-    [labelWidth, horizontal, groupData]
+    [labelWidth, propMaxLabelDimmension, horizontal, groupData]
   );
 
   if (!propData || !groupChart) {
@@ -111,9 +115,11 @@ function BarChart({
   );
 
   padding.left =
-    horizontal && maxLabelDimmension ? maxLabelDimmension / 2 : padding.left;
+    horizontal && maxLabelHeight > padding.left ? maxLabelHeight : padding.left;
   padding.bottom =
-    !horizontal && maxLabelDimmension ? maxLabelDimmension * 2 : padding.bottom;
+    !horizontal && maxLabelWidth > padding.bottom
+      ? maxLabelWidth
+      : padding.bottom;
 
   const chartProps = {
     domain,
@@ -188,6 +194,10 @@ function BarChart({
 BarChart.propTypes = {
   data: propTypes.groupedData,
   barWidth: PropTypes.number,
+  maxLabelDimmension: PropTypes.shape({
+    maxLabelWidth: PropTypes.number,
+    maxLabelHeight: PropTypes.number
+  }),
   labelWidth: PropTypes.number,
   domain: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
   domainPadding: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
@@ -210,6 +220,7 @@ BarChart.propTypes = {
 };
 
 BarChart.defaultProps = {
+  maxLabelDimmension: undefined,
   barWidth: undefined,
   labelWidth: undefined,
   data: undefined,

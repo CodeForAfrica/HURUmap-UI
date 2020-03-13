@@ -14,7 +14,7 @@ import { CenterDecorator } from './common';
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
 
-storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
+storiesOf('HURUmap UI|Charts/ChartFactory', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('Default', () => {
@@ -25,7 +25,8 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
     );
     const horizontal = boolean('horizontal');
     const data = Array(number('data', 3)).fill(null);
-    const toggleSize = type === 'column' && boolean('toggleSize', true);
+    const disableShowMore =
+      type === 'column' && boolean('disableShowMore', true);
     const customUnit = text('customUnit', 'unit');
     const aggregate = select('aggregate', [':percent', ''], '');
     const subtitle = text('subtitle', 'Subtitle');
@@ -61,13 +62,15 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
             y
           };
         })}
-        toggleSize={toggleSize}
+        disableShowMore={disableShowMore}
       />
     );
   })
   .add('Grouped', () => {
     const type = select('type', ['grouped_column', 'number'], 'grouped_column');
     const horizontal = boolean('horizontal');
+    const disableShowMore =
+      type === 'grouped_column' && boolean('disableShowMore', true);
     const groups = number('groups', 2);
     const data = Array(number('data', 2) * groups).fill(null);
     const aggregate = select(
@@ -102,6 +105,7 @@ storiesOf('HURUmap UI|Charts Factory/ChartFactory', module)
           description,
           statistic
         }}
+        disableShowMore={disableShowMore}
         data={data.map((_, index) => {
           const y = rand();
           return {
