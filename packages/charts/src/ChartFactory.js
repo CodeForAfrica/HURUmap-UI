@@ -308,7 +308,11 @@ const ChartFactory = React.memo(
             ? padding.top + padding.bottom
             : padding.left + padding.right;
           const computedSize =
-            dataCount * barCount * offset + paddingSize + offset;
+            (dataCount > primaryData.length ? primaryData.length : dataCount) *
+              barCount *
+              offset +
+            paddingSize +
+            offset;
 
           const showHorizontal =
             horizontal || computedSize > adjustedDimmension;
