@@ -129,7 +129,7 @@ export function deprecatedProps(
    */
   return pickBy(
     {
-      id: id || `${type}-${chartId || postId }`,
+      id: id || `${type}-${chartId || postId}`,
       style: pickBy(
         {
           // Margins are deprecated in favor of wp align classnames

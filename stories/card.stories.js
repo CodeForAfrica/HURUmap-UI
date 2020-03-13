@@ -36,7 +36,7 @@ storiesOf('HURUmap UI|Components/Card', module)
       stat: {
         type: 'number',
         subtitle: 'Development Assistance',
-        description: 'Donor Contribution',
+        description: 'Donor Contribution towards development',
         unique: false,
         aggregate: 'sum',
         queryAlias: 'v668'
