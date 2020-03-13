@@ -56,7 +56,7 @@ function BarChart({
     labelWidth = (offset || barWidth) * groupData.length;
   }
 
-  const maxLabelDimmension = useMemo(
+  const { maxLabelHeight, maxLabelWidth } = useMemo(
     () =>
       propMaxLabelDimmension ||
       computeMaxLabelDimmension({
@@ -115,12 +115,10 @@ function BarChart({
   );
 
   padding.left =
-    horizontal && maxLabelDimmension && maxLabelDimmension > padding.left
-      ? maxLabelDimmension
-      : padding.left;
+    horizontal && maxLabelHeight > padding.left ? maxLabelHeight : padding.left;
   padding.bottom =
-    !horizontal && maxLabelDimmension && maxLabelDimmension > padding.bottom
-      ? maxLabelDimmension
+    !horizontal && maxLabelWidth > padding.bottom
+      ? maxLabelWidth
       : padding.bottom;
 
   const chartProps = {
@@ -196,7 +194,10 @@ function BarChart({
 BarChart.propTypes = {
   data: propTypes.groupedData,
   barWidth: PropTypes.number,
-  maxLabelDimmension: PropTypes.number,
+  maxLabelDimmension: PropTypes.shape({
+    maxLabelWidth: PropTypes.number,
+    maxLabelHeight: PropTypes.number
+  }),
   labelWidth: PropTypes.number,
   domain: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
   domainPadding: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
