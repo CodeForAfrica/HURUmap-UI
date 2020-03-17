@@ -65,85 +65,103 @@ function decodeHTMLEntities(text) {
   });
 }
 
-function NumberChart({
-  title,
-  value,
-  aside,
-  note,
-  description,
-  breakdowns,
-  ...props
-}) {
+function NumberChart({ title, data, labels: propLabels, ...props }) {
   const [onHover, setOnHover] = useState(false);
   const classes = useStyles({ ...props, onHover });
   const toggleHover = () => setOnHover(!onHover);
+
+  if (!data[0]) {
+    return null;
+  }
+
+  const { y, x, label, hover } = data[0];
+
+  const labels = !propLabels ? d => d.y : propLabels;
+
   return (
     <div className={classes.root}>
-      {title && <Typography className={classes.title}>{title}</Typography>}
+      {title && <Typography className={classes.title}>{title || x}</Typography>}
+
       <div className={classes.valueContainer}>
         <Typography
           className={classes.value}
           onMouseEnter={toggleHover}
           onMouseLeave={toggleHover}
         >
-          {value}
-          <span className={classes.aside}>{aside}</span>
+          {Array.isArray(labels) ? labels[0] : labels(data[0])}
+          {hover && hover.bottom && (
+            <span className={classes.aside}>
+              {typeof hover === 'string' ? hover : hover.right}
+            </span>
+          )}
         </Typography>
-        {note && <Typography className={classes.note}>{note}</Typography>}
+        {typeof hover !== 'string' && hover && hover.bottom && (
+          <Typography className={classes.note}>{hover.bottom}</Typography>
+        )}
       </div>
-      <Typography className={classes.description}>{description}</Typography>
 
-      <List className={classes.list}>
-        {breakdowns &&
-          breakdowns.map(breakdown => (
-            <ListItem
-              className={classes.listParent}
-              key={breakdown.id || breakdown}
-            >
+      {label && (
+        <Typography className={classes.description}>{label}</Typography>
+      )}
+
+      {data.length > 1 && (
+        <List className={classes.list}>
+          {data.slice(1).map((d, i) => (
+            <ListItem key={d} className={classes.listParent}>
               <Typography className={classes.listTypography}>
                 <span
                   dangerouslySetInnerHTML={{
-                    __html: decodeHTMLEntities(breakdown.description)
+                    __html: decodeHTMLEntities(
+                      d.label ||
+                        `<b>about ${((100 * d.y) / y).toFixed(
+                          1
+                        )}% percent</b> of the amount in ${x}: ${
+                          Array.isArray(labels) ? labels[i] : labels(d)
+                        }`
+                    )
                   }}
                 />
                 <span> </span>
-                {breakdown.aside && (
+                {d.hover && (
                   <span
                     className={classes.aside}
                     dangerouslySetInnerHTML={{
-                      __html: decodeHTMLEntities(breakdown.aside)
+                      __html: decodeHTMLEntities(
+                        typeof d.hover === 'string' ? d.hover : d.hover.right
+                      )
                     }}
                   />
                 )}
               </Typography>
             </ListItem>
           ))}
-      </List>
+        </List>
+      )}
     </div>
   );
 }
 
 NumberChart.propTypes = {
   title: PropTypes.string,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-  aside: PropTypes.string,
-  note: PropTypes.string,
-  description: PropTypes.string.isRequired,
-  breakdowns: PropTypes.arrayOf(
+  data: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
         .isRequired,
-      description: PropTypes.string.isRequired,
-      hover: PropTypes.string.isRequired
+      label: PropTypes.string.isRequired,
+      hover: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.shape({
+          right: PropTypes.string,
+          bottom: PropTypes.string
+        })
+      ])
     })
   )
 };
 
 NumberChart.defaultProps = {
   title: undefined,
-  aside: undefined,
-  note: undefined,
-  breakdowns: undefined
+  data: []
 };
 
 export default NumberChart;
