@@ -488,9 +488,13 @@ const ChartFactory = React.memo(
             <NumberChart
               key={key}
               title={subtitle}
-              value={dataStatY}
-              description={`${description} ${xDesc}`}
-              {...chartProps}
+              data={[
+                {
+                  y: dataStatY,
+                  description: `${description} ${xDesc}`
+                }
+              ]}
+              labels={d => format(d.y)}
             />
           );
         }

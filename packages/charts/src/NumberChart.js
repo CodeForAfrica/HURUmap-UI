@@ -65,7 +65,7 @@ function decodeHTMLEntities(text) {
   });
 }
 
-function NumberChart({ title, data, labels: propLabels, ...props }) {
+function NumberChart({ title, data, labels, ...props }) {
   const [onHover, setOnHover] = useState(false);
   const classes = useStyles({ ...props, onHover });
   const toggleHover = () => setOnHover(!onHover);
@@ -75,8 +75,6 @@ function NumberChart({ title, data, labels: propLabels, ...props }) {
   }
 
   const { y, x, label, hover } = data[0];
-
-  const labels = !propLabels ? d => d.y : propLabels;
 
   return (
     <div className={classes.root}>
@@ -143,10 +141,14 @@ function NumberChart({ title, data, labels: propLabels, ...props }) {
 
 NumberChart.propTypes = {
   title: PropTypes.string,
+  labels: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.arrayOf(PropTypes.string)
+  ]),
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-        .isRequired,
+      x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      y: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
       label: PropTypes.string.isRequired,
       hover: PropTypes.oneOfType([
         PropTypes.string,
@@ -160,6 +162,7 @@ NumberChart.propTypes = {
 };
 
 NumberChart.defaultProps = {
+  labels: d => d.y,
   title: undefined,
   data: []
 };
