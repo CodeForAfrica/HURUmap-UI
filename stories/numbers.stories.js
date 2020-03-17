@@ -56,12 +56,8 @@ storiesOf('HURUmap UI/Charts/NumberChart', module)
       {
         x: 'Kenya',
         y: 60336,
-        description: 'Median household income',
-
-        hover: {
-          right: '±0.1%',
-          bottom: '(194, 667, 872 ±241, 381.6)'
-        }
+        label: 'Median household income',
+        hover: '±0.1% (194, 667, 872 ±241, 381.6)'
       },
       {
         x: 'Tanzania',

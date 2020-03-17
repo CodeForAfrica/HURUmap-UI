@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Typography, List, ListItem } from '@material-ui/core';
@@ -11,25 +11,23 @@ const useStyles = makeStyles(() => ({
     height: 'auto'
   },
   valueContainer: {
-    marginTop: '1em'
+    marginTop: '1rem'
   },
   value: {
-    fontSize: '2.25rem'
+    fontSize: '2.25rem',
+    '&:hover span.onHover': {
+      display: 'inline-block'
+    }
   },
-  aside: ({ onHover }) => ({
-    fontSize: '0.4em',
+  hover: {
+    display: 'none',
     color: '#777',
-    display: onHover ? 'inline-block' : 'none'
-  }),
-  note: ({ onHover }) => ({
-    fontSize: '1em',
-    color: '#777',
-    display: onHover ? 'block' : 'none'
-  }),
+    fontSize: '1rem'
+  },
   title: {
     fontSize: '1.25em'
   },
-  description: {
+  label: {
     fontSize: '1.5em'
   },
   list: {
@@ -40,9 +38,12 @@ const useStyles = makeStyles(() => ({
     paddingRight: 0
   },
   listTypography: {
-    fontSize: '0.9em',
+    fontSize: '1rem',
     lineHeight: 1.3,
-    color: '#777'
+    color: '#777',
+    '&:hover span.onHover': {
+      display: 'inline-block'
+    }
   }
 }));
 
@@ -66,9 +67,7 @@ function decodeHTMLEntities(text) {
 }
 
 function NumberChart({ title, data, labels, ...props }) {
-  const [onHover, setOnHover] = useState(false);
-  const classes = useStyles({ ...props, onHover });
-  const toggleHover = () => setOnHover(!onHover);
+  const classes = useStyles(props);
 
   if (!data[0]) {
     return null;
@@ -81,26 +80,13 @@ function NumberChart({ title, data, labels, ...props }) {
       {title && <Typography className={classes.title}>{title || x}</Typography>}
 
       <div className={classes.valueContainer}>
-        <Typography
-          className={classes.value}
-          onMouseEnter={toggleHover}
-          onMouseLeave={toggleHover}
-        >
+        <Typography className={classes.value}>
           {Array.isArray(labels) ? labels[0] : labels(data[0])}
-          {hover && hover.bottom && (
-            <span className={classes.aside}>
-              {typeof hover === 'string' ? hover : hover.right}
-            </span>
-          )}
+          {hover && <span className={`${classes.hover} onHover`}>{hover}</span>}
         </Typography>
-        {typeof hover !== 'string' && hover && hover.bottom && (
-          <Typography className={classes.note}>{hover.bottom}</Typography>
-        )}
       </div>
 
-      {label && (
-        <Typography className={classes.description}>{label}</Typography>
-      )}
+      {label && <Typography className={classes.label}>{label}</Typography>}
 
       {data.length > 1 && (
         <List className={classes.list}>
@@ -122,11 +108,9 @@ function NumberChart({ title, data, labels, ...props }) {
                 <span> </span>
                 {d.hover && (
                   <span
-                    className={classes.aside}
+                    className={`${classes.hover} onHover`}
                     dangerouslySetInnerHTML={{
-                      __html: decodeHTMLEntities(
-                        typeof d.hover === 'string' ? d.hover : d.hover.right
-                      )
+                      __html: decodeHTMLEntities(d.hover)
                     }}
                   />
                 )}
@@ -150,13 +134,7 @@ NumberChart.propTypes = {
       x: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
       y: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
       label: PropTypes.string.isRequired,
-      hover: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.shape({
-          right: PropTypes.string,
-          bottom: PropTypes.string
-        })
-      ])
+      hover: PropTypes.string
     })
   )
 };
