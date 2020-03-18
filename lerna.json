@@ -1,17 +1,25 @@
 {
-    "command": {
-        "publish": {
-            "message": "chore(release): publish %s"
-        }
+  "changelog": {
+    "labels": {
+      "feature": ":rocket: New Feature",
+      "breaking change": ":boom: Breaking Change",
+      "bug": ":bug: Bug Fix",
+      "enhancement": ":nail_care: Enhancement",
+      "documentation": ":memo: Documentation",
+      "internal": ":house: Internal",
+      "dependencies": ":hammer: Dependencies"
+    }
+  },
+  "command": {
+    "publish": {
+      "message": "chore(release): publish %s",
+      "ignoreChanges": ["**/*.md", "**/{storybook,stories}/**"]
     },
-    "ignoreChanges": [
-        "**/*.md",
-        "**/{storybook,stories}/**"
-    ],
-    "packages": [
-        "packages/*"
-    ],
-    "useWorkspaces": true,
-    "npmClient": "yarn",
-    "version": "0.3.4"
+    "version": {
+      "allowBranch": "master"
+    }
+  },
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "version": "0.3.5.alpha0"
 }
