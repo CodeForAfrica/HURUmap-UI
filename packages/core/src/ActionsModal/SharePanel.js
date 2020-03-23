@@ -18,14 +18,20 @@ import {
 } from 'react-share';
 import makeStyles from '../makeStyles';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   content: {},
   social: {},
   socialIcon: {
-    padding: '0 0.5rem 1.5rem 0.5rem'
+    padding: '0 0.25rem 1.5rem 0.25rem'
   },
-  subtitle: {},
-  title: {},
+  subtitle: {
+    fontSize: theme.typography.body2.fontSize
+  },
+  title: {
+    '& h2': {
+      fontSize: theme.typography.body1.fontSize
+    }
+  },
   url: {
     fontFamily: 'monospace',
     width: '100%'
@@ -74,7 +80,7 @@ function SharePanel({
               {...twitterProps}
               className={classes.socialIcon}
             >
-              <TwitterIcon {...shareIcon} />
+              <TwitterIcon {...shareIcon} className={classes.socialIcon} />
             </TwitterShareButton>
           )}
           {facebook && (
@@ -83,7 +89,7 @@ function SharePanel({
               {...facebookProps}
               className={classes.socialIcon}
             >
-              <FacebookIcon {...shareIcon} />
+              <FacebookIcon {...shareIcon} className={classes.socialIcon} />
             </FacebookShareButton>
           )}
           {email && (
@@ -92,7 +98,7 @@ function SharePanel({
               {...emailProps}
               className={classes.socialIcon}
             >
-              <EmailIcon {...shareIcon} />
+              <EmailIcon {...shareIcon} className={classes.socialIcon} />
             </EmailShareButton>
           )}
         </Grid>
