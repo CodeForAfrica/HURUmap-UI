@@ -11,12 +11,35 @@ import {
 import DownloadIcon from '../assets/icons/download.svg';
 import makeStyles from '../makeStyles';
 
-const useStyles = makeStyles({
-  content: {},
-  downloadButton: {},
-  subtitle: {},
-  title: {}
-});
+const useStyles = makeStyles(theme => ({
+  content: {
+    fontSize: theme.typography.caption.fontSize
+  },
+  downloadButton: {
+    paddingLeft: 0,
+    textTransform: 'none',
+
+    '&:hover': {
+      background: 'inherit'
+    }
+  },
+  downloadIcon: {
+    '& path:first-of-type': {
+      stroke: theme.palette.primary.main
+    },
+    '& path:last-of-type': {
+      fill: theme.palette.primary.main
+    }
+  },
+  subtitle: {
+    fontSize: theme.typography.body2.fontSize
+  },
+  title: {
+    '& h2': {
+      fontSize: theme.typography.body1.fontSize
+    }
+  }
+}));
 
 function DownloadPanel({ subtitle, title, onDownload, ...props }) {
   const classes = useStyles(props);
@@ -32,9 +55,9 @@ function DownloadPanel({ subtitle, title, onDownload, ...props }) {
         )}
         <Button
           className={classes.downloadButton}
-          variant="outlined"
+          color="primary"
           onClick={onDownload}
-          startIcon={<DownloadIcon />}
+          startIcon={<DownloadIcon className={classes.downloadIcon} />}
         >
           Download
         </Button>
