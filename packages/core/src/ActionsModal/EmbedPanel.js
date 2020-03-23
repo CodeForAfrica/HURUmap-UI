@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import makeStyles from '../makeStyles';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   content: {},
   code: {
     fontFamily: 'monospace',
@@ -20,9 +20,15 @@ const useStyles = makeStyles({
     padding: '18.5px 14px',
     overflow: 'auto'
   },
-  subtitle: {},
-  title: {}
-});
+  subtitle: {
+    fontSize: theme.typography.body2.fontSize
+  },
+  title: {
+    '& h2': {
+      fontSize: theme.typography.body1.fontSize
+    }
+  }
+}));
 
 function EmbedPanel({ children, subtitle, title, ...props }) {
   const classes = useStyles(props);
