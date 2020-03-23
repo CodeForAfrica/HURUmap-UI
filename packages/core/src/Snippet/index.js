@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import MinimizeIcon from '@material-ui/icons/Remove';
 
+import classNames from 'classnames';
 import shortid from 'shortid';
 import { Link } from '@material-ui/core';
 
@@ -33,7 +34,15 @@ const useStyles = makeStyles(theme => ({
       objectFit: 'cover'
     }
   }),
-  cardButton: {}
+  actionsRoot: {
+    justifyContent: 'flex-end',
+    width: '5rem'
+  },
+  cardButton: {},
+  title: {
+    fontSize: '1.25rem',
+    fontWeight: 'bold'
+  }
 }));
 
 function Snippet({
@@ -106,12 +115,24 @@ function Snippet({
               justify="space-between"
             >
               <Grid item>
-                <Typography dangerouslySetInnerHTML={{ __html: post.title }} />
+                <Typography
+                  className={classes.title}
+                  dangerouslySetInnerHTML={{ __html: post.title }}
+                />
               </Grid>
-              <Grid item className={DOWNLOAD_HIDDEN_CLASSNAME}>
+              <Grid
+                item
+                className={classNames(
+                  classes.actions,
+                  DOWNLOAD_HIDDEN_CLASSNAME
+                )}
+              >
                 {!link && (
                   <>
                     <SnippetActions
+                      classes={{
+                        root: classes.actionsRoot
+                      }}
                       onEmbed={e => showActionsModal(EMBED_TAB, e)}
                       onShare={e => showActionsModal(SHARE_TAB, e)}
                     />

@@ -8,10 +8,10 @@ import ShareIcon from '../assets/icons/network-connection.svg';
 import makeStyles from '../makeStyles';
 
 const useStyles = makeStyles({
-  actionsContainer: {
+  root: {
     right: 20,
     color: 'white',
-    padding: '2px 5px',
+    padding: '2px 0 2px 5px',
     borderRadius: 5
   },
   actionButton: {
@@ -22,10 +22,10 @@ const useStyles = makeStyles({
   }
 });
 
-function SnippetActions({ onShare, onEmbed }) {
-  const classes = useStyles();
+function SnippetActions({ onShare, onEmbed, ...props }) {
+  const classes = useStyles(props);
   return (
-    <Grid className={classes.actionsContainer} container spacing={0}>
+    <Grid className={classes.root} container spacing={0}>
       <Grid item>
         <ActionButton
           classes={{

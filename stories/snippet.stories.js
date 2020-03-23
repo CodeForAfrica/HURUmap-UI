@@ -20,7 +20,7 @@ storiesOf('HURUmap UI|Snippets/Default', module)
         twitter: {}
       })}
       post={{
-        title: 'Development Context',
+        title: 'Development context but with added words to show long title',
         content: decodeHTML(
           text(
             'Content (ReadMore split; <p><!--more--></p>)',
