@@ -71,6 +71,7 @@ function ActionsModel({
         scrollButtons="auto"
         variant="scrollable"
         className={classes.tabs}
+        indicatorColor="primary"
       >
         <Tab label="Share" {...a11yProps(SHARE_TAB, id)} />
         <Tab label="Embed" {...a11yProps(EMBED_TAB, id)} />
