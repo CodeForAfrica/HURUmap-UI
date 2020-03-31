@@ -115,10 +115,10 @@ function BarChart({
   );
 
   padding.left =
-    horizontal && maxLabelHeight > padding.left ? maxLabelHeight : padding.left;
+    horizontal && maxLabelWidth > padding.left ? maxLabelWidth : padding.left;
   padding.bottom =
-    !horizontal && maxLabelWidth > padding.bottom
-      ? maxLabelWidth
+    !horizontal && maxLabelHeight > padding.bottom
+      ? maxLabelHeight
       : padding.bottom;
 
   const chartProps = {

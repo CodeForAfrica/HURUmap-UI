@@ -84,9 +84,9 @@ storiesOf('HURUmap UI|Components/Card', module)
       >
         <div style={{ width, height: '100%' }}>
           <Card
-            id="1234"
+            key={JSON.stringify(definition)}
+            id={definition.id}
             logo={logo}
-            key={type}
             type={type}
             geoId={geoId}
             definition={definition}

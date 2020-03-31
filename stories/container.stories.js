@@ -282,8 +282,6 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
       const containerWidth = number('containerWidth', 950);
       const hideInsight = boolean('hideInsight');
       const variant = select('variant', ['data', 'analysis'], 'data');
-      const chartHeight = number('chartHeight');
-      const chartWidth = number('chartWidth');
       const groups = number('groups', 3);
       const data = number('data', 2);
       const dataExponent = number('Data value E+', 6);
@@ -343,19 +341,7 @@ storiesOf('HURUmap UI|ChartContainers/InsightChartContainer', module)
             variant={variant}
           >
             <ChartFactory definition={statisticDefinition} data={dataArray} />
-            <ChartFactory
-              definition={{
-                ...definition,
-                typeProps: {
-                  height: chartHeight,
-                  width:
-                    variant === 'analysis' && !chartWidth
-                      ? containerWidth
-                      : chartWidth
-                }
-              }}
-              data={dataArray}
-            />
+            <ChartFactory definition={definition} data={dataArray} />
           </InsightContainer>
         </div>
       );
