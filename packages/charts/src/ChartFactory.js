@@ -197,6 +197,7 @@ const ChartFactory = React.memo(
             height: heightProp || theme.pie.height
           };
         case 'grouped_column': {
+          const { barWidth } = theme.bar;
           const offset = offsetProp || theme.bar.offset;
           const padding = paddingProp
             ? Helpers.getPadding({ padding: paddingProp })
@@ -233,7 +234,7 @@ const ChartFactory = React.memo(
           const totalColumnCount =
             showMore || disableShowMore
               ? primaryData.length * primaryData[0].length
-              : Math.floor((adjustedDimmension - paddingSize) / offset);
+              : Math.floor((adjustedDimmension - paddingSize) / barWidth);
 
           const columnCount =
             totalColumnCount > primaryData.length
@@ -270,6 +271,7 @@ const ChartFactory = React.memo(
         }
         case 'column': {
           const barCount = isComparison ? 2 : 1;
+          const { barWidth } = theme.bar;
           const offset = offsetProp || theme.bar.offset;
           const {
             domainPadding: {
@@ -299,9 +301,9 @@ const ChartFactory = React.memo(
               ? primaryData.length
               : Math.floor(
                   (adjustedDimmension -
-                    offset -
+                    barWidth -
                     (padding.left + padding.right)) /
-                    offset
+                    barWidth
                 );
 
           const paddingSize = horizontal
