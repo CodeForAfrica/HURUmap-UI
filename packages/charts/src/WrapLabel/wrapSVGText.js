@@ -1,5 +1,5 @@
 export function computeMaxLabelDimmension({ labelWidth, texts }) {
-  let maxLabelWidth = 0;
+  let maxLabelWidth = labelWidth;
   let maxLabelHeight = 0;
 
   const lineHeight = '14';
