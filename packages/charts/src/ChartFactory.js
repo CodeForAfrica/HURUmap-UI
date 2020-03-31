@@ -240,7 +240,7 @@ const ChartFactory = React.memo(
               ? primaryData.length
               : totalColumnCount;
 
-          const groupCount = Math.ceil(totalColumnCount / primaryData.length);
+          const groupCount = Math.floor(totalColumnCount / primaryData.length);
 
           const computedSize =
             (totalColumnCount > primaryData.length * primaryData[0].length

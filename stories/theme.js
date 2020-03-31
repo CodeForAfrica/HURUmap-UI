@@ -7,9 +7,9 @@ export default createTheme({
     },
     bar: {
       width: 350,
-      height: 350,
+      height: 300,
       barWidth: 30,
-      offset: 60
+      offset: 40
     }
   }
 });
