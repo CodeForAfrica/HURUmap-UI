@@ -1,4 +1,4 @@
-export function computeMaxLabelDimmension({ initialWidth, texts }) {
+export function computeMaxLabelDimmension({ labelWidth, texts }) {
   let maxLabelWidth = 0;
   let maxLabelHeight = 0;
 
@@ -27,7 +27,8 @@ export function computeMaxLabelDimmension({ initialWidth, texts }) {
     line.push(word);
     tspan.textContent = line.join(' ');
     let { width, height } = tspan.getBoundingClientRect();
-    if (width > initialWidth) {
+    maxLabelHeight += height;
+    if (width > labelWidth) {
       line.pop();
       tspan.textContent = line.join(' ');
       line = [word];
@@ -42,11 +43,6 @@ export function computeMaxLabelDimmension({ initialWidth, texts }) {
       tspan.setAttribute('text-anchor', 'middle');
       tspan.setAttribute('dy', lineHeight);
       tspan.textContent = word;
-    } else {
-      maxLabelHeight += height;
-      if (width > maxLabelWidth) {
-        maxLabelWidth = width;
-      }
     }
 
     word = words.pop();
@@ -57,7 +53,7 @@ export function computeMaxLabelDimmension({ initialWidth, texts }) {
   return { maxLabelWidth, maxLabelHeight };
 }
 
-export default (textElement, text, initialWidth) => {
+export default (textElement, text, labelWidth) => {
   if (!textElement) {
     return;
   }
@@ -89,7 +85,7 @@ export default (textElement, text, initialWidth) => {
     line.push(word);
     tspan.textContent = line.join(' ');
 
-    if (tspan.getBoundingClientRect().width > initialWidth) {
+    if (tspan.getBoundingClientRect().width > labelWidth) {
       line.pop();
       tspan.textContent = line.join(' ');
       line = [word];
