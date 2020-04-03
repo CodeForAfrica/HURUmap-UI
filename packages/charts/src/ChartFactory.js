@@ -63,6 +63,7 @@ const ChartFactory = React.memo(
       padding: paddingProp,
       ...chartProps
     } = typeProps || {};
+
     const key =
       id ||
       Math.random()
@@ -240,7 +241,7 @@ const ChartFactory = React.memo(
               ? primaryData.length
               : totalColumnCount;
 
-          const groupCount = Math.floor(totalColumnCount / primaryData.length);
+          const groupCount = Math.floor(totalColumnCount / columnCount);
 
           const computedSize =
             (totalColumnCount > primaryData.length * primaryData[0].length
