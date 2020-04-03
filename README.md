@@ -1,5 +1,7 @@
 # HURUmap UI
 
+`@hurumap-ui/charts` [![Build Status](https://travis-ci.com/CodeForAfrica/HURUmap-UI.svg?token=WQyydzzMhseodq8Jyitq&branch=master)](https://travis-ci.com/CodeForAfrica/HURUmap-UI)
+
 ![npm](https://img.shields.io/npm/v/@codeforafrica/hurumap-ui) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 This library package React components that are used to visualize HURUmap data.
@@ -93,6 +95,12 @@ module.exports = {
 };
 
 ```
+
+## Testing
+
+Jest is used for testing. 
+- Run tests for packages with command `yarn lerna run test`
+- Run packge test `cd packages/<package name> && yarn test`
 
 ---
 
