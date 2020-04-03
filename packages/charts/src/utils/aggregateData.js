@@ -75,10 +75,7 @@ function aggregate(option, data, unique = true) {
 
   if (unit === 'percent') {
     const total = data.reduce((a, b) => a + b.y, 0);
-    // Use the reduced array *only* if aggregateFunc[func] was defined to
-    // reduce the data.
-    const toProcess = aggregateFunc[func] ? reducedArray : data;
-    return toProcess.map(d => ({
+    return reducedArray.map(d => ({
       ...d,
       y: (100 * d.y) / total
     }));
@@ -90,7 +87,13 @@ function aggregate(option, data, unique = true) {
 export default function aggregateData(option, data, unique) {
   const isGroups = Array.isArray(data[0]);
   if (isGroups) {
-    return data.map(gd => aggregate(option, gd, unique));
+    return aggregate(
+      option.split(':')[0],
+      data
+        .map(gd => aggregate(option, gd, unique))
+        .reduce((merge, gd) => merge.concat(gd), []),
+      unique
+    );
   }
 
   return aggregate(option, data, unique);
