@@ -11,7 +11,7 @@ import {
 
 import { computeMaxLabelDimension } from '../WrapLabel/wrapSVGText';
 
-import { getLegendProps } from '../utils';
+import { extractLegendData, getLegendProps } from '../utils';
 import propTypes from '../propTypes';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import BarLabel from './BarLabel';
@@ -110,7 +110,7 @@ function BarChart({
   const { padding, legend } = getLegendProps(
     { height, width },
     initialLegendProps,
-    groupData[0],
+    extractLegendData(groupData),
     originalPadding
   );
 
