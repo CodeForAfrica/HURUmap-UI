@@ -209,22 +209,18 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
       <LineChart
         data={object('data', [
           [
-            { x: 1, y: 3, geo: 'Dar es Salaam' },
-            { x: 2, y: 1, geo: 'Dar es Salaam' },
-            { x: 3, y: 2, geo: 'Dar es Salaam' },
-            { x: 4, y: -2, geo: 'Dar es Salaam' },
-            { x: 5, y: -1, geo: 'Dar es Salaam' },
-            { x: 6, y: 2, geo: 'Dar es Salaam' },
-            { x: 7, y: 3, geo: 'Dar es Salaam' }
+            { x: '2013', y: 2, geo: 'Dar es Salaam' },
+            { x: '2014', y: -2, geo: 'Dar es Salaam' },
+            { x: '2015', y: -1, geo: 'Dar es Salaam' },
+            { x: '2016', y: 2, geo: 'Dar es Salaam' },
+            { x: '2017', y: 3, geo: 'Dar es Salaam' }
           ],
           [
-            { x: 1, y: -3, geo: 'Kagera' },
-            { x: 2, y: 5, geo: 'Kagera' },
-            { x: 3, y: 3, geo: 'Kagera' },
-            { x: 4, y: 0, geo: 'Kagera' },
-            { x: 5, y: -2, geo: 'Kagera' },
-            { x: 6, y: -2, geo: 'Kagera' },
-            { x: 7, y: 5, geo: 'Kagera' }
+            { x: '2013', y: 3, geo: 'Kagera' },
+            { x: '2014', y: 0, geo: 'Kagera' },
+            { x: '2015', y: -2, geo: 'Kagera' },
+            { x: '2016', y: -2, geo: 'Kagera' },
+            { x: '2017', y: 5, geo: 'Kagera' }
           ]
         ])}
         parts={{
@@ -234,24 +230,12 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
           legend: {
             data: [
               {
-                name: 'A',
-                description: 'A\n \nDar es Salaam 6\n \nKagera 3'
+                name: 'Male',
+                description: 'Male\n \nDar es Salaam vs Kagera'
               },
               {
-                name: 'B',
-                description: 'B\n \nDar es Salaam 1\n \nKagera 1'
-              },
-              {
-                name: 'C',
-                description: 'C\n \nDar es Salaam 3\n \nKagera 2'
-              },
-              {
-                name: 'D',
-                description: 'D\n \nDar es Salaam 1\n \nKagera 2'
-              },
-              {
-                name: 'E',
-                description: 'E\n \nDar es Salaam 12\n \nKagera 5'
+                name: 'Female',
+                description: 'Female\n \nDar es Salaam vs Kagera'
               }
             ],
             x: number('Legend x', 90)

@@ -76,7 +76,7 @@ storiesOf('HURUmap UI|Charts/ChartFactory', module)
     const disableShowMore =
       ['grouped_column', 'line'].includes(type) &&
       boolean('disableShowMore', true);
-    const groupsCount = Array(number('groups', 2)).fill(null);
+    const groupsCount = Array(number('groups', 3)).fill(null);
     const dataCount = Array(number('data', 2)).fill(null);
     const aggregate = select(
       'aggregate',
@@ -102,8 +102,7 @@ storiesOf('HURUmap UI|Charts/ChartFactory', module)
           const y = rand();
 
           const d = {
-            groupBy: `${dataIndex + 1}`,
-            tooltip: `D${groupIndex + 1}: ${y}\n${x}`,
+            groupBy: `G${groupIndex + 1}`,
             x,
             y
           };
