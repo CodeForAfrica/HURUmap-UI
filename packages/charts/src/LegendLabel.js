@@ -15,26 +15,20 @@ import Label from './Label';
  */
 // while we need `width` for the label, we don't need it for tooltip
 function LegendLabel({ width, ...props }) {
-  const { colorScale, datum, index, text: textProp } = props;
-  let text = textProp;
-  if (datum) {
-    const { tooltip } = datum;
-    if (tooltip) {
-      text = tooltip;
-    } else if (datum.y) {
-      text = labels(datum);
-    }
-  }
+  const { colorScale, datum, index } = props;
+  const { description } = datum || {};
 
   return (
     <g>
       <Label width={width} {...props} />
-      <VictoryTooltip
-        {...props}
-        datum={{ _x: index + 1, ...datum }}
-        text={text}
-        labelComponent={<Label colorScale={colorScale} />}
-      />
+      {description && description.length ? (
+        <VictoryTooltip
+          {...props}
+          datum={{ _x: index + 1, ...datum }}
+          text={description}
+          labelComponent={<Label colorScale={colorScale} />}
+        />
+      ) : null}
     </g>
   );
 }
@@ -44,7 +38,7 @@ LegendLabel.defaultEvents = VictoryTooltip.defaultEvents;
 LegendLabel.propTypes = {
   colorScale: propTypes.colorScale,
   datum: PropTypes.shape({
-    tooltip: PropTypes.string,
+    description: PropTypes.string,
     y: PropTypes.number
   }),
   index: PropTypes.number,
