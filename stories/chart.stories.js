@@ -280,14 +280,14 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
             {
               x: 'Place to Wash Hands',
               y: 22,
-              donutLabel: 'Nono Place to Wash Hands\n22%',
-              name: 'Female'
+              donutLabel: 'Place to Wash Hands\n22%',
+              name: 'Place to Wash Hands'
             },
             {
               x: 'No Place to Wash Hands',
               y: 78,
-              donutLabel: 'No Place nyau nyau to Wash Hands\n78%',
-              name: 'Male'
+              donutLabel: 'No Place to Wash Hands\n78%',
+              name: 'No Place to Wash Hands'
             }
           ])}
           donut={boolean('donut', true)}
