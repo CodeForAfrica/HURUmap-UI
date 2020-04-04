@@ -122,7 +122,13 @@ const ChartFactory = React.memo(
     );
 
     const primaryData = useMemo(() => {
-      const labels = ({ x, y }, separator = ': ') => {
+      const labels = (
+        { label: dataLabel, tooltip, x, y },
+        separator = ': '
+      ) => {
+        if (dataLabel || tooltip) {
+          return dataLabel || tooltip;
+        }
         const formattedX = x ? `${x}${separator}` : '';
         return `${formattedX}${format(y)}`;
       };
@@ -514,7 +520,7 @@ const ChartFactory = React.memo(
                 height={height}
                 horizontal={showHorizontal}
                 domainPadding={domainPadding}
-                labels={({ datum }) => datum.tooltip || format(datum.y)}
+                labels={({ datum }) => datum.label || format(datum.y)}
                 padding={paddingProp}
                 theme={theme}
                 maxLabelDimension={maxLabelDimension}
@@ -551,7 +557,7 @@ const ChartFactory = React.memo(
                   width={width}
                   horizontal={showHorizontal}
                   domainPadding={domainPadding}
-                  labels={({ datum }) => datum.tooltip || format(datum.y)}
+                  labels={({ datum }) => datum.label || format(datum.y)}
                   theme={theme}
                   maxLabelDimension={maxLabelDimension}
                   {...chartProps}
@@ -569,7 +575,7 @@ const ChartFactory = React.memo(
                 width={width}
                 horizontal={showHorizontal}
                 domainPadding={domainPadding}
-                labels={({ datum }) => datum.tooltip || format(datum.y)}
+                labels={({ datum }) => datum.label || format(datum.y)}
                 theme={theme}
                 maxLabelDimension={maxLabelDimension}
                 {...chartProps}
