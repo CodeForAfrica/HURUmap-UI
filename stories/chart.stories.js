@@ -235,23 +235,23 @@ storiesOf('HURUmap UI|Charts/LineChart', module)
             data: [
               {
                 name: 'A',
-                tooltip: 'A\n \nDar es Salaam 6\n \nKagera 3'
+                description: 'A\n \nDar es Salaam 6\n \nKagera 3'
               },
               {
                 name: 'B',
-                tooltip: 'B\n \nDar es Salaam 1\n \nKagera 1'
+                description: 'B\n \nDar es Salaam 1\n \nKagera 1'
               },
               {
                 name: 'C',
-                tooltip: 'C\n \nDar es Salaam 3\n \nKagera 2'
+                description: 'C\n \nDar es Salaam 3\n \nKagera 2'
               },
               {
                 name: 'D',
-                tooltip: 'D\n \nDar es Salaam 1\n \nKagera 2'
+                description: 'D\n \nDar es Salaam 1\n \nKagera 2'
               },
               {
                 name: 'E',
-                tooltip: 'E\n \nDar es Salaam 12\n \nKagera 5'
+                description: 'E\n \nDar es Salaam 12\n \nKagera 5'
               }
             ],
             x: number('Legend x', 90)
@@ -278,15 +278,15 @@ storiesOf('HURUmap UI|Charts/PieChart', module)
         <PieChart
           data={object('data', [
             {
-              x: 'Female',
+              x: 'Place to Wash Hands',
               y: 22,
-              donutLabel: 'Female\n22%',
+              donutLabel: 'Nono Place to Wash Hands\n22%',
               name: 'Female'
             },
             {
-              x: 'Male',
+              x: 'No Place to Wash Hands',
               y: 78,
-              donutLabel: 'Male\n78%',
+              donutLabel: 'No Place nyau nyau to Wash Hands\n78%',
               name: 'Male'
             }
           ])}
