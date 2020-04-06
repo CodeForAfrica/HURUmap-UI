@@ -18,6 +18,9 @@
         "url": "https://github.com/CodeForAfrica/HURUmap-UI/issues"
     },
     "main": "index.js",
+    "scripts": {
+        "test": "jest"
+    },
     "dependencies": {
         "@material-ui/core": "^4.9.3",
         "apollo-client": "^2.6.8",

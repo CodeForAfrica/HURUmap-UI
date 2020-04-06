@@ -3,13 +3,14 @@ const path = require('path');
 module.exports = {
   env: {
     browser: true,
-    es6: true
+    es6: true,
+    'jest/globals': true
   },
   extends: [
     'airbnb',
     'plugin:prettier/recommended' // Enables eslint-plugin-prettier and displays prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
   ],
-  plugins: ['react-hooks', 'json', 'markdown'],
+  plugins: ['react-hooks', 'json', 'markdown', 'jest'],
   rules: {
     'import/no-extraneous-dependencies': [
       'error',
