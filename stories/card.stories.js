@@ -16,33 +16,46 @@ storiesOf('HURUmap UI|Components/Card', module)
   .add('Default', () => {
     const width = text('width', '100%');
     const type = select('type', ['hurumap', 'flourish', 'snippet'], 'hurumap');
-    const uri = text('graphql', 'https://graphql.takwimu.africa/graphql');
-    const geoId = text('geoId', 'country-KE');
+    const uri = text('graphql', 'https://graphql.hurumap.org/graphql');
+    const geoId = text('geoId', 'country-ZA');
     const hurumapJson = {
-      id: 668,
-      title: 'Contribution by principal donor',
-      subtitle: 'Development Assistance',
-      visual: {
-        horizontal: true,
-        type: 'column',
-        table: 'allDonors',
-        x: 'donor',
-        y: 'total',
-        typeProps: {
-          horizontal: true
-        },
-        queryAlias: 'v668'
-      },
+      id: '209',
       stat: {
         type: 'number',
-        subtitle: 'Development Assistance',
-        description: 'Donor Contribution',
-        unique: false,
+        subtitle: 'Urban vs Rural',
+        description: '',
         aggregate: 'sum',
-        queryAlias: 'v668'
+        unique: true,
+        unit: 'percent',
+        queryAlias: 'v209'
       },
-      source: [],
-      description: []
+      visual: {
+        typeProps: [],
+        table: 'allHandwashingTypeUrbanrurals',
+        type: 'grouped_column',
+        aggregate: 'raw',
+        x: 'variable2',
+        groupBy: 'variable1',
+        y: 'value',
+        queryAlias: 'v209'
+      },
+      inGeographies: [
+        {
+          geoLevel: 'country',
+          geoCode: 'ZA',
+          squareKms: 1221037,
+          parentLevel: 'continent',
+          parentCode: 'AFR',
+          longName: 'South Africa',
+          name: 'South Africa',
+          __typename: 'WazimapGeography'
+        }
+      ],
+      title: 'Handwashing type',
+      subtitle: 'Urban vs Rural',
+      section: '165',
+      typeProps: [],
+      type: 'hurumap'
     };
     const flourishJson = {
       id: '1234',

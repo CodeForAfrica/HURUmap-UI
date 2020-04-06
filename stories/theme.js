@@ -7,9 +7,15 @@ export default createTheme({
     },
     bar: {
       width: 350,
-      height: 300,
+      height: 400,
       barWidth: 30,
-      offset: 40
+      offset: 40,
+      legend: {
+        labelWidth: 150
+      }
+    },
+    pie: {
+      height: 400
     }
   }
 });
