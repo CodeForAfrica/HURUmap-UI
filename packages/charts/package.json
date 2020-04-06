@@ -40,10 +40,5 @@
     },
     "publishConfig": {
         "access": "public"
-    },
-    "jest": {
-      "transform": {
-        "^.+\\.js$": "babel-jest"
-      }
     }
 }
