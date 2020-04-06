@@ -1,7 +1,0 @@
-language: node_js
-node_js:
-  - 12.4.0
-cache: yarn
-before_script:
-  - yarn
-script: yarn lerna run test
