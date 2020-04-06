@@ -46,6 +46,11 @@ describe('Chart data aggregation', () => {
       const result = aggregateData('min', data, false);
       expect(result[0].y).toBe(0);
     });
+    it('should convert values to percent', () => {
+      const result = aggregateData(':percent', data, false);
+      expect(result.length).toBe(4);
+      expect(result[0].y).toBe((100 * 1) / 6);
+    });
   });
   describe('Chart group data aggregation', () => {
     const data = [
@@ -99,6 +104,11 @@ describe('Chart data aggregation', () => {
     it('should select the min group data point', () => {
       const result = aggregateData('min', data, false);
       expect(result[0].y).toBe(0);
+    });
+    it('should convert values to percent per group', () => {
+      const result = aggregateData(':percent', data, false);
+      expect(result.length).toBe(2);
+      expect(result[0][0].y).toBe((100 * 1) / 6);
     });
   });
 });

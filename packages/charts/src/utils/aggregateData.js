@@ -43,35 +43,41 @@ const computeData = (func, data) =>
       data[0];
 
 function aggregate(option, data, unique = true) {
-  if (!option || option === 'raw') {
-    return data;
+  let reducedArray;
+  const reduced = {};
+
+  const [func, unit] = option ? option.split(':') : ['', ''];
+  if (!func || func === 'raw') {
+    reducedArray = data;
   }
 
-  const [func, unit] = option.split(':');
-
-  const reduced = {};
-  if (unique) {
-    const uniqueX = [...new Set(data.map(d => d.x))];
-    uniqueX.forEach(x => {
-      const computedData = computeData(
-        func,
-        data.filter(d => d.x === x)
-      );
-      reduced[x] = {
+  if (func) {
+    if (unique) {
+      const uniqueX = [...new Set(data.map(d => d.x))];
+      uniqueX.forEach(x => {
+        const computedData = computeData(
+          func,
+          data.filter(d => d.x === x)
+        );
+        reduced[x] = {
+          ...computedData,
+          x: selectFunc[func] ? computedData.x : x,
+          y: selectFunc[func] ? computedData.y : computedData
+        };
+      });
+    } else {
+      const computedData = computeData(func, data);
+      reduced[0] = {
         ...computedData,
-        x: selectFunc[func] ? computedData.x : x,
+        x: selectFunc[func] ? computedData.x : func,
         y: selectFunc[func] ? computedData.y : computedData
       };
-    });
-  } else {
-    const computedData = computeData(func, data);
-    reduced[0] = {
-      ...computedData,
-      x: selectFunc[func] ? computedData.x : func,
-      y: selectFunc[func] ? computedData.y : computedData
-    };
+    }
   }
-  const reducedArray = Object.values(reduced);
+
+  if (!reducedArray) {
+    reducedArray = Object.values(reduced);
+  }
 
   if (unit === 'percent') {
     const total = data.reduce((a, b) => a + b.y, 0);
@@ -87,13 +93,16 @@ function aggregate(option, data, unique = true) {
 export default function aggregateData(option, data, unique) {
   const isGroups = Array.isArray(data[0]);
   if (isGroups) {
-    return aggregate(
-      option.split(':')[0],
-      data
-        .map(gd => aggregate(option, gd, unique))
-        .reduce((merge, gd) => merge.concat(gd), []),
-      unique
-    );
+    const aggregatedGroup = data.map(gd => aggregate(option, gd, unique));
+    const func = (option || '').split(':')[0];
+    if (func) {
+      return aggregate(
+        func,
+        aggregatedGroup.reduce((merge, gd) => merge.concat(gd), []),
+        unique
+      );
+    }
+    return aggregatedGroup;
   }
 
   return aggregate(option, data, unique);
