@@ -10,10 +10,11 @@ export function computeMaxLabelDimension({ labelWidth, texts }) {
   document.body.appendChild(svg);
   svg.appendChild(textEl);
 
-  const text =
+  const text = String(
     texts.length > 1
       ? texts.reduce((a, b) => (a.length > b.length ? a : b), '')
-      : texts[0] || '';
+      : texts[0] || ''
+  );
 
   let line = [];
   const words = text.split(/\s+/).reverse();
