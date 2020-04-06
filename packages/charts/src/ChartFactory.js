@@ -48,12 +48,15 @@ const ChartFactory = React.memo(
       ...numberFormat
     },
     disableShowMore,
-    data,
+    data: propData,
     isComparison,
     comparisonData,
     referenceData,
     profiles
   }) => {
+    const data = useMemo(() => propData.map(d => ({ ...d, x: Number(d.x) })), [
+      propData
+    ]);
     const [rootRef, setRootRef] = useState(null);
     const {
       horizontal,
