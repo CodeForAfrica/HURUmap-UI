@@ -1,5 +1,5 @@
 export function computeMaxLabelDimension({ labelWidth, texts }) {
-  let maxLabelWidth = labelWidth;
+  let maxLabelWidth = 0;
   let maxLabelHeight = 0;
 
   const lineHeight = '14';
@@ -43,6 +43,8 @@ export function computeMaxLabelDimension({ labelWidth, texts }) {
       tspan.setAttribute('text-anchor', 'middle');
       tspan.setAttribute('dy', lineHeight);
       tspan.textContent = word;
+    } else if (width > maxLabelWidth) {
+      maxLabelWidth = width;
     }
 
     word = words.pop();
