@@ -12,6 +12,8 @@ import Tooltip from './Tooltip';
 function DonutTooltip({
   center,
   cornerRadius,
+  flyoutHeight,
+  flyoutWidth,
   highlightIndex,
   highlightStyle,
   width,
@@ -32,9 +34,9 @@ function DonutTooltip({
         orientation="top"
         cornerRadius={cornerRadius}
         datum={datum}
-        flyoutHeight={width}
+        flyoutHeight={flyoutHeight}
         flyoutStyle={{ fill: 'white', stroke: 'none' }}
-        flyoutWidth={width}
+        flyoutWidth={flyoutWidth}
         labelComponent={
           <Label
             {...props}
@@ -62,6 +64,8 @@ DonutTooltip.propTypes = {
   }),
   cornerRadius: PropTypes.number,
   datum: PropTypes.shape({}),
+  flyoutHeight: PropTypes.number,
+  flyoutWidth: PropTypes.number,
   highlightIndex: PropTypes.number,
   highlightStyle: PropTypes.shape({}),
   text: PropTypes.string,
@@ -73,6 +77,8 @@ DonutTooltip.propTypes = {
 DonutTooltip.defaultProps = {
   cornerRadius: undefined,
   datum: undefined,
+  flyoutHeight: undefined,
+  flyoutWidth: undefined,
   highlightIndex: undefined,
   highlightStyle: undefined,
   center: undefined,

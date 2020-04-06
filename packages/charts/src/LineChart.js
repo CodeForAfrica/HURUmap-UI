@@ -9,7 +9,7 @@ import {
   VictoryVoronoiContainer
 } from 'victory';
 
-import { getLegendProps } from './utils';
+import { extractLegendData, getLegendProps } from './utils';
 import withVictoryTheme from './styles/withVictoryTheme';
 import Chart, { toChartAxisProps } from './Chart';
 import LegendLabel from './LegendLabel';
@@ -74,7 +74,7 @@ function LineChart({
   const { padding, legend } = getLegendProps(
     { height, width },
     initialLegendProps,
-    groupData[0],
+    extractLegendData(groupData),
     originalPadding
   );
 
