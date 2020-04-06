@@ -54,7 +54,7 @@ const ChartFactory = React.memo(
     referenceData,
     profiles
   }) => {
-    const data = useMemo(() => propData.map(d => ({ ...d, x: Number(d.x) })), [
+    const data = useMemo(() => propData.map(d => ({ ...d, y: Number(d.y) })), [
       propData
     ]);
     const [rootRef, setRootRef] = useState(null);
