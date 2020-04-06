@@ -16,7 +16,7 @@ import NumberVisuals from './NumberVisuals';
 import propTypes from './propTypes';
 import withVictoryTheme from './styles/withVictoryTheme';
 
-import { computeMaxLabelDimension } from './WrapLabel/wrapSVGText';
+import { computeMaxLabelDimmension } from './WrapLabel/wrapSVGText';
 
 const DOWNLOAD_HIDDEN_CLASSNAME = 'Download--hidden';
 
@@ -125,15 +125,9 @@ const ChartFactory = React.memo(
     );
 
     const primaryData = useMemo(() => {
-      const labels = (
-        { label: dataLabel, tooltip, x, y },
-        separator = ': '
-      ) => {
-        if (dataLabel || tooltip) {
-          return dataLabel || tooltip;
-        }
-        const formattedX = x ? `${x}${separator}` : '';
-        return `${formattedX}${format(y)}`;
+      const labels = ({ x, y }, separator = ': ') => {
+        const formatedX = x ? `${x}${separator}` : '';
+        return `${formatedX}${format(y)}`;
       };
 
       if (
@@ -142,20 +136,18 @@ const ChartFactory = React.memo(
       ) {
         /**
          * Group the data based on groupBy
-         * Then aggregate the grouped data
+         * Then aggregate the groupped data
          */
         let groupedData = groupData(data);
 
         if (groupedData.length) {
           /**
-           * i. Show `x` in legend as name, and
-           * ii. Change `x` to be the `groupBy` value
+           * Change `x` to be the `groupBy` value
            * to plot group labels on the dependent axis
            */
           groupedData = groupedData.map(g =>
             g.map(gd => ({
               ...gd,
-              name: gd.x,
               tooltip: labels(gd),
               x: gd.groupBy
             }))
@@ -189,9 +181,8 @@ const ChartFactory = React.memo(
           ...d,
           donutLabel: labels(d, '\n'),
           label: labels(d),
-          tooltip: labels(d),
           name: d.x,
-          description: labels(d)
+          tooltip: labels(d)
         }));
       }
       return [];
@@ -228,7 +219,7 @@ const ChartFactory = React.memo(
             : padding.left + padding.right;
 
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
-          const { maxLabelHeight, maxLabelWidth } = computeMaxLabelDimension({
+          const { maxLabelHeight, maxLabelWidth } = computeMaxLabelDimmension({
             labelWidth: theme.axis.labelWidth,
             texts: primaryData.reduce(
               (a, b) => a.concat(b.map(({ x }) => x)),
@@ -239,12 +230,14 @@ const ChartFactory = React.memo(
           const height = heightProp || theme.bar.height;
           const adjustedHeight = height - maxLabelHeight;
           const adjustedWidth = rootWidth && rootWidth - maxLabelWidth;
-          const adjustedDimension = horizontal ? adjustedHeight : adjustedWidth;
+          const adjustedDimmension = horizontal
+            ? adjustedHeight
+            : adjustedWidth;
 
           const totalColumnCount =
             showMore || disableShowMore
               ? primaryData.length * primaryData[0].length
-              : Math.floor((adjustedDimension - paddingSize) / offset);
+              : Math.floor((adjustedDimmension - paddingSize) / offset);
 
           const columnCount =
             totalColumnCount > primaryData.length
@@ -260,7 +253,8 @@ const ChartFactory = React.memo(
               offset +
             paddingSize;
 
-          const showHorizontal = horizontal || computedSize > adjustedDimension;
+          const showHorizontal =
+            horizontal || computedSize > adjustedDimmension;
           const width = showHorizontal ? adjustedWidth : computedSize;
           const computedHeight = showHorizontal ? computedSize : height;
           return {
@@ -270,7 +264,7 @@ const ChartFactory = React.memo(
             columnCount,
             domainPadding,
             height: computedHeight,
-            maxLabelDimension: { maxLabelHeight, maxLabelWidth },
+            maxLabelDimmension: { maxLabelHeight, maxLabelWidth },
             showHorizontal,
             enableShowMore:
               !disableShowMore &&
@@ -292,7 +286,7 @@ const ChartFactory = React.memo(
             : Helpers.getPadding(theme.bar);
 
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
-          const { maxLabelHeight, maxLabelWidth } = computeMaxLabelDimension({
+          const { maxLabelHeight, maxLabelWidth } = computeMaxLabelDimmension({
             labelWidth: theme.axis.labelWidth,
             texts: primaryData.map(({ x }) => x)
           });
@@ -300,13 +294,15 @@ const ChartFactory = React.memo(
           const height = heightProp || theme.bar.height;
           const adjustedHeight = height - maxLabelHeight;
           const adjustedWidth = rootWidth && rootWidth - maxLabelWidth;
-          const adjustedDimension = horizontal ? adjustedHeight : adjustedWidth;
+          const adjustedDimmension = horizontal
+            ? adjustedHeight
+            : adjustedWidth;
 
           const dataCount =
             showMore || disableShowMore
               ? primaryData.length
               : Math.floor(
-                  (adjustedDimension -
+                  (adjustedDimmension -
                     offset -
                     (padding.left + padding.right)) /
                     offset
@@ -322,7 +318,8 @@ const ChartFactory = React.memo(
             paddingSize +
             offset;
 
-          const showHorizontal = horizontal || computedSize > adjustedDimension;
+          const showHorizontal =
+            horizontal || computedSize > adjustedDimmension;
           const width = showHorizontal ? adjustedWidth : computedSize;
           const computedHeight = showHorizontal ? computedSize : height;
           return {
@@ -330,7 +327,7 @@ const ChartFactory = React.memo(
             offset,
             dataCount,
             domainPadding,
-            maxLabelDimension: { maxLabelHeight, maxLabelWidth },
+            maxLabelDimmension: { maxLabelHeight, maxLabelWidth },
             height: computedHeight,
             showHorizontal,
             enableShowMore:
@@ -507,7 +504,7 @@ const ChartFactory = React.memo(
             groupCount,
             columnCount,
             domainPadding,
-            maxLabelDimension,
+            maxLabelDimmension,
             showHorizontal
           } = calculations;
 
@@ -523,10 +520,10 @@ const ChartFactory = React.memo(
                 height={height}
                 horizontal={showHorizontal}
                 domainPadding={domainPadding}
-                labels={({ datum }) => datum.label || format(datum.y)}
+                labels={({ datum }) => format(datum.y)}
                 padding={paddingProp}
                 theme={theme}
-                maxLabelDimension={maxLabelDimension}
+                maxLabelDimmension={maxLabelDimmension}
                 {...chartProps}
               />
             </div>
@@ -539,7 +536,7 @@ const ChartFactory = React.memo(
             width,
             dataCount,
             domainPadding,
-            maxLabelDimension,
+            maxLabelDimmension,
             showHorizontal
           } = calculations;
           if (isComparison) {
@@ -560,9 +557,9 @@ const ChartFactory = React.memo(
                   width={width}
                   horizontal={showHorizontal}
                   domainPadding={domainPadding}
-                  labels={({ datum }) => datum.label || format(datum.y)}
+                  labels={({ datum }) => format(datum.y)}
                   theme={theme}
-                  maxLabelDimension={maxLabelDimension}
+                  maxLabelDimmension={maxLabelDimmension}
                   {...chartProps}
                 />
               </div>
@@ -578,9 +575,9 @@ const ChartFactory = React.memo(
                 width={width}
                 horizontal={showHorizontal}
                 domainPadding={domainPadding}
-                labels={({ datum }) => datum.label || format(datum.y)}
+                labels={({ datum }) => format(datum.y)}
                 theme={theme}
-                maxLabelDimension={maxLabelDimension}
+                maxLabelDimmension={maxLabelDimmension}
                 {...chartProps}
               />
             </div>
@@ -613,21 +610,8 @@ const ChartFactory = React.memo(
               width={width}
               data={!isComparison ? primaryData : [primaryData, comparisonData]}
               parts={{
-                axis: {
-                  independent: {
-                    // Line charts are for time-series and it's OK not show all
-                    // labels on axis e.g. 2000, 2005 instead of
-                    // 2000, 2001, 2002, 2003, 2004, 2005
-                    // NOTE: This works for numbers only!
-                    fixLabelOverlap: true,
-                    // To support non-numbers, lets hard-limit to 5 ticks
-                    // TODO(kilemensi): Find a way to make this a theme config per charts type
-                    tickCount: 5
-                  }
-                },
                 container: {
-                  labels: ({ datum }) =>
-                    datum.tooltip || `y: ${format(datum.y)}`
+                  labels: ({ datum }) => `y: ${format(datum.y)}`
                 },
                 scatter: { size: 5 }
               }}

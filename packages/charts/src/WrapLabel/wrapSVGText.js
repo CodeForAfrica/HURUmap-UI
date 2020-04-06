@@ -1,4 +1,4 @@
-export function computeMaxLabelDimension({ labelWidth, texts }) {
+export function computeMaxLabelDimmension({ labelWidth, texts }) {
   let maxLabelWidth = 0;
   let maxLabelHeight = 0;
 

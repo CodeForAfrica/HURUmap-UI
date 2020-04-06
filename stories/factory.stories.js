@@ -67,17 +67,12 @@ storiesOf('HURUmap UI|Charts/ChartFactory', module)
     );
   })
   .add('Grouped', () => {
-    const type = select(
-      'type',
-      ['grouped_column', 'line', 'number'],
-      'grouped_column'
-    );
+    const type = select('type', ['grouped_column', 'number'], 'grouped_column');
     const horizontal = boolean('horizontal');
     const disableShowMore =
-      ['grouped_column', 'line'].includes(type) &&
-      boolean('disableShowMore', true);
-    const groupsCount = Array(number('groups', 3)).fill(null);
-    const dataCount = Array(number('data', 2)).fill(null);
+      type === 'grouped_column' && boolean('disableShowMore', true);
+    const groups = number('groups', 2);
+    const data = Array(number('data', 2) * groups).fill(null);
     const aggregate = select(
       'aggregate',
       ['sum', 'avg', 'sum:percent', ''],
@@ -95,21 +90,6 @@ storiesOf('HURUmap UI|Charts/ChartFactory', module)
       aggregate: 'sum:percent',
       unique: true
     });
-    const data = dataCount
-      .map((_d, dataIndex) =>
-        groupsCount.map((_g, groupIndex) => {
-          const x = `D${dataIndex + 1}`;
-          const y = rand();
-
-          const d = {
-            groupBy: `G${groupIndex + 1}`,
-            x,
-            y
-          };
-          return d;
-        })
-      )
-      .reduce((a, b) => a.concat(b));
 
     return (
       <ChartFactory
@@ -126,7 +106,15 @@ storiesOf('HURUmap UI|Charts/ChartFactory', module)
           statistic
         }}
         disableShowMore={disableShowMore}
-        data={data}
+        data={data.map((_, index) => {
+          const y = rand();
+          return {
+            groupBy: `Group ${index % groups}`,
+            tooltip: `Group ${index % groups} Data ${index}`,
+            x: `Group ${index % groups} Data ${index}`,
+            y
+          };
+        })}
       />
     );
   })

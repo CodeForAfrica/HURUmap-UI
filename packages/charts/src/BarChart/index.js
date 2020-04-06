@@ -9,9 +9,9 @@ import {
   VictoryLegend
 } from 'victory';
 
-import { computeMaxLabelDimension } from '../WrapLabel/wrapSVGText';
+import { computeMaxLabelDimmension } from '../WrapLabel/wrapSVGText';
 
-import { extractLegendData, getLegendProps } from '../utils';
+import { getLegendProps } from '../utils';
 import propTypes from '../propTypes';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import BarLabel from './BarLabel';
@@ -32,7 +32,7 @@ function BarChart({
   parts,
   responsive,
   theme,
-  maxLabelDimension: propMaxLabelDimension,
+  maxLabelDimmension: propMaxLabelDimmension,
   width: suggestedWidth,
   ...props
 }) {
@@ -58,13 +58,13 @@ function BarChart({
 
   const { maxLabelHeight, maxLabelWidth } = useMemo(
     () =>
-      propMaxLabelDimension ||
-      computeMaxLabelDimension({
+      propMaxLabelDimmension ||
+      computeMaxLabelDimmension({
         labelWidth,
         horizontal,
         texts: groupData.reduce((a, b) => a.concat(b.map(({ x }) => x)), [])
       }),
-    [labelWidth, propMaxLabelDimension, horizontal, groupData]
+    [labelWidth, propMaxLabelDimmension, horizontal, groupData]
   );
 
   if (!propData || !groupChart) {
@@ -110,7 +110,7 @@ function BarChart({
   const { padding, legend } = getLegendProps(
     { height, width },
     initialLegendProps,
-    extractLegendData(groupData),
+    groupData[0],
     originalPadding
   );
 
@@ -194,7 +194,7 @@ function BarChart({
 BarChart.propTypes = {
   data: propTypes.groupedData,
   barWidth: PropTypes.number,
-  maxLabelDimension: PropTypes.shape({
+  maxLabelDimmension: PropTypes.shape({
     maxLabelWidth: PropTypes.number,
     maxLabelHeight: PropTypes.number
   }),
@@ -220,7 +220,7 @@ BarChart.propTypes = {
 };
 
 BarChart.defaultProps = {
-  maxLabelDimension: undefined,
+  maxLabelDimmension: undefined,
   barWidth: undefined,
   labelWidth: undefined,
   data: undefined,

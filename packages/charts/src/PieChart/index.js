@@ -138,7 +138,6 @@ function PieChart({
     ...donutLabelStyle,
     ...tooltipProps.style
   };
-
   // We define tooltip for donut label component here than using a separate
   // due to svg rendering components in the provided order and we don't have
   // z-index property to reorder them.
@@ -147,13 +146,11 @@ function PieChart({
       {...tooltipProps}
       colorScale={colorScale}
       cornerRadius={chartInnerRadius}
-      flyoutHeight={chartInnerRadius * 2}
-      flyoutWidth={chartInnerRadius * 2}
       highlightIndex={chart.donutHighlightIndex}
       highlightStyle={chart.donutHighlightStyle}
       center={{ ...origin }}
       style={tooltipStyle}
-      width={chartInnerRadius * chart.donutLabelRadiusRatio * 2}
+      width={chartInnerRadius * 2}
     />
   ) : (
     <Tooltip
@@ -219,7 +216,7 @@ function PieChart({
                 donutLabelData[donutLabelKey.columnIndex || 0].donutLabel ||
                 donutLabelData[donutLabelKey.columnIndex || 0].label
               }
-              width={chartInnerRadius * chart.donutLabelRadiusRatio * 2}
+              width={chartInnerRadius * 2}
               x={origin.x}
               y={origin.y}
             />
