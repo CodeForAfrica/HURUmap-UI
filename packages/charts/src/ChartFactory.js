@@ -279,7 +279,7 @@ const ChartFactory = React.memo(
             groupCount,
             columnCount,
             domainPadding,
-            height: computedHeight + legend.height,
+            height: computedHeight + (legend ? legend.height : 0),
             maxLabelDimension: { maxLabelHeight, maxLabelWidth },
             showHorizontal,
             enableShowMore:
@@ -369,7 +369,7 @@ const ChartFactory = React.memo(
           );
 
           return {
-            height: height + legend.height,
+            height: height + (legend ? legend.height : 0),
             offset,
             width: rootWidth
           };
