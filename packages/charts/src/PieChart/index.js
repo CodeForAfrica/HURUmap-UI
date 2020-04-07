@@ -14,6 +14,7 @@ import Label from '../Label';
 import SharedEvents from './SharedEvents';
 import SharedEventsLegendLabel from './LegendLabel';
 import Tooltip from './Tooltip';
+import LegendPoint from '../LegendPoint';
 
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
   const radius = Helpers.getRadius({ width, height, padding });
@@ -269,11 +270,12 @@ function PieChart({
         </g>
         {legend && (
           <VictoryLegend
+            dataComponent={<LegendPoint labelWidth={legend.labelWidth} />}
             labelComponent={
               <LegendLabel
-                colorScale={colorScale}
                 theme={theme}
-                width={legend.width}
+                colorScale={colorScale}
+                width={legend.labelWidth}
               />
             }
             name="legend"

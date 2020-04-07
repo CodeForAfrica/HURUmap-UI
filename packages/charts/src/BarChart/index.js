@@ -17,6 +17,7 @@ import withVictoryTheme from '../styles/withVictoryTheme';
 import BarLabel from './BarLabel';
 import Chart, { toChartAxisProps } from '../Chart';
 import LegendLabel from '../LegendLabel';
+import LegendPoint from '../LegendPoint';
 import WrapLabel from '../WrapLabel';
 
 function BarChart({
@@ -177,6 +178,7 @@ function BarChart({
       {legend && (
         <VictoryLegend
           standalone={false}
+          dataComponent={<LegendPoint labelWidth={legend.labelWidth} />}
           labelComponent={
             <LegendLabel
               colorScale={colorScale}

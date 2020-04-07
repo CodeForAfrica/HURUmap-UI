@@ -37,6 +37,8 @@ export function getLegendProps(
     align,
     data: legendDataProp,
     size,
+    labelWidth,
+    orientation = 'horizontal',
     ...otherLegendProps
   } = initialLegendProps;
 
@@ -48,7 +50,7 @@ export function getLegendProps(
   let chartHeight = height;
   let chartWidth = width;
   let legendHeight = height;
-  let legendWidth = width;
+  let legendWidth = width > 0 ? width : 0;
   const padding = { ...originalPadding };
   padding.top = padding.top || 0;
   padding.right = padding.right || 0;
@@ -90,13 +92,19 @@ export function getLegendProps(
         break;
     }
   }
+
+  // when orientation is horizontal, calculate the items per row
+  let itemsPerRow = Math.floor(legendWidth / labelWidth);
+  itemsPerRow = itemsPerRow > 0 ? itemsPerRow : 1;
+
   const legend = legendData && {
     data: legendData,
     height: legendHeight,
-    orientation: 'horizontal',
-    width: legendWidth,
     x: legendX,
     y: legendY,
+    labelWidth,
+    orientation,
+    itemsPerRow: orientation !== 'vertical' ? itemsPerRow : undefined,
     ...otherLegendProps
   };
   return {
