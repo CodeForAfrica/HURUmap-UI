@@ -1,13 +1,7 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  Helpers,
-  VictoryAxis,
-  VictoryBar,
-  VictoryGroup,
-  VictoryLegend
-} from 'victory';
+import { Helpers, VictoryAxis, VictoryBar, VictoryGroup } from 'victory';
 
 import { computeMaxLabelDimension } from '../WrapLabel/wrapSVGText';
 
@@ -16,9 +10,8 @@ import propTypes from '../propTypes';
 import withVictoryTheme from '../styles/withVictoryTheme';
 import BarLabel from './BarLabel';
 import Chart, { toChartAxisProps } from '../Chart';
-import LegendLabel from '../LegendLabel';
-import LegendPoint from '../LegendPoint';
 import WrapLabel from '../WrapLabel';
+import Legend from '../Legend';
 
 function BarChart({
   barWidth,
@@ -175,20 +168,7 @@ function BarChart({
         {...axisProps.independent}
       />
 
-      {legend && (
-        <VictoryLegend
-          standalone={false}
-          dataComponent={<LegendPoint labelWidth={legend.labelWidth} />}
-          labelComponent={
-            <LegendLabel
-              colorScale={colorScale}
-              theme={theme}
-              width={legend.labelWidth}
-            />
-          }
-          {...legend}
-        />
-      )}
+      {legend && <Legend colorScale={colorScale} {...legend} />}
     </Chart>
   );
 }

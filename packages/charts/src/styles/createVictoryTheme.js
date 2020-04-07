@@ -64,7 +64,6 @@ export default function createVictoryTheme(chartOptions) {
         legend: {
           align: 'right',
           orientation: 'vertical',
-          size: 100,
           labelWidth: 150
         }
       },

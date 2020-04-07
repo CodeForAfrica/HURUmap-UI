@@ -270,12 +270,15 @@ function PieChart({
         </g>
         {legend && (
           <VictoryLegend
-            dataComponent={<LegendPoint labelWidth={legend.labelWidth} />}
+            dataComponent={
+              <LegendPoint posX={legend.x} labelWidth={legend.labelWidth} />
+            }
             labelComponent={
               <LegendLabel
                 theme={theme}
                 colorScale={colorScale}
                 width={legend.labelWidth}
+                posX={legend.x}
               />
             }
             name="legend"

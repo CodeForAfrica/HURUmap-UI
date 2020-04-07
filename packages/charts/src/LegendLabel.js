@@ -13,7 +13,7 @@ import Label from './Label';
  * @param {*} props .
  */
 // while we need `width` for the label, we don't need it for tooltip
-function LegendLabel({ width, x, ...props }) {
+function LegendLabel({ width, posX, x, ...props }) {
   const { colorScale, datum, index } = props;
   const { column, description, size, symbolSpacer } = datum || {};
 
@@ -22,12 +22,13 @@ function LegendLabel({ width, x, ...props }) {
       <Label
         width={width}
         // Using this until we figure out how to use victory gutter
-        x={column * (width + size + symbolSpacer) + 80}
+        x={column * (width + size + symbolSpacer) + posX + 30}
         {...props}
       />
       {description && description.length ? (
         <VictoryTooltip
-          x={x}
+          // Using this until we figure out how to use victory gutter
+          x={column * (width + size + symbolSpacer) + posX + 30}
           {...props}
           datum={{ _x: index + 1, ...datum }}
           text={description}
@@ -42,6 +43,7 @@ LegendLabel.defaultEvents = VictoryTooltip.defaultEvents;
 
 LegendLabel.propTypes = {
   colorScale: propTypes.colorScale,
+  posX: PropTypes.number,
   x: PropTypes.number,
   datum: PropTypes.shape({
     description: PropTypes.string,
@@ -53,6 +55,7 @@ LegendLabel.propTypes = {
 };
 
 LegendLabel.defaultProps = {
+  posX: 0,
   x: undefined,
   colorScale: undefined,
   datum: undefined,
