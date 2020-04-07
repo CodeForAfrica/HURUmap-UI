@@ -50,6 +50,7 @@ export function getLegendProps(
   // https://formidable.com/open-source/victory/docs/victory-legend/#data
   const legendData =
     legendDataProp || (data && data[0] && data[0].name && data);
+
   let chartHeight = height;
   let chartWidth = width;
 
@@ -58,6 +59,14 @@ export function getLegendProps(
   padding.right = padding.right || 0;
   padding.bottom = padding.bottom || 0;
   padding.left = padding.left || 0;
+
+  if (!legendData) {
+    return {
+      height,
+      padding,
+      width
+    };
+  }
 
   let legendWidth =
     preferredLegendWidth || width > 0
@@ -82,7 +91,8 @@ export function getLegendProps(
 
   rowCount = rowCount > 0 ? rowCount : 1;
 
-  const legendHeight = 25 * rowCount;
+  // height for 1 row + number of rows + bottom padding
+  const legendHeight = 25 * rowCount + 50;
 
   let legendY = align === 'bottom' ? chartHeight - legendHeight : padding.top;
 
@@ -121,7 +131,7 @@ export function getLegendProps(
 
   return {
     height: chartHeight,
-    legend: legendData && {
+    legend: {
       data: legendData,
       height: legendHeight,
       width: legendWidth,
