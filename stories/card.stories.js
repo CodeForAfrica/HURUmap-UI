@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, select, text, object } from '@storybook/addon-knobs';
 
@@ -14,11 +14,30 @@ storiesOf('HURUmap UI|Components/Card', module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add('Default', () => {
+    const [defs, setDefs] = useState([]);
     const width = text('width', '100%');
     const type = select('type', ['hurumap', 'flourish', 'snippet'], 'hurumap');
     const uri = text('graphql', 'https://graphql.hurumap.org/graphql');
+    const def = select(
+      'definition',
+      defs.map(option =>
+        !option || !option.id
+          ? 'Use custom'
+          : `${option.id} - ${option.title} - ${option.visual &&
+              option.visual.type}`
+      )
+    );
+    const definitionsURI = text(
+      'definitionsURI',
+      'https://dashboard.hurumap.org/wp-json/hurumap-data/charts'
+    );
+    useEffect(() => {
+      fetch(definitionsURI)
+        .then(res => res.json())
+        .then(setDefs);
+    }, [definitionsURI]);
     const geoId = text('geoId', 'country-ZA');
-    const hurumapJson = {
+    const hurumapJson = defs.find(x => x.id === def.split('-')[0].trim()) || {
       id: '209',
       stat: {
         type: 'number',
@@ -64,7 +83,10 @@ storiesOf('HURUmap UI|Components/Card', module)
     };
     const definition =
       // eslint-disable-next-line no-nested-ternary
-      type === 'flourish'
+      def !== 'Use custom'
+        ? hurumapJson
+        : // eslint-disable-next-line no-nested-ternary
+        type === 'flourish'
         ? object('Flourish definition', flourishJson)
         : type === 'hurumap'
         ? object('HURUmap definition', hurumapJson)
