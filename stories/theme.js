@@ -15,7 +15,16 @@ export default createTheme({
       }
     },
     pie: {
-      height: 400
+      height: 400,
+      legend: {
+        align: 'left',
+        labelWidth: 150
+      }
+    },
+    line: {
+      legend: {
+        labelWidth: 150
+      }
     }
   }
 });

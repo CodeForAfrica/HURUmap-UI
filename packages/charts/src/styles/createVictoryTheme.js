@@ -32,7 +32,8 @@ export default function createVictoryTheme(chartOptions) {
         legend: {
           align: 'bottom',
           orientation: 'horizontal',
-          size: 50
+          size: 50,
+          labelWidth: 150
         }
       },
       bar: {
@@ -63,7 +64,6 @@ export default function createVictoryTheme(chartOptions) {
         legend: {
           align: 'right',
           orientation: 'vertical',
-          size: 100,
           labelWidth: 150
         }
       },

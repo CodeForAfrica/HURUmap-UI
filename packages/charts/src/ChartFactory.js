@@ -17,6 +17,7 @@ import propTypes from './propTypes';
 import withVictoryTheme from './styles/withVictoryTheme';
 
 import { computeMaxLabelDimension } from './WrapLabel/wrapSVGText';
+import { extractLegendData, getLegendProps } from './utils';
 
 const DOWNLOAD_HIDDEN_CLASSNAME = 'Download--hidden';
 
@@ -217,7 +218,8 @@ const ChartFactory = React.memo(
           const {
             domainPadding: {
               x: [x0, x1]
-            }
+            },
+            legend: initialLegendProps
           } = theme.bar;
           const domainPadding = {
             x: [x0 * primaryData.length, x1 * primaryData.length]
@@ -263,13 +265,21 @@ const ChartFactory = React.memo(
           const showHorizontal = horizontal || computedSize > adjustedDimension;
           const width = showHorizontal ? adjustedWidth : computedSize;
           const computedHeight = showHorizontal ? computedSize : height;
+
+          const { legend } = getLegendProps(
+            { height, width },
+            initialLegendProps,
+            extractLegendData(primaryData),
+            padding
+          );
+
           return {
             width,
             offset,
             groupCount,
             columnCount,
             domainPadding,
-            height: computedHeight,
+            height: computedHeight + legend.height,
             maxLabelDimension: { maxLabelHeight, maxLabelWidth },
             showHorizontal,
             enableShowMore:
@@ -344,11 +354,24 @@ const ChartFactory = React.memo(
             offset = rootWidth / primaryData.length;
           }
           const height = heightProp || theme.line.height;
-          const computedWidth = primaryData.length * offset;
+
+          const padding = paddingProp
+            ? Helpers.getPadding({ padding: paddingProp })
+            : Helpers.getPadding(theme.line);
+
+          const { legend: initialLegendProps } = theme.line;
+
+          const { legend } = getLegendProps(
+            { height, width: rootWidth },
+            initialLegendProps,
+            extractLegendData(primaryData),
+            padding
+          );
+
           return {
-            height,
+            height: height + legend.height,
             offset,
-            width: computedWidth
+            width: rootWidth
           };
         }
         default:
@@ -360,9 +383,8 @@ const ChartFactory = React.memo(
       theme.pie.width,
       theme.pie.height,
       theme.bar,
+      theme.line,
       theme.axis.labelWidth,
-      theme.line.offset,
-      theme.line.height,
       heightProp,
       offsetProp,
       paddingProp,

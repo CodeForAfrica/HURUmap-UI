@@ -3,11 +3,12 @@ import React from 'react';
 import { Point } from 'victory';
 import propTypes from './propTypes';
 
-function LegendPoint({ labelWidth, x, datum, ...props }) {
-  const { column } = datum || {};
+function LegendPoint({ labelWidth, posX, x, datum, ...props }) {
+  const { column, size, symbolSpacer } = datum || {};
   return (
     <Point
-      x={column !== 0 ? column * (labelWidth + 80) : x}
+      // Using this until we figure out how to use victory gutter
+      x={column * (labelWidth + size + symbolSpacer) + posX + 15}
       datum={datum}
       {...props}
     />
@@ -15,6 +16,7 @@ function LegendPoint({ labelWidth, x, datum, ...props }) {
 }
 
 LegendPoint.propTypes = {
+  posX: propTypes.number,
   x: propTypes.number,
   labelWidth: propTypes.number.isRequired,
   datum: propTypes.shape({
@@ -24,6 +26,7 @@ LegendPoint.propTypes = {
 };
 
 LegendPoint.defaultProps = {
+  posX: 0,
   x: undefined,
   datum: undefined
 };

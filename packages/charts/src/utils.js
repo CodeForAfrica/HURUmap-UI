@@ -11,20 +11,23 @@
  * The required legend data, name and (optional) description, is found in
  * `bar0`, `bar1`, `bar2`, variables.
  */
-export function extractLegendData(groupedData) {
-  if (
-    !groupedData ||
-    !groupedData.length ||
-    !groupedData[0].length ||
-    !groupedData[0][0].name
-  ) {
+export function extractLegendData(data) {
+  if (!data || !data.length) {
     return undefined;
   }
-  if (groupedData.length === 1) {
-    return groupedData;
+
+  if (Array.isArray(data[0])) {
+    if (!data[0].length || !data[0][0].name) {
+      return undefined;
+    }
+
+    if (data.length === 1) {
+      return data;
+    }
+    // Pick first element from each row of data
+    return data.map(gD => gD[0]);
   }
-  // Pick first element from each row of data
-  return groupedData.map(gD => gD[0]);
+  return [data];
 }
 
 export function getLegendProps(
@@ -36,8 +39,8 @@ export function getLegendProps(
   const {
     align,
     data: legendDataProp,
-    size,
     labelWidth,
+    legendWidth: preferredLegendWidth,
     orientation = 'horizontal',
     ...otherLegendProps
   } = initialLegendProps;
@@ -49,67 +52,86 @@ export function getLegendProps(
     legendDataProp || (data && data[0] && data[0].name && data);
   let chartHeight = height;
   let chartWidth = width;
-  let legendHeight = height;
-  let legendWidth = width > 0 ? width : 0;
+
   const padding = { ...originalPadding };
   padding.top = padding.top || 0;
   padding.right = padding.right || 0;
   padding.bottom = padding.bottom || 0;
   padding.left = padding.left || 0;
-  let legendX = padding.left;
-  let legendY = padding.top;
-  if (legendData && size) {
-    switch (align) {
-      case 'left':
-      case 'right': // fall-through
-        chartWidth -= size;
-        legendWidth = size;
-        // center the chart vertically
-        if (chartHeight > chartWidth) {
-          const verticalSpacing = chartHeight - chartWidth;
-          padding.top += verticalSpacing / 2;
-          legendY += verticalSpacing / 2;
-        }
-        if (align === 'left') {
-          padding.left += size;
-        } else {
-          legendX = chartWidth;
-          padding.right += size;
-        }
-        break;
-      case 'top':
-      case 'bottom': // fall-through
-      default:
-        // fall-through
-        chartHeight -= size;
-        legendHeight = size;
-        if (align === 'top') {
-          padding.top += size;
-        } else {
-          legendY = chartHeight;
-          padding.bottom += size;
-        }
-        break;
-    }
+
+  let legendWidth =
+    preferredLegendWidth || width > 0
+      ? width - padding.left - padding.right
+      : 0;
+  if (['left', 'right'].includes(align)) {
+    legendWidth = preferredLegendWidth || labelWidth;
   }
 
-  // when orientation is horizontal, calculate the items per row
-  let itemsPerRow = Math.floor(legendWidth / labelWidth);
+  let legendX = padding.left;
+
+  // when orientation is horizontal
+  // calculate the items per row
+  let itemsPerRow =
+    orientation !== 'vertical'
+      ? Math.floor(legendWidth / labelWidth)
+      : legendData.length;
+
   itemsPerRow = itemsPerRow > 0 ? itemsPerRow : 1;
 
-  const legend = legendData && {
-    data: legendData,
-    height: legendHeight,
-    x: legendX,
-    y: legendY,
-    labelWidth,
-    orientation,
-    itemsPerRow: orientation !== 'vertical' ? itemsPerRow : undefined,
-    ...otherLegendProps
-  };
+  let rowCount = Math.floor(legendData.length / itemsPerRow);
+
+  rowCount = rowCount > 0 ? rowCount : 1;
+
+  const legendHeight = 25 * rowCount;
+
+  let legendY = align === 'bottom' ? chartHeight - legendHeight : padding.top;
+
+  switch (align) {
+    case 'left':
+    case 'right': // fall-through
+      chartWidth -= labelWidth;
+      legendWidth = labelWidth;
+      if (chartHeight < legendHeight) {
+        chartHeight = legendHeight;
+      }
+      // center the chart vertically
+      if (chartHeight > chartWidth) {
+        const verticalSpacing = chartHeight - chartWidth;
+        padding.top += verticalSpacing / 2;
+        legendY += verticalSpacing / 2;
+      }
+      if (align === 'left') {
+        padding.left += labelWidth;
+      } else {
+        legendX = chartWidth;
+        padding.right += labelWidth;
+      }
+      break;
+    case 'top':
+    case 'bottom': // fall-through
+    default:
+      // fall-through
+      if (align === 'top') {
+        padding.top += legendHeight;
+      } else {
+        padding.bottom += legendHeight;
+      }
+      break;
+  }
+
   return {
     height: chartHeight,
-    legend,
+    legend: legendData && {
+      data: legendData,
+      height: legendHeight,
+      width: legendWidth,
+      x: legendX,
+      y: legendY,
+      labelWidth,
+      orientation,
+      itemsPerRow,
+      ...otherLegendProps
+    },
     padding,
     width: chartWidth
   };

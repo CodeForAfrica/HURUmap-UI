@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {
   Helpers,
   VictoryAxis,
-  VictoryLegend,
   VictoryLine,
   VictoryVoronoiContainer
 } from 'victory';
@@ -12,10 +11,10 @@ import {
 import { extractLegendData, getLegendProps } from './utils';
 import withVictoryTheme from './styles/withVictoryTheme';
 import Chart, { toChartAxisProps } from './Chart';
-import LegendLabel from './LegendLabel';
 import WrapLabel from './WrapLabel';
 import Tooltip from './Tooltip';
 import propTypes from './propTypes';
+import Legend from './Legend';
 
 /**
  * HURUmap UI Line chart is made up of VictoryChart, VictoryVoronoiContainer,
@@ -128,19 +127,8 @@ function LineChart({
           {...props}
         />
       ))}
-      {legend && (
-        <VictoryLegend
-          standalone={false}
-          labelComponent={
-            <LegendLabel
-              colorScale={colorScale}
-              theme={theme}
-              width={legend.labelWidth}
-            />
-          }
-          {...legend}
-        />
-      )}
+
+      {legend && <Legend colorScale={colorScale} {...legend} />}
     </Chart>
   );
 }
