@@ -4,10 +4,11 @@ import { Point } from 'victory';
 import propTypes from './propTypes';
 
 function LegendPoint({ labelWidth, x, datum, ...props }) {
-  const { column } = datum || {};
+  const { column, size, symbolSpacer } = datum || {};
   return (
     <Point
-      x={column !== 0 ? column * (labelWidth + 80) : x}
+      // Using this until we figure out how to use victory gutter
+      x={column * (labelWidth + size + symbolSpacer) + 70}
       datum={datum}
       {...props}
     />

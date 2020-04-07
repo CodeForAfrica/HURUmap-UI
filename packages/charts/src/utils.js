@@ -11,20 +11,23 @@
  * The required legend data, name and (optional) description, is found in
  * `bar0`, `bar1`, `bar2`, variables.
  */
-export function extractLegendData(groupedData) {
-  if (
-    !groupedData ||
-    !groupedData.length ||
-    !groupedData[0].length ||
-    !groupedData[0][0].name
-  ) {
+export function extractLegendData(data) {
+  if (!data || !data.length) {
     return undefined;
   }
-  if (groupedData.length === 1) {
-    return groupedData;
+
+  if (Array.isArray(data[0])) {
+    if (!data[0].length || !data[0][0].name) {
+      return undefined;
+    }
+
+    if (data.length === 1) {
+      return data;
+    }
+    // Pick first element from each row of data
+    return data.map(gD => gD[0]);
   }
-  // Pick first element from each row of data
-  return groupedData.map(gD => gD[0]);
+  return [data];
 }
 
 export function getLegendProps(
@@ -49,15 +52,33 @@ export function getLegendProps(
     legendDataProp || (data && data[0] && data[0].name && data);
   let chartHeight = height;
   let chartWidth = width;
-  let legendHeight = height;
-  let legendWidth = width > 0 ? width : 0;
+
   const padding = { ...originalPadding };
   padding.top = padding.top || 0;
   padding.right = padding.right || 0;
   padding.bottom = padding.bottom || 0;
   padding.left = padding.left || 0;
+
+  let legendWidth = width > 0 ? width - padding.left - padding.right : 0;
+
   let legendX = padding.left;
   let legendY = padding.top;
+
+  // when orientation is horizontal
+  // calculate the items per row
+  let itemsPerRow =
+    orientation !== 'vertical'
+      ? Math.floor(legendWidth / labelWidth)
+      : legendData.length;
+
+  itemsPerRow = itemsPerRow > 0 ? itemsPerRow : 1;
+
+  const rowCount = Math.floor(legendData.length / itemsPerRow);
+
+  const legendHeight = 20 * rowCount;
+
+  padding.bottom += legendHeight;
+
   if (legendData && size) {
     switch (align) {
       case 'left':
@@ -82,7 +103,6 @@ export function getLegendProps(
       default:
         // fall-through
         chartHeight -= size;
-        legendHeight = size;
         if (align === 'top') {
           padding.top += size;
         } else {
@@ -93,18 +113,17 @@ export function getLegendProps(
     }
   }
 
-  // when orientation is horizontal, calculate the items per row
-  let itemsPerRow = Math.floor(legendWidth / labelWidth);
-  itemsPerRow = itemsPerRow > 0 ? itemsPerRow : 1;
+  legendY = align === 'bottom' ? chartHeight - legendHeight : padding.top;
 
   const legend = legendData && {
     data: legendData,
     height: legendHeight,
+    width: legendWidth,
     x: legendX,
     y: legendY,
     labelWidth,
     orientation,
-    itemsPerRow: orientation !== 'vertical' ? itemsPerRow : undefined,
+    itemsPerRow,
     ...otherLegendProps
   };
   return {

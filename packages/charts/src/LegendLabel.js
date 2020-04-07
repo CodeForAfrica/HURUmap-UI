@@ -21,7 +21,8 @@ function LegendLabel({ width, x, ...props }) {
     <g>
       <Label
         width={width}
-        x={column !== 0 ? column * (width + 80) + size + symbolSpacer : x}
+        // Using this until we figure out how to use victory gutter
+        x={column * (width + size + symbolSpacer) + 80}
         {...props}
       />
       {description && description.length ? (

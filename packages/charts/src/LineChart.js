@@ -16,6 +16,7 @@ import LegendLabel from './LegendLabel';
 import WrapLabel from './WrapLabel';
 import Tooltip from './Tooltip';
 import propTypes from './propTypes';
+import LegendPoint from './LegendPoint';
 
 /**
  * HURUmap UI Line chart is made up of VictoryChart, VictoryVoronoiContainer,
@@ -131,6 +132,7 @@ function LineChart({
       {legend && (
         <VictoryLegend
           standalone={false}
+          dataComponent={<LegendPoint labelWidth={legend.labelWidth} />}
           labelComponent={
             <LegendLabel
               colorScale={colorScale}

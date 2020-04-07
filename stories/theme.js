@@ -16,6 +16,11 @@ export default createTheme({
     },
     pie: {
       height: 400
+    },
+    line: {
+      legend: {
+        labelWidth: 150
+      }
     }
   }
 });
