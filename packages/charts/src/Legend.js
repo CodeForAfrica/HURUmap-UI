@@ -11,11 +11,10 @@ function Legend({ theme, colorScale, ...props }) {
   return (
     <VictoryLegend
       theme={theme}
+      colorScale={colorScale}
       name="legend"
       dataComponent={<LegendPoint posX={x} labelWidth={labelWidth} />}
-      labelComponent={
-        <LegendLabel colorScale={colorScale} width={labelWidth} posX={x} />
-      }
+      labelComponent={<LegendLabel width={labelWidth} posX={x} />}
       standalone={false}
       {...props}
     />
