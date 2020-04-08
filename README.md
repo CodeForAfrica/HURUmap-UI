@@ -96,6 +96,24 @@ module.exports = {
 
 ```
 
+- `.babelrc` for storybook https://storybook.js.org/docs/configurations/custom-babel-config/
+
+```
+{
+  "presets": ["@babel/preset-react", "@babel/preset-env"],
+  "plugins": ["inline-react-svg",  [
+      "module-resolver",
+      {
+        "alias": {
+          "@hurumap-ui/content": "./packages/content/src",
+          "@hurumap-ui/charts": "./packages/charts/src",
+          "@hurumap-ui/core": "./packages/core/src"
+        }
+      }
+    ]]
+}
+```
+
 ## Testing
 
 Jest is used for testing. 
