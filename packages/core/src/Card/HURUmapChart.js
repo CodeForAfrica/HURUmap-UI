@@ -66,6 +66,7 @@ function HURUmapChart({
     !chart ||
     (!chartData.isLoading &&
       chartData.profileVisualsData[chart.visual.queryAlias] &&
+      chartData.profileVisualsData[chart.visual.queryAlias].nodes &&
       chartData.profileVisualsData[chart.visual.queryAlias].nodes.length === 0)
   ) {
     return (

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 
 import { Box, ButtonBase } from '@material-ui/core';
 
@@ -43,7 +43,7 @@ const ChartFactory = React.memo(
        * The rest of the props are going to be considered as:
        *  Intl.NumberFormatOptions
        *
-       * Omit unit since its an experimental NumberFormat option.
+       * Omit unit since its an experimental NumberFormat option, use style
        */
       unit,
       ...numberFormat
@@ -74,19 +74,17 @@ const ChartFactory = React.memo(
         .toString(36)
         .substring(2) + Date.now().toString(36);
     const [showMore, setShowMore] = useState(false);
-    const numberFormatter = useRef(
-      (() => {
-        try {
-          const formatter = new Intl.NumberFormat(locale, {
-            maximumFractionDigits: 2,
-            ...numberFormat
-          });
-          return formatter;
-        } catch (e) {
-          return new Intl.NumberFormat(locale);
-        }
-      })()
-    ).current;
+    const numberFormatter = useMemo(() => {
+      try {
+        const formatter = new Intl.NumberFormat(locale, {
+          maximumFractionDigits: 2,
+          ...numberFormat
+        });
+        return formatter;
+      } catch (e) {
+        return new Intl.NumberFormat(locale);
+      }
+    }, [locale, numberFormat]);
 
     const format = useCallback(
       value => {
@@ -125,18 +123,18 @@ const ChartFactory = React.memo(
       [customUnit, numberFormat.style, numberFormatter]
     );
 
-    const primaryData = useMemo(() => {
-      const labels = (
-        { label: dataLabel, tooltip, x, y },
-        separator = ': '
-      ) => {
+    const labels = useCallback(
+      ({ label: dataLabel, tooltip, x, y }, separator = ': ') => {
         if (dataLabel || tooltip) {
           return dataLabel || tooltip;
         }
         const formattedX = x ? `${x}${separator}` : '';
         return `${formattedX}${format(y)}`;
-      };
+      },
+      [format]
+    );
 
+    const primaryData = useMemo(() => {
       if (
         visualType === 'grouped_column' ||
         (visualType === 'line' && data[0] && data[0].groupBy)
@@ -145,7 +143,10 @@ const ChartFactory = React.memo(
          * Group the data based on groupBy
          * Then aggregate the grouped data
          */
-        let groupedData = groupData(data);
+        let groupedData =
+          aggregate !== ':percent'
+            ? groupData(data)
+            : aggregateData(aggregate, groupData(data));
 
         if (groupedData.length) {
           /**
@@ -170,7 +171,6 @@ const ChartFactory = React.memo(
             groupedData.map(r => r[i])
           );
         }
-
         return groupedData;
       }
 
@@ -196,7 +196,7 @@ const ChartFactory = React.memo(
         }));
       }
       return [];
-    }, [aggregate, data, format, visualType]);
+    }, [aggregate, data, labels, visualType]);
 
     const calculations = useMemo(() => {
       switch (visualType) {
@@ -498,16 +498,28 @@ const ChartFactory = React.memo(
           const [func] = statAggregate.split(':');
           const statUnique =
             unique !== undefined ? unique : !isSelectFunc(func);
+          const isGroup = data[0] && data[0].groupBy;
 
-          const dataStat = aggregateData(statAggregate, data, statUnique);
-          const dataStatY = format(dataStat[0].y);
+          let dataStat;
+          if (isGroup) {
+            dataStat = aggregateData(
+              statAggregate,
+              groupData(data),
+              statUnique
+            );
+          } else {
+            dataStat = aggregateData(statAggregate, data, statUnique);
+          }
 
-          let xDesc = isSelectFunc(func) ? `(${dataStat[0].x})` : '';
-          xDesc = dataStat[0].groupBy
-            ? `${xDesc.substring(0, xDesc.length - 1)} - ${
-                dataStat[0].groupBy
-              })`
-            : `${xDesc}`;
+          const dataStatY = format(
+            isGroup && statUnique ? dataStat[0][0].y : dataStat[0].y
+          );
+          const dataStatX =
+            isGroup && statUnique ? dataStat[0][0].x : dataStat[0].x;
+
+          const xDesc = isGroup
+            ? `${statUnique ? `(${dataStatX}- ${data[0].groupBy})` : ''}`
+            : `${dataStatX}`;
 
           return (
             <NumberVisuals
@@ -614,7 +626,7 @@ const ChartFactory = React.memo(
             referenceData.reduce((a, b) => a + b.y, 0) || primaryData[0].y;
           return (
             <BulletChart
-              total={unit === 'percent' ? 100 : summedData}
+              total={numberFormat.style === 'percent' ? 100 : summedData}
               data={!isComparison ? primaryData : [primaryData, comparisonData]}
               reference={summedReferenceData}
               height={!isComparison ? 50 : 100}

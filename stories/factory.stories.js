@@ -35,7 +35,7 @@ storiesOf('HURUmap UI|Charts/ChartFactory', module)
       height: 350
     });
     const statistic = object('statistic', {
-      unit: '%',
+      style: 'percent',
       unique: true
     });
 
@@ -91,7 +91,7 @@ storiesOf('HURUmap UI|Charts/ChartFactory', module)
       offset: 50
     });
     const statistic = object('statistic', {
-      unit: '%',
+      style: 'percent',
       aggregate: 'sum:percent',
       unique: true
     });
@@ -150,7 +150,7 @@ storiesOf('HURUmap UI|Charts/ChartFactory', module)
       height: 350
     });
     const statistic = object('statistic', {
-      unit: '%',
+      style: 'percent',
       aggregate: 'sum:percent',
       unique: true
     });
