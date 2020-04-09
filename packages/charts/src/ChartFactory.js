@@ -43,7 +43,7 @@ const ChartFactory = React.memo(
        * The rest of the props are going to be considered as:
        *  Intl.NumberFormatOptions
        *
-       * Omit unit since its an experimental NumberFormat option.
+       * Omit unit since its an experimental NumberFormat option, use style
        */
       unit,
       ...numberFormat
@@ -78,13 +78,14 @@ const ChartFactory = React.memo(
       try {
         const formatter = new Intl.NumberFormat(locale, {
           maximumFractionDigits: 2,
+          style: unit,
           ...numberFormat
         });
         return formatter;
       } catch (e) {
         return new Intl.NumberFormat(locale);
       }
-    }, [locale, numberFormat]);
+    }, [locale, unit, numberFormat]);
 
     const format = useCallback(
       value => {
@@ -113,14 +114,14 @@ const ChartFactory = React.memo(
         /**
          * `style: percent` expects a ratio
          */
-        if (numberFormat.style === 'percent') {
+        if ((unit || numberFormat.style) === 'percent') {
           formatValue /= 100;
         }
         return `${numberFormatter.format(
           formatValue
         )}${compactUnit} ${customUnit}`.trim(); // in case customUnit is empty
       },
-      [customUnit, numberFormat.style, numberFormatter]
+      [customUnit, unit, numberFormat.style, numberFormatter]
     );
 
     const labels = useCallback(
@@ -626,7 +627,9 @@ const ChartFactory = React.memo(
             referenceData.reduce((a, b) => a + b.y, 0) || primaryData[0].y;
           return (
             <BulletChart
-              total={unit === 'percent' ? 100 : summedData}
+              total={
+                (unit || numberFormat.style) === 'percent' ? 100 : summedData
+              }
               data={!isComparison ? primaryData : [primaryData, comparisonData]}
               reference={summedReferenceData}
               height={!isComparison ? 50 : 100}
