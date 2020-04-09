@@ -18,6 +18,11 @@ describe('Chart data aggregation', () => {
       expect(result[0].x).toBe('Avg');
       expect(result[0].y).toBe(1.5);
     });
+    it('should avg:percent the data', () => {
+      const result = aggregateData('avg:percent', data, false);
+      expect(result[0].x).toBe('Avg');
+      expect(result[0].y).toBe((100 * 1.5) / 6);
+    });
     it('should select the first data point', () => {
       const result = aggregateData('first', data, false);
       expect(result[0].x).toBe('one');
@@ -96,6 +101,17 @@ describe('Chart data aggregation', () => {
       expect(result[0][0].y).toBe(6 / 4);
       expect(result[1][0].x).toBe('Avg');
       expect(result[1][0].y).toBe(15 / 4);
+    });
+    it('should avg:percent the group data', () => {
+      let result = aggregateData('avg:percent', data, false);
+      expect(result[0].x).toBe('Avg');
+      expect(result[0].y).toBe((100 * 2.625) / 21);
+
+      result = aggregateData('avg:percent', data, true);
+      expect(result[0][0].x).toBe('Avg');
+      expect(result[0][0].y).toBe((100 * (6 / 4)) / 6);
+      expect(result[1][0].x).toBe('Avg');
+      expect(result[1][0].y).toBe((100 * (15 / 4)) / 15);
     });
     it('should select the first group data point', () => {
       let result = aggregateData('first', data, false);
