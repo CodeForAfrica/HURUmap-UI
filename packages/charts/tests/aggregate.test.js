@@ -10,12 +10,12 @@ describe('Chart data aggregation', () => {
     ];
     it('should sum the data', () => {
       const result = aggregateData('sum', data, false);
-      expect(result[0].x).toBe('sum');
+      expect(result[0].x).toBe('Sum');
       expect(result[0].y).toBe(6);
     });
     it('should avg the data', () => {
       const result = aggregateData('avg', data, false);
-      expect(result[0].x).toBe('avg');
+      expect(result[0].x).toBe('Avg');
       expect(result[0].y).toBe(1.5);
     });
     it('should select the first data point', () => {
@@ -68,14 +68,26 @@ describe('Chart data aggregation', () => {
       ]
     ];
     it('should sum the group data', () => {
-      const result = aggregateData('sum', data, false);
-      expect(result[0].x).toBe('sum');
+      let result = aggregateData('sum', data, false);
+      expect(result[0].x).toBe('Sum');
       expect(result[0].y).toBe(21);
+
+      result = aggregateData('sum', data, true);
+      expect(result[0][0].x).toBe('Sum');
+      expect(result[0][0].y).toBe(6);
+      expect(result[1][0].x).toBe('Sum');
+      expect(result[1][0].y).toBe(15);
     });
     it('should avg the group data', () => {
-      const result = aggregateData('avg', data, false);
-      expect(result[0].x).toBe('avg');
+      let result = aggregateData('avg', data, false);
+      expect(result[0].x).toBe('Avg');
       expect(result[0].y).toBe(2.625);
+
+      result = aggregateData('avg', data, true);
+      expect(result[0][0].x).toBe('Avg');
+      expect(result[0][0].y).toBe(6 / 4);
+      expect(result[1][0].x).toBe('Avg');
+      expect(result[1][0].y).toBe(15 / 4);
     });
     it('should select the first group data point', () => {
       const result = aggregateData('first', data, false);

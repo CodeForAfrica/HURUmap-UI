@@ -49,30 +49,28 @@ function aggregate(option, data, unique = true) {
   const [func, unit] = option ? option.split(':') : ['', ''];
   if (!func || func === 'raw') {
     reducedArray = data;
-  }
-
-  if (func) {
-    if (unique) {
-      const uniqueX = [...new Set(data.map(d => d.x))];
-      uniqueX.forEach(x => {
-        const computedData = computeData(
-          func,
-          data.filter(d => d.x === x)
-        );
-        reduced[x] = {
-          ...computedData,
-          x: selectFunc[func] ? computedData.x : x,
-          y: selectFunc[func] ? computedData.y : computedData
-        };
-      });
-    } else {
-      const computedData = computeData(func, data);
-      reduced[0] = {
+  } else if (unique) {
+    const uniqueX = [...new Set(data.map(d => d.x))];
+    uniqueX.forEach(x => {
+      const computedData = computeData(
+        func,
+        data.filter(d => d.x === x)
+      );
+      reduced[x] = {
         ...computedData,
-        x: selectFunc[func] ? computedData.x : func,
+        x: selectFunc[func] ? computedData.x : x,
         y: selectFunc[func] ? computedData.y : computedData
       };
-    }
+    });
+  } else {
+    const computedData = computeData(func, data);
+    reduced[0] = {
+      ...computedData,
+      x: selectFunc[func]
+        ? computedData.x
+        : func[0].toUpperCase() + func.slice(1),
+      y: selectFunc[func] ? computedData.y : computedData
+    };
   }
 
   if (!reducedArray) {
@@ -81,9 +79,9 @@ function aggregate(option, data, unique = true) {
 
   if (unit === 'percent') {
     const total = data.reduce((a, b) => a + b.y, 0);
-    return reducedArray.map(d => ({
-      ...d,
-      y: (100 * d.y) / total
+    return reducedArray.map(({ y, ...d }) => ({
+      y: !total ? 0 : (100 * y) / total,
+      ...d
     }));
   }
 
@@ -93,9 +91,10 @@ function aggregate(option, data, unique = true) {
 export default function aggregateData(option, data, unique) {
   const isGroups = Array.isArray(data[0]);
   if (isGroups) {
-    const aggregatedGroup = data.map(gd => aggregate(option, gd, unique));
+    const aggregatedGroup = data.map(gd => aggregate(option, gd, false));
     const func = (option || '').split(':')[0];
-    if (func) {
+
+    if (func && func !== 'raw' && !unique) {
       return aggregate(
         func,
         aggregatedGroup.reduce((merge, gd) => merge.concat(gd), []),
