@@ -33,7 +33,7 @@ storiesOf('HURUmap UI|Components/Card', module)
         description: '',
         aggregate: 'sum',
         unique: true,
-        unit: 'percent',
+        style: 'percent',
         queryAlias: 'v209'
       },
       visual: {
@@ -154,7 +154,7 @@ storiesOf('HURUmap UI|Components/Card', module)
         description: '',
         aggregate: 'sum',
         unique: true,
-        unit: 'percent',
+        style: 'percent',
         queryAlias: 'v209'
       },
       visual: {
