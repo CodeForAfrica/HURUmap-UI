@@ -1,21 +1,35 @@
+// Sum the actual y value and not the calculated y
+const sum = data =>
+  data.reduce((a, b) => a + (b.actualY !== undefined ? b.actualY : b.y), 0);
 const aggregateFunc = {
-  sum: data =>
-    data.reduce((a, b) => a + (b.rawY !== undefined ? b.rawY : b.y), 0),
-  avg: data =>
-    data.reduce((a, b) => a + (b.rawY !== undefined ? b.rawY : b.y), 0) /
-    data.length
+  sum,
+  avg: data => sum(data) / data.length
 };
 
 const selectFunc = {
   max: data =>
     data.reduce((a, b) =>
+      // Compare the actual y value and not the calculated y
       // eslint-disable-next-line no-nested-ternary
-      a.rawY !== undefined ? (a.rawY > b.rawY ? a : b) : a.y > b.y ? a : b
+      a.actualY !== undefined
+        ? a.actualY > b.actualY
+          ? a
+          : b
+        : a.y > b.y
+        ? a
+        : b
     ),
   min: data =>
     data.reduce((a, b) =>
+      // Compare the actual y value and not the calculated y
       // eslint-disable-next-line no-nested-ternary
-      a.rawY !== undefined ? (a.rawY < b.rawY ? a : b) : a.y < b.y ? a : b
+      a.actualY !== undefined
+        ? a.actualY < b.actualY
+          ? a
+          : b
+        : a.y < b.y
+        ? a
+        : b
     ),
   first: data => data[0],
   last: data => data[data.length - 1]
@@ -89,14 +103,21 @@ function aggregate(option, data, unique = true, calcPercent = true) {
   }
 
   if (calcPercent && unit === 'percent') {
+    // Calculate total using tracked groups total or the actual y value
     const total = data.reduce(
       (a, b) => (b.total !== undefined ? a + b.total : a + b.y),
       0
     );
-    return reducedArray.map(({ y, rawY, ...d }) => ({
+    return reducedArray.map(({ y, actualY, ...d }) => ({
+      // Keep track of the total for grouped data
+      // On aggregateSecondPass we are looking through each groups initial aggregation
+      // We need each groups total to recalculate the second pass total (i.e total for the entire group)
+      // This is only when unique is false (i.e. aggregrate irrespective of groups)
       total,
-      rawY: rawY !== undefined ? rawY : y,
-      y: !total ? 0 : (100 * (rawY !== undefined ? rawY : y)) / total,
+      // Keep track of the actual y for grouped data
+      // When we are selecting max of min we need to compare the actualY and not the percentage
+      actualY: actualY !== undefined ? actualY : y,
+      y: !total ? 0 : (100 * (actualY !== undefined ? actualY : y)) / total,
       ...d
     }));
   }
@@ -108,13 +129,16 @@ export default function aggregateData(option, data, unique) {
   const isGroups = Array.isArray(data[0]);
   if (isGroups) {
     const func = (option || '').split(':')[0];
-    const aggregateTwice = func && func !== 'raw' && !unique;
+
+    // A second pass is needed to look through groups merged as one
+    const aggregateSecondPass = func && func !== 'raw' && !unique;
 
     const aggregatedGroup = data.map(gd => aggregate(option, gd, false));
 
-    if (aggregateTwice) {
+    if (aggregateSecondPass) {
       return aggregate(
         option,
+        // Merge groups to look through them as one group
         aggregatedGroup.reduce((merge, gd) => merge.concat(gd), []),
         unique
       );
