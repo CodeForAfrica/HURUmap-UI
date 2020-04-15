@@ -6,7 +6,6 @@ import AddIcon from '@material-ui/icons/Add';
 import MinimizeIcon from '@material-ui/icons/Remove';
 
 import classNames from 'classnames';
-import shortid from 'shortid';
 import { Link } from '@material-ui/core';
 
 import {
@@ -48,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 function Snippet({
   download,
   fullWidth,
-  id: idProp,
+  id,
   share,
   embed,
   link,
@@ -58,7 +57,6 @@ function Snippet({
   ...props
 }) {
   const cardRef = useRef(null);
-  const id = idProp || shortid.generate();
 
   const [expand, setExpand] = useState(false);
   const classes = useStyles({
@@ -239,7 +237,7 @@ Snippet.propTypes = {
     code: propTypes.string
   }),
   fullWidth: propTypes.bool,
-  id: propTypes.oneOfType([propTypes.number, propTypes.string]),
+  id: propTypes.oneOfType([propTypes.number, propTypes.string]).isRequired,
   onExpand: propTypes.func,
   link: propTypes.string,
   post: propTypes.shape({
@@ -287,7 +285,6 @@ Snippet.defaultProps = {
 <script src="https://dashboard.takwimu.africa/wp-content/themes/hurumap/assets/js/hurumap-iframe-handler.js" />`
   },
   fullWidth: false,
-  id: undefined,
   onExpand: undefined,
   link: undefined,
   post: undefined,

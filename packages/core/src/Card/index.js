@@ -184,6 +184,7 @@ export default function Card({
       return (
         <Snippet
           fullWidth
+          id={`hurumap-card-${id}`}
           onExpand={expanded => {
             if (!parentEl) {
               return;
