@@ -1,20 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 import {
   Helpers,
   VictoryAxis,
   VictoryLine,
-  VictoryVoronoiContainer
-} from 'victory';
+  VictoryVoronoiContainer,
+} from "victory";
 
-import { extractLegendData, getLegendProps } from './utils';
-import withVictoryTheme from './styles/withVictoryTheme';
-import Chart, { toChartAxisProps } from './Chart';
-import WrapLabel from './WrapLabel';
-import Tooltip from './Tooltip';
-import propTypes from './propTypes';
-import Legend from './Legend';
+import { extractLegendData, getLegendProps } from "./utils";
+import withVictoryTheme from "./styles/withVictoryTheme";
+import Chart, { toChartAxisProps } from "./Chart";
+import WrapLabel from "./WrapLabel";
+import Tooltip from "./Tooltip";
+import propTypes from "./propTypes";
+import Legend from "./Legend";
 
 /**
  * HURUmap UI Line chart is made up of VictoryChart, VictoryVoronoiContainer,
@@ -46,7 +46,7 @@ function LineChart({
 }) {
   const {
     axis: { labelWidth: themeLabelWidth },
-    line: chart
+    line: chart,
   } = theme;
   if (!data || !chart) {
     return null;
@@ -62,13 +62,13 @@ function LineChart({
   const { colorScale } = chart;
   const { data: dataStyle, ...otherStyles } = style || {};
   const originalPadding = Helpers.getPadding({
-    padding: suggestedPadding || chart.padding
+    padding: suggestedPadding || chart.padding,
   });
 
   const initialLegendProps = {
     ...chart.legend,
     colorScale,
-    ...(parts && parts.legend)
+    ...(parts && parts.legend),
   };
   const { padding, legend } = getLegendProps(
     { height, width },
@@ -82,7 +82,7 @@ function LineChart({
     horizontal,
     padding,
     width,
-    ...(parts && parts.parent)
+    ...(parts && parts.parent),
   };
 
   let labelWidth = propLabelWidth || themeLabelWidth;
@@ -108,7 +108,7 @@ function LineChart({
       />
       <VictoryAxis
         dependentAxis
-        orientation={horizontal ? 'bottom' : 'right'}
+        orientation={horizontal ? "bottom" : "right"}
         {...axisProps.dependent}
       />
 
@@ -120,9 +120,9 @@ function LineChart({
           style={{
             data: {
               ...{ stroke: colorScale[i % colorScale.length] },
-              ...dataStyle
+              ...dataStyle,
             },
-            ...otherStyles
+            ...otherStyles,
           }}
           {...props}
         />
@@ -145,13 +145,13 @@ LineChart.propTypes = {
     group: PropTypes.shape({}),
     legend: PropTypes.shape({}),
     parent: PropTypes.shape({}),
-    tooltip: PropTypes.shape({})
+    tooltip: PropTypes.shape({}),
   }),
   style: PropTypes.shape({
-    data: PropTypes.shape({})
+    data: PropTypes.shape({}),
   }),
   theme: propTypes.theme,
-  width: PropTypes.number
+  width: PropTypes.number,
 };
 
 LineChart.defaultProps = {
@@ -163,7 +163,7 @@ LineChart.defaultProps = {
   parts: undefined,
   style: undefined,
   theme: undefined,
-  width: undefined
+  width: undefined,
 };
 
 export default withVictoryTheme(LineChart);

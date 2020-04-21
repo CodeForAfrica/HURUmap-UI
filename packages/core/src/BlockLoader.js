@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ContentLoader from './ContentLoader';
+import React from "react";
+import PropTypes from "prop-types";
+import ContentLoader from "./ContentLoader";
 
 export default function BlockLoader({ loading, children, ...props }) {
   return loading ? (
@@ -16,14 +16,14 @@ BlockLoader.propTypes = {
   loading: PropTypes.bool.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
   ]),
   width: PropTypes.number,
-  height: PropTypes.number
+  height: PropTypes.number,
 };
 
 BlockLoader.defaultProps = {
   children: null,
   width: undefined,
-  height: undefined
+  height: undefined,
 };

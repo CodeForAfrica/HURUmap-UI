@@ -1,25 +1,25 @@
-import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import propTypes from '../propTypes';
+import React from "react";
+import Grid from "@material-ui/core/Grid";
+import propTypes from "../propTypes";
 
-import ActionButton from '../ActionButton';
-import EmbedIcon from '../assets/icons/code.svg';
-import ShareIcon from '../assets/icons/network-connection.svg';
-import makeStyles from '../makeStyles';
+import ActionButton from "../ActionButton";
+import EmbedIcon from "../assets/icons/code.svg";
+import ShareIcon from "../assets/icons/network-connection.svg";
+import makeStyles from "../makeStyles";
 
 const useStyles = makeStyles({
   root: {
     right: 20,
-    color: 'white',
-    padding: '2px 0 2px 5px',
-    borderRadius: 5
+    color: "white",
+    padding: "2px 0 2px 5px",
+    borderRadius: 5,
   },
   actionButton: {
-    color: 'white'
+    color: "white",
   },
   iconGrid: {
-    height: 'unset'
-  }
+    height: "unset",
+  },
 });
 
 function SnippetActions({ onShare, onEmbed, ...props }) {
@@ -30,7 +30,7 @@ function SnippetActions({ onShare, onEmbed, ...props }) {
         <ActionButton
           classes={{
             actionButton: classes.actionButton,
-            iconGrid: classes.iconGrid
+            iconGrid: classes.iconGrid,
           }}
           onClick={onShare}
         >
@@ -41,7 +41,7 @@ function SnippetActions({ onShare, onEmbed, ...props }) {
         <ActionButton
           classes={{
             actionButton: classes.actionButton,
-            iconGrid: classes.iconGrid
+            iconGrid: classes.iconGrid,
           }}
           onClick={onEmbed}
         >
@@ -54,12 +54,12 @@ function SnippetActions({ onShare, onEmbed, ...props }) {
 
 SnippetActions.propTypes = {
   onShare: propTypes.func,
-  onEmbed: propTypes.func
+  onEmbed: propTypes.func,
 };
 
 SnippetActions.defaultProps = {
   onShare: undefined,
-  onEmbed: undefined
+  onEmbed: undefined,
 };
 
 export default SnippetActions;

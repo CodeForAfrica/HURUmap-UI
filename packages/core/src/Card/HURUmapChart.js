@@ -1,18 +1,18 @@
-import React, { useMemo } from 'react';
+import React, { useMemo } from "react";
 
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { ChartFactory } from '@hurumap-ui/charts';
-import useProfileLoader from '../useProfileLoader';
-import makeStyles from '../makeStyles';
-import propTypes from '../propTypes';
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import { ChartFactory } from "@hurumap-ui/charts";
+import useProfileLoader from "../useProfileLoader";
+import makeStyles from "../makeStyles";
+import propTypes from "../propTypes";
 
-import ChartContainer from './ChartContainer';
+import ChartContainer from "./ChartContainer";
 
 const useStyles = makeStyles({
   statViz: {
-    display: 'none'
-  }
+    display: "none",
+  },
 });
 
 function HURUmapChart({
@@ -37,7 +37,7 @@ function HURUmapChart({
 }) {
   const classes = useStyles(props);
   const chart = useMemo(
-    () => propChart || charts.find(c => `${c.id}` === chartId),
+    () => propChart || charts.find((c) => `${c.id}` === chartId),
     [propChart, charts, chartId]
   );
 
@@ -53,7 +53,7 @@ function HURUmapChart({
     }
 
     const {
-      visual: { queryAlias }
+      visual: { queryAlias },
     } = chart;
 
     const sourceResult = profileVisualsData[`${queryAlias}Source`];
@@ -101,11 +101,11 @@ function HURUmapChart({
       analysisLinkTitle={analysisLinkTitle}
       analysisLinkHref={analysisLinkHref}
       dataTable={{
-        tableTitle: (chart.visual.table || '').slice(3),
+        tableTitle: (chart.visual.table || "").slice(3),
         groupByTitle: chart.visual.groupBy,
         dataLabelTitle: chart.visual.x,
         dataValueTitle: chart.visual.y,
-        rawData
+        rawData,
       }}
       {...props}
     >
@@ -142,18 +142,18 @@ HURUmapChart.propTypes = {
       table: propTypes.string,
       groupBy: propTypes.string,
       x: propTypes.string,
-      y: propTypes.string
+      y: propTypes.string,
     }),
     description: propTypes.shape({}),
     stat: propTypes.shape({
-      queryAlias: propTypes.string
+      queryAlias: propTypes.string,
     }),
-    queryAlias: propTypes.string
+    queryAlias: propTypes.string,
   }),
   charts: propTypes.arrayOf(
     propTypes.shape({
       id: propTypes.string,
-      description: propTypes.shape({})
+      description: propTypes.shape({}),
     })
   ),
   geoId: propTypes.string,
@@ -170,7 +170,7 @@ HURUmapChart.propTypes = {
   analysisLinkHref: propTypes.oneOfType([propTypes.string, propTypes.func]),
   embedCode: propTypes.string,
   handleShare: propTypes.func,
-  useLoader: propTypes.func
+  useLoader: propTypes.func,
 };
 
 HURUmapChart.defaultProps = {
@@ -184,13 +184,13 @@ HURUmapChart.defaultProps = {
   insightTitle: undefined,
   dataLinkGeoId: undefined,
   dataLinkTitle: undefined,
-  dataLinkHref: geoId => `/profiles/${geoId}`,
+  dataLinkHref: (geoId) => `/profiles/${geoId}`,
   analysisLinkCountrySlug: undefined,
   analysisLinkTitle: undefined,
-  analysisLinkHref: countrySlug => `/profiles/${countrySlug}`,
-  embedCode: '',
+  analysisLinkHref: (countrySlug) => `/profiles/${countrySlug}`,
+  embedCode: "",
   handleShare: () => {},
-  useLoader: useProfileLoader
+  useLoader: useProfileLoader,
 };
 
 export default HURUmapChart;

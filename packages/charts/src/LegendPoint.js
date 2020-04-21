@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
-import { Point } from 'victory';
-import propTypes from './propTypes';
+import { Point } from "victory";
+import propTypes from "./propTypes";
 
 function LegendPoint({ labelWidth, posX, x, datum, ...props }) {
   const { column, size, symbolSpacer } = datum || {};
@@ -21,14 +21,14 @@ LegendPoint.propTypes = {
   labelWidth: propTypes.number.isRequired,
   datum: propTypes.shape({
     description: propTypes.string,
-    y: propTypes.number
-  })
+    y: propTypes.number,
+  }),
 };
 
 LegendPoint.defaultProps = {
   posX: 0,
   x: undefined,
-  datum: undefined
+  datum: undefined,
 };
 
 export default LegendPoint;

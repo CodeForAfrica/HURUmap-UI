@@ -1,27 +1,27 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 import {
   Container,
   DialogTitle,
   DialogContent,
   DialogContentText,
-  Typography
-} from '@material-ui/core';
+  Typography,
+} from "@material-ui/core";
 
-import DropDown from './DropDown';
-import makeStyles from './makeStyles';
+import DropDown from "./DropDown";
+import makeStyles from "./makeStyles";
 
 const useStyles = makeStyles({
   root: {},
   title: {},
   subtitle: {},
   code: {
-    width: '100%',
-    overflow: 'auto'
+    width: "100%",
+    overflow: "auto",
   },
   dropDownRoot: {},
-  dropDownPaper: {}
+  dropDownPaper: {},
 });
 
 function EmbedDropDown({
@@ -34,7 +34,7 @@ function EmbedDropDown({
   ...props
 }) {
   const classes = useStyles(props);
-  const open = typeof openProps === 'undefined' ? anchorEl !== null : openProp;
+  const open = typeof openProps === "undefined" ? anchorEl !== null : openProp;
 
   return (
     <DropDown
@@ -68,20 +68,20 @@ function EmbedDropDown({
 EmbedDropDown.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
   ]).isRequired,
   anchorEl: PropTypes.shape({}),
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool,
   subtitle: PropTypes.string,
-  title: PropTypes.string
+  title: PropTypes.string,
 };
 
 EmbedDropDown.defaultProps = {
   anchorEl: null,
   open: undefined,
   subtitle: null,
-  title: null
+  title: null,
 };
 
 export default EmbedDropDown;

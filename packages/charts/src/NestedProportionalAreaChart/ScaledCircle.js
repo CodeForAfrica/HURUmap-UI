@@ -1,18 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { labels } from '../utils';
-import propTypes from '../propTypes';
+import { labels } from "../utils";
+import propTypes from "../propTypes";
 import {
   DESKTOP_HEIGHT,
   DESKTOP_WIDTH,
   MOBILE_HEIGHT,
-  MOBILE_WIDTH
-} from './ScaledArea';
-import HorizontalLegend from './HorizontalLegend';
-import PieChart from '../PieChart';
-import Tooltip from '../Tooltip';
-import VerticalLegend from './VerticalLegend';
+  MOBILE_WIDTH,
+} from "./ScaledArea";
+import HorizontalLegend from "./HorizontalLegend";
+import PieChart from "../PieChart";
+import Tooltip from "../Tooltip";
+import VerticalLegend from "./VerticalLegend";
 
 /**
  *
@@ -35,9 +35,9 @@ function ScaledCircle({
   const width = mobile ? MOBILE_WIDTH : DESKTOP_WIDTH;
   const {
     data: [referenceData],
-    style: referenceStyle
+    style: referenceStyle,
   } = reference;
-  const radii = data.map(d =>
+  const radii = data.map((d) =>
     d.y !== referenceData.y
       ? (Math.sqrt(d.y) * size) / Math.sqrt(referenceData.y)
       : size
@@ -85,10 +85,10 @@ function ScaledCircle({
       <PieChart
         {...props}
         colorScale={colorScale}
-        data={radii.map(v => [v])}
+        data={radii.map((v) => [v])}
         donut={false}
         height={height}
-        labels={data.map(d => `${labels(d)}\n${labels(referenceData)}`)}
+        labels={data.map((d) => `${labels(d)}\n${labels(referenceData)}`)}
         labelComponent={<Tooltip theme={theme} />}
         origin={{ x: cx, y: cy }}
         radii={radii}
@@ -108,19 +108,19 @@ ScaledCircle.propTypes = {
   mobile: PropTypes.bool,
   reference: propTypes.reference,
   style: PropTypes.shape({
-    labels: PropTypes.shape({})
+    labels: PropTypes.shape({}),
   }),
-  theme: propTypes.theme
+  theme: propTypes.theme,
 };
 
 ScaledCircle.defaultProps = {
-  formatNumberForLabel: x => x,
+  formatNumberForLabel: (x) => x,
   colorScale: undefined,
   data: undefined,
   mobile: false,
   reference: undefined,
   style: undefined,
-  theme: undefined
+  theme: undefined,
 };
 
 export default ScaledCircle;

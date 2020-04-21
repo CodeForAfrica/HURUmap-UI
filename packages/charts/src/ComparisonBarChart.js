@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-import { Border, Selection, VictoryLabel, VictoryTooltip } from 'victory';
+import { Border, Selection, VictoryLabel, VictoryTooltip } from "victory";
 
-import { labels as defaultLabels } from './utils';
-import propTypes from './propTypes';
-import { toReferenceProps } from './ReferableChart';
-import withVictoryTheme from './styles/withVictoryTheme';
-import CustomContainer from './CustomContainer';
+import { labels as defaultLabels } from "./utils";
+import propTypes from "./propTypes";
+import { toReferenceProps } from "./ReferableChart";
+import withVictoryTheme from "./styles/withVictoryTheme";
+import CustomContainer from "./CustomContainer";
 
 function ComparisonBarChart({
   barHeight: barHeightProp,
@@ -18,7 +18,7 @@ function ComparisonBarChart({
   reference: referenceProp,
   style = {},
   theme,
-  width: widthProp
+  width: widthProp,
 }) {
   const [tooltipProps, setTooltipProps] = useState({});
   const { comparisonBar: chart } = theme;
@@ -27,7 +27,7 @@ function ComparisonBarChart({
   }
   const {
     data: [referenceData],
-    style: referenceStyleProp
+    style: referenceStyleProp,
   } = toReferenceProps(referenceProp);
   const referenceStyle = { ...chart.referenceStyle, ...referenceStyleProp };
   const dataStyle = { ...chart.style.data, ...style.data };
@@ -35,9 +35,9 @@ function ComparisonBarChart({
 
   const height = heightProp || chart.height;
   const width = widthProp || chart.width;
-  const values = data.map(d => d.y).concat(referenceData.y);
+  const values = data.map((d) => d.y).concat(referenceData.y);
   const max = Math.max.apply(null, values);
-  const dataBarWidths = data.map(d => (d.y * width) / max);
+  const dataBarWidths = data.map((d) => (d.y * width) / max);
   const referenceDataBarWidth = (referenceData.y * width) / max;
   const barHeight = barHeightProp || chart.barHeight;
   const labels = labelsProp || defaultLabels;
@@ -72,11 +72,11 @@ function ComparisonBarChart({
           />
           <Border
             events={{
-              onMouseOver: evt =>
+              onMouseOver: (evt) =>
                 activateTooltip(evt, { text: labels(data[i]) }),
-              onMouseMove: evt =>
+              onMouseMove: (evt) =>
                 activateTooltip(evt, { text: labels(data[i]) }),
-              onMouseOut: () => setTooltipProps({ active: false })
+              onMouseOut: () => setTooltipProps({ active: false }),
             }}
             height={barHeight}
             style={{ fill: colorScale[i % colorScale.length] }}
@@ -97,15 +97,15 @@ function ComparisonBarChart({
       />
       <Border
         events={{
-          onMouseOver: evt =>
+          onMouseOver: (evt) =>
             activateTooltip(evt, {
-              text: labels(referenceData)
+              text: labels(referenceData),
             }),
-          onMouseMove: evt =>
+          onMouseMove: (evt) =>
             activateTooltip(evt, {
-              text: labels(referenceData)
+              text: labels(referenceData),
             }),
-          onMouseOut: () => setTooltipProps({ active: false })
+          onMouseOut: () => setTooltipProps({ active: false }),
         }}
         height={barHeight}
         style={referenceStyle.labels}
@@ -138,10 +138,10 @@ ComparisonBarChart.propTypes = {
   reference: propTypes.reference,
   style: PropTypes.shape({
     data: PropTypes.shape({}),
-    labels: PropTypes.shape({})
+    labels: PropTypes.shape({}),
   }),
   theme: propTypes.theme,
-  width: PropTypes.number
+  width: PropTypes.number,
 };
 
 ComparisonBarChart.defaultProps = {
@@ -152,7 +152,7 @@ ComparisonBarChart.defaultProps = {
   reference: undefined,
   style: undefined,
   theme: undefined,
-  width: undefined
+  width: undefined,
 };
 
 export default withVictoryTheme(ComparisonBarChart);

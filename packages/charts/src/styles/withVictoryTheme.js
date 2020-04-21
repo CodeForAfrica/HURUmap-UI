@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from "@material-ui/core/styles";
 
-import createVictoryTheme from './createVictoryTheme';
+import createVictoryTheme from "./createVictoryTheme";
 
 export default function withVictoryTheme(C) {
   return ({ ...props }) => {

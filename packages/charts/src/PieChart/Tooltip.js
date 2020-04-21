@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import { VictoryTooltip } from 'victory';
+import { VictoryTooltip } from "victory";
 
 /**
  * Tooltip *without* any events is needed for shared events on the pie chart

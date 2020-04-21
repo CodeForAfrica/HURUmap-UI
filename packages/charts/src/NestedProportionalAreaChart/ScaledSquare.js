@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-import { Border, Selection, VictoryTooltip } from 'victory';
+import { Border, Selection, VictoryTooltip } from "victory";
 
-import { labels } from '../utils';
-import propTypes from '../propTypes';
-import { MOBILE_WIDTH } from './ScaledArea';
-import VerticalLegend from './VerticalLegend';
+import { labels } from "../utils";
+import propTypes from "../propTypes";
+import { MOBILE_WIDTH } from "./ScaledArea";
+import VerticalLegend from "./VerticalLegend";
 
 /**
  *
@@ -25,7 +25,7 @@ function ScaledSquare({
   const y = 100; // Chart starts 100px from top i.e. below labels
   const {
     data: [referenceData],
-    style: referenceStyle
+    style: referenceStyle,
   } = reference;
   const referenceText = referenceData && labels(referenceData);
   const [tooltipProps, setTooltipProps] = useState({});
@@ -55,7 +55,7 @@ function ScaledSquare({
       {data
         .map((v, i) => ({ value: v, index: i }))
         .sort((a, b) => b.value.y - a.value.y)
-        .map(d => {
+        .map((d) => {
           const scaledSide =
             d.value.y !== referenceData.y
               ? (Math.sqrt(d.value.y) * size) / Math.sqrt(referenceData.y)
@@ -65,9 +65,9 @@ function ScaledSquare({
             <Border
               {...props}
               events={{
-                onMouseOver: evt => activateTooltip(evt, { data: d.value }),
-                onMouseMove: evt => activateTooltip(evt, { data: d.value }),
-                onMouseOut: () => setTooltipProps({ active: false })
+                onMouseOver: (evt) => activateTooltip(evt, { data: d.value }),
+                onMouseMove: (evt) => activateTooltip(evt, { data: d.value }),
+                onMouseOut: () => setTooltipProps({ active: false }),
               }}
               key={scaledSide}
               height={scaledSide}
@@ -97,17 +97,17 @@ ScaledSquare.propTypes = {
   data: propTypes.data,
   reference: propTypes.reference,
   style: PropTypes.shape({
-    labels: PropTypes.shape({})
+    labels: PropTypes.shape({}),
   }),
-  theme: propTypes.theme
+  theme: propTypes.theme,
 };
 
 ScaledSquare.defaultProps = {
-  formatNumberForLabel: x => x,
+  formatNumberForLabel: (x) => x,
   colorScale: undefined,
   data: undefined,
   reference: undefined,
   style: undefined,
-  theme: undefined
+  theme: undefined,
 };
 export default ScaledSquare;

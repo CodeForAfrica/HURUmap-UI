@@ -1,18 +1,18 @@
-import domToImage from 'dom-to-image';
+import domToImage from "dom-to-image";
 
-const DEFAULT_SHARE_ENDPOINT = '/api/share';
+const DEFAULT_SHARE_ENDPOINT = "/api/share";
 
 export const uploadImage = (id, dataUrl, endPoint) =>
   fetch(`${endPoint || DEFAULT_SHARE_ENDPOINT}`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       id,
-      dataUrl
-    })
-  }).then(res => {
+      dataUrl,
+    }),
+  }).then((res) => {
     if (res.status === 200) {
       return true;
     }
@@ -22,18 +22,18 @@ export const uploadImage = (id, dataUrl, endPoint) =>
 
 export const shareIndicator = (id, geoId, endPoint, e, dataUrl) => {
   const indicatorId = geoId ? `${geoId}_${id}` : id;
-  uploadImage(indicatorId, dataUrl, endPoint).then(success => {
+  uploadImage(indicatorId, dataUrl, endPoint).then((success) => {
     if (success) {
       const url = new URL(window.location);
-      url.searchParams.set('indicatorId', indicatorId);
+      url.searchParams.set("indicatorId", indicatorId);
       window.open(`https://twitter.com/intent/tweet?url=${escape(url.href)}`);
     }
   });
 };
 
-export const DOWNLOAD_HIDDEN_CLASSNAME = 'Download--hidden';
+export const DOWNLOAD_HIDDEN_CLASSNAME = "Download--hidden";
 
-export const isDowloadHiddenElement = node => {
+export const isDowloadHiddenElement = (node) => {
   const { classList } = node;
   if (classList) {
     return !classList.contains(DOWNLOAD_HIDDEN_CLASSNAME);
@@ -47,8 +47,8 @@ export function domToPng(node, { style: nodeStyle, filter, ...options }) {
     // function, which may modify the node, on the cloned node.
     const clonedNode = node.cloneNode(true);
     const { left, position } = clonedNode.style;
-    clonedNode.style.left = '-9999px';
-    clonedNode.style.position = 'absolute';
+    clonedNode.style.left = "-9999px";
+    clonedNode.style.position = "absolute";
     clonedNode.style.width = `${node.scrollWidth}px`;
 
     const style = { ...nodeStyle, left, position };
@@ -58,18 +58,18 @@ export function domToPng(node, { style: nodeStyle, filter, ...options }) {
       return domToImage
         .toPng(clonedNode, {
           ...options,
-          filter: n => {
-            if (n.tagName === 'SCRIPT') {
+          filter: (n) => {
+            if (n.tagName === "SCRIPT") {
               return false;
             }
-            if (n.nodeName === 'IMG' && !n.getAttribute('src')) {
+            if (n.nodeName === "IMG" && !n.getAttribute("src")) {
               return false;
             }
             return filter(n);
           },
-          style
+          style,
         })
-        .then(dataUrl => {
+        .then((dataUrl) => {
           return dataUrl;
         })
         .finally(() => clonedNode.remove());
@@ -77,20 +77,20 @@ export function domToPng(node, { style: nodeStyle, filter, ...options }) {
 
     // Use the original node since the clonedNode's iframe wouldn't have
     // time to load yet (we just cloned it)
-    const iframes = node.getElementsByTagName('iframe');
+    const iframes = node.getElementsByTagName("iframe");
     if (iframes && iframes.length) {
       const iframe = iframes[0];
       if (iframe.contentWindow && iframe.contentWindow.domtoimage) {
         return iframe.contentWindow.domtoimage
           .toPng(iframe.contentDocument.body, {
-            ...options
+            ...options,
           })
-          .then(dataUrl => {
+          .then((dataUrl) => {
             const img = new Image();
             img.src = dataUrl;
             // replace the clonedNode's iframe with image
             const clonedNodeIframe = clonedNode.getElementsByTagName(
-              'iframe'
+              "iframe"
             )[0];
             clonedNodeIframe.parentNode.replaceChild(img, clonedNodeIframe);
           })

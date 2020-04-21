@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Grid,
   Table,
@@ -10,28 +10,28 @@ import {
   TableContainer,
   Paper,
   Box,
-  ButtonBase
-} from '@material-ui/core';
-import propTypes from '../propTypes';
+  ButtonBase,
+} from "@material-ui/core";
+import propTypes from "../propTypes";
 
-import exportCSV from './exportCSV';
-import makeStyles from '../makeStyles';
+import exportCSV from "./exportCSV";
+import makeStyles from "../makeStyles";
 
 const useStyles = makeStyles({
   dataTableRoot: {
-    border: '1px solid rgba(224, 224, 224, 1)',
-    borderTop: 'none'
+    border: "1px solid rgba(224, 224, 224, 1)",
+    borderTop: "none",
   },
   dataTableActionButton: {
-    backgroundColor: '#f6f6f6',
-    borderRadius: '10px',
-    padding: '10px'
+    backgroundColor: "#f6f6f6",
+    borderRadius: "10px",
+    padding: "10px",
   },
   dataTableActionButtons: {
-    '& > button:not(:first-child)': {
-      marginLeft: '10px'
-    }
-  }
+    "& > button:not(:first-child)": {
+      marginLeft: "10px",
+    },
+  },
 });
 
 export default function DataTable({
@@ -52,7 +52,7 @@ export default function DataTable({
             {
               groupBy: groupByTitle,
               x: dataLabelTitle,
-              y: dataValueTitle
+              y: dataValueTitle,
             },
             rawData,
             tableTitle
@@ -88,10 +88,10 @@ export default function DataTable({
             <TableHead>
               <TableCell>#</TableCell>
               {groupByTitle !== undefined && (
-                <TableCell>{groupByTitle || 'Group'}</TableCell>
+                <TableCell>{groupByTitle || "Group"}</TableCell>
               )}
-              <TableCell>{dataLabelTitle || 'Label'}</TableCell>
-              <TableCell>{dataValueTitle || 'Value'}</TableCell>
+              <TableCell>{dataLabelTitle || "Label"}</TableCell>
+              <TableCell>{dataValueTitle || "Value"}</TableCell>
             </TableHead>
             <TableBody>
               {rawData.map(({ groupBy, x, y }, i) => (
@@ -129,12 +129,12 @@ DataTable.propTypes = {
       propTypes.shape({
         groupBy: propTypes.string,
         x: propTypes.string,
-        y: propTypes.string
+        y: propTypes.string,
       })
-    )
-  }).isRequired
+    ),
+  }).isRequired,
 };
 
 DataTable.defaultProps = {
-  onHide: () => {}
+  onHide: () => {},
 };

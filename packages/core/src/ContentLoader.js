@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import ContentLoader from 'react-content-loader';
-import shortid from 'shortid';
+import React, { useState, useEffect, useMemo } from "react";
+import PropTypes from "prop-types";
+import ContentLoader from "react-content-loader";
+import shortid from "shortid";
 
 export default function CustomContentLoader({
   id: propId,
@@ -13,7 +13,7 @@ export default function CustomContentLoader({
   const id = useMemo(() => propId || shortid.generate(), [propId]);
   const [dimension, setDimension] = useState({
     width: width === undefined ? 0 : width,
-    height: height === undefined ? 0 : height
+    height: height === undefined ? 0 : height,
   });
 
   useEffect(() => {
@@ -27,19 +27,19 @@ export default function CustomContentLoader({
           width:
             width === undefined
               ? rect.width -
-                parseFloat(style.paddingLeft.replace('px', '')) -
-                parseFloat(style.paddingRight.replace('px', '')) -
-                parseFloat(style.marginLeft.replace('px', '')) -
-                parseFloat(style.marginRight.replace('px', ''))
+                parseFloat(style.paddingLeft.replace("px", "")) -
+                parseFloat(style.paddingRight.replace("px", "")) -
+                parseFloat(style.marginLeft.replace("px", "")) -
+                parseFloat(style.marginRight.replace("px", ""))
               : width,
           height:
             height === undefined
               ? rect.height -
-                parseFloat(style.paddingTop.replace('px', '')) -
-                parseFloat(style.paddingBottom.replace('px', '')) -
-                parseFloat(style.marginTop.replace('px', '')) -
-                parseFloat(style.marginBottom.replace('px', ''))
-              : height
+                parseFloat(style.paddingTop.replace("px", "")) -
+                parseFloat(style.paddingBottom.replace("px", "")) -
+                parseFloat(style.marginTop.replace("px", "")) -
+                parseFloat(style.marginBottom.replace("px", ""))
+              : height,
         });
       }
     }
@@ -65,14 +65,14 @@ CustomContentLoader.propTypes = {
   id: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
   ]).isRequired,
   width: PropTypes.number,
-  height: PropTypes.number
+  height: PropTypes.number,
 };
 
 CustomContentLoader.defaultProps = {
   id: undefined,
   width: undefined,
-  height: undefined
+  height: undefined,
 };

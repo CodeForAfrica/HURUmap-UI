@@ -1,13 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import propTypes from '../propTypes';
-import { scaleDesktopDimensions, scaleMobileDimensions } from './ScaledArea';
-import { toReferenceProps } from '../ReferableChart';
-import withVictoryTheme from '../styles/withVictoryTheme';
-import CustomContainer from '../CustomContainer';
-import ScaledCircle from './ScaledCircle';
-import ScaledSquare from './ScaledSquare';
+import propTypes from "../propTypes";
+import { scaleDesktopDimensions, scaleMobileDimensions } from "./ScaledArea";
+import { toReferenceProps } from "../ReferableChart";
+import withVictoryTheme from "../styles/withVictoryTheme";
+import CustomContainer from "../CustomContainer";
+import ScaledCircle from "./ScaledCircle";
+import ScaledSquare from "./ScaledSquare";
 
 /**
  * Data value represents **area**. We need to find length/radius in order to
@@ -24,7 +24,7 @@ function NestedProportionalAreaChart({
   style,
   theme,
   width: w,
-  formatNumberForLabel
+  formatNumberForLabel,
 }) {
   const { proportionalArea: chart } = theme;
   if (!data || !chart) {
@@ -33,7 +33,7 @@ function NestedProportionalAreaChart({
 
   const reference = {
     style: chart.reference,
-    ...toReferenceProps(ref)
+    ...toReferenceProps(ref),
   };
   const height = h || chart.height;
   const width = w || chart.width;
@@ -86,7 +86,7 @@ function NestedProportionalAreaChart({
               colorScale={chart.colorScale}
               data={data}
               groupSpacing={groupSpacing}
-              labels={() => ''} // Don't show PieChart labels
+              labels={() => ""} // Don't show PieChart labels
               labelComponent={undefined} // Don't show PieChart labels
               mobile={isHandset}
               reference={reference}
@@ -109,14 +109,14 @@ NestedProportionalAreaChart.propTypes = {
   reference: propTypes.reference,
   square: PropTypes.bool,
   style: PropTypes.shape({
-    labels: PropTypes.shape({})
+    labels: PropTypes.shape({}),
   }),
   theme: propTypes.theme,
-  width: PropTypes.number
+  width: PropTypes.number,
 };
 
 NestedProportionalAreaChart.defaultProps = {
-  formatNumberForLabel: x => x,
+  formatNumberForLabel: (x) => x,
   data: undefined,
   groupSpacing: undefined,
   height: undefined,
@@ -124,7 +124,7 @@ NestedProportionalAreaChart.defaultProps = {
   square: false,
   style: undefined,
   theme: undefined,
-  width: undefined
+  width: undefined,
 };
 
 export default withVictoryTheme(NestedProportionalAreaChart);

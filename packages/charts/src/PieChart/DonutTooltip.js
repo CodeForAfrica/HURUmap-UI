@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import Label from '../Label';
-import Tooltip from './Tooltip';
+import Label from "../Label";
+import Tooltip from "./Tooltip";
 
 /**
  * Tooltip *without* any events is needed for shared events on the pie chart
@@ -35,7 +35,7 @@ function DonutTooltip({
         cornerRadius={cornerRadius}
         datum={datum}
         flyoutHeight={flyoutHeight}
-        flyoutStyle={{ fill: 'white', stroke: 'none' }}
+        flyoutStyle={{ fill: "white", stroke: "none" }}
         flyoutWidth={flyoutWidth}
         labelComponent={
           <Label
@@ -60,7 +60,7 @@ function DonutTooltip({
 DonutTooltip.propTypes = {
   center: PropTypes.shape({
     x: PropTypes.number,
-    y: PropTypes.number
+    y: PropTypes.number,
   }),
   cornerRadius: PropTypes.number,
   datum: PropTypes.shape({}),
@@ -71,7 +71,7 @@ DonutTooltip.propTypes = {
   text: PropTypes.string,
   width: PropTypes.number,
   x: PropTypes.number,
-  y: PropTypes.number
+  y: PropTypes.number,
 };
 
 DonutTooltip.defaultProps = {
@@ -85,7 +85,7 @@ DonutTooltip.defaultProps = {
   text: undefined,
   width: undefined,
   x: undefined,
-  y: undefined
+  y: undefined,
 };
 
 export default DonutTooltip;

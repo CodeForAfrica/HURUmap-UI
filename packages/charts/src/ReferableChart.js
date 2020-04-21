@@ -1,6 +1,6 @@
-import Chart from './Chart';
+import Chart from "./Chart";
 
-export const toReferenceProps = ref => {
+export const toReferenceProps = (ref) => {
   return Array.isArray(ref) ? { data: ref } : ref;
 };
 

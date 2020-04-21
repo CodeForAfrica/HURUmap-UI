@@ -1,44 +1,44 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 import {
   Button,
   DialogTitle,
   DialogContent,
-  DialogContentText
-} from '@material-ui/core';
+  DialogContentText,
+} from "@material-ui/core";
 
-import DownloadIcon from '../assets/icons/download.svg';
-import makeStyles from '../makeStyles';
+import DownloadIcon from "../assets/icons/download.svg";
+import makeStyles from "../makeStyles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   content: {
-    fontSize: theme.typography.caption.fontSize
+    fontSize: theme.typography.caption.fontSize,
   },
   downloadButton: {
     paddingLeft: 0,
-    textTransform: 'none',
+    textTransform: "none",
 
-    '&:hover': {
-      background: 'inherit'
-    }
+    "&:hover": {
+      background: "inherit",
+    },
   },
   downloadIcon: {
-    '& path:first-of-type': {
-      stroke: theme.palette.primary.main
+    "& path:first-of-type": {
+      stroke: theme.palette.primary.main,
     },
-    '& path:last-of-type': {
-      fill: theme.palette.primary.main
-    }
+    "& path:last-of-type": {
+      fill: theme.palette.primary.main,
+    },
   },
   subtitle: {
-    fontSize: theme.typography.body2.fontSize
+    fontSize: theme.typography.body2.fontSize,
   },
   title: {
-    '& h2': {
-      fontSize: theme.typography.body1.fontSize
-    }
-  }
+    "& h2": {
+      fontSize: theme.typography.body1.fontSize,
+    },
+  },
 }));
 
 function DownloadPanel({ subtitle, title, onDownload, ...props }) {
@@ -69,12 +69,12 @@ function DownloadPanel({ subtitle, title, onDownload, ...props }) {
 DownloadPanel.propTypes = {
   onDownload: PropTypes.func.isRequired,
   subtitle: PropTypes.string,
-  title: PropTypes.string
+  title: PropTypes.string,
 };
 
 DownloadPanel.defaultProps = {
   subtitle: undefined,
-  title: undefined
+  title: undefined,
 };
 
 export default DownloadPanel;

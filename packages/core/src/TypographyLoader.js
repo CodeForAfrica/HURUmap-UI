@@ -1,8 +1,8 @@
-import React, { useRef, useMemo } from 'react';
-import { Typography } from '@material-ui/core';
-import PropTypes from 'prop-types';
+import React, { useRef, useMemo } from "react";
+import { Typography } from "@material-ui/core";
+import PropTypes from "prop-types";
 
-import ContentLoader from './ContentLoader';
+import ContentLoader from "./ContentLoader";
 
 export default function TypographyLoader({
   loading,
@@ -29,7 +29,7 @@ export default function TypographyLoader({
   return (
     <Typography
       ref={ref}
-      style={{ width: '100%', height: 'fit-content' }}
+      style={{ width: "100%", height: "fit-content" }}
       {...props}
     >
       {loading ? (
@@ -51,17 +51,17 @@ export default function TypographyLoader({
 TypographyLoader.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
   ]),
   loading: PropTypes.bool,
   loader: PropTypes.shape({
     width: PropTypes.number,
-    height: PropTypes.number
-  })
+    height: PropTypes.number,
+  }),
 };
 
 TypographyLoader.defaultProps = {
   loading: false,
   children: null,
-  loader: {}
+  loader: {},
 };

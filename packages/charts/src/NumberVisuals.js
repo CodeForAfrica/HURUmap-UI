@@ -1,53 +1,53 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-import { Typography, List, ListItem, ListItemText } from '@material-ui/core';
-import makeStyles from './styles/makeStyles';
+import { Typography, List, ListItem, ListItemText } from "@material-ui/core";
+import makeStyles from "./styles/makeStyles";
 
 const useStyles = makeStyles(() => ({
   root: {
-    width: '100%',
-    height: 'auto'
+    width: "100%",
+    height: "auto",
   },
   hidden: {
-    display: 'none'
+    display: "none",
   },
   mainStatistic: {
-    marginTop: '1em'
+    marginTop: "1em",
   },
   statistic: {
-    fontSize: '2.25rem'
+    fontSize: "2.25rem",
   },
   statisticDeviation: {
-    fontSize: '0.4em',
-    color: '#777',
-    display: 'inlineBlock'
+    fontSize: "0.4em",
+    color: "#777",
+    display: "inlineBlock",
   },
   secondaryDeviation: {
-    fontSize: '1em',
-    color: '#777'
+    fontSize: "1em",
+    color: "#777",
   },
   subtitle: {
-    fontSize: '1.25em'
+    fontSize: "1.25em",
   },
   description: {
-    fontSize: '1.5em'
+    fontSize: "1.5em",
   },
   comparison: {
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   list: {
-    padding: 0
+    padding: 0,
   },
   listParent: {
     paddingLeft: 0,
-    paddingRight: 0
+    paddingRight: 0,
   },
   listTypography: {
-    fontSize: '0.9em',
+    fontSize: "0.9em",
     lineHeight: 1.3,
-    color: '#777'
-  }
+    color: "#777",
+  },
 }));
 
 function NumberVisuals({
@@ -88,7 +88,7 @@ function NumberVisuals({
 
       <List className={classes.list}>
         {comparisonData &&
-          comparisonData.map(d => (
+          comparisonData.map((d) => (
             <ListItem className={classes.listParent} key={d.id}>
               <ListItemText
                 primary={
@@ -120,7 +120,7 @@ NumberVisuals.propTypes = {
   statisticDeviation: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   secondaryDeviation: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   description: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  comparisonData: PropTypes.arrayOf(PropTypes.shape({}))
+  comparisonData: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 NumberVisuals.defaultProps = {
@@ -129,7 +129,7 @@ NumberVisuals.defaultProps = {
   statisticDeviation: undefined,
   secondaryDeviation: undefined,
   description: undefined,
-  comparisonData: undefined
+  comparisonData: undefined,
 };
 
 export default NumberVisuals;

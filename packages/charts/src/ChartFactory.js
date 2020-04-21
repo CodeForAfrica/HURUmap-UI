@@ -1,25 +1,25 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback } from "react";
 
-import { Box, ButtonBase } from '@material-ui/core';
+import { Box, ButtonBase } from "@material-ui/core";
 
-import { Helpers } from 'victory';
+import { Helpers } from "victory";
 
-import aggregateData, { isSelectFunc, groupData } from './utils/aggregateData';
+import aggregateData, { isSelectFunc, groupData } from "./utils/aggregateData";
 
-import BarChart from './BarChart';
-import BulletChart from './BulletChart';
-import LineChart from './LineChart';
-import NestedProportionalAreaChart from './NestedProportionalAreaChart';
-import PieChart from './PieChart';
-import NumberVisuals from './NumberVisuals';
+import BarChart from "./BarChart";
+import BulletChart from "./BulletChart";
+import LineChart from "./LineChart";
+import NestedProportionalAreaChart from "./NestedProportionalAreaChart";
+import PieChart from "./PieChart";
+import NumberVisuals from "./NumberVisuals";
 
-import propTypes from './propTypes';
-import withVictoryTheme from './styles/withVictoryTheme';
+import propTypes from "./propTypes";
+import withVictoryTheme from "./styles/withVictoryTheme";
 
-import { computeMaxLabelDimension } from './WrapLabel/wrapSVGText';
-import { extractLegendData, getLegendProps } from './utils';
+import { computeMaxLabelDimension } from "./WrapLabel/wrapSVGText";
+import { extractLegendData, getLegendProps } from "./utils";
 
-const DOWNLOAD_HIDDEN_CLASSNAME = 'Download--hidden';
+const DOWNLOAD_HIDDEN_CLASSNAME = "Download--hidden";
 
 const ChartFactory = React.memo(
   ({
@@ -37,8 +37,8 @@ const ChartFactory = React.memo(
       unique,
       subtitle,
       description,
-      locale = 'en-GB',
-      customUnit = '',
+      locale = "en-GB",
+      customUnit = "",
       /**
        * The rest of the props are going to be considered as:
        *  Intl.NumberFormatOptions
@@ -53,11 +53,12 @@ const ChartFactory = React.memo(
     isComparison,
     comparisonData,
     referenceData,
-    profiles
+    profiles,
   }) => {
-    const data = useMemo(() => propData.map(d => ({ ...d, y: Number(d.y) })), [
-      propData
-    ]);
+    const data = useMemo(
+      () => propData.map((d) => ({ ...d, y: Number(d.y) })),
+      [propData]
+    );
     const [rootRef, setRootRef] = useState(null);
     const {
       horizontal,
@@ -69,16 +70,13 @@ const ChartFactory = React.memo(
     } = typeProps || {};
 
     const key =
-      id ||
-      Math.random()
-        .toString(36)
-        .substring(2) + Date.now().toString(36);
+      id || Math.random().toString(36).substring(2) + Date.now().toString(36);
     const [showMore, setShowMore] = useState(false);
     const numberFormatter = useMemo(() => {
       try {
         const formatter = new Intl.NumberFormat(locale, {
           maximumFractionDigits: 2,
-          ...numberFormat
+          ...numberFormat,
         });
         return formatter;
       } catch (e) {
@@ -87,7 +85,7 @@ const ChartFactory = React.memo(
     }, [locale, numberFormat]);
 
     const format = useCallback(
-      value => {
+      (value) => {
         /**
          * Since `notation: compact` is experimental as noted here:
          *  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat
@@ -97,15 +95,15 @@ const ChartFactory = React.memo(
          * Manually compact the numbers until this feature is available.
          */
         let formatValue = value;
-        let compactUnit = '';
+        let compactUnit = "";
         if (value > 10 ** 12) {
-          compactUnit = 'T';
+          compactUnit = "T";
           formatValue = value / 10 ** 12;
         } else if (value > 10 ** 9) {
-          compactUnit = 'B';
+          compactUnit = "B";
           formatValue = value / 10 ** 9;
         } else if (value > 10 ** 6) {
-          compactUnit = 'M';
+          compactUnit = "M";
           formatValue = value / 10 ** 6;
         } else {
           //
@@ -113,7 +111,7 @@ const ChartFactory = React.memo(
         /**
          * `style: percent` expects a ratio
          */
-        if (numberFormat.style === 'percent') {
+        if (numberFormat.style === "percent") {
           formatValue /= 100;
         }
         return `${numberFormatter.format(
@@ -124,11 +122,11 @@ const ChartFactory = React.memo(
     );
 
     const labels = useCallback(
-      ({ label: dataLabel, tooltip, x, y }, separator = ': ') => {
+      ({ label: dataLabel, tooltip, x, y }, separator = ": ") => {
         if (dataLabel || tooltip) {
           return dataLabel || tooltip;
         }
-        const formattedX = x ? `${x}${separator}` : '';
+        const formattedX = x ? `${x}${separator}` : "";
         return `${formattedX}${format(y)}`;
       },
       [format]
@@ -136,15 +134,15 @@ const ChartFactory = React.memo(
 
     const primaryData = useMemo(() => {
       if (
-        visualType === 'grouped_column' ||
-        (visualType === 'line' && data[0] && data[0].groupBy)
+        visualType === "grouped_column" ||
+        (visualType === "line" && data[0] && data[0].groupBy)
       ) {
         /**
          * Group the data based on groupBy
          * Then aggregate the grouped data
          */
         let groupedData =
-          aggregate !== ':percent'
+          aggregate !== ":percent"
             ? groupData(data)
             : aggregateData(aggregate, groupData(data));
 
@@ -154,12 +152,12 @@ const ChartFactory = React.memo(
            * ii. Change `x` to be the `groupBy` value
            * to plot group labels on the dependent axis
            */
-          groupedData = groupedData.map(g =>
-            g.map(gd => ({
+          groupedData = groupedData.map((g) =>
+            g.map((gd) => ({
               ...gd,
               name: gd.x,
               tooltip: labels(gd),
-              x: gd.groupBy
+              x: gd.groupBy,
             }))
           );
 
@@ -168,31 +166,31 @@ const ChartFactory = React.memo(
            * since victory plots inversely
            */
           groupedData = groupedData[0].map((_c, i) =>
-            groupedData.map(r => r[i])
+            groupedData.map((r) => r[i])
           );
         }
         return groupedData;
       }
 
-      if (['column', 'line', 'bullet'].includes(visualType)) {
+      if (["column", "line", "bullet"].includes(visualType)) {
         const computedData = aggregateData(
           aggregate,
           // Bullet charts only use first two data
-          visualType === 'bullet' ? data.slice(0, 2) : data
+          visualType === "bullet" ? data.slice(0, 2) : data
         );
-        return computedData.map(cD => ({
+        return computedData.map((cD) => ({
           ...cD,
-          tooltip: labels(cD)
+          tooltip: labels(cD),
         }));
       }
-      if (visualType === 'pie') {
-        return aggregateData(aggregate, data).map(d => ({
+      if (visualType === "pie") {
+        return aggregateData(aggregate, data).map((d) => ({
           ...d,
-          donutLabel: labels(d, '\n'),
+          donutLabel: labels(d, "\n"),
           label: labels(d),
           tooltip: labels(d),
           name: d.x,
-          description: labels(d)
+          description: labels(d),
         }));
       }
       return [];
@@ -200,29 +198,29 @@ const ChartFactory = React.memo(
 
     const calculations = useMemo(() => {
       switch (visualType) {
-        case 'bullet':
-        case 'number':
-        case 'square_nested_proportional_area':
-        case 'circle_nested_proportional_area':
+        case "bullet":
+        case "number":
+        case "square_nested_proportional_area":
+        case "circle_nested_proportional_area":
           return {};
-        case 'pie':
+        case "pie":
           return {
             width: widthProp || theme.pie.width,
-            height: heightProp || theme.pie.height
+            height: heightProp || theme.pie.height,
           };
-        case 'grouped_column': {
+        case "grouped_column": {
           const offset = offsetProp || theme.bar.offset;
           const padding = paddingProp
             ? Helpers.getPadding({ padding: paddingProp })
             : Helpers.getPadding(theme.bar);
           const {
             domainPadding: {
-              x: [x0, x1]
+              x: [x0, x1],
             },
-            legend: initialLegendProps
+            legend: initialLegendProps,
           } = theme.bar;
           const domainPadding = {
-            x: [x0 * primaryData.length, x1 * primaryData.length]
+            x: [x0 * primaryData.length, x1 * primaryData.length],
           };
 
           const paddingSize = horizontal
@@ -235,7 +233,7 @@ const ChartFactory = React.memo(
             texts: primaryData.reduce(
               (a, b) => a.concat(b.map(({ x }) => x)),
               []
-            )
+            ),
           });
 
           const height = heightProp || theme.bar.height;
@@ -285,16 +283,16 @@ const ChartFactory = React.memo(
             enableShowMore:
               !disableShowMore &&
               (showMore ||
-                totalColumnCount < primaryData.length * primaryData[0].length)
+                totalColumnCount < primaryData.length * primaryData[0].length),
           };
         }
-        case 'column': {
+        case "column": {
           const barCount = isComparison ? 2 : 1;
           const offset = offsetProp || theme.bar.offset;
           const {
             domainPadding: {
-              x: [x0, x1]
-            }
+              x: [x0, x1],
+            },
           } = theme.bar;
           const domainPadding = { x: [x0 * barCount, x1 * barCount] };
           const padding = paddingProp
@@ -304,7 +302,7 @@ const ChartFactory = React.memo(
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
           const { maxLabelHeight, maxLabelWidth } = computeMaxLabelDimension({
             labelWidth: theme.axis.labelWidth,
-            texts: primaryData.map(({ x }) => x)
+            texts: primaryData.map(({ x }) => x),
           });
 
           const height = heightProp || theme.bar.height;
@@ -344,10 +342,10 @@ const ChartFactory = React.memo(
             height: computedHeight,
             showHorizontal,
             enableShowMore:
-              !disableShowMore && (showMore || dataCount < primaryData.length)
+              !disableShowMore && (showMore || dataCount < primaryData.length),
           };
         }
-        case 'line': {
+        case "line": {
           let offset = offsetProp || theme.line.offset;
           const rootWidth = rootRef && rootRef.getBoundingClientRect().width;
           if (rootWidth) {
@@ -371,7 +369,7 @@ const ChartFactory = React.memo(
           return {
             height: height + (legend ? legend.height : 0),
             offset,
-            width: rootWidth
+            width: rootWidth,
           };
         }
         default:
@@ -393,7 +391,7 @@ const ChartFactory = React.memo(
       rootRef,
       showMore,
       disableShowMore,
-      isComparison
+      isComparison,
     ]);
 
     if (!data) {
@@ -402,9 +400,9 @@ const ChartFactory = React.memo(
 
     const renderChart = () => {
       switch (visualType) {
-        case 'square_nested_proportional_area':
-        case 'circle_nested_proportional_area': {
-          const summedData = aggregateData('sum', data, false)[0].y;
+        case "square_nested_proportional_area":
+        case "circle_nested_proportional_area": {
+          const summedData = aggregateData("sum", data, false)[0].y;
           let summedReferenceData = referenceData.reduce((a, b) => a + b.y, 0);
           summedReferenceData =
             referenceData.length && summedReferenceData
@@ -427,8 +425,8 @@ const ChartFactory = React.memo(
             <div style={{ width: !isComparison ? 200 : 650 }}>
               <NestedProportionalAreaChart
                 key={key}
-                formatNumberForLabel={x => format(x)}
-                square={visualType === 'square_nested_proportional_area'}
+                formatNumberForLabel={(x) => format(x)}
+                square={visualType === "square_nested_proportional_area"}
                 height={isComparison && 500}
                 width={!isComparison ? 200 : 650}
                 groupSpacing={isComparison && 8}
@@ -437,36 +435,36 @@ const ChartFactory = React.memo(
                     ? [
                         {
                           y: summedData,
-                          x: dataLabel
-                        }
+                          x: dataLabel,
+                        },
                       ]
                     : [
                         {
                           y: summedData,
-                          x: dataLabel
+                          x: dataLabel,
                         },
                         {
                           y: comparisonData.reduce((a, b) => a + b.y, 0),
                           x:
                             comparisonData[0].label ||
                             profiles.comparison[label] ||
-                            label
-                        }
+                            label,
+                        },
                       ]
                 }
                 reference={[
                   {
                     label: referenceLabel,
                     y: summedReferenceData,
-                    x: referenceLabel
-                  }
+                    x: referenceLabel,
+                  },
                 ]}
                 {...chartProps}
               />
             </div>
           );
         }
-        case 'pie': {
+        case "pie": {
           const { height, width } = calculations;
           return (
             <div style={{ height, width }}>
@@ -483,19 +481,19 @@ const ChartFactory = React.memo(
             </div>
           );
         }
-        case 'number': {
+        case "number": {
           /**
            * Statistic aggregate
            *  default: 'last',
            */
-          const statAggregate = aggregate || 'last';
+          const statAggregate = aggregate || "last";
 
           /**
            * Statistic data aggregation
            * with respect to label
            *  default: false
            */
-          const [func] = statAggregate.split(':');
+          const [func] = statAggregate.split(":");
           const statUnique =
             unique !== undefined ? unique : !isSelectFunc(func);
           const isGroup = data[0] && data[0].groupBy;
@@ -518,7 +516,7 @@ const ChartFactory = React.memo(
             isGroup && statUnique ? dataStat[0][0].x : dataStat[0].x;
 
           const xDesc = isGroup
-            ? `${statUnique ? `(${dataStatX}- ${data[0].groupBy})` : ''}`
+            ? `${statUnique ? `(${dataStatX}- ${data[0].groupBy})` : ""}`
             : `${dataStatX}`;
 
           return (
@@ -533,7 +531,7 @@ const ChartFactory = React.memo(
             />
           );
         }
-        case 'grouped_column': {
+        case "grouped_column": {
           const {
             offset,
             height,
@@ -542,7 +540,7 @@ const ChartFactory = React.memo(
             columnCount,
             domainPadding,
             maxLabelDimension,
-            showHorizontal
+            showHorizontal,
           } = calculations;
 
           return (
@@ -550,7 +548,7 @@ const ChartFactory = React.memo(
               <BarChart
                 key={key}
                 data={primaryData
-                  .map(d => d.slice(0, groupCount))
+                  .map((d) => d.slice(0, groupCount))
                   .slice(0, columnCount)}
                 offset={offset}
                 width={width}
@@ -566,7 +564,7 @@ const ChartFactory = React.memo(
             </div>
           );
         }
-        case 'column': {
+        case "column": {
           const {
             offset,
             height,
@@ -574,7 +572,7 @@ const ChartFactory = React.memo(
             dataCount,
             domainPadding,
             maxLabelDimension,
-            showHorizontal
+            showHorizontal,
           } = calculations;
           if (isComparison) {
             const processedComparisonData = aggregate
@@ -586,7 +584,7 @@ const ChartFactory = React.memo(
                 <BarChart
                   data={[
                     primaryData.slice(0, dataCount),
-                    processedComparisonData.slice(0, dataCount)
+                    processedComparisonData.slice(0, dataCount),
                   ]}
                   key={key}
                   offset={offset}
@@ -620,24 +618,24 @@ const ChartFactory = React.memo(
             </div>
           );
         }
-        case 'bullet': {
-          const summedData = aggregateData('sum', primaryData, false)[0].y;
+        case "bullet": {
+          const summedData = aggregateData("sum", primaryData, false)[0].y;
           const summedReferenceData =
             referenceData.reduce((a, b) => a + b.y, 0) || primaryData[0].y;
           return (
             <BulletChart
-              total={numberFormat.style === 'percent' ? 100 : summedData}
+              total={numberFormat.style === "percent" ? 100 : summedData}
               data={!isComparison ? primaryData : [primaryData, comparisonData]}
               reference={summedReferenceData}
               height={!isComparison ? 50 : 100}
               width={widthProp || 350}
-              labels={datum => format(datum.y)}
+              labels={(datum) => format(datum.y)}
               theme={theme}
               {...chartProps}
             />
           );
         }
-        case 'line': {
+        case "line": {
           const { height, width } = calculations;
           return (
             <LineChart
@@ -656,14 +654,14 @@ const ChartFactory = React.memo(
                     fixLabelOverlap: true,
                     // To support non-numbers, lets hard-limit to 5 ticks
                     // TODO(kilemensi): Find a way to make this a theme config per charts type
-                    tickCount: 5
-                  }
+                    tickCount: 5,
+                  },
                 },
                 container: {
                   labels: ({ datum }) =>
-                    datum.tooltip || `y: ${format(datum.y)}`
+                    datum.tooltip || `y: ${format(datum.y)}`,
                 },
-                scatter: { size: 5 }
+                scatter: { size: 5 },
               }}
               theme={theme}
               {...chartProps}
@@ -687,20 +685,20 @@ const ChartFactory = React.memo(
       >
         {primaryData.length ||
         [
-          'circle_nested_proportional_area',
-          'circle_nested_proportional_area',
-          'number'
+          "circle_nested_proportional_area",
+          "circle_nested_proportional_area",
+          "number",
         ].includes(visualType)
           ? renderChart()
           : null}
         {!disableShowMore &&
-          ['column', 'grouped_column'].includes(visualType) &&
+          ["column", "grouped_column"].includes(visualType) &&
           calculations.enableShowMore && (
             <ButtonBase
               className={DOWNLOAD_HIDDEN_CLASSNAME}
               onClick={() => setShowMore(!showMore)}
             >
-              {showMore ? 'Show Less' : 'Show More'}
+              {showMore ? "Show Less" : "Show More"}
             </ButtonBase>
           )}
       </Box>
@@ -738,7 +736,7 @@ ChartFactory.propTypes = {
      * The rest of the props are going to be considered as:
      *  Intl.NumberFormatOptions
      */
-    unit: propTypes.string
+    unit: propTypes.string,
   }).isRequired,
   data: propTypes.graphQlData.isRequired,
   isComparison: propTypes.bool,
@@ -756,9 +754,9 @@ ChartFactory.propTypes = {
   profiles: propTypes.shape({
     parent: propTypes.shape({}),
     profile: propTypes.shape({}),
-    comparison: propTypes.shape({})
+    comparison: propTypes.shape({}),
   }),
-  disableShowMore: propTypes.bool
+  disableShowMore: propTypes.bool,
 };
 
 ChartFactory.defaultProps = {
@@ -767,10 +765,10 @@ ChartFactory.defaultProps = {
   profiles: {
     parent: {},
     profile: {},
-    comparison: {}
+    comparison: {},
   },
   referenceData: [],
-  disableShowMore: false
+  disableShowMore: false,
 };
 
 export default withVictoryTheme(ChartFactory);

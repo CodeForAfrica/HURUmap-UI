@@ -1,15 +1,15 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
+import React, { Fragment } from "react";
+import PropTypes from "prop-types";
 
-import { VictoryLabel } from 'victory';
+import { VictoryLabel } from "victory";
 
-import withVictoryTheme from '../styles/withVictoryTheme';
+import withVictoryTheme from "../styles/withVictoryTheme";
 import {
   dataLabelsStyle,
   referenceDataStyle,
-  referenceLabelsStyle
-} from './ScaledArea';
-import propTypes from '../propTypes';
+  referenceLabelsStyle,
+} from "./ScaledArea";
+import propTypes from "../propTypes";
 
 /**
  *
@@ -22,7 +22,7 @@ function HorizontalLegend({
   data,
   radii,
   reference,
-  style
+  style,
 }) {
   // From the designs:
   // i) Data value has 36px height and 130px width i.e. 190px from center
@@ -31,7 +31,7 @@ function HorizontalLegend({
   // iii) Reference label has 48 px, aligned to the right of the charts
   // ----------------------------------------------------------------
   const {
-    data: [referenceData]
+    data: [referenceData],
   } = reference;
 
   return (
@@ -47,11 +47,11 @@ function HorizontalLegend({
             y2={cy}
             style={{
               stroke: colorScale[i % colorScale.length],
-              strokeWidth: '2px'
+              strokeWidth: "2px",
             }}
           />
           <VictoryLabel
-            textAnchor={i === 0 ? 'end' : 'start'}
+            textAnchor={i === 0 ? "end" : "start"}
             capHeight={0}
             lineHeight={0}
             x={cx - (i < 1 ? 1 : -1) * 200} // 190 + 10px padding
@@ -63,7 +63,7 @@ function HorizontalLegend({
           />
           {data[i].label && (
             <VictoryLabel
-              textAnchor={i === 0 ? 'end' : 'start'}
+              textAnchor={i === 0 ? "end" : "start"}
               capHeight={0}
               lineHeight={0}
               x={cx - (i < 1 ? 1 : -1) * 200} // 190 + 10
@@ -109,17 +109,17 @@ HorizontalLegend.propTypes = {
   radii: PropTypes.arrayOf(PropTypes.number),
   reference: propTypes.reference,
   style: PropTypes.shape({
-    labels: PropTypes.shape({})
-  })
+    labels: PropTypes.shape({}),
+  }),
 };
 
 HorizontalLegend.defaultProps = {
-  formatNumberForLabel: x => x, // return unformatted number
+  formatNumberForLabel: (x) => x, // return unformatted number
   colorScale: undefined,
   data: undefined,
   radii: undefined,
   reference: undefined,
-  style: undefined
+  style: undefined,
 };
 
 export default withVictoryTheme(HorizontalLegend);

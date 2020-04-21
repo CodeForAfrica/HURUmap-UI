@@ -51,29 +51,29 @@ export function scaleMobileDimensions(height, width) {
  */
 export const dataLabelsStyle = (index, colorScale, style) => ({
   fontSize: 36,
-  fontWeight: 'bold',
+  fontWeight: "bold",
   ...(style && style.data),
-  fill: colorScale[index % colorScale.length]
+  fill: colorScale[index % colorScale.length],
 });
 
 /**
  * Style for reference data point.
  * @param reference .
  */
-export const referenceDataStyle = reference => {
+export const referenceDataStyle = (reference) => {
   const { style: referenceStyle } = reference;
 
   return {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     // Since data has gradient fill style, lets use labels style
-    ...((referenceStyle && referenceStyle.labels) || {})
+    ...((referenceStyle && referenceStyle.labels) || {}),
   };
 };
 
 /**
  * Style for reference data label.
  */
-export const referenceLabelsStyle = reference => {
+export const referenceLabelsStyle = (reference) => {
   const { style: referenceStyle } = reference;
   return referenceStyle && referenceStyle.labels;
 };

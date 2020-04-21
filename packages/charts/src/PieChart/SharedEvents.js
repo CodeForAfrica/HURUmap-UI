@@ -1,25 +1,25 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { darken } from '@material-ui/core/styles/colorManipulator';
+import { darken } from "@material-ui/core/styles/colorManipulator";
 
-import { Selection, VictorySharedEvents } from 'victory';
+import { Selection, VictorySharedEvents } from "victory";
 
 const activateData = (evt, donut, childName, emphasisCoefficient) => {
   return {
     childName,
-    target: 'data',
-    mutation: p => {
+    target: "data",
+    mutation: (p) => {
       const style = (p && p.style) || {};
       let { fill } = style;
       // Watch out if `fill` is set via an asset
-      if (fill && !fill.startsWith('url')) {
+      if (fill && !fill.startsWith("url")) {
         fill = darken(style.fill, emphasisCoefficient);
       }
       return {
-        style: { ...p.style, fill }
+        style: { ...p.style, fill },
       };
-    }
+    },
   };
 };
 
@@ -29,20 +29,20 @@ const activateLabels = (evt, donut, childName, props) => {
   // Don't track movement if hovering on a legend since we'll move the
   // legend label, etc.
   const mutation = { active: true };
-  if (props && props.key && !props.key.startsWith('legend-')) {
+  if (props && props.key && !props.key.startsWith("legend-")) {
     const { x, y } = Selection.getSVGEventCoordinates(evt);
     Object.assign(mutation, { x, y });
   }
   return {
-    target: 'labels',
-    mutation: () => mutation
+    target: "labels",
+    mutation: () => mutation,
   };
 };
 
 const deactivateLabels = () => {
   return {
-    target: 'labels',
-    mutation: () => ({ active: false })
+    target: "labels",
+    mutation: () => ({ active: false }),
   };
 };
 
@@ -56,38 +56,38 @@ function SharedEvents({ childName, children, donut, emphasisCoefficient }) {
             onMouseOver: (evt, ...args) => {
               return [
                 activateData(evt, donut, childName, emphasisCoefficient),
-                activateLabels(evt, donut, childName, ...args)
+                activateLabels(evt, donut, childName, ...args),
               ];
             },
             onMouseMove: (evt, ...args) => {
               return [activateLabels(evt, donut, childName, ...args)];
             },
-            onMouseOut: evt => {
+            onMouseOut: (evt) => {
               return [
                 {
                   childName,
-                  target: 'data',
+                  target: "data",
                   mutation: () => {
                     return null;
-                  }
+                  },
                 },
-                deactivateLabels(evt, donut, childName)
+                deactivateLabels(evt, donut, childName),
               ];
             },
-            onMouseLeave: evt => {
+            onMouseLeave: (evt) => {
               return [
                 {
                   childName,
-                  target: 'data',
+                  target: "data",
                   mutation: () => {
                     return null;
-                  }
+                  },
                 },
-                deactivateLabels(evt, donut, childName)
+                deactivateLabels(evt, donut, childName),
               ];
-            }
-          }
-        }
+            },
+          },
+        },
       ]}
     >
       {children}
@@ -99,14 +99,14 @@ SharedEvents.propTypes = {
   childName: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
   ]).isRequired,
   donut: PropTypes.bool,
-  emphasisCoefficient: PropTypes.number.isRequired
+  emphasisCoefficient: PropTypes.number.isRequired,
 };
 
 SharedEvents.defaultProps = {
-  donut: false
+  donut: false,
 };
 
 export default SharedEvents;

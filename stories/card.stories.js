@@ -1,84 +1,84 @@
-import React, { useState, useEffect } from 'react';
-import { storiesOf } from '@storybook/react';
+import React, { useState, useEffect } from "react";
+import { storiesOf } from "@storybook/react";
 import {
   withKnobs,
   select,
   text,
   object,
-  boolean
-} from '@storybook/addon-knobs';
+  boolean,
+} from "@storybook/addon-knobs";
 
-import { ApolloProvider } from '@apollo/react-hooks';
-import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from "@apollo/react-hooks";
+import ApolloClient from "apollo-boost";
 
-import { Card } from '@hurumap-ui/core';
-import { CenterDecorator } from './common';
+import { Card } from "@hurumap-ui/core";
+import { CenterDecorator } from "./common";
 
-import logo from './assets/hurumap-logo-white.png';
+import logo from "./assets/hurumap-logo-white.png";
 
-storiesOf('HURUmap UI|Components/Card', module)
+storiesOf("HURUmap UI|Components/Card", module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
-  .add('Default', () => {
-    const width = text('width', '100%');
-    const showInsight = boolean('showInsight', true);
-    const type = select('type', ['hurumap', 'flourish', 'snippet'], 'hurumap');
-    const uri = text('graphql', 'https://graphql.hurumap.org/graphql');
-    const geoId = text('geoId', 'country-ZA');
+  .add("Default", () => {
+    const width = text("width", "100%");
+    const showInsight = boolean("showInsight", true);
+    const type = select("type", ["hurumap", "flourish", "snippet"], "hurumap");
+    const uri = text("graphql", "https://graphql.hurumap.org/graphql");
+    const geoId = text("geoId", "country-ZA");
     const hurumapJson = {
-      id: '209',
+      id: "209",
       stat: {
-        type: 'number',
-        subtitle: 'Urban vs Rural',
-        description: '',
-        aggregate: 'sum',
+        type: "number",
+        subtitle: "Urban vs Rural",
+        description: "",
+        aggregate: "sum",
         unique: true,
-        style: 'percent',
-        queryAlias: 'v209'
+        style: "percent",
+        queryAlias: "v209",
       },
       visual: {
         typeProps: [],
-        table: 'allHandwashingTypeUrbanrurals',
-        type: 'grouped_column',
-        aggregate: 'raw',
-        x: 'variable2',
-        groupBy: 'variable1',
-        y: 'value',
-        queryAlias: 'v209'
+        table: "allHandwashingTypeUrbanrurals",
+        type: "grouped_column",
+        aggregate: "raw",
+        x: "variable2",
+        groupBy: "variable1",
+        y: "value",
+        queryAlias: "v209",
       },
       inGeographies: [
         {
-          geoLevel: 'country',
-          geoCode: 'ZA',
+          geoLevel: "country",
+          geoCode: "ZA",
           squareKms: 1221037,
-          parentLevel: 'continent',
-          parentCode: 'AFR',
-          longName: 'South Africa',
-          name: 'South Africa',
-          __typename: 'WazimapGeography'
-        }
+          parentLevel: "continent",
+          parentCode: "AFR",
+          longName: "South Africa",
+          name: "South Africa",
+          __typename: "WazimapGeography",
+        },
       ],
-      title: 'Handwashing type',
-      subtitle: 'Urban vs Rural',
-      section: '165',
+      title: "Handwashing type",
+      subtitle: "Urban vs Rural",
+      section: "165",
       typeProps: [],
-      type: 'hurumap'
+      type: "hurumap",
     };
     const flourishJson = {
-      id: '1234',
-      title: 'Flourish Chart',
-      description: 'Embeded flourish chart example'
+      id: "1234",
+      title: "Flourish Chart",
+      description: "Embeded flourish chart example",
     };
     const definition =
       // eslint-disable-next-line no-nested-ternary
-      type === 'flourish'
-        ? object('Flourish definition', flourishJson)
-        : type === 'hurumap'
-        ? object('HURUmap definition', hurumapJson)
+      type === "flourish"
+        ? object("Flourish definition", flourishJson)
+        : type === "hurumap"
+        ? object("HURUmap definition", hurumapJson)
         : {
-            id: '1234',
+            id: "1234",
             title: {
-              rendered: 'Snippet Card'
+              rendered: "Snippet Card",
             },
             content: {
               rendered: `<p>
@@ -89,20 +89,20 @@ storiesOf('HURUmap UI|Components/Card', module)
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>`
-            }
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>`,
+            },
           };
-    const shareEndPoint = text('Share EndPoint', '/api/share');
+    const shareEndPoint = text("Share EndPoint", "/api/share");
 
     return (
       <ApolloProvider
         client={
           new ApolloClient({
-            uri
+            uri,
           })
         }
       >
-        <div style={{ width, height: '100%' }}>
+        <div style={{ width, height: "100%" }}>
           <Card
             key={JSON.stringify(definition)}
             id={definition.id}
@@ -119,90 +119,91 @@ storiesOf('HURUmap UI|Components/Card', module)
       </ApolloProvider>
     );
   })
-  .add('Live Data', () => {
+  .add("Live Data", () => {
     const [defs, setDefs] = useState([]);
-    const width = text('width', '100%');
-    const showInsight = boolean('showInsight', true);
-    const type = select('type', ['hurumap', 'flourish', 'snippet'], 'hurumap');
-    const uri = text('graphql', 'https://graphql.hurumap.org/graphql');
+    const width = text("width", "100%");
+    const showInsight = boolean("showInsight", true);
+    const type = select("type", ["hurumap", "flourish", "snippet"], "hurumap");
+    const uri = text("graphql", "https://graphql.hurumap.org/graphql");
     const def = select(
-      'definition',
-      defs.map(option =>
+      "definition",
+      defs.map((option) =>
         !option || !option.id
-          ? 'Use custom'
-          : `${option.id} - ${option.title} - ${option.visual &&
-              option.visual.type}`
+          ? "Use custom"
+          : `${option.id} - ${option.title} - ${
+              option.visual && option.visual.type
+            }`
       )
     );
     const definitionsURI = text(
-      'definitionsURI',
-      'https://dashboard.hurumap.org/wp-json/hurumap-data/charts'
+      "definitionsURI",
+      "https://dashboard.hurumap.org/wp-json/hurumap-data/charts"
     );
     useEffect(() => {
       fetch(definitionsURI)
-        .then(res => res.json())
+        .then((res) => res.json())
         .then(setDefs);
     }, [definitionsURI]);
-    const geoId = text('geoId', 'country-ZA');
+    const geoId = text("geoId", "country-ZA");
     const hurumapJson = defs.find(
-      x => def && x.id === def.split('-')[0].trim()
+      (x) => def && x.id === def.split("-")[0].trim()
     ) || {
-      id: '209',
+      id: "209",
       stat: {
-        type: 'number',
-        subtitle: 'Urban vs Rural',
-        description: '',
-        aggregate: 'sum',
+        type: "number",
+        subtitle: "Urban vs Rural",
+        description: "",
+        aggregate: "sum",
         unique: true,
-        style: 'percent',
-        queryAlias: 'v209'
+        style: "percent",
+        queryAlias: "v209",
       },
       visual: {
         typeProps: [],
-        table: 'allHandwashingTypeUrbanrurals',
-        type: 'grouped_column',
-        aggregate: 'raw',
-        x: 'variable2',
-        groupBy: 'variable1',
-        y: 'value',
-        queryAlias: 'v209'
+        table: "allHandwashingTypeUrbanrurals",
+        type: "grouped_column",
+        aggregate: "raw",
+        x: "variable2",
+        groupBy: "variable1",
+        y: "value",
+        queryAlias: "v209",
       },
       inGeographies: [
         {
-          geoLevel: 'country',
-          geoCode: 'ZA',
+          geoLevel: "country",
+          geoCode: "ZA",
           squareKms: 1221037,
-          parentLevel: 'continent',
-          parentCode: 'AFR',
-          longName: 'South Africa',
-          name: 'South Africa',
-          __typename: 'WazimapGeography'
-        }
+          parentLevel: "continent",
+          parentCode: "AFR",
+          longName: "South Africa",
+          name: "South Africa",
+          __typename: "WazimapGeography",
+        },
       ],
-      title: 'Handwashing type',
-      subtitle: 'Urban vs Rural',
-      section: '165',
+      title: "Handwashing type",
+      subtitle: "Urban vs Rural",
+      section: "165",
       typeProps: [],
-      type: 'hurumap'
+      type: "hurumap",
     };
     const flourishJson = {
-      id: '1234',
-      title: 'Flourish Chart',
-      description: 'Embeded flourish chart example'
+      id: "1234",
+      title: "Flourish Chart",
+      description: "Embeded flourish chart example",
     };
     const definition =
       // eslint-disable-next-line no-nested-ternary
-      def !== 'Use custom'
+      def !== "Use custom"
         ? hurumapJson
         : // eslint-disable-next-line no-nested-ternary
-        type === 'flourish'
-        ? object('Flourish definition', flourishJson)
-        : type === 'hurumap'
-        ? object('HURUmap definition', hurumapJson)
+        type === "flourish"
+        ? object("Flourish definition", flourishJson)
+        : type === "hurumap"
+        ? object("HURUmap definition", hurumapJson)
         : {
-            id: '1234',
+            id: "1234",
             title: {
-              rendered: 'Snippet Card'
+              rendered: "Snippet Card",
             },
             content: {
               rendered: `<p>
@@ -213,20 +214,20 @@ storiesOf('HURUmap UI|Components/Card', module)
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>`
-            }
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>`,
+            },
           };
-    const shareEndPoint = text('Share EndPoint', '/api/share');
+    const shareEndPoint = text("Share EndPoint", "/api/share");
 
     return (
       <ApolloProvider
         client={
           new ApolloClient({
-            uri
+            uri,
           })
         }
       >
-        <div style={{ width, height: '100%' }}>
+        <div style={{ width, height: "100%" }}>
           <Card
             key={JSON.stringify(definition)}
             id={definition.id}

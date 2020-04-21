@@ -1,18 +1,18 @@
-import React from 'react';
+import React from "react";
 
-import ButtonBase from '@material-ui/core/ButtonBase';
+import ButtonBase from "@material-ui/core/ButtonBase";
 
-import propTypes from '../propTypes';
-import makeStyles from '../makeStyles';
+import propTypes from "../propTypes";
+import makeStyles from "../makeStyles";
 
 const useStyles = makeStyles(({ palette }) => ({
   root: {
-    color: 'white',
+    color: "white",
     backgroundColor: palette.primary.main,
-    padding: '5px 10px',
-    paddingLeft: '5px',
-    borderRadius: 5
-  }
+    padding: "5px 10px",
+    paddingLeft: "5px",
+    borderRadius: 5,
+  },
 }));
 
 function SnippetButton({ children, ...props }) {
@@ -26,7 +26,7 @@ function SnippetButton({ children, ...props }) {
 }
 
 SnippetButton.propTypes = {
-  children: propTypes.children.isRequired
+  children: propTypes.children.isRequired,
 };
 
 export default SnippetButton;

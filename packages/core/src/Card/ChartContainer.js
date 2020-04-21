@@ -1,19 +1,19 @@
 /* eslint-disable react/no-danger */
-import React from 'react';
+import React from "react";
 
-import makeStyles from '../makeStyles';
+import makeStyles from "../makeStyles";
 
-import InsightContainer from '../InsightContainer';
+import InsightContainer from "../InsightContainer";
 
-import propTypes from '../propTypes';
+import propTypes from "../propTypes";
 
 const useStyles = makeStyles({
   iframe: {
-    width: '100%'
+    width: "100%",
   },
   statViz: {
-    display: 'none'
-  }
+    display: "none",
+  },
 });
 
 function ChartContainer({
@@ -35,7 +35,7 @@ function ChartContainer({
     <InsightContainer
       classes={classes}
       hideInsight={hideInsight}
-      variant={hideInsight && hideStat ? 'analysis' : 'data'}
+      variant={hideInsight && hideStat ? "analysis" : "data"}
       insight={
         !hideInsight
           ? {
@@ -43,18 +43,18 @@ function ChartContainer({
               title: insightTitle,
               analysisLink: {
                 href:
-                  typeof analysisLinkHref === 'string'
+                  typeof analysisLinkHref === "string"
                     ? analysisLinkHref
                     : analysisLinkHref(analysisLinkCountrySlug),
-                title: analysisLinkTitle
+                title: analysisLinkTitle,
               },
               dataLink: {
                 href:
-                  typeof dataLinkHref === 'string'
+                  typeof dataLinkHref === "string"
                     ? dataLinkHref
                     : dataLinkHref(dataLinkGeoId),
-                title: dataLinkTitle
-              }
+                title: dataLinkTitle,
+              },
             }
           : {}
       }
@@ -81,7 +81,7 @@ ChartContainer.propTypes = {
   analysisLinkCountrySlug: propTypes.string,
   analysisLinkTitle: propTypes.string,
   analysisLinkHref: propTypes.oneOfType([propTypes.string, propTypes.func]),
-  children: propTypes.children.isRequired
+  children: propTypes.children.isRequired,
 };
 
 ChartContainer.defaultProps = {
@@ -92,14 +92,14 @@ ChartContainer.defaultProps = {
   hideInsight: true,
   insightSummary: undefined,
   insightTitle: undefined,
-  embedCode: '',
+  embedCode: "",
   handleShare: () => {},
   dataLinkGeoId: undefined,
   dataLinkTitle: undefined,
   dataLinkHref: undefined,
   analysisLinkCountrySlug: undefined,
   analysisLinkTitle: undefined,
-  analysisLinkHref: undefined
+  analysisLinkHref: undefined,
 };
 
 export default ChartContainer;
