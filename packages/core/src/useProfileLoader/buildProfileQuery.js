@@ -1,10 +1,10 @@
 // A file that defines needed graphql queries
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 /**
  * `populationTables` can the array of strings [...`tableName`] or array [...[`tableName` , {`conditions`}]]
  */
-export default populationTables => gql`
+export default (populationTables) => gql`
 query profile($geoCode: String!, $geoLevel: String!) {
   geo: wazimapGeographyByGeoLevelAndGeoCodeAndVersion(
     geoLevel: $geoLevel
@@ -27,9 +27,9 @@ query profile($geoCode: String!, $geoLevel: String!) {
             Object.assign(table[1], {
               condition: {
                 ...table[1].condition,
-                geoCode: '$geoCode',
-                geoLevel: '$geoLevel'
-              }
+                geoCode: "$geoCode",
+                geoLevel: "$geoLevel",
+              },
             })
           )
             /**
@@ -39,15 +39,15 @@ query profile($geoCode: String!, $geoLevel: String!) {
             /**
              * Replace quotes around keys from json stringify
              */
-            .replace(/"([^(")"]+)":/g, '$1:')
+            .replace(/"([^(")"]+)":/g, "$1:")
             /**
              * Replace quotes from json stringify for:
              *  - defined terms
              *  - variables which start with $
              */
-            .replace(/:"([^(")"][A-Z_]+)"/g, ': $1')
-            .replace(/:"([^(")"][$a-zA-Z]+)"/g, ': $1')
-        : 'condition: { geoCode: $geoCode, geoLevel: $geoLevel }'
+            .replace(/:"([^(")"][A-Z_]+)"/g, ": $1")
+            .replace(/:"([^(")"][$a-zA-Z]+)"/g, ": $1")
+        : "condition: { geoCode: $geoCode, geoLevel: $geoLevel }"
     }
   ) {
     nodes {

@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { VictoryTooltip } from 'victory';
+import { VictoryTooltip } from "victory";
 
-import propTypes from './propTypes';
-import Label from './Label';
+import propTypes from "./propTypes";
+import Label from "./Label";
 
 /**
  * VictoryLegend only uses `name` for displaying the key. This component
@@ -47,11 +47,11 @@ LegendLabel.propTypes = {
   x: PropTypes.number,
   datum: PropTypes.shape({
     description: PropTypes.string,
-    y: PropTypes.number
+    y: PropTypes.number,
   }),
   index: PropTypes.number,
   text: PropTypes.string,
-  width: PropTypes.number
+  width: PropTypes.number,
 };
 
 LegendLabel.defaultProps = {
@@ -61,7 +61,7 @@ LegendLabel.defaultProps = {
   datum: undefined,
   index: undefined,
   text: undefined,
-  width: undefined
+  width: undefined,
 };
 
 export default LegendLabel;

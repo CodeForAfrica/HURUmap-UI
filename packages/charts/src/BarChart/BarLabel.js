@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { VictoryLabel } from 'victory';
+import { VictoryLabel } from "victory";
 
-import { labels as defaultLabels } from '../utils';
-import Tooltip from '../Tooltip';
+import { labels as defaultLabels } from "../utils";
+import Tooltip from "../Tooltip";
 
 function BarLabel({
   datum,
@@ -46,12 +46,12 @@ BarLabel.propTypes = {
   tooltipProps: PropTypes.shape({
     data: PropTypes.arrayOf(
       PropTypes.shape({
-        tooltip: PropTypes.string
+        tooltip: PropTypes.string,
       })
-    )
+    ),
   }).isRequired,
   x: PropTypes.number,
-  y: PropTypes.number
+  y: PropTypes.number,
 };
 
 /**
@@ -64,7 +64,7 @@ BarLabel.defaultProps = {
   labels: undefined,
   text: undefined,
   x: undefined,
-  y: undefined
+  y: undefined,
 };
 
 export default BarLabel;

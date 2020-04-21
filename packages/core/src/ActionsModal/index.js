@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-import { Dialog, Tabs, Tab } from '@material-ui/core';
-import DownloadPanel from './DownloadPanel';
-import EmbedPanel from './EmbedPanel';
-import SharePanel from './SharePanel';
-import TabPanel, { a11yProps } from './TabPanel';
-import makeStyles from '../makeStyles';
+import { Dialog, Tabs, Tab } from "@material-ui/core";
+import DownloadPanel from "./DownloadPanel";
+import EmbedPanel from "./EmbedPanel";
+import SharePanel from "./SharePanel";
+import TabPanel, { a11yProps } from "./TabPanel";
+import makeStyles from "../makeStyles";
 
 export const SHARE_TAB = 0;
 export const EMBED_TAB = 1;
@@ -28,7 +28,7 @@ const useStyles = makeStyles(() => ({
   shareSocialIcon: {},
   shareTitle: {},
   shareUrl: {},
-  shareUrlContainer: {}
+  shareUrlContainer: {},
 }));
 
 function ActionsModel({
@@ -85,7 +85,7 @@ function ActionsModel({
             codeContainer: classes.embedCodeContainer,
             content: classes.embedContent,
             subtitle: classes.embedSubtitle,
-            title: classes.embedTitle
+            title: classes.embedTitle,
           }}
         >
           {embedCode}
@@ -100,7 +100,7 @@ function ActionsModel({
             subtitle: classes.shareSubtitle,
             title: classes.shareTitle,
             url: classes.shareUrl,
-            urlContainer: classes.shareUrlContainer
+            urlContainer: classes.shareUrlContainer,
           }}
         />
       </TabPanel>
@@ -111,7 +111,7 @@ function ActionsModel({
             content: classes.downloadContent,
             downloadButton: classes.downloadDownloadButton,
             subtitle: classes.downloadSubtitle,
-            title: classes.downloadTitle
+            title: classes.downloadTitle,
           }}
         />
       </TabPanel>
@@ -123,12 +123,12 @@ ActionsModel.propTypes = {
   download: PropTypes.shape({
     onDownload: PropTypes.func.isRequired,
     subtitle: PropTypes.string,
-    title: PropTypes.string
+    title: PropTypes.string,
   }),
   embed: PropTypes.shape({
     code: PropTypes.string.isRequired,
     subtitle: PropTypes.string,
-    title: PropTypes.string
+    title: PropTypes.string,
   }),
   id: PropTypes.string,
   open: PropTypes.bool.isRequired,
@@ -138,34 +138,34 @@ ActionsModel.propTypes = {
       subject: PropTypes.string,
       body: PropTypes.string,
       separator: PropTypes.string,
-      url: PropTypes.string
+      url: PropTypes.string,
     }),
     facebook: PropTypes.shape({
       url: PropTypes.string,
       quote: PropTypes.string,
-      hashtag: PropTypes.string
+      hashtag: PropTypes.string,
     }),
     shareIcon: PropTypes.shape({
       round: PropTypes.bool,
-      size: PropTypes.number
+      size: PropTypes.number,
     }),
     twitter: PropTypes.shape({
       url: PropTypes.string,
       title: PropTypes.string,
-      hashtags: PropTypes.string
+      hashtags: PropTypes.string,
     }),
     title: PropTypes.string,
-    url: PropTypes.string
+    url: PropTypes.string,
   }),
-  tab: PropTypes.number
+  tab: PropTypes.number,
 };
 
 ActionsModel.defaultProps = {
   download: null,
   embed: null,
-  id: '',
+  id: "",
   share: null,
-  tab: EMBED_TAB
+  tab: EMBED_TAB,
 };
 
 export default ActionsModel;

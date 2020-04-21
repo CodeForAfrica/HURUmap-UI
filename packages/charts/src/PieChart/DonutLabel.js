@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { VictoryTooltip } from 'victory';
+import { VictoryTooltip } from "victory";
 
-import Label from '../Label';
-import propTypes from '../propTypes';
+import Label from "../Label";
+import propTypes from "../propTypes";
 
 const sortData = (data, sortKey) => {
   let sortedData = data;
@@ -22,7 +22,7 @@ const sortData = (data, sortKey) => {
     // remember to create a copy of the array as not to modify it
     const dataToSort = data.slice(0);
     sortedData =
-      sortKey[0] === '-'
+      sortKey[0] === "-"
         ? dataToSort.sort(sortDescending)
         : dataToSort.sort(sort);
   }
@@ -31,7 +31,7 @@ const sortData = (data, sortKey) => {
 
 function DonutLabel({ colorScale, data, sortKey, x, y, ...props }) {
   const textData = sortData(data, sortKey)[0];
-  const textIndex = data.findIndex(d => d.x === textData.x) + 1;
+  const textIndex = data.findIndex((d) => d.x === textData.x) + 1;
 
   return (
     <Label
@@ -50,16 +50,16 @@ DonutLabel.defaultEvents = VictoryTooltip.defaultEvents;
 DonutLabel.propTypes = {
   colorScale: propTypes.colorScale,
   data: propTypes.data.isRequired,
-  sortKey: PropTypes.oneOf(['value', '-value']),
+  sortKey: PropTypes.oneOf(["value", "-value"]),
   x: PropTypes.number,
-  y: PropTypes.number
+  y: PropTypes.number,
 };
 
 DonutLabel.defaultProps = {
   colorScale: undefined,
   sortKey: undefined,
   x: undefined,
-  y: undefined
+  y: undefined,
 };
 
 export default DonutLabel;

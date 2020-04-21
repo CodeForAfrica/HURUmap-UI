@@ -1,34 +1,34 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { DialogContent, DialogTitle, Grid, TextField } from '@material-ui/core';
+import { DialogContent, DialogTitle, Grid, TextField } from "@material-ui/core";
 import {
   EmailIcon,
   EmailShareButton,
   FacebookIcon,
   FacebookShareButton,
   TwitterIcon,
-  TwitterShareButton
-} from 'react-share';
+  TwitterShareButton,
+} from "react-share";
 
-import DropDown from './DropDown';
-import makeStyles from './makeStyles';
+import DropDown from "./DropDown";
+import makeStyles from "./makeStyles";
 
 const useStyles = makeStyles(() => ({
   root: {},
   social: {},
   socialIcon: {
-    padding: '0 0.5rem 1.5rem 0.5rem'
+    padding: "0 0.5rem 1.5rem 0.5rem",
   },
   title: {},
   url: {
-    width: '100%'
+    width: "100%",
   },
   urlInput: {
-    fontFamily: 'monospace'
+    fontFamily: "monospace",
   },
   dropDownRoot: {},
-  dropDownPaper: {}
+  dropDownPaper: {},
 }));
 
 function ShareDropDown({
@@ -44,7 +44,7 @@ function ShareDropDown({
   ...props
 }) {
   const classes = useStyles(props);
-  const open = typeof openProps === 'undefined' ? anchorEl !== null : openProp;
+  const open = typeof openProps === "undefined" ? anchorEl !== null : openProp;
   const url = urlProp || window.location.href;
   const { url: twitterShareUrlProp, ...twitterProps } = twitter || {};
   const twitterShareUrl = twitter && (twitterShareUrlProp || url);
@@ -108,7 +108,7 @@ function ShareDropDown({
               className={classes.url}
               InputProps={{
                 readOnly: true,
-                classes: { root: classes.urlInput }
+                classes: { root: classes.urlInput },
               }}
               variant="outlined"
             />
@@ -124,26 +124,26 @@ ShareDropDown.propTypes = {
   email: PropTypes.shape({
     subject: PropTypes.string,
     body: PropTypes.string,
-    separator: PropTypes.string
+    separator: PropTypes.string,
   }),
   facebook: PropTypes.shape({
     url: PropTypes.string,
     quote: PropTypes.string,
-    hashtag: PropTypes.string
+    hashtag: PropTypes.string,
   }),
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool,
   shareIcon: PropTypes.shape({
     round: PropTypes.bool,
-    size: PropTypes.number
+    size: PropTypes.number,
   }),
   twitter: PropTypes.shape({
     url: PropTypes.string,
     title: PropTypes.string,
-    hashtags: PropTypes.string
+    hashtags: PropTypes.string,
   }),
   title: PropTypes.string,
-  url: PropTypes.string
+  url: PropTypes.string,
 };
 
 ShareDropDown.defaultProps = {
@@ -153,11 +153,11 @@ ShareDropDown.defaultProps = {
   open: undefined,
   shareIcon: {
     round: false,
-    size: 40
+    size: 40,
   },
-  title: 'Share',
+  title: "Share",
   twitter: null,
-  url: null
+  url: null,
 };
 
 export default ShareDropDown;

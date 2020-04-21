@@ -1,7 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import { Card } from '@hurumap-ui/core';
+import { Card } from "@hurumap-ui/core";
 
 import {
   TITLE,
@@ -28,14 +28,14 @@ import {
   WIDGET,
   LAYOUT,
   BLOCK_ID,
-  ID
-} from './attributes';
+  ID,
+} from "./attributes";
 
 export const TYPES = {
-  HURUMAP_CARD: 'hurumap-card',
-  HURUMAP_CHART: 'indicator-hurumap',
-  FLOURISH_CHART: 'indicator-flourish',
-  INDICATOR_WIDGET: 'indicator-block'
+  HURUMAP_CARD: "hurumap-card",
+  HURUMAP_CHART: "indicator-hurumap",
+  FLOURISH_CHART: "indicator-flourish",
+  INDICATOR_WIDGET: "indicator-block",
 };
 
 // No SSR Support
@@ -47,16 +47,16 @@ export default function renderBlocks({
   // eslint-disable-next-line react/prop-types
   fetchDefinition,
   // eslint-disable-next-line react/prop-types
-  fetchDefinitionUrl
+  fetchDefinitionUrl,
 }) {
   return (
     <>
       {Array.from(
         document.querySelectorAll(`div[id^=${TYPES.INDICATOR_WIDGET}]`)
-      ).map(el => {
+      ).map((el) => {
         const htmlSrc = el.innerHTML;
         // eslint-disable-next-line no-param-reassign
-        el.innerHTML = '';
+        el.innerHTML = "";
         return ReactDOM.createPortal(
           <Card
             id={el.getAttribute(BLOCK_ID) || el.getAttribute(ID)}
@@ -75,7 +75,7 @@ export default function renderBlocks({
       })}
       {Array.from(
         document.querySelectorAll(`div[id^=${TYPES.HURUMAP_CARD}]`)
-      ).map(el =>
+      ).map((el) =>
         ReactDOM.createPortal(
           <Card
             parentEl={el}
@@ -90,7 +90,7 @@ export default function renderBlocks({
       )}
       {Array.from(
         document.querySelectorAll(`div[id^=${TYPES.FLOURISH_CHART}]`)
-      ).map(el =>
+      ).map((el) =>
         ReactDOM.createPortal(
           <Card
             parentEl={el}
@@ -104,7 +104,7 @@ export default function renderBlocks({
             description={
               el.getAttribute(CHART_DESCRIPTION) || el.getAttribute(DESCRIPTION)
             }
-            showInsight={el.getAttribute(SHOW_INSIGHT) === 'true'}
+            showInsight={el.getAttribute(SHOW_INSIGHT) === "true"}
             insightTitle={el.getAttribute(INSIGHT_TITLE)}
             insightSummary={el.getAttribute(INSIGHT_SUMMARY)}
             analysisLinkCountrySlug={el.getAttribute(ANALYSIS_COUNTRY)}
@@ -119,7 +119,7 @@ export default function renderBlocks({
       )}
       {Array.from(
         document.querySelectorAll(`div[id^=${TYPES.HURUMAP_CHART}]`)
-      ).map(el =>
+      ).map((el) =>
         ReactDOM.createPortal(
           <Card
             parentEl={el}
@@ -130,10 +130,10 @@ export default function renderBlocks({
             fetchDefinitionUrl={fetchDefinitionUrl}
             id={el.getAttribute(CHART_ID) || el.getAttribute(POST_ID)}
             geoId={el.getAttribute(GEO_TYPE) || el.getAttribute(GEO_ID)}
-            showInsight={el.getAttribute(SHOW_INSIGHT) === 'true'}
+            showInsight={el.getAttribute(SHOW_INSIGHT) === "true"}
             showStatVisual={
               (el.getAttribute(SHOW_STATVISUAL) ||
-                el.getAttribute(SHOW_STAT_VISUAL)) === 'true'
+                el.getAttribute(SHOW_STAT_VISUAL)) === "true"
             }
             insightTitle={el.getAttribute(INSIGHT_TITLE)}
             insightSummary={el.getAttribute(INSIGHT_SUMMARY)}

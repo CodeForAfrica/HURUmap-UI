@@ -1,20 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { Helpers, VictoryPie, VictoryLegend } from 'victory';
+import { Helpers, VictoryPie, VictoryLegend } from "victory";
 
-import { getLegendProps } from '../utils';
-import propTypes from '../propTypes';
-import withVictoryTheme from '../styles/withVictoryTheme';
-import CustomContainer from '../CustomContainer';
-import DefaultLegendLabel from '../LegendLabel';
-import DonutLabel from './DonutLabel';
-import DonutTooltip from './DonutTooltip';
-import Label from '../Label';
-import SharedEvents from './SharedEvents';
-import SharedEventsLegendLabel from './LegendLabel';
-import Tooltip from './Tooltip';
-import LegendPoint from '../LegendPoint';
+import { getLegendProps } from "../utils";
+import propTypes from "../propTypes";
+import withVictoryTheme from "../styles/withVictoryTheme";
+import CustomContainer from "../CustomContainer";
+import DefaultLegendLabel from "../LegendLabel";
+import DonutLabel from "./DonutLabel";
+import DonutTooltip from "./DonutTooltip";
+import Label from "../Label";
+import SharedEvents from "./SharedEvents";
+import SharedEventsLegendLabel from "./LegendLabel";
+import Tooltip from "./Tooltip";
+import LegendPoint from "../LegendPoint";
 
 const computeRadii = (width, height, padding, groupSpacing = 0) => {
   const radius = Helpers.getRadius({ width, height, padding });
@@ -72,19 +72,19 @@ function PieChart({
   const initialLegendProps = {
     ...chart.legend,
     colorScale,
-    ...(parts && parts.legend)
+    ...(parts && parts.legend),
   };
   const originalPadding = Helpers.getPadding({
     padding:
       paddingProp ||
       (parts && parts.parent && parts.parent.padding) ||
-      chart.padding
+      chart.padding,
   });
   const {
     height: chartHeight,
     padding,
     legend,
-    width: chartWidth
+    width: chartWidth,
   } = getLegendProps(
     { height, width },
     initialLegendProps,
@@ -107,7 +107,7 @@ function PieChart({
           computedGroupSpacing
         ));
   const chartRadius = Math.max.apply(null, computedRadii);
-  const donut = donutProp || (typeof donutProp === 'undefined' && chart.donut);
+  const donut = donutProp || (typeof donutProp === "undefined" && chart.donut);
   let chartInnerRadius = 0;
   if (donut) {
     chartInnerRadius =
@@ -118,7 +118,7 @@ function PieChart({
   const paddingTop = originalPadding.top || 0;
   const origin = originProp || {
     x: chartWidth / 2,
-    y: paddingTop + chartRadius
+    y: paddingTop + chartRadius,
   };
 
   // Label & tooltip
@@ -126,18 +126,18 @@ function PieChart({
     data2 && donutLabelKey.dataIndex ? data[donutLabelKey.dataIndex] : data1;
   const { style: suggestedStyle } = props;
   const donutLabelStyle = {
-    textAnchor: 'middle',
-    ...(suggestedStyle && suggestedStyle.labels)
+    textAnchor: "middle",
+    ...(suggestedStyle && suggestedStyle.labels),
   };
 
   const tooltipProps = {
-    style: { textAnchor: donut ? 'middle' : 'start' },
+    style: { textAnchor: donut ? "middle" : "start" },
     theme,
-    ...(parts && parts.tooltip)
+    ...(parts && parts.tooltip),
   };
   const tooltipStyle = {
     ...donutLabelStyle,
-    ...tooltipProps.style
+    ...tooltipProps.style,
   };
 
   // We define tooltip for donut label component here than using a separate
@@ -161,7 +161,7 @@ function PieChart({
       constrainToVisibleArea
       {...tooltipProps}
       labelComponent={<Label colorScale={colorScale} />}
-      orientation={isComparisonMode ? 'left' : undefined}
+      orientation={isComparisonMode ? "left" : undefined}
       renderInPortal={false}
     />
   );
@@ -188,19 +188,19 @@ function PieChart({
     responsive,
     standalone,
     width,
-    ...(parts && parts.container)
+    ...(parts && parts.container),
   };
 
   // Since we are using custom container, we need to do the translate ourselves
   const translate = {
     x: padding.left - originalPadding.left,
-    y: padding.top - originalPadding.top
+    y: padding.top - originalPadding.top,
   };
 
   return (
     <CustomContainer {...containerProps}>
       <SharedEvents
-        childName={['pie1', 'pie2', 'legend']}
+        childName={["pie1", "pie2", "legend"]}
         donut={donut}
         emphasisCoefficient={chart.emphasisCoefficient}
       >
@@ -298,23 +298,23 @@ PieChart.propTypes = {
   donutLabelKey: PropTypes.shape({
     dataIndex: PropTypes.number,
     columnIndex: PropTypes.number,
-    sortKey: PropTypes.oneOf(['value', '-value'])
+    sortKey: PropTypes.oneOf(["value", "-value"]),
   }),
   groupSpacing: PropTypes.number,
   height: PropTypes.number,
   innerRadius: PropTypes.number,
   origin: PropTypes.shape({
     x: PropTypes.number,
-    y: PropTypes.number
+    y: PropTypes.number,
   }),
   padding: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
   parts: PropTypes.shape({
     legend: PropTypes.shape({}),
     parent: PropTypes.shape({
-      padding: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})])
+      padding: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
     }),
     container: PropTypes.shape({}),
-    tooltip: PropTypes.shape({})
+    tooltip: PropTypes.shape({}),
   }),
   radius: PropTypes.number,
   /**
@@ -327,11 +327,11 @@ PieChart.propTypes = {
   radii: PropTypes.arrayOf(PropTypes.number),
   responsive: PropTypes.bool,
   style: PropTypes.shape({
-    labels: PropTypes.shape({})
+    labels: PropTypes.shape({}),
   }),
   standalone: PropTypes.bool,
   theme: propTypes.theme,
-  width: PropTypes.number
+  width: PropTypes.number,
 };
 
 PieChart.defaultProps = {
@@ -351,7 +351,7 @@ PieChart.defaultProps = {
   standalone: true,
   style: undefined,
   theme: undefined,
-  width: undefined
+  width: undefined,
 };
 
 export default withVictoryTheme(PieChart);

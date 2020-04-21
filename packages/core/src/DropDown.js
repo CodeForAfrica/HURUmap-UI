@@ -1,18 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { ClickAwayListener, Fade, Paper, Popper } from '@material-ui/core';
-import makeStyles from './makeStyles';
+import { ClickAwayListener, Fade, Paper, Popper } from "@material-ui/core";
+import makeStyles from "./makeStyles";
 
 const useStyles = makeStyles(({ breakpoints }) => ({
   root: {
-    width: '100%',
-    marginTop: '1rem',
-    [breakpoints.up('sm')]: {
-      width: '20rem'
-    }
+    width: "100%",
+    marginTop: "1rem",
+    [breakpoints.up("sm")]: {
+      width: "20rem",
+    },
   },
-  paper: {}
+  paper: {},
 }));
 
 function DropDown({ children, onClose, open, transition, ...props }) {
@@ -36,17 +36,17 @@ function DropDown({ children, onClose, open, transition, ...props }) {
 DropDown.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
   ]).isRequired,
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  transition: PropTypes.shape({})
+  transition: PropTypes.shape({}),
 };
 
 DropDown.defaultProps = {
   transition: {
-    timeout: 350
-  }
+    timeout: 350,
+  },
 };
 
 export default DropDown;

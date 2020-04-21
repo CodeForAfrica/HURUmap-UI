@@ -1,46 +1,46 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 import {
   DialogContent,
   DialogContentText,
   DialogTitle,
   Grid,
-  Typography
-} from '@material-ui/core';
+  Typography,
+} from "@material-ui/core";
 import {
   EmailIcon,
   EmailShareButton,
   FacebookIcon,
   FacebookShareButton,
   TwitterIcon,
-  TwitterShareButton
-} from 'react-share';
-import makeStyles from '../makeStyles';
+  TwitterShareButton,
+} from "react-share";
+import makeStyles from "../makeStyles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   content: {},
   social: {},
   socialIcon: {
-    padding: '0 0.25rem 1.5rem 0.25rem'
+    padding: "0 0.25rem 1.5rem 0.25rem",
   },
   subtitle: {
-    fontSize: theme.typography.body2.fontSize
+    fontSize: theme.typography.body2.fontSize,
   },
   title: {
-    '& h2': {
-      fontSize: theme.typography.body1.fontSize
-    }
+    "& h2": {
+      fontSize: theme.typography.body1.fontSize,
+    },
   },
   url: {
-    fontFamily: 'monospace',
-    width: '100%'
+    fontFamily: "monospace",
+    width: "100%",
   },
   urlContainer: {
-    border: '1px solid #eaeaea',
-    padding: '18.5px 14px',
-    overflow: 'auto'
-  }
+    border: "1px solid #eaeaea",
+    padding: "18.5px 14px",
+    overflow: "auto",
+  },
 }));
 
 function SharePanel({
@@ -128,24 +128,24 @@ SharePanel.propTypes = {
     subject: PropTypes.string,
     body: PropTypes.string,
     separator: PropTypes.string,
-    url: PropTypes.string
+    url: PropTypes.string,
   }),
   facebook: PropTypes.shape({
     url: PropTypes.string,
     quote: PropTypes.string,
-    hashtag: PropTypes.string
+    hashtag: PropTypes.string,
   }),
   shareIcon: PropTypes.shape({
     round: PropTypes.bool,
-    size: PropTypes.number
+    size: PropTypes.number,
   }),
   twitter: PropTypes.shape({
     url: PropTypes.string,
     title: PropTypes.string,
-    hashtags: PropTypes.string
+    hashtags: PropTypes.string,
   }),
   title: PropTypes.string,
-  url: PropTypes.string
+  url: PropTypes.string,
 };
 
 SharePanel.defaultProps = {
@@ -153,11 +153,11 @@ SharePanel.defaultProps = {
   facebook: null,
   shareIcon: {
     round: false,
-    size: 40
+    size: 40,
   },
-  title: 'Share this with',
+  title: "Share this with",
   twitter: null,
-  url: null
+  url: null,
 };
 
 export default SharePanel;

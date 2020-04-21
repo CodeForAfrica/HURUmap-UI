@@ -1,66 +1,66 @@
-import { useState, useEffect } from 'react';
-import { useApolloClient } from '@apollo/react-hooks';
-import buildProfileQuery from './buildProfileQuery';
-import useVisualLoader from '../useVisualLoader';
+import { useState, useEffect } from "react";
+import { useApolloClient } from "@apollo/react-hooks";
+import buildProfileQuery from "./buildProfileQuery";
+import useVisualLoader from "../useVisualLoader";
 
 export default ({ geoId, comparisonGeoId, visuals, populationTables }) => {
   const client = useApolloClient();
   const [profiles, setProfiles] = useState({
-    isLoading: true
+    isLoading: true,
   });
 
   useEffect(() => {
     if (geoId) {
       (async () => {
         setProfiles({
-          isLoading: true
+          isLoading: true,
         });
 
         const query = buildProfileQuery(populationTables || []);
 
         const {
-          data: { geo: profile, ...populations }
+          data: { geo: profile, ...populations },
         } = await client.query({
           query,
           variables: {
-            geoCode: geoId.split('-')[1],
-            geoLevel: geoId.split('-')[0]
-          }
+            geoCode: geoId.split("-")[1],
+            geoLevel: geoId.split("-")[0],
+          },
         });
 
         const population = Object.values(populations).find(
-          p => p.nodes.length > 0
+          (p) => p.nodes.length > 0
         );
         profile.totalPopulation = population
           ? population.nodes.reduce((a, b) => a + b.total, 0)
           : 0;
 
         const {
-          data: { geo: parent }
+          data: { geo: parent },
         } = await client.query({
           query,
           variables: {
             geoCode: profile.parentCode,
-            geoLevel: profile.parentLevel
-          }
+            geoLevel: profile.parentLevel,
+          },
         });
 
         let comparison;
         if (comparisonGeoId) {
           const {
-            data: { geo: g, ...pps }
+            data: { geo: g, ...pps },
           } = await client.query({
             query,
             variables: {
-              geoCode: comparisonGeoId.split('-')[1],
-              geoLevel: comparisonGeoId.split('-')[0],
-              countryCode: comparisonGeoId.split('-')[1].slice(0, 2)
-            }
+              geoCode: comparisonGeoId.split("-")[1],
+              geoLevel: comparisonGeoId.split("-")[0],
+              countryCode: comparisonGeoId.split("-")[1].slice(0, 2),
+            },
           });
 
           comparison = g;
 
-          const ppl = Object.values(pps).find(p => p.nodes.length > 0);
+          const ppl = Object.values(pps).find((p) => p.nodes.length > 0);
           comparison.totalPopulation = ppl
             ? ppl.nodes.reduce((a, b) => a + b.total, 0)
             : 0;
@@ -70,7 +70,7 @@ export default ({ geoId, comparisonGeoId, visuals, populationTables }) => {
           isLoading: false,
           profile,
           parent,
-          comparison
+          comparison,
         });
       })();
     }
@@ -80,7 +80,7 @@ export default ({ geoId, comparisonGeoId, visuals, populationTables }) => {
     geoId,
     comparisonGeoId,
     visuals,
-    parent: profiles.parent
+    parent: profiles.parent,
   });
 
   return { profiles, chartData };

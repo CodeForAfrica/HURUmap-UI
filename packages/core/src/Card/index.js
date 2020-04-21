@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import Snippet from '../Snippet';
-import FlourishChart from './FlourishChart';
-import HURUmapChart from './HURUmapChart';
-import ChartContainer from './ChartContainer';
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import Snippet from "../Snippet";
+import FlourishChart from "./FlourishChart";
+import HURUmapChart from "./HURUmapChart";
+import ChartContainer from "./ChartContainer";
 
-import PDFDataContainer from '../PDFDataContainer';
+import PDFDataContainer from "../PDFDataContainer";
 
-import { shareIndicator } from '../utils';
-import propTypes from '../propTypes';
+import { shareIndicator } from "../utils";
+import propTypes from "../propTypes";
 
 const useStyles = makeStyles({
   htmlDiv: {
-    width: '100%'
+    width: "100%",
   },
   image: {
-    width: '100%'
-  }
+    width: "100%",
+  },
 });
 
 export default function Card({
@@ -58,18 +58,18 @@ export default function Card({
       fetchDefinition(type, id).then(setDefinition);
     } else if (fetchDefinitionUrl) {
       fetch(
-        typeof fetchDefinitionUrl === 'string'
+        typeof fetchDefinitionUrl === "string"
           ? fetchDefinitionUrl
           : fetchDefinitionUrl(type, id)
       )
-        .then(res => res.json())
+        .then((res) => res.json())
         .then(setDefinition);
     } else {
       setDefinition(propDefinition);
     }
   }, [id, type, fetchDefinition, fetchDefinitionUrl, propDefinition]);
   switch (type) {
-    case 'indicator':
+    case "indicator":
       return (
         <ChartContainer
           logo={logo}
@@ -82,7 +82,7 @@ export default function Card({
             sourceLink || sourceTitle
               ? {
                   title: sourceTitle,
-                  href: sourceLink
+                  href: sourceLink,
                 }
               : undefined
           }
@@ -90,23 +90,23 @@ export default function Card({
         >
           <div />
           <>
-            {(widget === 'image' || widget === 'image_widget') && (
+            {(widget === "image" || widget === "image_widget") && (
               <img className={classes.image} src={blockSrc} alt="indicator" />
             )}
-            {(widget === 'html' || widget === 'raw_html_widget') && (
+            {(widget === "html" || widget === "raw_html_widget") && (
               <div
                 className={classes.htmlDiv}
                 // eslint-disable-next-line react/no-danger
                 dangerouslySetInnerHTML={{ __html: blockSrc }}
               />
             )}
-            {(widget === 'document' || widget === 'document_widget') && (
+            {(widget === "document" || widget === "document_widget") && (
               <PDFDataContainer title={title} source={blockSrc} />
             )}
           </>
         </ChartContainer>
       );
-    case 'flourish':
+    case "flourish":
       return (
         <FlourishChart
           logo={logo}
@@ -125,18 +125,18 @@ export default function Card({
           // eslint-disable-next-line react/jsx-no-bind
           handleShare={shareIndicator.bind(null, id, geoId, shareEndPoint)}
           embedCode={
-            typeof embedCode === 'string'
+            typeof embedCode === "string"
               ? embedCode
               : embedCode(type, {
                   title: title || (definition && definition.title),
-                  id
+                  id,
                 })
           }
           src={flourishURL}
           {...props}
         />
       );
-    case 'hurumap':
+    case "hurumap":
       return (
         <HURUmapChart
           logo={logo}
@@ -160,63 +160,63 @@ export default function Card({
               ...definition,
               visual: {
                 ...definition.visual,
-                queryAlias: definition.visual.queryAlias || `viz${id}`
+                queryAlias: definition.visual.queryAlias || `viz${id}`,
               },
               stat: {
                 ...definition.stat,
-                queryAlias: definition.visual.queryAlias || `viz${id}`
-              }
+                queryAlias: definition.visual.queryAlias || `viz${id}`,
+              },
             }
           }
           embedCode={
-            typeof embedCode === 'string'
+            typeof embedCode === "string"
               ? embedCode
               : embedCode(type, {
                   title: title || (definition && definition.title),
                   id,
-                  geoId
+                  geoId,
                 })
           }
           {...props}
         />
       );
-    case 'snippet':
+    case "snippet":
       return (
         <Snippet
           fullWidth
           id={`hurumap-card-${id}`}
-          onExpand={expanded => {
+          onExpand={(expanded) => {
             if (!parentEl) {
               return;
             }
             // eslint-disable-next-line no-param-reassign
             parentEl.style.width = !expanded
-              ? parentEl.getAttribute('data-width')
-              : '100%';
+              ? parentEl.getAttribute("data-width")
+              : "100%";
 
             parentEl.firstChild.scrollIntoView();
           }}
           embed={{
-            title: `Embed ${definition &&
-              definition.title &&
-              definition.title.rendered}`,
+            title: `Embed ${
+              definition && definition.title && definition.title.rendered
+            }`,
             subtitle:
-              'Copy the code below, then paste into your own CMS or HTML.',
+              "Copy the code below, then paste into your own CMS or HTML.",
             code:
-              typeof embedCode === 'string'
+              typeof embedCode === "string"
                 ? embedCode
                 : embedCode(type, {
                     title:
                       definition &&
                       definition.title &&
                       definition.title.rendered,
-                    id
-                  })
+                    id,
+                  }),
           }}
           post={
             definition && {
               title: definition.title && definition.title.rendered,
-              content: definition.content && definition.content.rendered
+              content: definition.content && definition.content.rendered,
             }
           }
           {...props}
@@ -228,16 +228,16 @@ export default function Card({
 }
 
 Card.propTypes = {
-  type: propTypes.oneOf(['hurumap', 'flourish', 'snippet', 'indicator'])
+  type: propTypes.oneOf(["hurumap", "flourish", "snippet", "indicator"])
     .isRequired,
   parentEl: propTypes.shape({
     style: propTypes.shape({
-      width: propTypes.string
+      width: propTypes.string,
     }),
     getAttribute: propTypes.func,
     firstChild: propTypes.shape({
-      scrollIntoView: propTypes.func
-    })
+      scrollIntoView: propTypes.func,
+    }),
   }),
   id: propTypes.string.isRequired,
   title: propTypes.string,
@@ -256,20 +256,20 @@ Card.propTypes = {
     title: propTypes.oneOfType([
       propTypes.string,
       propTypes.shape({
-        rendered: propTypes.string
-      })
+        rendered: propTypes.string,
+      }),
     ]),
     content: propTypes.oneOfType([
       propTypes.string,
       propTypes.shape({
-        rendered: propTypes.string
-      })
+        rendered: propTypes.string,
+      }),
     ]),
     description: propTypes.oneOfType([propTypes.shape({}), propTypes.string]),
     visual: propTypes.shape({
-      queryAlias: propTypes.string
+      queryAlias: propTypes.string,
     }),
-    stat: propTypes.shape({})
+    stat: propTypes.shape({}),
   }),
   embedCode: propTypes.oneOfType([propTypes.string, propTypes.func]),
   showStatVisual: propTypes.bool,
@@ -282,7 +282,7 @@ Card.propTypes = {
   blockSrc: propTypes.string,
   sourceLink: propTypes.string,
   sourceTitle: propTypes.string,
-  widget: propTypes.string
+  widget: propTypes.string,
 };
 
 Card.defaultProps = {
@@ -291,11 +291,11 @@ Card.defaultProps = {
   definition: undefined,
   showStatVisual: false,
   showInsight: false,
-  insightSummary: '',
-  insightTitle: '',
-  chartWidth: '',
-  geoId: '',
-  title: '',
+  insightSummary: "",
+  insightTitle: "",
+  chartWidth: "",
+  geoId: "",
+  title: "",
   description: undefined,
   dataLinkGeoId: undefined,
   dataLinkTitle: undefined,
@@ -307,37 +307,37 @@ Card.defaultProps = {
   sourceLink: undefined,
   sourceTitle: undefined,
   widget: undefined,
-  dataLinkHref: geoId => `/profiles/${geoId}`,
-  analysisLinkHref: countrySlug => `/profiles/${countrySlug}`,
-  flourishURL: id => `/wp-json/hurumap-data/flourish/${id}/`,
+  dataLinkHref: (geoId) => `/profiles/${geoId}`,
+  analysisLinkHref: (countrySlug) => `/profiles/${countrySlug}`,
+  flourishURL: (id) => `/wp-json/hurumap-data/flourish/${id}/`,
   embedCode: (
     type,
     {
-      baseUrl = typeof window !== 'undefined' ? window.location.origin : '',
-      title = '',
+      baseUrl = typeof window !== "undefined" ? window.location.origin : "",
+      title = "",
       geoId,
-      id
+      id,
     }
   ) => {
     switch (type) {
-      case 'hurumap':
+      case "hurumap":
         return `
         <iframe title="${title}" 
             src="${baseUrl}/embed/hurumap/${geoId}/${id}" />
         `;
-      case 'flourish':
+      case "flourish":
         return `
         <iframe title="${title}" 
             src="${baseUrl}/embed/flourish/${id}" />
         `;
-      case 'snippet':
+      case "snippet":
         return `
         <iframe title="${title}" 
             src="${baseUrl}/embed/card/${type}/${id}" />
         `;
       default:
-        return '';
+        return "";
     }
   },
-  shareEndPoint: undefined
+  shareEndPoint: undefined,
 };

@@ -1,68 +1,68 @@
-import React, { useEffect, useRef, useCallback, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useRef, useCallback, useState } from "react";
+import PropTypes from "prop-types";
 
-import leaflet from 'leaflet';
+import leaflet from "leaflet";
 
-import 'leaflet/dist/leaflet.css';
-import BlockLoader from '../BlockLoader';
-import makeStyles from '../makeStyles';
-import useDeepRef from './useDeepRef';
+import "leaflet/dist/leaflet.css";
+import BlockLoader from "../BlockLoader";
+import makeStyles from "../makeStyles";
+import useDeepRef from "./useDeepRef";
 
 const useStyles = makeStyles({
   root: {
-    position: 'relative'
+    position: "relative",
   },
   overlay: {
-    position: 'absolute',
+    position: "absolute",
     right: 0,
     left: 0,
     top: 0,
     bottom: 0,
-    zIndex: 401
+    zIndex: 401,
   },
   map: {
-    width: '100%',
-    height: '100%'
-  }
+    width: "100%",
+    height: "100%",
+  },
 });
 
 function MapIt({
   id,
-  url = 'https://mapit.hurumap.org',
-  width = '100%',
-  height = '100%',
+  url = "https://mapit.hurumap.org",
+  width = "100%",
+  height = "100%",
   tolerance = 0.001,
   zoom = 3,
-  generation = '1',
+  generation = "1",
   drawChildren,
   drawProfile,
   geoCode,
   geoLevel,
   codeType,
-  filterCountries = ['KE', 'ZA'],
+  filterCountries = ["KE", "ZA"],
   tileLayer,
   geoLayerFocusStyle = {
-    color: '#777',
-    fillColor: '#0F0',
+    color: "#777",
+    fillColor: "#0F0",
     weight: 2,
     opacity: 0.3,
-    fillOpacity: 0.5
+    fillOpacity: 0.5,
   },
   geoLayerBlurStyle = {
-    color: '#00d',
-    fillColor: '#ccc',
+    color: "#00d",
+    fillColor: "#ccc",
     weight: 1.0,
     opacity: 0.3,
-    fillOpacity: 0.3
+    fillOpacity: 0.3,
   },
   geoLayerHoverStyle = {
-    fillColor: '#ccc',
-    fillOpacity: 0.7
+    fillColor: "#ccc",
+    fillOpacity: 0.7,
   },
   onClickGeoLayer,
   ...leafletProps
 }) {
-  const mapId = id || 'mapit';
+  const mapId = id || "mapit";
   const mapRef = useRef(null);
   const [featuresToDraw, setFeaturesToDraw] = useState();
   const filterCountriesMemoized = useDeepRef(filterCountries);
@@ -70,7 +70,7 @@ function MapIt({
   const geoLayerStyles = useDeepRef({
     focus: geoLayerFocusStyle,
     blur: geoLayerBlurStyle,
-    hover: geoLayerHoverStyle
+    hover: geoLayerHoverStyle,
   });
 
   // The `extra` parameter is an object with properties that are not returned in a geojson call
@@ -84,25 +84,25 @@ function MapIt({
     (areaKeys, areas) => {
       return fetch(
         `${url}/areas/${areaKeys}.geojson?simplify_tolerance=${tolerance}`
-      ).then(geoRes => {
+      ).then((geoRes) => {
         if (!geoRes.ok) return Promise.reject();
         return geoRes.json().then(({ features }) => {
           return {
-            type: 'FeatureCollection',
+            type: "FeatureCollection",
             features: features
-              ? features.map(feature => {
+              ? features.map((feature) => {
                   const areaInfo = areas.find(
-                    area => area.name === feature.properties.name
+                    (area) => area.name === feature.properties.name
                   );
                   return {
                     ...feature,
                     properties: {
                       ...feature.properties,
-                      ...areaInfo
-                    }
+                      ...areaInfo,
+                    },
                   };
                 })
-              : []
+              : [],
           };
         });
       });
@@ -121,14 +121,14 @@ function MapIt({
     // geo_level do not always match to mapit area type
     // AFR geo_level are level1_TZ_001 while mapit area type are specific ie PROVINCE, REGION, COUNTY
     // Using the geoid (geoLevel-geoCode) we will first request mapit api to give us=> mapit type of a specific geo
-    return fetchMapitArea().then(area => {
+    return fetchMapitArea().then((area) => {
       const { country, type } = area;
       return fetch(
         `${url}/areas/${type}?generation=${generation}&country=${country}`
-      ).then(areaRes => {
+      ).then((areaRes) => {
         if (!areaRes.ok) return Promise.reject();
 
-        return areaRes.json().then(data => {
+        return areaRes.json().then((data) => {
           const areaKeys = Object.keys(data).join();
 
           return fetchGeoJson(areaKeys, Object.values(data));
@@ -138,19 +138,19 @@ function MapIt({
   }, [fetchMapitArea, fetchGeoJson, generation, url]);
 
   const loadGeometryForChildLevel = useCallback(
-    areaId => {
-      return fetch(`${url}/area/${areaId}/children`).then(areasRes => {
+    (areaId) => {
+      return fetch(`${url}/area/${areaId}/children`).then((areasRes) => {
         if (!areasRes.ok) return Promise.reject();
 
-        return areasRes.json().then(data => {
+        return areasRes.json().then((data) => {
           let areaData = data;
           if (
             filterCountriesMemoized.length > 0 &&
             !drawProfile &&
-            geoLevel === 'continent'
+            geoLevel === "continent"
           ) {
             areaData = Object.entries(data)
-              .filter(area => {
+              .filter((area) => {
                 return filterCountriesMemoized.includes(area[1].country);
               })
               .reduce((accum, [k, v]) => {
@@ -177,17 +177,17 @@ function MapIt({
     // but not all child levels are supposed to be drawn (i.e mapit has ethiopia as child of continent but we don't have dominion ethiopia)
     // so in this case we will filter using loadCountrries
     if (drawProfile) {
-      loadGeometryForLevel().then(featureCollection => {
+      loadGeometryForLevel().then((featureCollection) => {
         if (drawChildren) {
-          fetchMapitArea().then(area => {
+          fetchMapitArea().then((area) => {
             loadGeometryForChildLevel(area.id).then(
-              childrenFeatureCollection => {
+              (childrenFeatureCollection) => {
                 setFeaturesToDraw({
-                  type: 'FeatureCollection',
+                  type: "FeatureCollection",
                   features: [
                     ...featureCollection.features,
-                    ...childrenFeatureCollection.features
-                  ]
+                    ...childrenFeatureCollection.features,
+                  ],
                 });
               }
             );
@@ -197,9 +197,9 @@ function MapIt({
         }
       });
     } else {
-      fetchMapitArea().then(area => {
+      fetchMapitArea().then((area) => {
         return loadGeometryForChildLevel(area.id).then(
-          childrenFeatureCollection => {
+          (childrenFeatureCollection) => {
             setFeaturesToDraw(childrenFeatureCollection);
           }
         );
@@ -210,7 +210,7 @@ function MapIt({
     drawProfile,
     loadGeometryForLevel,
     fetchMapitArea,
-    loadGeometryForChildLevel
+    loadGeometryForChildLevel,
   ]);
 
   /**
@@ -228,13 +228,13 @@ function MapIt({
         zoomControl: false,
         center: [0, 0],
         zoom,
-        ...leafletPropsMemoized
+        ...leafletPropsMemoized,
       });
 
       if (mapRef.current.dragging) {
         mapRef.current.addControl(
           new leaflet.Control.Zoom({
-            position: 'bottomright'
+            position: "bottomright",
           })
         );
       }
@@ -243,7 +243,7 @@ function MapIt({
     const map = mapRef.current;
 
     // Clear layers
-    map.eachLayer(layer => {
+    map.eachLayer((layer) => {
       map.removeLayer(layer);
     });
 
@@ -252,9 +252,9 @@ function MapIt({
     } else {
       leaflet
         .tileLayer(
-          'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+          "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
           {
-            attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+            attribution: "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ",
           }
         )
         .addTo(map);
@@ -266,26 +266,26 @@ function MapIt({
           if (
             drawProfile &&
             `${geoLevel}-${geoCode}` ===
-              feature.properties.codes[codeType || 'AFR']
+              feature.properties.codes[codeType || "AFR"]
           ) {
             layer.setStyle(geoLayerStyles.focus);
             map.fitBounds(layer.getBounds());
           } else {
-            layer.bindTooltip(feature.properties.name, { direction: 'auto' });
-            layer.on('mouseover', () => {
+            layer.bindTooltip(feature.properties.name, { direction: "auto" });
+            layer.on("mouseover", () => {
               layer.setStyle(geoLayerStyles.hover);
             });
-            layer.on('mouseout', () => {
+            layer.on("mouseout", () => {
               layer.setStyle(geoLayerStyles.blur);
             });
-            layer.on('click', () => {
+            layer.on("click", () => {
               if (onClickGeoLayer) {
                 onClickGeoLayer(feature.properties);
               }
             });
             layer.setStyle(geoLayerStyles.blur);
           }
-        }
+        },
       })
       .addTo(map);
 
@@ -303,12 +303,12 @@ function MapIt({
     codeType,
     geoLayerStyles,
     onClickGeoLayer,
-    leafletPropsMemoized
+    leafletPropsMemoized,
   ]);
   const classes = useStyles();
 
   return (
-    <div className={classes.root} style={{ width, height, overflow: 'hidden' }}>
+    <div className={classes.root} style={{ width, height, overflow: "hidden" }}>
       {!featuresToDraw && (
         <div className={classes.overlay}>
           <BlockLoader loading />
@@ -317,7 +317,7 @@ function MapIt({
       <div
         id={mapId}
         className={classes.map}
-        style={{ display: !featuresToDraw ? 'hidden' : 'block' }}
+        style={{ display: !featuresToDraw ? "hidden" : "block" }}
       />
     </div>
   );
@@ -341,12 +341,12 @@ MapIt.propTypes = {
   geoLayerFocusStyle: PropTypes.shape({}),
   geoLayerBlurStyle: PropTypes.shape({}),
   geoLayerHoverStyle: PropTypes.shape({}),
-  onClickGeoLayer: PropTypes.func
+  onClickGeoLayer: PropTypes.func,
 };
 
 MapIt.defaultProps = {
-  width: '100%',
-  height: '100%',
+  width: "100%",
+  height: "100%",
   id: undefined,
   url: undefined,
   tolerance: undefined,
@@ -362,7 +362,7 @@ MapIt.defaultProps = {
   geoLayerFocusStyle: undefined,
   geoLayerBlurStyle: undefined,
   geoLayerHoverStyle: undefined,
-  onClickGeoLayer: undefined
+  onClickGeoLayer: undefined,
 };
 
 export default MapIt;

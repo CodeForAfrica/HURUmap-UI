@@ -1,17 +1,17 @@
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
+import React, { useMemo } from "react";
+import PropTypes from "prop-types";
 
-import { Helpers, VictoryAxis, VictoryBar, VictoryGroup } from 'victory';
+import { Helpers, VictoryAxis, VictoryBar, VictoryGroup } from "victory";
 
-import { computeMaxLabelDimension } from '../WrapLabel/wrapSVGText';
+import { computeMaxLabelDimension } from "../WrapLabel/wrapSVGText";
 
-import { extractLegendData, getLegendProps } from '../utils';
-import propTypes from '../propTypes';
-import withVictoryTheme from '../styles/withVictoryTheme';
-import BarLabel from './BarLabel';
-import Chart, { toChartAxisProps } from '../Chart';
-import WrapLabel from '../WrapLabel';
-import Legend from '../Legend';
+import { extractLegendData, getLegendProps } from "../utils";
+import propTypes from "../propTypes";
+import withVictoryTheme from "../styles/withVictoryTheme";
+import BarLabel from "./BarLabel";
+import Chart, { toChartAxisProps } from "../Chart";
+import WrapLabel from "../WrapLabel";
+import Legend from "../Legend";
 
 function BarChart({
   barWidth,
@@ -33,7 +33,7 @@ function BarChart({
   const {
     bar: chart,
     group: groupChart,
-    axis: { labelWidth: themeLabelWidth }
+    axis: { labelWidth: themeLabelWidth },
   } = theme;
 
   const groupData = useMemo(
@@ -56,7 +56,7 @@ function BarChart({
       computeMaxLabelDimension({
         labelWidth,
         horizontal,
-        texts: groupData.reduce((a, b) => a.concat(b.map(({ x }) => x)), [])
+        texts: groupData.reduce((a, b) => a.concat(b.map(({ x }) => x)), []),
       }),
     [labelWidth, propMaxLabelDimension, horizontal, groupData]
   );
@@ -76,10 +76,10 @@ function BarChart({
   const { tickFormat: propTickFormat } = axisProps.independent || {};
   const tickFormat =
     propTickFormat ||
-    (tick => {
-      let tickLabel = '';
-      groupData.find(dE =>
-        dE.find(gE => {
+    ((tick) => {
+      let tickLabel = "";
+      groupData.find((dE) =>
+        dE.find((gE) => {
           if (gE.x === tick) {
             tickLabel = gE.x.toString();
             return true;
@@ -94,12 +94,12 @@ function BarChart({
     padding:
       suggestedPadding ||
       (parts && parts.parent && parts.parent.padding) ||
-      chart.padding
+      chart.padding,
   });
 
   const initialLegendProps = {
     ...chart.legend,
-    colorScale
+    colorScale,
   };
   const { padding, legend } = getLegendProps(
     { height, width },
@@ -124,16 +124,16 @@ function BarChart({
     theme,
     width,
     ...(parts && parts.parent),
-    padding
+    padding,
   };
 
-  const numberFormatter = new Intl.NumberFormat('en-GB');
+  const numberFormatter = new Intl.NumberFormat("en-GB");
 
   return (
     <Chart {...chartProps}>
       <VictoryAxis
         dependentAxis
-        orientation={horizontal ? 'bottom' : 'right'}
+        orientation={horizontal ? "bottom" : "right"}
         {...axisProps.dependent}
       />
 
@@ -144,8 +144,8 @@ function BarChart({
             data={data}
             key={data.toString()}
             labels={({ datum }) =>
-              typeof datum.y !== 'number'
-                ? 'N/A'
+              typeof datum.y !== "number"
+                ? "N/A"
                 : numberFormatter.format(datum.y)
             }
             labelComponent={
@@ -153,7 +153,7 @@ function BarChart({
                 tooltipProps={{
                   ...tooltipProps,
                   data,
-                  style: { ...tooltipProps.style, fill: colorScale[i] }
+                  style: { ...tooltipProps.style, fill: colorScale[i] },
                 }}
                 theme={theme}
               />
@@ -178,7 +178,7 @@ BarChart.propTypes = {
   barWidth: PropTypes.number,
   maxLabelDimension: PropTypes.shape({
     maxLabelWidth: PropTypes.number,
-    maxLabelHeight: PropTypes.number
+    maxLabelHeight: PropTypes.number,
   }),
   labelWidth: PropTypes.number,
   domain: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
@@ -192,13 +192,13 @@ BarChart.propTypes = {
     group: PropTypes.shape({}),
     legend: PropTypes.shape({}),
     parent: PropTypes.shape({
-      padding: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})])
+      padding: PropTypes.oneOfType([PropTypes.number, PropTypes.shape({})]),
     }),
-    tooltip: PropTypes.shape({})
+    tooltip: PropTypes.shape({}),
   }),
   responsive: PropTypes.bool,
   theme: propTypes.theme,
-  width: PropTypes.number
+  width: PropTypes.number,
 };
 
 BarChart.defaultProps = {
@@ -215,7 +215,7 @@ BarChart.defaultProps = {
   parts: undefined,
   responsive: true,
   theme: undefined,
-  width: undefined
+  width: undefined,
 };
 
 export default withVictoryTheme(BarChart);

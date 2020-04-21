@@ -1,47 +1,47 @@
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useRef, useState, useMemo } from "react";
 
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import AddIcon from '@material-ui/icons/Add';
-import MinimizeIcon from '@material-ui/icons/Remove';
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import AddIcon from "@material-ui/icons/Add";
+import MinimizeIcon from "@material-ui/icons/Remove";
 
-import classNames from 'classnames';
-import { Link } from '@material-ui/core';
+import classNames from "classnames";
+import { Link } from "@material-ui/core";
 
 import {
   domToPng,
   DOWNLOAD_HIDDEN_CLASSNAME,
-  isDowloadHiddenElement
-} from '../utils';
-import propTypes from '../propTypes';
-import ActionsModal, { EMBED_TAB, SHARE_TAB } from '../ActionsModal';
-import SnippetButton from './Button';
-import SnippetActions from './Actions';
-import ContentLoader from '../ContentLoader';
-import makeStyles from '../makeStyles';
+  isDowloadHiddenElement,
+} from "../utils";
+import propTypes from "../propTypes";
+import ActionsModal, { EMBED_TAB, SHARE_TAB } from "../ActionsModal";
+import SnippetButton from "./Button";
+import SnippetActions from "./Actions";
+import ContentLoader from "../ContentLoader";
+import makeStyles from "../makeStyles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: ({ expand, width }) => ({
     borderTop: `2px solid ${theme.palette.primary.main}`,
-    position: 'relative',
-    backgroundColor: 'whitesmoke',
-    width: expand ? '100%' : width || 500,
-    height: 'auto',
+    position: "relative",
+    backgroundColor: "whitesmoke",
+    width: expand ? "100%" : width || 500,
+    height: "auto",
     padding: 20,
-    '& img': {
-      maxWidth: '100%',
-      objectFit: 'cover'
-    }
+    "& img": {
+      maxWidth: "100%",
+      objectFit: "cover",
+    },
   }),
   actionsRoot: {
-    justifyContent: 'flex-end',
-    width: '5rem'
+    justifyContent: "flex-end",
+    width: "5rem",
   },
   cardButton: {},
   title: {
-    fontSize: '1.25rem',
-    fontWeight: 'bold'
-  }
+    fontSize: "1.25rem",
+    fontWeight: "bold",
+  },
 }));
 
 function Snippet({
@@ -60,9 +60,9 @@ function Snippet({
 
   const [expand, setExpand] = useState(false);
   const classes = useStyles({
-    width: fullWidth ? '100%' : width,
+    width: fullWidth ? "100%" : width,
     expand,
-    ...props
+    ...props,
   });
 
   const [activeTab, setActiveTab] = useState(SHARE_TAB);
@@ -71,19 +71,19 @@ function Snippet({
   const defaultShareURL = useMemo(() => {
     const { origin, pathname, search, hash } = window ? window.location : {};
     const searchParams = new URLSearchParams(search);
-    searchParams.append('indicatorId', id);
+    searchParams.append("indicatorId", id);
     const query = searchParams.toString();
 
-    return `${origin}${pathname}${query ? `?${query}` : ''}${hash}`;
+    return `${origin}${pathname}${query ? `?${query}` : ""}${hash}`;
   }, [id]);
 
   const { onDownload: onDownloadProp } = download || {};
   const onDownload = () =>
     domToPng(cardRef.current, { filter: isDowloadHiddenElement }).then(
       onDownloadProp ||
-        (dataUrl => {
+        ((dataUrl) => {
           if (dataUrl) {
-            const a = document.createElement('a');
+            const a = document.createElement("a");
             a.download = `${id}.png`;
             a.href = dataUrl;
 
@@ -94,7 +94,7 @@ function Snippet({
         })
     );
 
-  const showActionsModal = tab => {
+  const showActionsModal = (tab) => {
     setActiveTab(tab);
     setModalOpen(true);
   };
@@ -129,10 +129,10 @@ function Snippet({
                   <>
                     <SnippetActions
                       classes={{
-                        root: classes.actionsRoot
+                        root: classes.actionsRoot,
                       }}
-                      onEmbed={e => showActionsModal(EMBED_TAB, e)}
-                      onShare={e => showActionsModal(SHARE_TAB, e)}
+                      onEmbed={(e) => showActionsModal(EMBED_TAB, e)}
+                      onShare={(e) => showActionsModal(SHARE_TAB, e)}
                     />
                     <ActionsModal
                       id={id}
@@ -153,7 +153,7 @@ function Snippet({
                         shareSubtitle: classes.shareSubtitle,
                         shareTitle: classes.shareTitle,
                         shareUrl: classes.shareUrl,
-                        shareUrlContainer: classes.shareUrlContainer
+                        shareUrlContainer: classes.shareUrlContainer,
                       }}
                     />
                   </>
@@ -167,13 +167,13 @@ function Snippet({
               dangerouslySetInnerHTML={{
                 __html: expand
                   ? post.content
-                  : post.content.split('<p><!--more--></p>')[0]
+                  : post.content.split("<p><!--more--></p>")[0],
               }}
             />
           </Grid>
         </Grid>
 
-        {!link && post.content.includes('<p><!--more--></p>') && (
+        {!link && post.content.includes("<p><!--more--></p>") && (
           <Grid item className={DOWNLOAD_HIDDEN_CLASSNAME}>
             <SnippetButton
               onClick={() => {
@@ -229,12 +229,12 @@ Snippet.propTypes = {
   download: propTypes.shape({
     onDownload: propTypes.func,
     subtitle: propTypes.string,
-    title: propTypes.string
+    title: propTypes.string,
   }),
   embed: propTypes.shape({
     title: propTypes.string.isRequired,
     subtitle: propTypes.string,
-    code: propTypes.string
+    code: propTypes.string,
   }),
   fullWidth: propTypes.bool,
   id: propTypes.oneOfType([propTypes.number, propTypes.string]).isRequired,
@@ -245,44 +245,44 @@ Snippet.propTypes = {
     /**
      * Content will be split at `<p><!--more--></p>` for read more.
      */
-    content: propTypes.string
+    content: propTypes.string,
   }),
   width: propTypes.oneOfType([propTypes.number, propTypes.string]),
   share: propTypes.shape({
     email: propTypes.shape({
       subject: propTypes.string,
       body: propTypes.string,
-      separator: propTypes.string
+      separator: propTypes.string,
     }),
     facebook: propTypes.shape({
       url: propTypes.string,
       quote: propTypes.string,
-      hashtag: propTypes.string
+      hashtag: propTypes.string,
     }),
     shareIcon: propTypes.shape({
       round: propTypes.bool,
-      size: propTypes.number
+      size: propTypes.number,
     }),
     twitter: propTypes.shape({
       url: propTypes.string,
       title: propTypes.string,
-      hashtags: propTypes.string
+      hashtags: propTypes.string,
     }),
-    url: propTypes.string
-  })
+    url: propTypes.string,
+  }),
 };
 
 Snippet.defaultProps = {
   download: {
-    subtitle: 'For offline viewing or using it in print media.',
-    title: 'Download this as an image'
+    subtitle: "For offline viewing or using it in print media.",
+    title: "Download this as an image",
   },
   embed: {
-    title: 'Embed this by',
+    title: "Embed this by",
     subtitle:
-      'Copying the code below and pasting it into your own CMS or HTML.',
+      "Copying the code below and pasting it into your own CMS or HTML.",
     code: `<iframe title="" src="" />
-<script src="https://dashboard.takwimu.africa/wp-content/themes/hurumap/assets/js/hurumap-iframe-handler.js" />`
+<script src="https://dashboard.takwimu.africa/wp-content/themes/hurumap/assets/js/hurumap-iframe-handler.js" />`,
   },
   fullWidth: false,
   onExpand: undefined,
@@ -291,8 +291,8 @@ Snippet.defaultProps = {
   width: undefined,
   share: {
     facebook: {},
-    twitter: {}
-  }
+    twitter: {},
+  },
 };
 
 export default Snippet;

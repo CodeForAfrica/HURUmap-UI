@@ -1,4 +1,4 @@
-import { pickBy } from 'lodash';
+import { pickBy } from "lodash";
 
 import {
   TITLE,
@@ -26,14 +26,14 @@ import {
   SRC,
   BLOCK_ID,
   WIDGET,
-  LAYOUT
-} from './attributes';
+  LAYOUT,
+} from "./attributes";
 
 export const TYPES = {
-  HURUMAP_CARD: 'hurumap-card',
-  HURUMAP_CHART: 'indicator-hurumap',
-  FLOURISH_CHART: 'indicator-flourish',
-  INDICATOR_WIDGET: 'indicator-block'
+  HURUMAP_CARD: "hurumap-card",
+  HURUMAP_CHART: "indicator-hurumap",
+  FLOURISH_CHART: "indicator-flourish",
+  INDICATOR_WIDGET: "indicator-block",
 };
 
 export function dataProps(
@@ -59,7 +59,7 @@ export function dataProps(
     sourceTitle,
     blockId,
     src,
-    widget
+    widget,
   }
 ) {
   /**
@@ -74,7 +74,7 @@ export function dataProps(
         width:
           chartWidth ||
           cardWidth ||
-          (type === TYPES.FLOURISH_CHART ? '100%' : undefined)
+          (type === TYPES.FLOURISH_CHART ? "100%" : undefined),
       },
       [POST_ID]: chartId || postId,
       [POST_TYPE]: postType,
@@ -94,9 +94,9 @@ export function dataProps(
       [SOURCE_TITLE]: sourceTitle,
       [WIDGET]: widget,
       [BLOCK_ID]: blockId,
-      [SRC]: src
+      [SRC]: src,
     },
-    v => v !== undefined && v !== null
+    (v) => v !== undefined && v !== null
   );
 }
 
@@ -120,7 +120,7 @@ export function deprecatedProps(
     showStatVisual,
     postId,
     postType,
-    widget
+    widget,
   }
 ) {
   /**
@@ -138,9 +138,9 @@ export function deprecatedProps(
           width:
             chartWidth ||
             cardWidth ||
-            (type === TYPES.FLOURISH_CHART ? '100%' : undefined)
+            (type === TYPES.FLOURISH_CHART ? "100%" : undefined),
         },
-        v => v !== undefined && v !== null
+        (v) => v !== undefined && v !== null
       ),
       [CHART_ID]: chartId,
       [CHART_TITLE]: title,
@@ -158,8 +158,8 @@ export function deprecatedProps(
       [DATA_GEOID]: type === TYPES.HURUMAP_CHART ? dataGeoId : undefined,
       [DATA_GEO_ID]: type === TYPES.FLOURISH_CHART ? dataGeoId : undefined,
       [WIDTH]: chartWidth || cardWidth,
-      [LAYOUT]: widget
+      [LAYOUT]: widget,
     },
-    v => v !== undefined && v !== null
+    (v) => v !== undefined && v !== null
   );
 }

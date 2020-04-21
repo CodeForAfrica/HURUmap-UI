@@ -1,13 +1,13 @@
 // Sum the actual y value and not the calculated y
-const sum = data =>
+const sum = (data) =>
   data.reduce((a, b) => a + (b.actualY !== undefined ? b.actualY : b.y), 0);
 const aggregateFunc = {
   sum,
-  avg: data => sum(data) / data.length
+  avg: (data) => sum(data) / data.length,
 };
 
 const selectFunc = {
-  max: data =>
+  max: (data) =>
     data.reduce((a, b) =>
       // Compare the actual y value and not the calculated y
       // eslint-disable-next-line no-nested-ternary
@@ -19,7 +19,7 @@ const selectFunc = {
         ? a
         : b
     ),
-  min: data =>
+  min: (data) =>
     data.reduce((a, b) =>
       // Compare the actual y value and not the calculated y
       // eslint-disable-next-line no-nested-ternary
@@ -31,26 +31,26 @@ const selectFunc = {
         ? a
         : b
     ),
-  first: data => data[0],
-  last: data => data[data.length - 1]
+  first: (data) => data[0],
+  last: (data) => data[data.length - 1],
 };
 
-export const isSelectFunc = func => Boolean(selectFunc[func]);
+export const isSelectFunc = (func) => Boolean(selectFunc[func]);
 
 function getGroupId(data) {
   const result = [];
-  Object.keys(data).forEach(property => {
-    if (property.includes('groupBy')) {
+  Object.keys(data).forEach((property) => {
+    if (property.includes("groupBy")) {
       result.push(data[property]);
     }
   });
-  return result.join('_').toLocaleLowerCase();
+  return result.join("_").toLocaleLowerCase();
 }
 
-export const groupData = data => {
+export const groupData = (data) => {
   if (data[0].groupBy) {
-    return [...new Set(data.map(d => getGroupId(d)))].map(groupId =>
-      data.filter(d => getGroupId(d) === groupId)
+    return [...new Set(data.map((d) => getGroupId(d)))].map((groupId) =>
+      data.filter((d) => getGroupId(d) === groupId)
     );
   }
   return [data];
@@ -71,20 +71,20 @@ function aggregate(option, data, unique = true, calcPercent = true) {
   let reducedArray;
   const reduced = {};
 
-  const [func, unit] = option ? option.split(':') : ['', ''];
-  if (!func || func === 'raw') {
+  const [func, unit] = option ? option.split(":") : ["", ""];
+  if (!func || func === "raw") {
     reducedArray = data;
   } else if (unique) {
-    const uniqueX = [...new Set(data.map(d => d.x))];
-    uniqueX.forEach(x => {
+    const uniqueX = [...new Set(data.map((d) => d.x))];
+    uniqueX.forEach((x) => {
       const computedData = computeData(
         func,
-        data.filter(d => d.x === x)
+        data.filter((d) => d.x === x)
       );
       reduced[x] = {
         ...computedData,
         x: selectFunc[func] ? computedData.x : x,
-        y: selectFunc[func] ? computedData.y : computedData
+        y: selectFunc[func] ? computedData.y : computedData,
       };
     });
   } else {
@@ -94,7 +94,7 @@ function aggregate(option, data, unique = true, calcPercent = true) {
       x: selectFunc[func]
         ? computedData.x
         : func[0].toUpperCase() + func.slice(1),
-      y: selectFunc[func] ? computedData.y : computedData
+      y: selectFunc[func] ? computedData.y : computedData,
     };
   }
 
@@ -102,7 +102,7 @@ function aggregate(option, data, unique = true, calcPercent = true) {
     reducedArray = Object.values(reduced);
   }
 
-  if (calcPercent && unit === 'percent') {
+  if (calcPercent && unit === "percent") {
     // Calculate total using tracked groups total or the actual y value
     const total = data.reduce(
       (a, b) => (b.total !== undefined ? a + b.total : a + b.y),
@@ -118,7 +118,7 @@ function aggregate(option, data, unique = true, calcPercent = true) {
       // When we are selecting max of min we need to compare the actualY and not the percentage
       actualY: actualY !== undefined ? actualY : y,
       y: !total ? 0 : (100 * (actualY !== undefined ? actualY : y)) / total,
-      ...d
+      ...d,
     }));
   }
 
@@ -128,12 +128,12 @@ function aggregate(option, data, unique = true, calcPercent = true) {
 export default function aggregateData(option, data, unique) {
   const isGroups = Array.isArray(data[0]);
   if (isGroups) {
-    const func = (option || '').split(':')[0];
+    const func = (option || "").split(":")[0];
 
     // A second pass is needed to look through groups merged as one
-    const aggregateSecondPass = func && func !== 'raw' && !unique;
+    const aggregateSecondPass = func && func !== "raw" && !unique;
 
-    const aggregatedGroup = data.map(gd => aggregate(option, gd, false));
+    const aggregatedGroup = data.map((gd) => aggregate(option, gd, false));
 
     if (aggregateSecondPass) {
       return aggregate(

@@ -1,18 +1,18 @@
 /* eslint-disable react/no-danger */
-import React from 'react';
+import React from "react";
 
-import makeStyles from '../makeStyles';
-import propTypes from '../propTypes';
+import makeStyles from "../makeStyles";
+import propTypes from "../propTypes";
 
-import ChartContainer from './ChartContainer';
+import ChartContainer from "./ChartContainer";
 
 const useStyles = makeStyles({
   iframe: {
-    width: '100%'
+    width: "100%",
   },
   statViz: {
-    display: 'none'
-  }
+    display: "none",
+  },
 });
 
 function FlourishChart({
@@ -48,7 +48,7 @@ function FlourishChart({
       description={description}
       embedCode={embedCode}
       actions={{
-        handleShare
+        handleShare,
       }}
       insightSummary={insightSummary}
       insightTitle={insightTitle}
@@ -66,7 +66,7 @@ function FlourishChart({
         frameBorder="0"
         scrolling="no"
         title={title}
-        src={typeof src === 'string' ? src : src(chartId)}
+        src={typeof src === "string" ? src : src(chartId)}
         className={classes.iframe}
       />
     </ChartContainer>
@@ -89,7 +89,7 @@ FlourishChart.propTypes = {
   analysisLinkCountrySlug: propTypes.string,
   analysisLinkTitle: propTypes.string,
   analysisLinkHref: propTypes.oneOfType([propTypes.string, propTypes.func]),
-  src: propTypes.oneOfType([propTypes.string, propTypes.func]).isRequired
+  src: propTypes.oneOfType([propTypes.string, propTypes.func]).isRequired,
 };
 
 FlourishChart.defaultProps = {
@@ -100,14 +100,14 @@ FlourishChart.defaultProps = {
   showInsight: undefined,
   insightSummary: undefined,
   insightTitle: undefined,
-  embedCode: '',
+  embedCode: "",
   handleShare: () => {},
   dataLinkGeoId: undefined,
   dataLinkTitle: undefined,
-  dataLinkHref: geoId => `/profiles/${geoId}`,
+  dataLinkHref: (geoId) => `/profiles/${geoId}`,
   analysisLinkCountrySlug: undefined,
   analysisLinkTitle: undefined,
-  analysisLinkHref: countrySlug => `/profiles/${countrySlug}`
+  analysisLinkHref: (countrySlug) => `/profiles/${countrySlug}`,
 };
 
 export default FlourishChart;

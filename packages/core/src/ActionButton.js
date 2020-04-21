@@ -1,20 +1,20 @@
-import React from 'react';
-import { PropTypes } from 'prop-types';
+import React from "react";
+import { PropTypes } from "prop-types";
 
-import { IconButton, Grid } from '@material-ui/core';
-import makeStyles from './makeStyles';
+import { IconButton, Grid } from "@material-ui/core";
+import makeStyles from "./makeStyles";
 
 const useStyles = makeStyles({
   actionButton: {
-    borderRadius: '0',
-    '&:hover': {
-      backgroundColor: 'transparent'
+    borderRadius: "0",
+    "&:hover": {
+      backgroundColor: "transparent",
     },
-    padding: '0.5rem'
+    padding: "0.5rem",
   },
   iconGrid: {
-    height: '2.1875rem'
-  }
+    height: "2.1875rem",
+  },
 });
 
 function ActionButton({
@@ -27,8 +27,8 @@ function ActionButton({
   const classes = useStyles({
     classes: {
       actionButton: propClasses.actionButton,
-      iconGrid: propClasses.iconGrid
-    }
+      iconGrid: propClasses.iconGrid,
+    },
   });
   return (
     <IconButton
@@ -58,18 +58,18 @@ ActionButton.propTypes = {
   onClick: PropTypes.func,
   classes: PropTypes.shape({
     actionButton: PropTypes.string,
-    iconGrid: PropTypes.string
+    iconGrid: PropTypes.string,
   }),
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
   ]).isRequired,
   gaEvents: PropTypes.shape({
     gaOn: PropTypes.string,
     gaEventCategory: PropTypes.string,
     gaEventAction: PropTypes.string,
-    gaEventLabel: PropTypes.string
-  })
+    gaEventLabel: PropTypes.string,
+  }),
 };
 
 ActionButton.defaultProps = {
@@ -79,8 +79,8 @@ ActionButton.defaultProps = {
     gaOn: undefined,
     gaEventCategory: undefined,
     gaEventAction: undefined,
-    gaEventLabel: undefined
-  }
+    gaEventLabel: undefined,
+  },
 };
 
 export default ActionButton;

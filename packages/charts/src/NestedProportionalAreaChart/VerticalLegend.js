@@ -1,16 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { VictoryLabel } from 'victory';
+import { VictoryLabel } from "victory";
 
 import {
   dataLabelsStyle,
   referenceDataStyle,
   referenceLabelsStyle,
-  MOBILE_HEIGHT
-} from './ScaledArea';
-import withVictoryTheme from '../styles/withVictoryTheme';
-import propTypes from '../propTypes';
+  MOBILE_HEIGHT,
+} from "./ScaledArea";
+import withVictoryTheme from "../styles/withVictoryTheme";
+import propTypes from "../propTypes";
 
 /**
  *
@@ -20,7 +20,7 @@ function VerticalLegend({
   colorScale,
   data,
   reference,
-  style
+  style,
 }) {
   // For starters, lets assume each data label has 36px height,
   // reference label has 48 px, and there is 10px between labels
@@ -28,7 +28,7 @@ function VerticalLegend({
   // i) Data values are drawn at the top above the figure i.e. from 100px,
   // ---------------------------------------------------------------------
   const {
-    data: [referenceData]
+    data: [referenceData],
   } = reference;
   const x = 0;
 
@@ -78,16 +78,16 @@ VerticalLegend.propTypes = {
   data: propTypes.data,
   reference: propTypes.reference,
   style: PropTypes.shape({
-    labels: PropTypes.shape({})
-  })
+    labels: PropTypes.shape({}),
+  }),
 };
 
 VerticalLegend.defaultProps = {
-  formatNumberForLabel: x => x,
+  formatNumberForLabel: (x) => x,
   colorScale: undefined,
   data: undefined,
   reference: undefined,
-  style: undefined
+  style: undefined,
 };
 
 export default withVictoryTheme(VerticalLegend);

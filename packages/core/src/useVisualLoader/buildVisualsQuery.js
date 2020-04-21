@@ -1,20 +1,20 @@
 // A file that defines needed graphql queries
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export default (visuals, parent) => gql`
 query charts($geoCode: String!, $geoLevel: String!, $countryCode: String!) {
   ${visuals
     .map(
-      visual => `${visual.queryAlias}: ${visual.table} (
+      (visual) => `${visual.queryAlias}: ${visual.table} (
     condition: { geoCode: $geoCode, geoLevel: $geoLevel }
   ) {
     nodes {
       ${
-        visual.label && visual.label[0] === '$'
+        visual.label && visual.label[0] === "$"
           ? `label: ${visual.label.slice(1)}`
-          : ''
+          : ""
       }
-      ${visual.groupBy ? `groupBy: ${visual.groupBy}` : ''}
+      ${visual.groupBy ? `groupBy: ${visual.groupBy}` : ""}
       x: ${visual.x}
       y: ${visual.y}
     }
@@ -33,35 +33,36 @@ query charts($geoCode: String!, $geoLevel: String!, $countryCode: String!) {
   }
   ${
     visual.reference && parent && parent.geoLevel && parent.geoCode
-      ? `${visual.queryAlias}Reference: ${visual.reference.table ||
-          visual.table} (
+      ? `${visual.queryAlias}Reference: ${
+          visual.reference.table || visual.table
+        } (
     condition: ${JSON.stringify(
       visual.reference.condition || {
         geoLevel: parent.geoLevel,
-        geoCode: parent.geoCode
+        geoCode: parent.geoCode,
       }
     )
 
       /**
        * Replace quotes around keys from json stringify
        */
-      .replace(/"([^(")"]+)":/g, '$1:')}
+      .replace(/"([^(")"]+)":/g, "$1:")}
   ) {
     nodes {
       ${
         (visual.reference.label || visual.label) &&
-        (visual.reference.label || visual.label)[0] === '$'
+        (visual.reference.label || visual.label)[0] === "$"
           ? `label: ${(visual.reference.label || visual.label).slice(1)}`
-          : ''
+          : ""
       }
       x: ${visual.reference.x || visual.x}
       y: ${visual.reference.y || visual.y}
     }
   }`
-      : ''
+      : ""
   }
   `
     )
-    .join('')}
+    .join("")}
 }
 `;

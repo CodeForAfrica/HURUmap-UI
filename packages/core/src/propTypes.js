@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 export default {
   ...PropTypes,
   theme: PropTypes.shape({}),
   children: PropTypes.oneOfType([
     PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node)
-  ])
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
 };

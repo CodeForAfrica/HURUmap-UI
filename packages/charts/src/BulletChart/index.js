@@ -1,20 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { labels as defaultLabels } from '../utils';
-import withVictoryTheme from '../styles/withVictoryTheme';
-import BulletBar from './BulletBar';
-import CustomContainer from '../CustomContainer';
-import propTypes from '../propTypes';
+import { labels as defaultLabels } from "../utils";
+import withVictoryTheme from "../styles/withVictoryTheme";
+import BulletBar from "./BulletBar";
+import CustomContainer from "../CustomContainer";
+import propTypes from "../propTypes";
 
 const toOffset = (prop, { offset }) => {
   if (prop) {
-    if (typeof prop === 'number') {
+    if (typeof prop === "number") {
       return { x: prop, y: prop };
     }
     return prop;
   }
-  if (typeof offset === 'number') {
+  if (typeof offset === "number") {
     return { x: offset, y: offset };
   }
 
@@ -35,11 +35,11 @@ function BulletChart({
   reference,
   theme,
   total: totalProp,
-  width
+  width,
 }) {
   const {
     bullet: chart,
-    breakpoints: { sm: mobileBreakpoint }
+    breakpoints: { sm: mobileBreakpoint },
   } = theme;
   if (!data || !chart) {
     return null;
@@ -65,14 +65,14 @@ function BulletChart({
             data={d}
             labels={labels || defaultLabels}
             reference={
-              typeof ref === 'number'
+              typeof ref === "number"
                 ? {
                     style: chart.reference,
-                    data: reference
+                    data: reference,
                   }
                 : {
                     style: reference.style || chart.reference,
-                    data: reference.data
+                    data: reference.data,
                   }
             }
             style={{
@@ -81,8 +81,8 @@ function BulletChart({
                 fill:
                   chart.colorScale[
                     (computedData.length - i - 1) % chart.colorScale.length
-                  ]
-              }
+                  ],
+              },
             }}
             theme={theme}
             total={Array.isArray(total) ? total[i] : total}
@@ -115,7 +115,7 @@ BulletChart.propTypes = {
   reference: PropTypes.oneOfType([propTypes.number, propTypes.singleRefrence]),
   theme: propTypes.theme,
   total: propTypes.number.isRequired,
-  width: PropTypes.number
+  width: PropTypes.number,
 };
 
 BulletChart.defaultProps = {
@@ -126,7 +126,7 @@ BulletChart.defaultProps = {
   offset: undefined,
   reference: undefined,
   theme: undefined,
-  width: undefined
+  width: undefined,
 };
 
 export default withVictoryTheme(BulletChart);

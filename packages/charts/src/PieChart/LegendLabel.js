@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import LegendLabel from '../LegendLabel';
+import LegendLabel from "../LegendLabel";
 
 /**
  * LegendLabel *without* any events is needed for shared events on the pie chart

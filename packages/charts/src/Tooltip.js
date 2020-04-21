@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import { VictoryTooltip, Selection } from 'victory';
+import { VictoryTooltip, Selection } from "victory";
 
 /**
  * Default Tooltip events do not track mouse/touch movement.
@@ -13,55 +13,55 @@ function Tooltip(props) {
   return <VictoryTooltip constrainToVisibleArea {...props} />;
 }
 
-Tooltip.defaultEvents = props => [
+Tooltip.defaultEvents = (props) => [
   {
-    target: 'data',
+    target: "data",
     eventHandlers: {
-      onMouseOver: evt => {
+      onMouseOver: (evt) => {
         const { x, y } = Selection.getSVGEventCoordinates(evt);
         return props.activateData
           ? [
-              { target: 'labels', mutation: () => ({ x, y, active: true }) },
-              { target: 'data', mutation: () => ({ x, y, active: true }) }
+              { target: "labels", mutation: () => ({ x, y, active: true }) },
+              { target: "data", mutation: () => ({ x, y, active: true }) },
             ]
-          : [{ target: 'labels', mutation: () => ({ x, y, active: true }) }];
+          : [{ target: "labels", mutation: () => ({ x, y, active: true }) }];
       },
-      onMouseMove: evt => {
+      onMouseMove: (evt) => {
         const { x, y } = Selection.getSVGEventCoordinates(evt);
         return props.activateData
           ? [
-              { target: 'labels', mutation: () => ({ x, y, active: true }) },
-              { target: 'data', mutation: () => ({ x, y, active: true }) }
+              { target: "labels", mutation: () => ({ x, y, active: true }) },
+              { target: "data", mutation: () => ({ x, y, active: true }) },
             ]
-          : [{ target: 'labels', mutation: () => ({ x, y, active: true }) }];
+          : [{ target: "labels", mutation: () => ({ x, y, active: true }) }];
       },
-      onTouchStart: evt => {
+      onTouchStart: (evt) => {
         const { x, y } = Selection.getSVGEventCoordinates(evt);
         return props.activateData
           ? [
-              { target: 'labels', mutation: () => ({ x, y, active: true }) },
-              { target: 'data', mutation: () => ({ x, y, active: true }) }
+              { target: "labels", mutation: () => ({ x, y, active: true }) },
+              { target: "data", mutation: () => ({ x, y, active: true }) },
             ]
-          : [{ target: 'labels', mutation: () => ({ x, y, active: true }) }];
+          : [{ target: "labels", mutation: () => ({ x, y, active: true }) }];
       },
       onMouseOut: () => {
         return props.activateData
           ? [
-              { target: 'labels', mutation: () => ({ active: undefined }) },
-              { target: 'data', mutation: () => ({ active: undefined }) }
+              { target: "labels", mutation: () => ({ active: undefined }) },
+              { target: "data", mutation: () => ({ active: undefined }) },
             ]
-          : [{ target: 'labels', mutation: () => ({ active: undefined }) }];
+          : [{ target: "labels", mutation: () => ({ active: undefined }) }];
       },
       onTouchEnd: () => {
         return props.activateData
           ? [
-              { target: 'labels', mutation: () => ({ active: undefined }) },
-              { target: 'data', mutation: () => ({ active: undefined }) }
+              { target: "labels", mutation: () => ({ active: undefined }) },
+              { target: "data", mutation: () => ({ active: undefined }) },
             ]
-          : [{ target: 'labels', mutation: () => ({ active: undefined }) }];
-      }
-    }
-  }
+          : [{ target: "labels", mutation: () => ({ active: undefined }) }];
+      },
+    },
+  },
 ];
 
 export default Tooltip;

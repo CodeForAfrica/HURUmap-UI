@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 /**
  * Simple custom container similar to VictoryContainer that should be used with
@@ -13,33 +13,33 @@ function CustomContainer({
   responsive,
   standalone,
   style,
-  width
+  width,
 }) {
   if (!standalone) {
     return children;
   }
 
   const dimensions = responsive
-    ? { width: '100%', height: 'auto' }
+    ? { width: "100%", height: "auto" }
     : { width, height };
   const divStyle = {
-    pointerEvents: 'none',
-    touchAction: 'none',
-    position: 'relative',
-    ...dimensions
+    pointerEvents: "none",
+    touchAction: "none",
+    position: "relative",
+    ...dimensions,
   };
   const svgProps = {
     width,
     height,
     overflow,
-    role: 'img',
-    viewBox: responsive ? `0 0 ${width} ${height}` : undefined
+    role: "img",
+    viewBox: responsive ? `0 0 ${width} ${height}` : undefined,
   };
   // Overflow visible will allow tooltips to not be cut off
   const svgStyle = {
-    pointerEvents: 'all',
-    overflow: 'visible',
-    ...dimensions
+    pointerEvents: "all",
+    overflow: "visible",
+    ...dimensions,
   };
 
   return (
@@ -54,23 +54,23 @@ function CustomContainer({
 CustomContainer.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
   ]).isRequired,
   height: PropTypes.number,
-  overflow: PropTypes.oneOf(['auto', 'hidden', 'scroll', 'visible']),
+  overflow: PropTypes.oneOf(["auto", "hidden", "scroll", "visible"]),
   responsive: PropTypes.bool,
   standalone: PropTypes.bool,
   style: PropTypes.shape({}),
-  width: PropTypes.number
+  width: PropTypes.number,
 };
 
 CustomContainer.defaultProps = {
   height: undefined,
-  overflow: 'visible',
+  overflow: "visible",
   responsive: true,
   standalone: true,
   style: undefined,
-  width: undefined
+  width: undefined,
 };
 
 export default CustomContainer;

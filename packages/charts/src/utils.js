@@ -25,7 +25,7 @@ export function extractLegendData(data) {
       return data;
     }
     // Pick first element from each row of data
-    return data.map(gD => gD[0]);
+    return data.map((gD) => gD[0]);
   }
   return [data];
 }
@@ -41,7 +41,7 @@ export function getLegendProps(
     data: legendDataProp,
     labelWidth,
     legendWidth: preferredLegendWidth,
-    orientation = 'horizontal',
+    orientation = "horizontal",
     ...otherLegendProps
   } = initialLegendProps;
 
@@ -64,7 +64,7 @@ export function getLegendProps(
     return {
       height,
       padding,
-      width
+      width,
     };
   }
 
@@ -72,7 +72,7 @@ export function getLegendProps(
     preferredLegendWidth || width > 0
       ? width - padding.left - padding.right
       : 0;
-  if (['left', 'right'].includes(align)) {
+  if (["left", "right"].includes(align)) {
     legendWidth = preferredLegendWidth || labelWidth;
   }
 
@@ -81,7 +81,7 @@ export function getLegendProps(
   // when orientation is horizontal
   // calculate the items per row
   let itemsPerRow =
-    orientation !== 'vertical'
+    orientation !== "vertical"
       ? Math.floor(legendWidth / labelWidth)
       : legendData.length;
 
@@ -94,11 +94,11 @@ export function getLegendProps(
   // height for 1 row + number of rows + bottom padding
   const legendHeight = 25 * rowCount + 50;
 
-  let legendY = align === 'bottom' ? chartHeight - legendHeight : padding.top;
+  let legendY = align === "bottom" ? chartHeight - legendHeight : padding.top;
 
   switch (align) {
-    case 'left':
-    case 'right': // fall-through
+    case "left":
+    case "right": // fall-through
       chartWidth -= labelWidth;
       legendWidth = labelWidth;
       if (chartHeight < legendHeight) {
@@ -110,18 +110,18 @@ export function getLegendProps(
         padding.top += verticalSpacing / 2;
         legendY += verticalSpacing / 2;
       }
-      if (align === 'left') {
+      if (align === "left") {
         padding.left += labelWidth;
       } else {
         legendX = chartWidth;
         padding.right += labelWidth;
       }
       break;
-    case 'top':
-    case 'bottom': // fall-through
+    case "top":
+    case "bottom": // fall-through
     default:
       // fall-through
-      if (align === 'top') {
+      if (align === "top") {
         padding.top += legendHeight;
       } else {
         padding.bottom += legendHeight;
@@ -140,17 +140,17 @@ export function getLegendProps(
       labelWidth,
       orientation,
       itemsPerRow,
-      ...otherLegendProps
+      ...otherLegendProps,
     },
     padding,
-    width: chartWidth
+    width: chartWidth,
   };
 }
 
 /**
  * Default `labels` function for HURUmap UI
  */
-export const labels = ({ x, y, unit = '' }) => {
-  const formatedX = x ? `${x}: ` : '';
+export const labels = ({ x, y, unit = "" }) => {
+  const formatedX = x ? `${x}: ` : "";
   return `${formatedX}${y}${unit}`;
 };

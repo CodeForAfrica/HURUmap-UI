@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { VictoryChart, VictoryContainer } from 'victory';
+import { VictoryChart, VictoryContainer } from "victory";
 
-import withVictoryTheme from './styles/withVictoryTheme';
-import propTypes from './propTypes';
+import withVictoryTheme from "./styles/withVictoryTheme";
+import propTypes from "./propTypes";
 
-export const toChartAxisProps = prop => {
+export const toChartAxisProps = (prop) => {
   if (!prop) {
     return {};
   }
@@ -35,7 +35,7 @@ function Chart({
         <VictoryContainer
           events={events}
           responsive={responsive}
-          style={{ height: 'auto' }}
+          style={{ height: "auto" }}
         />
       }
       theme={theme}
@@ -49,18 +49,18 @@ function Chart({
 Chart.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
   ]).isRequired,
   events: PropTypes.shape({}),
-  overflow: PropTypes.oneOf(['auto', 'hidden', 'scroll', 'visible']),
+  overflow: PropTypes.oneOf(["auto", "hidden", "scroll", "visible"]),
   responsive: PropTypes.bool,
-  theme: propTypes.theme.isRequired
+  theme: propTypes.theme.isRequired,
 };
 
 Chart.defaultProps = {
   events: undefined,
-  overflow: 'visible',
-  responsive: undefined
+  overflow: "visible",
+  responsive: undefined,
 };
 
 export default withVictoryTheme(Chart);

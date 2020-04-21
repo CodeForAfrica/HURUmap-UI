@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { Link } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Link } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = () => ({});
 
@@ -26,17 +26,17 @@ A.propTypes = {
   ref: PropTypes.func,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
   ]).isRequired,
   href: PropTypes.string.isRequired,
   className: PropTypes.string,
-  variant: PropTypes.string
+  variant: PropTypes.string,
 };
 
 A.defaultProps = {
   ref: undefined,
   className: null,
-  variant: 'inherit'
+  variant: "inherit",
 };
 
 export default withStyles(styles)(A);

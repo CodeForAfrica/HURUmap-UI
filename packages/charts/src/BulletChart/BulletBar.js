@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-import { Border, Rect, Selection, VictoryLabel, VictoryTooltip } from 'victory';
+import { Border, Rect, Selection, VictoryLabel, VictoryTooltip } from "victory";
 
-import propTypes from '../propTypes';
+import propTypes from "../propTypes";
 
 function BulletBar({
   barWidth,
@@ -15,7 +15,7 @@ function BulletBar({
   total,
   width,
   x,
-  y
+  y,
 }) {
   const featuredMeasure = (width * data[0].y) / total;
   const [tooltipProps, setTooltipProps] = useState({});
@@ -50,15 +50,15 @@ function BulletBar({
       <Border
         events={
           qualitativeMeasureProp && {
-            onMouseOver: evt =>
+            onMouseOver: (evt) =>
               activateTooltip(evt, {
-                text: labels(qualitativeMeasure)
+                text: labels(qualitativeMeasure),
               }),
-            onMouseMove: evt =>
+            onMouseMove: (evt) =>
               activateTooltip(evt, {
-                text: labels(qualitativeMeasure)
+                text: labels(qualitativeMeasure),
               }),
-            onMouseOut: () => setTooltipProps({ active: false })
+            onMouseOut: () => setTooltipProps({ active: false }),
           }
         }
         x={x}
@@ -78,15 +78,15 @@ function BulletBar({
       />
       <Border
         events={{
-          onMouseOver: evt =>
+          onMouseOver: (evt) =>
             activateTooltip(evt, {
-              text: labels(data[0])
+              text: labels(data[0]),
             }),
-          onMouseMove: evt =>
+          onMouseMove: (evt) =>
             activateTooltip(evt, {
-              text: labels(data[0])
+              text: labels(data[0]),
             }),
-          onMouseOut: () => setTooltipProps({ active: false })
+          onMouseOut: () => setTooltipProps({ active: false }),
         }}
         x={x}
         y={y - barWidth}
@@ -114,13 +114,13 @@ BulletBar.propTypes = {
   reference: propTypes.singleRefrence,
   style: PropTypes.shape({
     data: PropTypes.shape({}),
-    labels: PropTypes.shape({})
+    labels: PropTypes.shape({}),
   }),
   theme: propTypes.theme,
   total: PropTypes.number.isRequired,
   width: PropTypes.number,
   x: PropTypes.number,
-  y: PropTypes.number
+  y: PropTypes.number,
 };
 
 BulletBar.defaultProps = {
@@ -130,7 +130,7 @@ BulletBar.defaultProps = {
   theme: undefined,
   width: undefined,
   x: undefined,
-  y: undefined
+  y: undefined,
 };
 
 export default BulletBar;

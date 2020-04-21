@@ -1,68 +1,68 @@
-import React, { useRef, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useRef, useState } from "react";
+import PropTypes from "prop-types";
 
-import { ButtonBase, Grid, Typography } from '@material-ui/core';
+import { ButtonBase, Grid, Typography } from "@material-ui/core";
 
-import classNames from 'classnames';
+import classNames from "classnames";
 import {
   domToPng,
   isDowloadHiddenElement,
-  DOWNLOAD_HIDDEN_CLASSNAME
-} from './utils';
+  DOWNLOAD_HIDDEN_CLASSNAME,
+} from "./utils";
 
-import A from './A';
-import BlockLoader from './BlockLoader';
-import EmbedDropDown from './EmbedDropDown';
-import ShareDropDown from './ShareDropDown';
-import TypographyLoader from './TypographyLoader';
+import A from "./A";
+import BlockLoader from "./BlockLoader";
+import EmbedDropDown from "./EmbedDropDown";
+import ShareDropDown from "./ShareDropDown";
+import TypographyLoader from "./TypographyLoader";
 
-import CompareIcon from './assets/icons/compare.svg';
-import DataIcon from './assets/icons/tablet-reader.svg';
-import DownloadIcon from './assets/icons/download.svg';
-import EmbedIcon from './assets/icons/code.svg';
-import ShareIcon from './assets/icons/network-connection.svg';
-import makeStyles from './makeStyles';
+import CompareIcon from "./assets/icons/compare.svg";
+import DataIcon from "./assets/icons/tablet-reader.svg";
+import DownloadIcon from "./assets/icons/download.svg";
+import EmbedIcon from "./assets/icons/code.svg";
+import ShareIcon from "./assets/icons/network-connection.svg";
+import makeStyles from "./makeStyles";
 
-const DOWNLOAD_ONLY_CLASSNAME = 'Download--only';
+const DOWNLOAD_ONLY_CLASSNAME = "Download--only";
 const useStyles = makeStyles(({ breakpoints, palette }) => ({
   root: {
-    backgroundColor: 'transparent'
+    backgroundColor: "transparent",
   },
   containerRoot: {
-    backgroundColor: '#fff',
-    width: 'available'
+    backgroundColor: "#fff",
+    width: "available",
   },
   chart: {
-    margin: '1.5625rem 1.25rem'
+    margin: "1.5625rem 1.25rem",
   },
   content: {
-    padding: '1.25rem 0',
-    overflow: 'hidden'
+    padding: "1.25rem 0",
+    overflow: "hidden",
   },
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   actions: {},
   actionButton: {
-    border: '0.0625rem solid #d8d8d8',
-    marginLeft: '-0.0625rem',
-    height: '2.5rem',
-    width: '2.5rem'
+    border: "0.0625rem solid #d8d8d8",
+    marginLeft: "-0.0625rem",
+    height: "2.5rem",
+    width: "2.5rem",
   },
-  title: props => ({
-    textAlign: props.variant === 'analysis' ? 'center' : 'inherit'
+  title: (props) => ({
+    textAlign: props.variant === "analysis" ? "center" : "inherit",
   }),
-  subtitle: props => ({
-    textAlign: props.variant === 'analysis' ? 'center' : 'inherit'
+  subtitle: (props) => ({
+    textAlign: props.variant === "analysis" ? "center" : "inherit",
   }),
   source: {
-    width: '100%'
+    width: "100%",
   },
   sourceLink: {
-    width: '100%',
-    marginLeft: '50px'
+    width: "100%",
+    marginLeft: "50px",
   },
   embedRoot: {},
   embedTitle: {},
@@ -79,34 +79,34 @@ const useStyles = makeStyles(({ breakpoints, palette }) => ({
   shareDropDownPaper: {},
   attribution: {
     backgroundColor: palette.primary.main,
-    padding: '1.5625rem 1.25rem'
+    padding: "1.5625rem 1.25rem",
   },
   attributionSource: {
-    flex: '1 1 300px',
-    '& span': {
-      color: '#fff'
-    }
+    flex: "1 1 300px",
+    "& span": {
+      color: "#fff",
+    },
   },
   attributionLogo: {
-    '& img': {
-      height: 'auto',
-      maxHeight: '2rem',
-      maxWidth: '300px',
-      width: 'auto'
-    }
+    "& img": {
+      height: "auto",
+      maxHeight: "2rem",
+      maxWidth: "300px",
+      width: "auto",
+    },
   },
   descriptionWrapper: {
-    marginTop: '1.75rem'
+    marginTop: "1.75rem",
   },
   description: {
-    [breakpoints.up('md')]: {
-      display: 'block',
-      width: '62.36%' // golden-ratio
-    }
+    [breakpoints.up("md")]: {
+      display: "block",
+      width: "62.36%", // golden-ratio
+    },
   },
   [DOWNLOAD_ONLY_CLASSNAME]: {
-    display: 'none'
-  }
+    display: "none",
+  },
 }));
 
 function ChartContainer({
@@ -130,13 +130,13 @@ function ChartContainer({
 }) {
   const classes = useStyles(props);
   const { variant } = props;
-  const getReferenceObject = ref => {
+  const getReferenceObject = (ref) => {
     const { current } = ref;
     if (current) {
       return {
         clientHeight: current.clientHeight,
         clientWidth: current.clientWidth,
-        getBoundingClientRect: () => current.getBoundingClientRect()
+        getBoundingClientRect: () => current.getBoundingClientRect(),
       };
     }
     return null;
@@ -150,27 +150,27 @@ function ChartContainer({
   const chartRef = useRef(null);
   const toPng = () => {
     return domToPng(chartRef.current, {
-      filter: node => {
+      filter: (node) => {
         const { classList } = node;
         if (classList) {
           if (
-            typeof node.className === 'string' &&
+            typeof node.className === "string" &&
             node.className.includes(DOWNLOAD_ONLY_CLASSNAME)
           ) {
             const { style: nodeStyle } = node;
-            nodeStyle.display = 'flex';
+            nodeStyle.display = "flex";
           }
 
           return isDowloadHiddenElement(node);
         }
         return true;
-      }
+      },
     });
   };
 
   const handleDownload = (anchorEl, dataUrl) => {
     if (dataUrl) {
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.download = `${title}.png`;
       link.href = dataUrl;
 
@@ -186,7 +186,7 @@ function ChartContainer({
   const embedButtonRef = useRef(null);
   const handleCloseEmbed = () => setEmbedAnchorEl(null);
   const renderEmbedDropDown = () => {
-    return typeof onClickEmbedProp === 'undefined' ? (
+    return typeof onClickEmbedProp === "undefined" ? (
       <EmbedDropDown
         anchorEl={embedAnchorEl}
         onClose={handleCloseEmbed}
@@ -199,7 +199,7 @@ function ChartContainer({
           subtitle: classes.embedSubtitle,
           code: classes.embedCode,
           dropDownRoot: classes.embedDropDownRoot,
-          dropDownPaper: classes.embedDropDownPaper
+          dropDownPaper: classes.embedDropDownPaper,
         }}
       >
         {embed.code}
@@ -211,7 +211,7 @@ function ChartContainer({
   const [shareAnchorEl, setShareAnchorEl] = useState(null);
   const handleCloseShare = () => setShareAnchorEl(null);
   const renderShareDropDown = () => {
-    return typeof onClickShareProp === 'undefined' ? (
+    return typeof onClickShareProp === "undefined" ? (
       <ShareDropDown
         {...share}
         anchorEl={shareAnchorEl}
@@ -222,7 +222,7 @@ function ChartContainer({
           url: classes.shareUrl,
           urlInput: classes.shareUrlInput,
           dropDownRoot: classes.shareDropDownRoot,
-          dropDownPaper: classes.shareDropDownPaper
+          dropDownPaper: classes.shareDropDownPaper,
         }}
         onClose={handleCloseShare}
       >
@@ -233,22 +233,22 @@ function ChartContainer({
 
   const onClickEmbed =
     onClickEmbedProp ||
-    (typeof onClickEmbedProp === 'undefined' &&
-      (anchorEl => {
+    (typeof onClickEmbedProp === "undefined" &&
+      ((anchorEl) => {
         setShareAnchorEl(null);
         setEmbedAnchorEl(anchorEl);
       }));
 
   const onClickShare =
     onClickShareProp ||
-    (typeof onClickShareProp === 'undefined' &&
-      (anchorEl => {
+    (typeof onClickShareProp === "undefined" &&
+      ((anchorEl) => {
         setEmbedAnchorEl(null);
         setShareAnchorEl(anchorEl);
       }));
 
   // eslint-disable-next-line react/prop-types
-  const renderDescription = c =>
+  const renderDescription = (c) =>
     description && (
       <Grid
         container
@@ -270,7 +270,7 @@ function ChartContainer({
         loading={loading}
         loader={{
           primaryOpacity: 0.5,
-          secondaryOpacity: 1
+          secondaryOpacity: 1,
         }}
         className={classes.title}
         variant="body1"
@@ -282,7 +282,7 @@ function ChartContainer({
           loading={loading}
           loader={{
             primaryOpacity: 0.5,
-            secondaryOpacity: 1
+            secondaryOpacity: 1,
           }}
           className={classes.subtitle}
           variant="caption"
@@ -369,7 +369,7 @@ function ChartContainer({
     <div ref={chartRef} className={classes.root}>
       <Grid container className={classes.containerRoot}>
         <Grid item xs={12} container className={classes.chart}>
-          {variant === 'data' && (
+          {variant === "data" && (
             <Grid
               item
               xs={12}
@@ -396,7 +396,7 @@ function ChartContainer({
               </Grid>
             </Grid>
           )}
-          {variant === 'analysis' && (
+          {variant === "analysis" && (
             <Grid
               item
               xs={12}
@@ -421,7 +421,7 @@ function ChartContainer({
             {/* Set width 100% only when loading to allow Chart to define its own width
             otherwise a chart with a small width will scale and look large. */}
             <div
-              style={{ width: loading && '100%', height: '100%' }}
+              style={{ width: loading && "100%", height: "100%" }}
               className={classes.container}
             >
               <BlockLoader loading={loading}>{children}</BlockLoader>
@@ -429,7 +429,7 @@ function ChartContainer({
                 loading={loading}
                 loader={{
                   primaryOpacity: 0.5,
-                  secondaryOpacity: 1
+                  secondaryOpacity: 1,
                 }}
                 component="div"
                 className={`${DOWNLOAD_HIDDEN_CLASSNAME} ${classes.source}`}
@@ -446,7 +446,7 @@ function ChartContainer({
               </TypographyLoader>
             </div>
           </Grid>
-          {variant === 'analysis' && (
+          {variant === "analysis" && (
             <Grid
               item
               xs={12}
@@ -471,7 +471,7 @@ function ChartContainer({
         justify="space-between"
         className={classNames([
           classes.attribution,
-          classes[DOWNLOAD_ONLY_CLASSNAME]
+          classes[DOWNLOAD_ONLY_CLASSNAME],
         ])}
       >
         <Grid item className={classes.attributionSource}>
@@ -490,17 +490,17 @@ function ChartContainer({
 ChartContainer.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
+    PropTypes.node,
   ]).isRequired,
   content: PropTypes.shape({
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+    height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   }),
   description: PropTypes.string,
   embed: PropTypes.shape({
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.string,
-    code: PropTypes.string
+    code: PropTypes.string,
   }),
   loading: PropTypes.bool,
   logo: PropTypes.string,
@@ -513,35 +513,35 @@ ChartContainer.propTypes = {
     email: PropTypes.shape({
       subject: PropTypes.string,
       body: PropTypes.string,
-      separator: PropTypes.string
+      separator: PropTypes.string,
     }),
     facebook: PropTypes.shape({
       url: PropTypes.string,
       quote: PropTypes.string,
-      hashtag: PropTypes.string
+      hashtag: PropTypes.string,
     }),
     shareIcon: PropTypes.shape({
       round: PropTypes.bool,
-      size: PropTypes.number
+      size: PropTypes.number,
     }),
     twitter: PropTypes.shape({
       url: PropTypes.string,
       title: PropTypes.string,
-      hashtags: PropTypes.string
-    })
+      hashtags: PropTypes.string,
+    }),
   }),
   sourceLink: PropTypes.string,
   sourceTitle: PropTypes.string,
   subtitle: PropTypes.string,
   title: PropTypes.string.isRequired,
-  variant: PropTypes.oneOf(['data', 'analysis'])
+  variant: PropTypes.oneOf(["data", "analysis"]),
 };
 
 ChartContainer.defaultProps = {
   embed: {
-    title: 'Embed code for this chart',
+    title: "Embed code for this chart",
     subtitle:
-      'Copy the code below, then paste into your own CMS or HTML. Embedded charts are responsive to your page width, and have been tested in Firefox, Safari, Chrome, and Edge.',
+      "Copy the code below, then paste into your own CMS or HTML. Embedded charts are responsive to your page width, and have been tested in Firefox, Safari, Chrome, and Edge.",
     code: `<iframe
 id="cr-embed-region-11-literacy_and_numeracy_tests-english_test_dist"
 className="census-reporter-embed"
@@ -551,7 +551,7 @@ width="100%"
 height="300"
 style="margin: 1em; max-width: 18.75rem;"
 />
-<script src="https://tanzania.hurumap.org/static/js/embed.chart.make.js" />`
+<script src="https://tanzania.hurumap.org/static/js/embed.chart.make.js" />`,
   },
   description: undefined,
   logo: undefined,
@@ -563,17 +563,17 @@ style="margin: 1em; max-width: 18.75rem;"
   share: {
     // Default to twitter and facebook, sharing window.location.url
     facebook: {},
-    twitter: {}
+    twitter: {},
   },
   sourceLink: undefined,
   sourceTitle: undefined,
   loading: false,
   content: {
-    width: '100%',
-    height: '100%'
+    width: "100%",
+    height: "100%",
   },
   subtitle: undefined,
-  variant: 'data'
+  variant: "data",
 };
 
 export default ChartContainer;
