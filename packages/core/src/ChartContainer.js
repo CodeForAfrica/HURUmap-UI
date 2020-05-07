@@ -113,6 +113,7 @@ function ChartContainer({
   children,
   content,
   embed,
+  groupActionsComponent,
   loading,
   logo,
   onClickCompare,
@@ -383,17 +384,19 @@ function ChartContainer({
                 {titleComponents}
               </Grid>
 
-              <Grid
-                item
-                xs={4}
-                container
-                wrap="nowrap"
-                direction="row"
-                justify="flex-end"
-                className={`${DOWNLOAD_HIDDEN_CLASSNAME} ${classes.actions}`}
-              >
-                {actionComponents}
-              </Grid>
+              { groupActionsComponent? <></> : 
+                <Grid
+                  item
+                  xs={4}
+                  container
+                  wrap="nowrap"
+                  direction="row"
+                  justify="flex-end"
+                  className={`${DOWNLOAD_HIDDEN_CLASSNAME} ${classes.actions}`}
+                >
+                  {actionComponents}
+                </Grid>
+              }
             </Grid>
           )}
           {variant === "analysis" && (
@@ -502,6 +505,7 @@ ChartContainer.propTypes = {
     subtitle: PropTypes.string,
     code: PropTypes.string,
   }),
+  groupActionsComponent: PropTypes.bool,
   loading: PropTypes.bool,
   logo: PropTypes.string,
   onClickCompare: PropTypes.func,
@@ -560,6 +564,7 @@ style="margin: 1em; max-width: 18.75rem;"
   onClickDownload: undefined,
   onClickEmbed: undefined,
   onClickShare: undefined,
+  groupActionsComponent: false,
   share: {
     // Default to twitter and facebook, sharing window.location.url
     facebook: {},
