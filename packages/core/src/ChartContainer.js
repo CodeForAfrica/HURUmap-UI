@@ -14,6 +14,7 @@ import A from "./A";
 import BlockLoader from "./BlockLoader";
 import EmbedDropDown from "./EmbedDropDown";
 import ShareDropDown from "./ShareDropDown";
+import GroupActionsDropDown from "./GroupActionsDropDown";
 import TypographyLoader from "./TypographyLoader";
 
 import CompareIcon from "./assets/icons/compare.svg";
@@ -72,6 +73,10 @@ const useStyles = makeStyles(({ breakpoints, palette }) => ({
   embedDropDownRoot: {},
   embedDropDownPaper: {},
   shareRoot: {},
+  groupActionsRoot: {
+    left: '-15px !important',
+    top: '15px !important',
+  },
   shareTitle: {},
   shareSocial: {},
   shareUrl: {},
@@ -215,12 +220,11 @@ function ChartContainer({
   const handleCloseGroupActions = () => setGroupActionsAnchorEl(null);
   const renderGroupActionsDropDown = () => {
     return typeof onClickGroupActionsProp === "undefined" ? (
-      <ShareDropDown
+      <GroupActionsDropDown
         {...share}
         anchorEl={groupActionsAnchorEl}
         classes={{
-          root: classes.shareRoot,
-          title: classes.shareTitle,
+          root: classes.groupActionsRoot,
           social: classes.shareSocial,
           url: classes.shareUrl,
           urlInput: classes.shareUrlInput,
@@ -230,7 +234,7 @@ function ChartContainer({
         onClose={handleCloseGroupActions}
       >
         Explore Data
-      </ShareDropDown>
+      </GroupActionsDropDown>
     ) : null;
   };
 
@@ -271,7 +275,7 @@ function ChartContainer({
     onClickGroupActionsProp ||
     (typeof onClickGroupActionsProp === "undefined" && (
       (anchorEl) => {
-        setEmbedAnchorEl(anchorEl);
+        setGroupActionsAnchorEl(anchorEl);
       }
     ));
 
@@ -329,6 +333,7 @@ function ChartContainer({
     </>
   );
   const groupActionsComponent = (
+    <>
     <BlockLoader loading={loading} width={40} height={40}>
           <ButtonBase
             className={classes.groupActionsButton}
@@ -338,6 +343,8 @@ function ChartContainer({
             <GroupActionsIcon />
           </ButtonBase>
     </BlockLoader>
+    {renderGroupActionsDropDown()}
+    </>
   );
   const actionComponents = (
     <>
