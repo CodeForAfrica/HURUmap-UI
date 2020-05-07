@@ -439,7 +439,7 @@ function ChartContainer({
                 justify="flex-end"
                 className={`${DOWNLOAD_HIDDEN_CLASSNAME} ${classes.actions}`}
               >
-                {groupActions ? actionComponents: groupActionsComponent }
+                {groupActions ? groupActionsComponent: actionComponents}
               </Grid>
             </Grid>
           )}

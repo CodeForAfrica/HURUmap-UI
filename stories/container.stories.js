@@ -71,6 +71,7 @@ storiesOf("HURUmap UI|ChartContainers/ChartContainer", module)
             <ChartContainer
               logo={logo}
               loading={loading}
+              groupActions={groupActions}
               title={text("title", "Lorem ipsum dolor sit amet.")}
               subtitle={text(
                 "Subtitle",
