@@ -21,6 +21,7 @@ import DataIcon from "./assets/icons/tablet-reader.svg";
 import DownloadIcon from "./assets/icons/download.svg";
 import EmbedIcon from "./assets/icons/code.svg";
 import ShareIcon from "./assets/icons/network-connection.svg";
+import GroupActionsIcon from "./assets/icons/icon-share.svg";
 import makeStyles from "./makeStyles";
 
 const DOWNLOAD_ONLY_CLASSNAME = "Download--only";
@@ -113,13 +114,14 @@ function ChartContainer({
   children,
   content,
   embed,
-  groupActionsComponent,
+  groupActions,
   loading,
   logo,
   onClickCompare,
   onClickData,
   onClickDownload: onClickDownloadProp,
   onClickEmbed: onClickEmbedProp,
+  onClickGroupActions: onClickGroupActionsProp,
   onClickShare: onClickShareProp,
   share,
   sourceLink,
@@ -208,6 +210,30 @@ function ChartContainer({
     ) : null;
   };
 
+  const groupActionsButtonRef = useRef(null);
+  const [groupActionsAnchorEl, setGroupActionsAnchorEl] = useState(null);
+  const handleCloseGroupActions = () => setGroupActionsAnchorEl(null);
+  const renderGroupActionsDropDown = () => {
+    return typeof onClickGroupActionsProp === "undefined" ? (
+      <ShareDropDown
+        {...share}
+        anchorEl={groupActionsAnchorEl}
+        classes={{
+          root: classes.shareRoot,
+          title: classes.shareTitle,
+          social: classes.shareSocial,
+          url: classes.shareUrl,
+          urlInput: classes.shareUrlInput,
+          dropDownRoot: classes.shareDropDownRoot,
+          dropDownPaper: classes.shareDropDownPaper,
+        }}
+        onClose={handleCloseGroupActions}
+      >
+        Explore Data
+      </ShareDropDown>
+    ) : null;
+  };
+
   const shareButtonRef = useRef(null);
   const [shareAnchorEl, setShareAnchorEl] = useState(null);
   const handleCloseShare = () => setShareAnchorEl(null);
@@ -232,13 +258,22 @@ function ChartContainer({
     ) : null;
   };
 
+  
   const onClickEmbed =
-    onClickEmbedProp ||
-    (typeof onClickEmbedProp === "undefined" &&
-      ((anchorEl) => {
-        setShareAnchorEl(null);
+  onClickEmbedProp ||
+  (typeof onClickEmbedProp === "undefined" &&
+  ((anchorEl) => {
+    setShareAnchorEl(null);
+    setEmbedAnchorEl(anchorEl);
+  }));
+
+  const onClickGroupActions = 
+    onClickGroupActionsProp ||
+    (typeof onClickGroupActionsProp === "undefined" && (
+      (anchorEl) => {
         setEmbedAnchorEl(anchorEl);
-      }));
+      }
+    ));
 
   const onClickShare =
     onClickShareProp ||
@@ -292,6 +327,17 @@ function ChartContainer({
         </TypographyLoader>
       )}
     </>
+  );
+  const groupActionsComponent = (
+    <BlockLoader loading={loading} width={40} height={40}>
+          <ButtonBase
+            className={classes.groupActionsButton}
+            onClick={() => onClickGroupActions(getReferenceObject(groupActionsButtonRef))}
+            ref={groupActionsButtonRef}
+          >
+            <GroupActionsIcon />
+          </ButtonBase>
+    </BlockLoader>
   );
   const actionComponents = (
     <>
@@ -384,19 +430,17 @@ function ChartContainer({
                 {titleComponents}
               </Grid>
 
-              { groupActionsComponent? <></> : 
-                <Grid
-                  item
-                  xs={4}
-                  container
-                  wrap="nowrap"
-                  direction="row"
-                  justify="flex-end"
-                  className={`${DOWNLOAD_HIDDEN_CLASSNAME} ${classes.actions}`}
-                >
-                  {actionComponents}
-                </Grid>
-              }
+              <Grid
+                item
+                xs={4}
+                container
+                wrap="nowrap"
+                direction="row"
+                justify="flex-end"
+                className={`${DOWNLOAD_HIDDEN_CLASSNAME} ${classes.actions}`}
+              >
+                {groupActions ? actionComponents: groupActionsComponent }
+              </Grid>
             </Grid>
           )}
           {variant === "analysis" && (
@@ -505,7 +549,7 @@ ChartContainer.propTypes = {
     subtitle: PropTypes.string,
     code: PropTypes.string,
   }),
-  groupActionsComponent: PropTypes.bool,
+  groupActions: PropTypes.bool,
   loading: PropTypes.bool,
   logo: PropTypes.string,
   onClickCompare: PropTypes.func,
@@ -563,8 +607,9 @@ style="margin: 1em; max-width: 18.75rem;"
   onClickData: undefined,
   onClickDownload: undefined,
   onClickEmbed: undefined,
+  onClickGroupActions: undefined,
   onClickShare: undefined,
-  groupActionsComponent: false,
+  groupActions: false,
   share: {
     // Default to twitter and facebook, sharing window.location.url
     facebook: {},
