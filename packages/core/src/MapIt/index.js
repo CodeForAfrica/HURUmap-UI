@@ -324,6 +324,7 @@ function MapIt({
 }
 
 MapIt.propTypes = {
+  colorMap: PropTypes.shape({}),
   id: PropTypes.string,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -347,6 +348,7 @@ MapIt.propTypes = {
 MapIt.defaultProps = {
   width: "100%",
   height: "100%",
+  colorMap: undefined,
   id: undefined,
   url: undefined,
   tolerance: undefined,

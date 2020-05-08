@@ -156,4 +156,42 @@ storiesOf("HURUmap UI|MapIt/Geography", module)
       })}
       onClickGeoLayer={action("onClickGeoLayer")}
     />
+  ))
+  .add("ColourMap", () => (
+    <MapIt
+      height="100vh"
+      colorMap={object("colorMap", {
+        high: '',
+        low: '',
+        medium: '',
+        moderate: '',
+
+      })}
+      tolerance={number("tolerance", 1)}
+      url={text("url", "https://dev.mapit.hurumap.org")}
+      drawChildren={boolean("drawChildren", true)}
+      filterCountries={array("filterCountries", [])}
+      drawProfile={boolean("drawProfile", true)}
+      codeType={text("codeType", "KEN")}
+      geoLevel={text("geoLevel", "county")}
+      geoCode={text("geoCode", "8")}
+      zoom={number("zoom", 6)}
+      center={array("center", [8.7832, 34.5085])}
+      tileLayer={
+        new TileLayer(
+          text(
+            "tileLayer",
+            "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+          )
+        )
+      }
+      geoLayerBlurStyle={object("geoLayerBlurStyle", {
+        color: "#00d",
+        fillColor: "#ccc",
+        weight: 1.0,
+        opacity: 0.3,
+        fillOpacity: 0.3,
+      })}
+      onClickGeoLayer={action("onClickGeoLayer")}
+    />
   ));
