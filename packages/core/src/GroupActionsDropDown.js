@@ -1,47 +1,54 @@
 import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 
-import { ButtonBase, DialogContent, Grid, useMediaQuery, useTheme, TextField } from "@material-ui/core";
-import EmbedDropDown from "./EmbedDropDown";
+import {
+  ButtonBase,
+  DialogContent,
+  Grid,
+  useMediaQuery,
+  useTheme,
+  TextField,
+} from "@material-ui/core";
 
-import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import InstagramIcon from '@material-ui/icons/Instagram';
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
-import LinkIcon from '@material-ui/icons/Link';
-import CodeIcon from '@material-ui/icons/Code';
+import FacebookIcon from "@material-ui/icons/Facebook";
+import TwitterIcon from "@material-ui/icons/Twitter";
+import LinkedInIcon from "@material-ui/icons/LinkedIn";
+import InstagramIcon from "@material-ui/icons/Instagram";
+import SaveAltIcon from "@material-ui/icons/SaveAlt";
+import LinkIcon from "@material-ui/icons/Link";
+import CodeIcon from "@material-ui/icons/Code";
 
 import {
   FacebookShareButton,
   TwitterShareButton,
   LinkedinShareButton,
 } from "react-share";
+import EmbedDropDown from "./EmbedDropDown";
 
 import DropDown from "./DropDown";
 import makeStyles from "./makeStyles";
 
 const useStyles = makeStyles(() => ({
-    arrow: {
-        position: 'absolute',
-        fontSize: 14,
-        right: 0,
-        marginRight: '-1.3rem',
-        height: '3rem',
-        width: '3rem',
-        '&::before': {
-            content: '""',
-            margin: 'auto',
-            display: 'block',
-            width: 0,
-            height: 0,
-            borderStyle: 'solid',
-            borderWidth: '0 0 1rem 1rem',
-            transform: 'rotate(45deg)',
-            borderColor: 'transparent transparent transparent #fff',
-            boxShadow: ' 3px -3px 3px -3px rgba(0, 0, 0, 0.75)',
-        },
+  arrow: {
+    position: "absolute",
+    fontSize: 14,
+    right: 0,
+    marginRight: "-1.3rem",
+    height: "3rem",
+    width: "3rem",
+    "&::before": {
+      content: '""',
+      margin: "auto",
+      display: "block",
+      width: 0,
+      height: 0,
+      borderStyle: "solid",
+      borderWidth: "0 0 1rem 1rem",
+      transform: "rotate(45deg)",
+      borderColor: "transparent transparent transparent #fff",
+      boxShadow: " 3px -3px 3px -3px rgba(0, 0, 0, 0.75)",
     },
+  },
   root: {},
   groupActions: {},
   groupActionSocialIcon: {
@@ -80,9 +87,9 @@ function GroupActionsDropDown({
   url: urlProp,
   ...props
 }) {
-  const classes = useStyles(props); 
+  const classes = useStyles(props);
   const theme = useTheme();
-  const [showLinkText, setShowLinkText ] = useState(false);
+  const [showLinkText, setShowLinkText] = useState(false);
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
   const url = urlProp || window.location.href;
@@ -95,9 +102,9 @@ function GroupActionsDropDown({
 
   const { url: facebookShareUrlProp, ...facebookProps } = twitter || {};
   const facebookShareUrl = facebook && (facebookShareUrlProp || url);
-  
 
-  const onClickGroupActionsDownload = onClickGroupActionsDownloadProp || handleDownload;
+  const onClickGroupActionsDownload =
+    onClickGroupActionsDownloadProp || handleDownload;
   const downloadGroupButtonRef = useRef(null);
 
   const embedGroupButtonRef = useRef(null);
@@ -125,17 +132,24 @@ function GroupActionsDropDown({
   };
 
   const onClickGroupActionsEmbed =
-  onClickGroupActionsEmbed ||
-  (typeof onClickGroupActionsEmbedProp === "undefined" &&
-  ((anchorEl) => {
-    setEmbedGroupAnchorEl(anchorEl);
-  }));
+    onClickGroupActionsEmbed ||
+    (typeof onClickGroupActionsEmbedProp === "undefined" &&
+      ((anchorEl) => {
+        setEmbedGroupAnchorEl(anchorEl);
+      }));
 
-  const [ arrowRef, setArrowRef ] = useState(null);
+  const [arrowRef, setArrowRef] = useState(null);
   const open = typeof openProp === "undefined" ? anchorEl !== null : openProp;
 
-
-  if (!twitter && !facebook && !link && !linkedin && !instagram && !embed && !download ) {
+  if (
+    !twitter &&
+    !facebook &&
+    !link &&
+    !linkedin &&
+    !instagram &&
+    !embed &&
+    !download
+  ) {
     return null;
   }
   return (
@@ -147,144 +161,166 @@ function GroupActionsDropDown({
       placement={placement}
       modifiers={{
         arrow: {
-            enabled: true,
-            element: arrowRef,
-          },
+          enabled: true,
+          element: arrowRef,
+        },
       }}
       {...props}
     >
-    <div>
-      <Grid className={classes.root} container justify="center">
-      {arrow ? <span className={classes.arrow} ref={(node) => setArrowRef(node)} /> : null}
-        <DialogContent>
-          <Grid
-            item
-            container
-            xs={12}
-            className={classes.groupActions}
-            container
-            spacing={2}
-          >
-            {linkedin && (
-             <Grid item>
-              <LinkedinShareButton
-                url={linkedinShareUrl}
-                {...linkedinProps}
-                className={classes.groupActionSocialIcon}
-              >
-                 { linkedin.icon ? 
-                    <>{linkedin.icon}</> 
-                    : <LinkedInIcon fontSize={isDesktop? 'large': 'default'} />
-                 }
-              </LinkedinShareButton>
-              </Grid>
-            )}
-              {instagram && (
-              <Grid item>
-                <ButtonBase
-                    className={classes.groupActionsButton}
-                    {...instagram}
-                >
-                    { instagram.icon ? 
-                    <>{instagram.icon}</> 
-                    : <InstagramIcon fontSize={isDesktop? 'large': 'default'} />
-                    }
-                </ButtonBase>
-              </Grid>
+      <div>
+        <Grid className={classes.root} container justify="center">
+          {arrow ? (
+            <span className={classes.arrow} ref={(node) => setArrowRef(node)} />
+          ) : null}
+          <DialogContent>
+            <Grid
+              item
+              container
+              xs={12}
+              className={classes.groupActions}
+              container
+              spacing={2}
+            >
+              {linkedin && (
+                <Grid item>
+                  <LinkedinShareButton
+                    url={linkedinShareUrl}
+                    {...linkedinProps}
+                    className={classes.groupActionSocialIcon}
+                  >
+                    {linkedin.icon ? (
+                  <>{linkedin.icon}</>
+                    ) : (
+                      <LinkedInIcon
+                        fontSize={isDesktop ? "large" : "default"}
+                      />
+                    )}
+                  </LinkedinShareButton>
+                </Grid>
               )}
-            {twitter && (
-              <Grid item>
-                <TwitterShareButton
+              {instagram && (
+                <Grid item>
+                  <ButtonBase
+                className={classes.groupActionsButton}
+                {...instagram}
+              >
+                {instagram.icon ? (
+                      <>{instagram.icon}</>
+                    ) : (
+                      <InstagramIcon
+                        fontSize={isDesktop ? "large" : "default"}
+                      />
+                    )}
+              </ButtonBase>
+                </Grid>
+              )}
+              {twitter && (
+                <Grid item>
+                  <TwitterShareButton
                     url={twitterShareUrl}
                     {...twitterProps}
                     className={classes.groupActionSocialIcon}
-                >
-                 { twitter.icon ? 
-                    <>{twitter.icon}</> 
-                    : <TwitterIcon fontSize={isDesktop? 'large': 'default'} />
-                    }
-                </TwitterShareButton>
+                  >
+                    {twitter.icon ? (
+                      <>{twitter.icon}</>
+                    ) : (
+                      <TwitterIcon fontSize={isDesktop ? "large" : "default"} />
+                    )}
+                  </TwitterShareButton>
                 </Grid>
-            )}
-            {facebook && (
-              <Grid item>
-                <FacebookShareButton
+              )}
+              {facebook && (
+                <Grid item>
+                  <FacebookShareButton
                     url={facebookShareUrl}
                     {...facebookProps}
                     className={classes.groupActionSocialIcon}
-                >
-                 { facebook.icon ? 
-                    <>{facebook.icon}</> 
-                    :
-                    <FacebookIcon fontSize={isDesktop? 'large': 'default'} />
-                    }
-                </FacebookShareButton>
+                  >
+                    {facebook.icon ? (
+                      <>{facebook.icon}</>
+                    ) : (
+                      <FacebookIcon
+                        fontSize={isDesktop ? "large" : "default"}
+                      />
+                    )}
+                  </FacebookShareButton>
                 </Grid>
-            )}
-            {link && (
-            <Grid item>
-             <ButtonBase
+              )}
+              {link && (
+                <Grid item>
+                  <ButtonBase
                     className={classes.groupActionsButton}
-                    onClick={ link.onClick ? link.onClick : () => setShowLinkText(!showLinkText)}
-                    {...link}
-                >
-                    { link.icon ? 
-                    <>{link.icon}</> 
-                    : <LinkIcon fontSize={isDesktop? 'large': 'default'} />
+                    onClick={
+                      link.onClick
+                        ? link.onClick
+                        : () => setShowLinkText(!showLinkText)
                     }
-                </ButtonBase>
-              </Grid>
-            )}
-            {onClickGroupActionsDownload && download && (
-                <Grid item>
-                    <ButtonBase
-                        className={classes.groupActionsButton}
-                        onClick={() =>
-                            toPng().then(
-                                onClickGroupActionsDownload.bind(
-                                    null,
-                                    getReferenceObject(downloadGroupButtonRef)
-                                    )
-                                    )
-                                }
-                                ref={downloadGroupButtonRef}
-                                >
-                        { download.icon ? 
-                        <>{download.icon}</> 
-                        : <SaveAltIcon fontSize={isDesktop? 'large': 'default'} /> 
-                        }
-                    </ButtonBase>
+                    {...link}
+                  >
+                    {link.icon ? (
+                      <>{link.icon}</>
+                    ) : (
+                      <LinkIcon fontSize={isDesktop ? "large" : "default"} />
+                    )}
+                  </ButtonBase>
                 </Grid>
-            )}
-            {onClickGroupActionsEmbed && embed && (
+              )}
+              {onClickGroupActionsDownload && download && (
                 <Grid item>
-                    <ButtonBase
-                        className={classes.groupActionsButton}
-                        onClick={() => onClickGroupActionsEmbed(getReferenceObject(embedGroupButtonRef))}
-                        ref={embedGroupButtonRef}
-                    >
-                        { embed.icon ? 
-                        <>{embed.icon}</> 
-                        : <CodeIcon fontSize={isDesktop? 'large': 'default'} />
-                        }
-                    </ButtonBase>
+                  <ButtonBase
+                    className={classes.groupActionsButton}
+                    onClick={() =>
+                      toPng().then(
+                        onClickGroupActionsDownload.bind(
+                          null,
+                          getReferenceObject(downloadGroupButtonRef)
+                        )
+                      )
+                    }
+                    ref={downloadGroupButtonRef}
+                  >
+                    {download.icon ? (
+                  <>{download.icon}</>
+                    ) : (
+                      <SaveAltIcon fontSize={isDesktop ? "large" : "default"} />
+                    )}
+                  </ButtonBase>
                 </Grid>
-            )}
-            {renderEmbedDropDown()}
-            {showLinkText && (
+              )}
+              {onClickGroupActionsEmbed && embed && (
+                <Grid item>
+                  <ButtonBase
+                    className={classes.groupActionsButton}
+                    onClick={() =>
+                      onClickGroupActionsEmbed(
+                        getReferenceObject(embedGroupButtonRef)
+                      )
+                    }
+                    ref={embedGroupButtonRef}
+                  >
+                    {embed.icon ? (
+                      <>{embed.icon}</>
+                      ) : (
+                      <CodeIcon fontSize={isDesktop ? "large" : "default"} />
+                    )}
+                  </ButtonBase>
+                </Grid>
+              )}
+              {renderEmbedDropDown()}
+              {showLinkText && (
                 <TextField
-                defaultValue={url}
-                className={classes.groupActionsUrl}
-                InputProps={{
+                  defaultValue={url}
+                  className={classes.groupActionsUrl}
+                  InputProps={{
                     readOnly: true,
                     classes: { root: classes.groupActionsUrlInput },
-                }}
-                variant="outlined"
+                  }}
+                  variant="outlined"
                 />
-             )}
-          </Grid>
-        </DialogContent>
-      </Grid>
+              )}
+            </Grid>
+          </DialogContent>
+        </Grid>
       </div>
     </DropDown>
   );
@@ -298,27 +334,27 @@ GroupActionsDropDown.propTypes = {
     quote: PropTypes.string,
     hashtag: PropTypes.string,
     icon: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-      ]),
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+    ]),
   }),
   embed: PropTypes.shape({
     title: PropTypes.string,
     subtitle: PropTypes.string,
     code: PropTypes.string,
     icon: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-      ]),
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+    ]),
   }),
   facebook: PropTypes.shape({
     url: PropTypes.string,
     quote: PropTypes.string,
     hashtag: PropTypes.string,
     icon: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-      ]),
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+    ]),
   }),
   getReferenceObject: PropTypes.func.isRequired,
   instagram: PropTypes.shape({
@@ -326,9 +362,9 @@ GroupActionsDropDown.propTypes = {
     quote: PropTypes.string,
     hashtag: PropTypes.string,
     icon: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-      ]),
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+    ]),
   }),
   handleDownload: PropTypes.func.isRequired,
   link: PropTypes.shape({
@@ -336,18 +372,18 @@ GroupActionsDropDown.propTypes = {
     quote: PropTypes.string,
     hashtag: PropTypes.string,
     icon: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-      ]),
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+    ]),
   }),
   linkedin: PropTypes.shape({
     url: PropTypes.string,
     quote: PropTypes.string,
     hashtag: PropTypes.string,
     icon: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-      ]),
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+    ]),
   }),
   loading: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
@@ -361,9 +397,9 @@ GroupActionsDropDown.propTypes = {
     title: PropTypes.string,
     hashtags: PropTypes.string,
     icon: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node,
-      ]),
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+    ]),
   }),
   url: PropTypes.string,
 };
@@ -380,7 +416,7 @@ GroupActionsDropDown.defaultProps = {
   onClickGroupActionsDownload: undefined,
   onClickGroupActionsEmbed: undefined,
   open: undefined,
-  placement: 'left',
+  placement: "left",
   twitter: null,
   url: undefined,
 };
