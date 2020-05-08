@@ -579,7 +579,7 @@ ChartContainer.propTypes = {
     code: PropTypes.string,
   }),
   groupIcons: PropTypes.shape({
-    embed: PropTypes.shape({})
+    embed: PropTypes.shape({}),
   }),
   groupActions: PropTypes.bool,
   loading: PropTypes.bool,

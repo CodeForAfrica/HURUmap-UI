@@ -132,10 +132,10 @@ function GroupActionsDropDown({
   };
 
   const onClickGroupActionsEmbed =
-    onClickGroupActionsEmbed ||
+    onClickGroupActionsEmbedProp ||
     (typeof onClickGroupActionsEmbedProp === "undefined" &&
-      ((anchorEl) => {
-        setEmbedGroupAnchorEl(anchorEl);
+      ((el) => {
+        setEmbedGroupAnchorEl(el);
       }));
 
   const [arrowRef, setArrowRef] = useState(null);
@@ -178,7 +178,6 @@ function GroupActionsDropDown({
               container
               xs={12}
               className={classes.groupActions}
-              container
               spacing={2}
             >
               {linkedin && (
@@ -189,7 +188,7 @@ function GroupActionsDropDown({
                     className={classes.groupActionSocialIcon}
                   >
                     {linkedin.icon ? (
-                  <>{linkedin.icon}</>
+                      <>{linkedin.icon}</>
                     ) : (
                       <LinkedInIcon
                         fontSize={isDesktop ? "large" : "default"}
@@ -201,17 +200,17 @@ function GroupActionsDropDown({
               {instagram && (
                 <Grid item>
                   <ButtonBase
-                className={classes.groupActionsButton}
-                {...instagram}
-              >
-                {instagram.icon ? (
+                    className={classes.groupActionsButton}
+                    {...instagram}
+                  >
+                    {instagram.icon ? (
                       <>{instagram.icon}</>
                     ) : (
                       <InstagramIcon
                         fontSize={isDesktop ? "large" : "default"}
                       />
                     )}
-              </ButtonBase>
+                  </ButtonBase>
                 </Grid>
               )}
               {twitter && (
@@ -280,7 +279,7 @@ function GroupActionsDropDown({
                     ref={downloadGroupButtonRef}
                   >
                     {download.icon ? (
-                  <>{download.icon}</>
+                      <>{download.icon}</>
                     ) : (
                       <SaveAltIcon fontSize={isDesktop ? "large" : "default"} />
                     )}
@@ -300,7 +299,7 @@ function GroupActionsDropDown({
                   >
                     {embed.icon ? (
                       <>{embed.icon}</>
-                      ) : (
+                    ) : (
                       <CodeIcon fontSize={isDesktop ? "large" : "default"} />
                     )}
                   </ButtonBase>
@@ -369,8 +368,7 @@ GroupActionsDropDown.propTypes = {
   handleDownload: PropTypes.func.isRequired,
   link: PropTypes.shape({
     url: PropTypes.string,
-    quote: PropTypes.string,
-    hashtag: PropTypes.string,
+    onClick: PropTypes.func,
     icon: PropTypes.oneOfType([
       PropTypes.arrayOf(PropTypes.node),
       PropTypes.node,
