@@ -74,8 +74,8 @@ const useStyles = makeStyles(({ breakpoints, palette }) => ({
   embedDropDownPaper: {},
   shareRoot: {},
   groupActionsRoot: {
-    left: '-15px !important',
-    top: '15px !important',
+    left: '-1rem !important', //to better position the groupActionComponent, changes according to your popper placement & design
+    top: '1rem !important', 
     width: "16rem",
   },
   groupActions: {},
@@ -94,7 +94,7 @@ const useStyles = makeStyles(({ breakpoints, palette }) => ({
   attribution: {
     backgroundColor: palette.primary.main,
     padding: "1.5625rem 1.25rem",
-  },
+  },data
   attributionSource: {
     flex: "1 1 300px",
     "& span": {
