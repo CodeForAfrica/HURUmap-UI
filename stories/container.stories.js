@@ -76,6 +76,7 @@ storiesOf("HURUmap UI|ChartContainers/ChartContainer", module)
                 download: {},
                 embed: {},
                 facebook: {},
+                instagram: {},
                 link: {},
                 linkedin: {},
                 twitter: {},

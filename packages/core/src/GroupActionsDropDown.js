@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 
-import { ButtonBase, DialogContent, Grid, useMediaQuery, useTheme } from "@material-ui/core";
+import { ButtonBase, DialogContent, Grid, useMediaQuery, useTheme, Link } from "@material-ui/core";
 
 import BlockLoader from "./BlockLoader";
 import EmbedDropDown from "./EmbedDropDown";
@@ -82,11 +82,14 @@ function GroupActionsDropDown({
   placement,
   toPng,
   twitter,
+  url: urlProp,
   ...props
 }) {
   const classes = useStyles(props); 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+
+  const url = urlProp || window.location.href;
 
   const onClickGroupActionsDownload = onClickGroupActionsDownloadProp || handleDownload;
   const downloadGroupButtonRef = useRef(null);
@@ -159,92 +162,104 @@ function GroupActionsDropDown({
             {linkedin && (
              <Grid item>
               <LinkedinShareButton
-                url={linkedin.url}
+                url={linkedin.url? linkedin.url : url}
                 className={classes.socialIcon}
               >
-                <LinkedInIcon fontSize={isDesktop? 'large': 'default'} />
+                 { linkedin.icon ? 
+                    <>{linkedin.icon}</> 
+                    : <LinkedInIcon fontSize={isDesktop? 'large': 'default'} />
+                 }
               </LinkedinShareButton>
               </Grid>
             )}
               {instagram && (
               <Grid item>
-                <LinkedinShareButton
-                    url={instagram.url}
-                    className={classes.socialIcon}
+                <ButtonBase
+                    className={classes.groupActionButton}
+                    {...instagram}
                 >
-                    <InstagramIcon fontSize={isDesktop? 'large': 'default'} />
-                </LinkedinShareButton>
+                    { instagram.icon ? 
+                    <>{instagram.icon}</> 
+                    : <InstagramIcon fontSize={isDesktop? 'large': 'default'} />
+                    }
+                </ButtonBase>
               </Grid>
               )}
             {twitter && (
               <Grid item>
-              <TwitterShareButton
-                url={twitter.url}
-                className={classes.socialIcon}
-              >
-                <TwitterIcon fontSize={isDesktop? 'large': 'default'} />
-              </TwitterShareButton>
-            </Grid>
+                <TwitterShareButton
+                    url={twitter.url? twitter.url : url}
+                    className={classes.socialIcon}
+                >
+                 { twitter.icon ? 
+                    <>{twitter.icon}</> 
+                    : <TwitterIcon fontSize={isDesktop? 'large': 'default'} />
+                    }
+                </TwitterShareButton>
+                </Grid>
             )}
             {facebook && (
               <Grid item>
-              <FacebookShareButton
-                url={facebook.url}
-                className={classes.socialIcon}
-              >
-                <FacebookIcon fontSize={isDesktop? 'large': 'default'} />
-              </FacebookShareButton>
-            </Grid>
+                <FacebookShareButton
+                    url={facebook.url? facebook.url : url }
+                    className={classes.socialIcon}
+                >
+                 { facebook.icon ? 
+                    <>{facebook.icon}</> 
+                    :
+                    <FacebookIcon fontSize={isDesktop? 'large': 'default'} />
+                    }
+                </FacebookShareButton>
+                </Grid>
             )}
             {link && (
             <Grid item>
-              <LinkedinShareButton
-                url={link.url}
-                className={classes.socialIcon}
-              >
-                <LinkIcon fontSize={isDesktop? 'large': 'default'} />
-              </LinkedinShareButton>
+             <ButtonBase
+                    className={classes.groupActionButton}
+                    {...link}
+                >
+                    { link.icon ? 
+                    <>{link.icon}</> 
+                    : <LinkIcon fontSize={isDesktop? 'large': 'default'} />
+                    }
+                </ButtonBase>
               </Grid>
             )}
 
 
             {onClickGroupActionsDownload && download && (
                 <Grid item>
-                    <BlockLoader loading={loading} width={40} height={40}>
-                        <ButtonBase
-                            className={classes.groupActionsButton}
-                            onClick={() =>
-                                toPng().then(
-                                    onClickGroupActionsDownload.bind(
-                                        null,
-                                        getReferenceObject(downloadGroupButtonRef)
-                                        )
-                                        )
-                                    }
-                                    ref={downloadGroupButtonRef}
-                                    >
-                            { download.icon ? 
-                            <>{download.icon}</> 
-                            : <SaveAltIcon fontSize={isDesktop? 'large': 'default'} /> 
-                            }
-                        </ButtonBase>
-                    </BlockLoader>
+                    <ButtonBase
+                        className={classes.groupActionsButton}
+                        onClick={() =>
+                            toPng().then(
+                                onClickGroupActionsDownload.bind(
+                                    null,
+                                    getReferenceObject(downloadGroupButtonRef)
+                                    )
+                                    )
+                                }
+                                ref={downloadGroupButtonRef}
+                                >
+                        { download.icon ? 
+                        <>{download.icon}</> 
+                        : <SaveAltIcon fontSize={isDesktop? 'large': 'default'} /> 
+                        }
+                    </ButtonBase>
                 </Grid>
             )}
             {onClickGroupActionsEmbed && embed && (
                 <Grid item>
-                    <BlockLoader loading={loading} width={40} height={40}>
-                        <ButtonBase
-                            className={classes.groupActionButton}
-                            onClick={() => onClickGroupActionsEmbed(getReferenceObject(embedGroupButtonRef))}
-                            ref={embedGroupButtonRef}
-                        >
-                            { embed.icon ? 
-                            <>{embed.icon}</> 
-                            : <CodeIcon fontSize={isDesktop? 'large': 'default'} />
-                            }
-                        </ButtonBase>
-                    </BlockLoader>
+                    <ButtonBase
+                        className={classes.groupActionButton}
+                        onClick={() => onClickGroupActionsEmbed(getReferenceObject(embedGroupButtonRef))}
+                        ref={embedGroupButtonRef}
+                    >
+                        { embed.icon ? 
+                        <>{embed.icon}</> 
+                        : <CodeIcon fontSize={isDesktop? 'large': 'default'} />
+                        }
+                    </ButtonBase>
                 </Grid>
             )}
             {renderEmbedDropDown()}
@@ -331,6 +346,7 @@ GroupActionsDropDown.propTypes = {
         PropTypes.node,
       ]),
   }),
+  url: PropTypes.string,
 };
 
 GroupActionsDropDown.defaultProps = {
@@ -347,6 +363,7 @@ GroupActionsDropDown.defaultProps = {
   open: undefined,
   placement: 'left',
   twitter: null,
+  url: undefined,
 };
 
 export default GroupActionsDropDown;

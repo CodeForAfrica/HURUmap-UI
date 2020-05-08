@@ -642,7 +642,7 @@ style="margin: 1em; max-width: 18.75rem;"
     linkedin: {},
     instagram: {},
     embed: {},
-    share: {},
+    link: {},
     download: {},
   },
   sourceLink: undefined,
