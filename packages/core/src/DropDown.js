@@ -18,8 +18,6 @@ const useStyles = makeStyles(({ breakpoints }) => ({
 function DropDown({ children, onClose, open, transition, ...props }) {
   const classes = useStyles(props);
 
-  console.log(open);
-
   return (
     <Popper open={open} className={classes.root} transition {...props}>
       {({ TransitionProps }) => (
