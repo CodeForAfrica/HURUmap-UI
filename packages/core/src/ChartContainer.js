@@ -78,6 +78,13 @@ const useStyles = makeStyles(({ breakpoints, palette }) => ({
     top: '15px !important',
     width: "16rem",
   },
+  groupActions: {},
+  groupActionsButton: {},
+  groupActionSocialIcon: {},
+  groupActionsDropDownRoot: {},
+  groupActionsDropDownPaper: {},
+  groupActionsUrl: {},
+  groupActionsUrlInput: {},
   shareTitle: {},
   shareSocial: {},
   shareUrl: {},
@@ -231,8 +238,13 @@ function ChartContainer({
         anchorEl={groupActionsAnchorEl}
         classes={{
           root: classes.groupActionsRoot,
-          dropDownRoot: classes.shareDropDownRoot,
-          dropDownPaper: classes.shareDropDownPaper,
+          dropDownRoot: classes.groupActionsDropDownRoot,
+          dropDownPaper: classes.groupActionsDropDownPaper,
+          groupActions: classes.groupActions,
+          groupActionsSocialIcon: classes.groupActionSocialIcon,
+          groupActionsButton: classes.groupActionsButton,
+          groupActionsUrl: classes.groupActionsUrl,
+          groupActionsUrlInput: classes.groupActionsUrlInput
         }}
         getReferenceObject={getReferenceObject}
         handleDownload={handleDownload}

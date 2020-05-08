@@ -1,9 +1,7 @@
 import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 
-import { ButtonBase, DialogContent, Grid, useMediaQuery, useTheme, Link } from "@material-ui/core";
-
-import BlockLoader from "./BlockLoader";
+import { ButtonBase, DialogContent, Grid, useMediaQuery, useTheme, TextField } from "@material-ui/core";
 import EmbedDropDown from "./EmbedDropDown";
 
 import FacebookIcon from '@material-ui/icons/Facebook';
@@ -14,13 +12,10 @@ import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import LinkIcon from '@material-ui/icons/Link';
 import CodeIcon from '@material-ui/icons/Code';
 
-
-
 import {
   FacebookShareButton,
   TwitterShareButton,
   LinkedinShareButton,
-
 } from "react-share";
 
 import DropDown from "./DropDown";
@@ -48,15 +43,15 @@ const useStyles = makeStyles(() => ({
         },
     },
   root: {},
-  social: {},
-  socialIcon: {
+  groupActions: {},
+  groupActionSocialIcon: {
     padding: "0 0.5rem 1.5rem 0.5rem",
   },
-  title: {},
-  url: {
+  groupActionsButton: {},
+  groupActionsUrl: {
     width: "100%",
   },
-  urlInput: {
+  groupActionsUrlInput: {
     fontFamily: "monospace",
   },
   dropDownRoot: {},
@@ -87,9 +82,20 @@ function GroupActionsDropDown({
 }) {
   const classes = useStyles(props); 
   const theme = useTheme();
+  const [showLinkText, setShowLinkText ] = useState(false);
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
   const url = urlProp || window.location.href;
+
+  const { url: linkedinShareUrlProp, ...linkedinProps } = linkedin || {};
+  const linkedinShareUrl = linkedin && (linkedinShareUrlProp || url);
+
+  const { url: twitterShareUrlProp, ...twitterProps } = twitter || {};
+  const twitterShareUrl = twitter && (twitterShareUrlProp || url);
+
+  const { url: facebookShareUrlProp, ...facebookProps } = twitter || {};
+  const facebookShareUrl = facebook && (facebookShareUrlProp || url);
+  
 
   const onClickGroupActionsDownload = onClickGroupActionsDownloadProp || handleDownload;
   const downloadGroupButtonRef = useRef(null);
@@ -148,22 +154,23 @@ function GroupActionsDropDown({
       {...props}
     >
     <div>
-      {arrow ? <span className={classes.arrow} ref={(node) => setArrowRef(node)} /> : null}
       <Grid className={classes.root} container justify="center">
+      {arrow ? <span className={classes.arrow} ref={(node) => setArrowRef(node)} /> : null}
         <DialogContent>
           <Grid
             item
             container
             xs={12}
-            className={classes.social}
+            className={classes.groupActions}
             container
             spacing={2}
           >
             {linkedin && (
              <Grid item>
               <LinkedinShareButton
-                url={linkedin.url? linkedin.url : url}
-                className={classes.socialIcon}
+                url={linkedinShareUrl}
+                {...linkedinProps}
+                className={classes.groupActionSocialIcon}
               >
                  { linkedin.icon ? 
                     <>{linkedin.icon}</> 
@@ -175,7 +182,7 @@ function GroupActionsDropDown({
               {instagram && (
               <Grid item>
                 <ButtonBase
-                    className={classes.groupActionButton}
+                    className={classes.groupActionsButton}
                     {...instagram}
                 >
                     { instagram.icon ? 
@@ -188,8 +195,9 @@ function GroupActionsDropDown({
             {twitter && (
               <Grid item>
                 <TwitterShareButton
-                    url={twitter.url? twitter.url : url}
-                    className={classes.socialIcon}
+                    url={twitterShareUrl}
+                    {...twitterProps}
+                    className={classes.groupActionSocialIcon}
                 >
                  { twitter.icon ? 
                     <>{twitter.icon}</> 
@@ -201,8 +209,9 @@ function GroupActionsDropDown({
             {facebook && (
               <Grid item>
                 <FacebookShareButton
-                    url={facebook.url? facebook.url : url }
-                    className={classes.socialIcon}
+                    url={facebookShareUrl}
+                    {...facebookProps}
+                    className={classes.groupActionSocialIcon}
                 >
                  { facebook.icon ? 
                     <>{facebook.icon}</> 
@@ -215,7 +224,8 @@ function GroupActionsDropDown({
             {link && (
             <Grid item>
              <ButtonBase
-                    className={classes.groupActionButton}
+                    className={classes.groupActionsButton}
+                    onClick={ link.onClick ? link.onClick : () => setShowLinkText(!showLinkText)}
                     {...link}
                 >
                     { link.icon ? 
@@ -225,8 +235,6 @@ function GroupActionsDropDown({
                 </ButtonBase>
               </Grid>
             )}
-
-
             {onClickGroupActionsDownload && download && (
                 <Grid item>
                     <ButtonBase
@@ -251,7 +259,7 @@ function GroupActionsDropDown({
             {onClickGroupActionsEmbed && embed && (
                 <Grid item>
                     <ButtonBase
-                        className={classes.groupActionButton}
+                        className={classes.groupActionsButton}
                         onClick={() => onClickGroupActionsEmbed(getReferenceObject(embedGroupButtonRef))}
                         ref={embedGroupButtonRef}
                     >
@@ -263,6 +271,17 @@ function GroupActionsDropDown({
                 </Grid>
             )}
             {renderEmbedDropDown()}
+            {showLinkText && (
+                <TextField
+                defaultValue={url}
+                className={classes.groupActionsUrl}
+                InputProps={{
+                    readOnly: true,
+                    classes: { root: classes.groupActionsUrlInput },
+                }}
+                variant="outlined"
+                />
+             )}
           </Grid>
         </DialogContent>
       </Grid>
