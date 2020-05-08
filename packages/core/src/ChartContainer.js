@@ -76,6 +76,7 @@ const useStyles = makeStyles(({ breakpoints, palette }) => ({
   groupActionsRoot: {
     left: '-15px !important',
     top: '15px !important',
+    width: "16rem",
   },
   shareTitle: {},
   shareSocial: {},
@@ -120,6 +121,7 @@ function ChartContainer({
   content,
   embed,
   groupActions,
+  groupIcons,
   loading,
   logo,
   onClickCompare,
@@ -127,6 +129,8 @@ function ChartContainer({
   onClickDownload: onClickDownloadProp,
   onClickEmbed: onClickEmbedProp,
   onClickGroupActions: onClickGroupActionsProp,
+  onClickGroupActionsDownload,
+  onClickGroupActionsEmbed,
   onClickShare: onClickShareProp,
   share,
   sourceLink,
@@ -198,7 +202,7 @@ function ChartContainer({
       <EmbedDropDown
         anchorEl={embedAnchorEl}
         onClose={handleCloseEmbed}
-        open={embedAnchorEl === null}
+        open={embedAnchorEl !== null}
         title={embed.title}
         subtitle={embed.subtitle}
         classes={{
@@ -215,26 +219,29 @@ function ChartContainer({
     ) : null;
   };
 
+  const groupIconsProp = { ...groupIcons, embed: { ...embed, ...groupIcons.embed } };
+
   const groupActionsButtonRef = useRef(null);
   const [groupActionsAnchorEl, setGroupActionsAnchorEl] = useState(null);
   const handleCloseGroupActions = () => setGroupActionsAnchorEl(null);
   const renderGroupActionsDropDown = () => {
     return typeof onClickGroupActionsProp === "undefined" ? (
       <GroupActionsDropDown
-        {...share}
+        {...groupIconsProp}
         anchorEl={groupActionsAnchorEl}
         classes={{
           root: classes.groupActionsRoot,
-          social: classes.shareSocial,
-          url: classes.shareUrl,
-          urlInput: classes.shareUrlInput,
           dropDownRoot: classes.shareDropDownRoot,
           dropDownPaper: classes.shareDropDownPaper,
         }}
+        getReferenceObject={getReferenceObject}
+        handleDownload={handleDownload}
+        loading={loading}   
         onClose={handleCloseGroupActions}
-      >
-        Explore Data
-      </GroupActionsDropDown>
+        onClickGroupActionsDownload={onClickGroupActionsDownload}
+        onClickGroupActionsEmbed={onClickGroupActionsEmbed}
+        toPng={toPng}
+      />
     ) : null;
   };
 
@@ -563,6 +570,8 @@ ChartContainer.propTypes = {
   onClickData: PropTypes.func,
   onClickDownload: PropTypes.func,
   onClickEmbed: PropTypes.func,
+  onClickGroupActionsDownload: PropTypes.func,
+  onClickGroupActionsEmbed: PropTypes.func,
   onClickShare: PropTypes.func,
   share: PropTypes.shape({
     email: PropTypes.shape({
@@ -574,6 +583,11 @@ ChartContainer.propTypes = {
       url: PropTypes.string,
       quote: PropTypes.string,
       hashtag: PropTypes.string,
+    }),
+    linkedin: PropTypes.shape({
+      url: PropTypes.string,
+      title: PropTypes.string,
+      hashtags: PropTypes.string,
     }),
     shareIcon: PropTypes.shape({
       round: PropTypes.bool,
@@ -621,6 +635,15 @@ style="margin: 1em; max-width: 18.75rem;"
     // Default to twitter and facebook, sharing window.location.url
     facebook: {},
     twitter: {},
+  },
+  groupIcons: {
+    facebook: {},
+    twitter: {},
+    linkedin: {},
+    instagram: {},
+    embed: {},
+    share: {},
+    download: {},
   },
   sourceLink: undefined,
   sourceTitle: undefined,

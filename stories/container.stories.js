@@ -72,6 +72,14 @@ storiesOf("HURUmap UI|ChartContainers/ChartContainer", module)
               logo={logo}
               loading={loading}
               groupActions={groupActions}
+              groupIcons={object("groupIcons", {
+                download: {},
+                embed: {},
+                facebook: {},
+                link: {},
+                linkedin: {},
+                twitter: {},
+              })}
               title={text("title", "Lorem ipsum dolor sit amet.")}
               subtitle={text(
                 "Subtitle",
