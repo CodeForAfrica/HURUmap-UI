@@ -161,11 +161,11 @@ storiesOf("HURUmap UI|MapIt/Geography", module)
     <MapIt
       height="100vh"
       colorMap={object("colorMap", {
-        high: '',
-        low: '',
-        medium: '',
-        moderate: '',
-
+        veryHigh: '#8ed3a5',
+        hight: '#29a87c',
+        moderate: '#223a07',
+        low: '#7d8c6c',
+        veryLow:'#5bc17d'
       })}
       tolerance={number("tolerance", 1)}
       url={text("url", "https://dev.mapit.hurumap.org")}

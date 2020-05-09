@@ -39,6 +39,7 @@ function MapIt({
   geoCode,
   geoLevel,
   codeType,
+  colorMap,
   filterCountries = ["KE", "ZA"],
   tileLayer,
   geoLayerFocusStyle = {
@@ -263,6 +264,7 @@ function MapIt({
     const geoJsonLayer = leaflet
       .geoJSON(featuresToDraw, {
         onEachFeature: (feature, layer) => {
+          console.log(feature.properties);
           if (
             drawProfile &&
             `${geoLevel}-${geoCode}` ===
