@@ -40,11 +40,12 @@ function MapIt({
   geoLevel,
   codeType,
   indexColor,
+  geoIndexMapping,
   filterCountries = ["KE", "ZA"],
   tileLayer,
   geoLayerFocusStyle = {
     color: "#777",
-    fillColor: "#0F0",
+    fillColor: "#ccc",
     weight: 2,
     opacity: 0.3,
     fillOpacity: 0.5,
@@ -95,16 +96,15 @@ function MapIt({
                   const areaInfo = areas.find(
                     (area) => area.name === feature.properties.name
                   );
-                  const geoIndexInfo = geoIndexMapping.find(
+                  const geoIndexInfo = geoIndexMapping && geoIndexMapping.find(
                     (geoIndex) => `${geoIndex.geoLevel}-${geoIndex.geoCode}` === areaInfo.codes[codeType || "AFR"]);
-
-                  console.log(geoIndexInfo);
 
                   return {
                     ...feature,
                     properties: {
                       ...feature.properties,
                       ...areaInfo,
+                      ...geoIndexInfo
                     },
                   };
                 })
@@ -266,10 +266,22 @@ function MapIt({
         .addTo(map);
     }
 
+    const setGeoStyles = (layer, geoColor, focusing) => {
+      if (geoColor) {
+        layer.setStyle({
+          fillColor: geoColor,
+          color: '#fff',
+          weight: 1
+        });
+      } else {
+        layer.setStyle(geoLayerStyles[focusing]);
+      }
+    }
+
     const geoJsonLayer = leaflet
       .geoJSON(featuresToDraw, {
         onEachFeature: (feature, layer) => {
-          console.log(feature.properties);
+          const geoColor = indexColor && indexColor[feature.properties.index];
           if (
             drawProfile &&
             `${geoLevel}-${geoCode}` ===
@@ -280,17 +292,17 @@ function MapIt({
           } else {
             layer.bindTooltip(feature.properties.name, { direction: "auto" });
             layer.on("mouseover", () => {
-              layer.setStyle(geoLayerStyles.hover);
+              setGeoStyles(layer, geoColor, "hover");
             });
             layer.on("mouseout", () => {
-              layer.setStyle(geoLayerStyles.blur);
+              setGeoStyles(layer, geoColor, "blur");
             });
             layer.on("click", () => {
               if (onClickGeoLayer) {
                 onClickGeoLayer(feature.properties);
               }
             });
-            layer.setStyle(geoLayerStyles.blur);
+            setGeoStyles(layer, geoColor, "blur");
           }
         },
       })
