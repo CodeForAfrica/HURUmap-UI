@@ -452,6 +452,7 @@ storiesOf("HURUmap UI|MapIt/Geography", module)
       tolerance={number("tolerance", 0.01)}
       url={text("url", "https://dev.mapit.hurumap.org")}
       drawChildren={boolean("drawChildren", true)}
+      drawGrandChildren={boolean("drawGrandChildren", true)}
       filterCountries={array("filterCountries", [])}
       drawProfile={boolean("drawProfile", true)}
       codeType={text("codeType", "AFR")}
