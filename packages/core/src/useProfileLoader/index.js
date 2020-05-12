@@ -4,7 +4,13 @@ import buildProfileQuery from "./buildProfileQuery";
 import useVisualLoader from "../useVisualLoader";
 import useGeoIndexLoader from "../useGeoIndexLoader";
 
-export default ({ geoId, comparisonGeoId, visuals, populationTables, indexTable }) => {
+export default ({
+  geoId,
+  comparisonGeoId,
+  visuals,
+  populationTables,
+  indexTable,
+}) => {
   const client = useApolloClient();
   const [profiles, setProfiles] = useState({
     isLoading: true,
@@ -85,7 +91,7 @@ export default ({ geoId, comparisonGeoId, visuals, populationTables, indexTable 
   });
 
   const geoIndeces = useGeoIndexLoader({
-    indexTable
+    indexTable,
   });
 
   return { profiles, chartData, geoIndeces };

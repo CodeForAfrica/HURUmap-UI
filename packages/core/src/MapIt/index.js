@@ -85,7 +85,6 @@ function MapIt({
   // more data using an api call
   const fetchGeoJson = useCallback(
     (areaKeys, areas) => {
-      console.log(areaKeys);
       return fetch(
         `${url}/areas/${areaKeys}.geojson?simplify_tolerance=${tolerance}`
       ).then((geoRes) => {
@@ -98,15 +97,20 @@ function MapIt({
                   const areaInfo = areas.find(
                     (area) => area.name === feature.properties.name
                   );
-                  const geoIndexInfo = geoIndexMapping && geoIndexMapping.find(
-                    (geoIndex) => `${geoIndex.geoLevel}-${geoIndex.geoCode}` === areaInfo.codes[codeType || "AFR"]);
+                  const geoIndexInfo =
+                    geoIndexMapping &&
+                    geoIndexMapping.find(
+                      (geoIndex) =>
+                        `${geoIndex.geoLevel}-${geoIndex.geoCode}` ===
+                        areaInfo.codes[codeType || "AFR"]
+                    );
 
                   return {
                     ...feature,
                     properties: {
                       ...feature.properties,
                       ...areaInfo,
-                      ...geoIndexInfo
+                      ...geoIndexInfo,
                     },
                   };
                 })
@@ -115,7 +119,7 @@ function MapIt({
         });
       });
     },
-    [url, tolerance]
+    [url, tolerance, geoIndexMapping, codeType]
   );
 
   const fetchMapitArea = useCallback(async () => {
@@ -145,53 +149,72 @@ function MapIt({
     });
   }, [fetchMapitArea, fetchGeoJson, generation, url]);
 
+  const fetchChildren = useCallback(
+    (areaKey) => {
+      return fetch(`${url}/area/${areaKey}/children`).then((areasRes) => {
+        if (!areasRes.ok) return Promise.reject();
 
-  const fetchChildren = (areaKey, filterCountriesMemoized, drawProfile, geoLevel) => {
-    return fetch(`${url}/area/${areaKey}/children`).then((areasRes) => {
-      if (!areasRes.ok) return Promise.reject();
-
-      return areasRes.json().then((data) => {
-        let areaData = data;
-        if (
-          filterCountriesMemoized.length > 0 &&
-          !drawProfile &&
-          geoLevel === "continent"
-        ) {
-          areaData = Object.entries(data)
-            .filter((area) => {
-              return filterCountriesMemoized.includes(area[1].country);
-            })
-            .reduce((accum, [k, v]) => {
-              return { ...accum, [k]: v };
-            }, {});
-        }
-        return areaData;
+        return areasRes.json().then((data) => {
+          let areaData = data;
+          if (
+            filterCountriesMemoized.length > 0 &&
+            !drawProfile &&
+            geoLevel === "continent"
+          ) {
+            areaData = Object.entries(data)
+              .filter((area) => {
+                return filterCountriesMemoized.includes(area[1].country);
+              })
+              .reduce((accum, [k, v]) => {
+                return { ...accum, [k]: v };
+              }, {});
+          }
+          return areaData;
+        });
       });
-    });
-  }
+    }
+  );
 
   const loadGeometryForChildLevel = useCallback(
     async (areaId) => {
-      const childrenData = await fetchChildren(areaId, filterCountriesMemoized, drawProfile, geoLevel);
-      return fetchGeoJson(Object.keys(childrenData).join(), Object.values(childrenData));
+      const childrenData = await fetchChildren(areaId);
+      return fetchGeoJson(
+        Object.keys(childrenData).join(),
+        Object.values(childrenData)
+      );
     },
-    [url, filterCountriesMemoized, drawProfile, geoLevel, fetchGeoJson]
+    [
+      fetchChildren,
+      fetchGeoJson,
+    ]
   );
 
   const loadGeometryForGrandChildLevel = useCallback(
     async (areaId) => {
-      const childrenData = await fetchChildren(areaId, filterCountriesMemoized, drawProfile, geoLevel);
+      const childrenData = await fetchChildren(
+        areaId
+      );
       const grandChildrenData = {};
-      
-      await Promise.all(Object.keys(childrenData).map(async child => {
-        const c = await fetchChildren(child, filterCountriesMemoized, drawProfile, geoLevel);
-        Object.assign(grandChildrenData, c);
-      }));
 
-      const x = await fetchGeoJson(Object.keys(grandChildrenData).join(), Object.values(grandChildrenData));
+      await Promise.all(
+        Object.keys(childrenData).map(async (child) => {
+          const c = await fetchChildren(
+            child
+          );
+          Object.assign(grandChildrenData, c);
+        })
+      );
+
+      const x = await fetchGeoJson(
+        Object.keys(grandChildrenData).join(),
+        Object.values(grandChildrenData)
+      );
       return x;
     },
-    [url, filterCountriesMemoized, drawProfile, geoLevel, fetchGeoJson]
+    [
+      fetchChildren,
+      fetchGeoJson,
+    ]
   );
 
   /**
@@ -210,21 +233,19 @@ function MapIt({
           fetchMapitArea().then((area) => {
             loadGeometryForChildLevel(area.id).then(
               (childrenFeatureCollection) => {
-                if(drawGrandChildren) {
-                    loadGeometryForGrandChildLevel(area.id).then(
-                      (grandChildrenFeatureCollection) => {
-                        console.log(grandChildrenFeatureCollection);
-                        setFeaturesToDraw({
-                          type: "FeatureCollection",
-                          features: [
-                            ...featureCollection.features,
-                            ...childrenFeatureCollection.features,
-                            ...grandChildrenFeatureCollection.features,
-                          ],
-                        })
-                      }
-                        )
-
+                if (drawGrandChildren) {
+                  loadGeometryForGrandChildLevel(area.id).then(
+                    (grandChildrenFeatureCollection) => {
+                      setFeaturesToDraw({
+                        type: "FeatureCollection",
+                        features: [
+                          ...featureCollection.features,
+                          ...childrenFeatureCollection.features,
+                          ...grandChildrenFeatureCollection.features,
+                        ],
+                      });
+                    }
+                  );
                 } else {
                   setFeaturesToDraw({
                     type: "FeatureCollection",
@@ -256,6 +277,8 @@ function MapIt({
     loadGeometryForLevel,
     fetchMapitArea,
     loadGeometryForChildLevel,
+    drawGrandChildren,
+    loadGeometryForGrandChildLevel,
   ]);
 
   /**
@@ -309,20 +332,19 @@ function MapIt({
       if (geoColor) {
         layer.setStyle({
           fillColor: geoColor,
-          color: '#fff',
+          color: "#fff",
           fillOpacity: 1,
-          weight: 1
+          weight: 1,
         });
       } else {
         layer.setStyle(geoLayerStyles[focusing]);
       }
-    }
+    };
 
     const geoJsonLayer = leaflet
       .geoJSON(featuresToDraw, {
         onEachFeature: (feature, layer) => {
           const geoColor = indexColor && indexColor[feature.properties.index];
-          console.log(feature.properties.name);
           if (
             drawProfile &&
             `${geoLevel}-${geoCode}` ===
@@ -364,6 +386,7 @@ function MapIt({
     geoLayerStyles,
     onClickGeoLayer,
     leafletPropsMemoized,
+    indexColor,
   ]);
   const classes = useStyles();
 

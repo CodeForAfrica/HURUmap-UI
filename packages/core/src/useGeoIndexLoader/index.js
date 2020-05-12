@@ -15,9 +15,13 @@ export default ({ indexTable, countryCode }) => {
           isLoading: true,
         });
 
-        const { data: { geoIndex: { nodes: indeces}  } } = await client.query({
+        const {
+          data: {
+            geoIndex: { nodes: indeces },
+          },
+        } = await client.query({
           query: buildGeoIndexQuery(indexTable, countryCode),
-          variables: { countryCode }
+          variables: { countryCode },
         });
         setIndexMapping({
           isLoading: false,
@@ -25,7 +29,7 @@ export default ({ indexTable, countryCode }) => {
         });
       })();
     }
-  }, [client, indexTable, countryCode ]);
+  }, [client, indexTable, countryCode]);
 
   return indexMapping;
 };
