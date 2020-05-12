@@ -157,26 +157,308 @@ storiesOf("HURUmap UI|MapIt/Geography", module)
       onClickGeoLayer={action("onClickGeoLayer")}
     />
   ))
-  .add("ColourMap", () => (
+  .add("Colour Map", () => (
     <MapIt
       height="100vh"
-      colorMap={object("colorMap", {
-        veryHigh: '#8ed3a5',
-        hight: '#29a87c',
-        moderate: '#223a07',
-        low: '#7d8c6c',
-        veryLow:'#5bc17d'
+      indexColor={object("colorMap", {
+        'very high': '#8ed3a5',
+        'high': '#29a87c',
+        'moderate': '#223a07',
+        'low': '#7d8c6c',
+        'very low':'#5bc17d'
       })}
+      geoIndexMapping={array("geoIndexMapping", [
+        {
+          "geoCode": "ZA_1_001",
+          "geoLevel": "level1",
+          "rating": "low"
+        },
+        {
+          "geoCode": "ZA_1_002",
+          "geoLevel": "level1",
+          "rating": "very high"
+        },
+        {
+          "geoCode": "ZA_1_003",
+          "geoLevel": "level1",
+          "rating": "very low"
+        },
+        {
+          "geoCode": "ZA_1_004",
+          "geoLevel": "level1",
+          "rating": "low"
+        },
+        {
+          "geoCode": "ZA_1_005",
+          "geoLevel": "level1",
+          "rating": "very high"
+        },
+        {
+          "geoCode": "ZA_1_006",
+          "geoLevel": "level1",
+          "rating": "very low"
+        },
+        {
+          "geoCode": "ZA_1_007",
+          "geoLevel": "level1",
+          "rating": "moderate"
+        },
+        {
+          "geoCode": "ZA_1_008",
+          "geoLevel": "level1",
+          "rating": "high"
+        },
+        {
+          "geoCode": "ZA_1_009",
+          "geoLevel": "level1",
+          "rating": "high"
+        },
+        {
+          "geoCode": "ZA_2_00101",
+          "geoLevel": "level2",
+          "rating": "low"
+        },
+        {
+          "geoCode": "ZA_2_00102",
+          "geoLevel": "level2",
+          "rating": "very low"
+        },
+        {
+          "geoCode": "ZA_2_00103",
+          "geoLevel": "level2",
+          "rating": "moderate"
+        },
+        {
+          "geoCode": "ZA_2_00105",
+          "geoLevel": "level2",
+          "rating": "very low"
+        },
+        {
+          "geoCode": "ZA_2_00191",
+          "geoLevel": "level2",
+          "rating": "high"
+        },
+        {
+          "geoCode": "ZA_2_00212",
+          "geoLevel": "level2",
+          "rating": "very high"
+        },
+        {
+          "geoCode": "ZA_2_00213",
+          "geoLevel": "level2",
+          "rating": "high"
+        },
+        {
+          "geoCode": "ZA_2_00214",
+          "geoLevel": "level2",
+          "rating": "very low"
+        },
+        {
+          "geoCode": "ZA_2_00215",
+          "geoLevel": "level2",
+          "rating": "high"
+        },
+        {
+          "geoCode": "ZA_2_00244",
+          "geoLevel": "level2",
+          "rating": "very high"
+        },
+        {
+          "geoCode": "ZA_2_00292",
+          "geoLevel": "level2",
+          "rating": "moderate"
+        },
+        {
+          "geoCode": "ZA_2_00293",
+          "geoLevel": "level2",
+          "rating": "low"
+        },
+        {
+          "geoCode": "ZA_2_00306",
+          "geoLevel": "level2",
+          "rating": "very low"
+        },
+        {
+          "geoCode": "ZA_2_00307",
+          "geoLevel": "level2",
+          "rating": "very low"
+        },
+        {
+          "geoCode": "ZA_2_00308",
+          "geoLevel": "level2",
+          "rating": "very low"
+        },
+        {
+          "geoCode": "ZA_2_00309",
+          "geoLevel": "level2",
+          "rating": "very low"
+        },
+        {
+          "geoCode": "ZA_2_00345",
+          "geoLevel": "level2",
+          "rating": "moderate"
+        },
+        {
+          "geoCode": "ZA_2_00416",
+          "geoLevel": "level2",
+          "rating": "low"
+        },
+        {
+          "geoCode": "ZA_2_00418",
+          "geoLevel": "level2",
+          "rating": "moderate"
+        },
+        {
+          "geoCode": "ZA_2_00420",
+          "geoLevel": "level2",
+          "rating": "very high"
+        },
+        {
+          "geoCode": "ZA_2_00494",
+          "geoLevel": "level2",
+          "rating": "very low"
+        },
+        {
+          "geoCode": "ZA_2_00521",
+          "geoLevel": "level2",
+          "rating": "very high"
+        },
+        {
+          "geoCode": "ZA_2_00522",
+          "geoLevel": "level2",
+          "rating": "high"
+        },
+        {
+          "geoCode": "ZA_2_00523",
+          "geoLevel": "level2",
+          "rating": "high"
+        },
+        {
+          "geoCode": "ZA_2_00524",
+          "geoLevel": "level2",
+          "rating": "moderate"
+        },
+        {
+          "geoCode": "ZA_2_00525",
+          "geoLevel": "level2",
+          "rating": "very low"
+        },
+        {
+          "geoCode": "ZA_2_00526",
+          "geoLevel": "level2",
+          "rating": "high"
+        },
+        {
+          "geoCode": "ZA_2_00527",
+          "geoLevel": "level2",
+          "rating": "moderate"
+        },
+        {
+          "geoCode": "ZA_2_00529",
+          "geoLevel": "level2",
+          "rating": "very high"
+        },
+        {
+          "geoCode": "ZA_2_00595",
+          "geoLevel": "level2",
+          "rating": "very high"
+        },
+        {
+          "geoCode": "ZA_2_00637",
+          "geoLevel": "level2",
+          "rating": "very high"
+        },
+        {
+          "geoCode": "ZA_2_00638",
+          "geoLevel": "level2",
+          "rating": "low"
+        },
+        {
+          "geoCode": "ZA_2_00639",
+          "geoLevel": "level2",
+          "rating": "low"
+        },
+        {
+          "geoCode": "ZA_2_00640",
+          "geoLevel": "level2",
+          "rating": "low"
+        },
+        {
+          "geoCode": "ZA_2_00742",
+          "geoLevel": "level2",
+          "rating": "high"
+        },
+        {
+          "geoCode": "ZA_2_00748",
+          "geoLevel": "level2",
+          "rating": "low"
+        },
+        {
+          "geoCode": "ZA_2_00797",
+          "geoLevel": "level2",
+          "rating": "high"
+        },
+        {
+          "geoCode": "ZA_2_00798",
+          "geoLevel": "level2",
+          "rating": "low"
+        },
+        {
+          "geoCode": "ZA_2_00799",
+          "geoLevel": "level2",
+          "rating": "low"
+        },
+        {
+          "geoCode": "ZA_2_00830",
+          "geoLevel": "level2",
+          "rating": "very high"
+        },
+        {
+          "geoCode": "ZA_2_00831",
+          "geoLevel": "level2",
+          "rating": "high"
+        },
+        {
+          "geoCode": "ZA_2_00832",
+          "geoLevel": "level2",
+          "rating": "very low"
+        },
+        {
+          "geoCode": "ZA_2_00933",
+          "geoLevel": "level2",
+          "rating": "low"
+        },
+        {
+          "geoCode": "ZA_2_00934",
+          "geoLevel": "level2",
+          "rating": "high"
+        },
+        {
+          "geoCode": "ZA_2_00935",
+          "geoLevel": "level2",
+          "rating": "low"
+        },
+        {
+          "geoCode": "ZA_2_00936",
+          "geoLevel": "level2",
+          "rating": "very low"
+        },
+        {
+          "geoCode": "ZA_2_00947",
+          "geoLevel": "level2",
+          "rating": "very high"
+        }
+      ])}
       tolerance={number("tolerance", 1)}
       url={text("url", "https://dev.mapit.hurumap.org")}
       drawChildren={boolean("drawChildren", true)}
       filterCountries={array("filterCountries", [])}
       drawProfile={boolean("drawProfile", true)}
-      codeType={text("codeType", "KEN")}
-      geoLevel={text("geoLevel", "county")}
-      geoCode={text("geoCode", "8")}
+      codeType={text("codeType", "AFR")}
+      geoLevel={text("geoLevel", "country")}
+      geoCode={text("geoCode", "ZA")}
       zoom={number("zoom", 6)}
-      center={array("center", [8.7832, 34.5085])}
+      //center={array("center", [8.7832, 34.5085])}
       tileLayer={
         new TileLayer(
           text(

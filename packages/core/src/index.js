@@ -17,5 +17,6 @@ export { default as TypographyLoader } from "./TypographyLoader";
 
 export { default as useProfileLoader } from "./useProfileLoader";
 export { default as useVisualLoader } from "./useVisualLoader";
+export { default as useGeoIndexLoader } from "./useGeoIndexLoader";
 
 export * from "@hurumap-ui/charts";

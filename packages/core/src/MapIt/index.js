@@ -39,7 +39,7 @@ function MapIt({
   geoCode,
   geoLevel,
   codeType,
-  colorMap,
+  indexColor,
   filterCountries = ["KE", "ZA"],
   tileLayer,
   geoLayerFocusStyle = {
@@ -95,6 +95,11 @@ function MapIt({
                   const areaInfo = areas.find(
                     (area) => area.name === feature.properties.name
                   );
+                  const geoIndexInfo = geoIndexMapping.find(
+                    (geoIndex) => `${geoIndex.geoLevel}-${geoIndex.geoCode}` === areaInfo.codes[codeType || "AFR"]);
+
+                  console.log(geoIndexInfo);
+
                   return {
                     ...feature,
                     properties: {
@@ -326,7 +331,7 @@ function MapIt({
 }
 
 MapIt.propTypes = {
-  colorMap: PropTypes.shape({}),
+  indexColor: PropTypes.shape({}),
   id: PropTypes.string,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -345,12 +350,13 @@ MapIt.propTypes = {
   geoLayerBlurStyle: PropTypes.shape({}),
   geoLayerHoverStyle: PropTypes.shape({}),
   onClickGeoLayer: PropTypes.func,
+  geoIndexMapping: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 MapIt.defaultProps = {
   width: "100%",
   height: "100%",
-  colorMap: undefined,
+  indexColor: undefined,
   id: undefined,
   url: undefined,
   tolerance: undefined,
@@ -367,6 +373,7 @@ MapIt.defaultProps = {
   geoLayerBlurStyle: undefined,
   geoLayerHoverStyle: undefined,
   onClickGeoLayer: undefined,
+  geoIndexMapping: undefined,
 };
 
 export default MapIt;
