@@ -271,6 +271,7 @@ function MapIt({
         layer.setStyle({
           fillColor: geoColor,
           color: '#fff',
+          fillOpacity: 1,
           weight: 1
         });
       } else {
