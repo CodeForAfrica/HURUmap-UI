@@ -149,31 +149,29 @@ function MapIt({
     });
   }, [fetchMapitArea, fetchGeoJson, generation, url]);
 
-  const fetchChildren = useCallback(
-    (areaKey) => {
-      return fetch(`${url}/area/${areaKey}/children`).then((areasRes) => {
-        if (!areasRes.ok) return Promise.reject();
+  const fetchChildren = useCallback((areaKey) => {
+    return fetch(`${url}/area/${areaKey}/children`).then((areasRes) => {
+      if (!areasRes.ok) return Promise.reject();
 
-        return areasRes.json().then((data) => {
-          let areaData = data;
-          if (
-            filterCountriesMemoized.length > 0 &&
-            !drawProfile &&
-            geoLevel === "continent"
-          ) {
-            areaData = Object.entries(data)
-              .filter((area) => {
-                return filterCountriesMemoized.includes(area[1].country);
-              })
-              .reduce((accum, [k, v]) => {
-                return { ...accum, [k]: v };
-              }, {});
-          }
-          return areaData;
-        });
+      return areasRes.json().then((data) => {
+        let areaData = data;
+        if (
+          filterCountriesMemoized.length > 0 &&
+          !drawProfile &&
+          geoLevel === "continent"
+        ) {
+          areaData = Object.entries(data)
+            .filter((area) => {
+              return filterCountriesMemoized.includes(area[1].country);
+            })
+            .reduce((accum, [k, v]) => {
+              return { ...accum, [k]: v };
+            }, {});
+        }
+        return areaData;
       });
-    }
-  );
+    });
+  }, [drawProfile, filterCountriesMemoized, geoLevel]);
 
   const loadGeometryForChildLevel = useCallback(
     async (areaId) => {
@@ -183,24 +181,17 @@ function MapIt({
         Object.values(childrenData)
       );
     },
-    [
-      fetchChildren,
-      fetchGeoJson,
-    ]
+    [fetchChildren, fetchGeoJson]
   );
 
   const loadGeometryForGrandChildLevel = useCallback(
     async (areaId) => {
-      const childrenData = await fetchChildren(
-        areaId
-      );
+      const childrenData = await fetchChildren(areaId);
       const grandChildrenData = {};
 
       await Promise.all(
         Object.keys(childrenData).map(async (child) => {
-          const c = await fetchChildren(
-            child
-          );
+          const c = await fetchChildren(child);
           Object.assign(grandChildrenData, c);
         })
       );
@@ -211,10 +202,7 @@ function MapIt({
       );
       return x;
     },
-    [
-      fetchChildren,
-      fetchGeoJson,
-    ]
+    [fetchChildren, fetchGeoJson]
   );
 
   /**
