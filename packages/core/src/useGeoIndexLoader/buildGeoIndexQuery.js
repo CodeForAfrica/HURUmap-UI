@@ -3,14 +3,12 @@ import gql from "graphql-tag";
 
 export default (indexTable) => gql`
 query indeces ($countryCode: String!) {
-  geoIndex: ${indexTable} {
-    (
-      condition: { country: $countryCode }
-    ) 
-    nodes {
-      geoCode,
-      geoLevel,
-      rating
-    }
+  geoIndex: ${indexTable} (condition: { country: $countryCode }
+    ) {
+      nodes {
+        geoCode,
+        geoLevel,
+        rating
+      }
   }
 }`;
