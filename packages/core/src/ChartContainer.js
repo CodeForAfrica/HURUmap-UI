@@ -248,6 +248,12 @@ function ChartContainer({
           groupActionsButton: classes.groupActionsButton,
           groupActionsUrl: classes.groupActionsUrl,
           groupActionsUrlInput: classes.groupActionsUrlInput,
+          embedRoot: classes.embedRoot,
+          embedTitle: classes.embedTitle,
+          embedSubtitle: classes.embedSubtitle,
+          embedCode: classes.embedCode,
+          embedDropDownRoot: classes.embedDropDownRoot,
+          embedDropDownPaper: classes.embedDropDownPaper,
         }}
         getReferenceObject={getReferenceObject}
         handleDownload={handleDownload}
