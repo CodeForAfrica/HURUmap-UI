@@ -44,7 +44,7 @@ function ShareDropDown({
   ...props
 }) {
   const classes = useStyles(props);
-  const open = typeof openProps === "undefined" ? anchorEl !== null : openProp;
+  const open = typeof openProp === "undefined" ? anchorEl !== null : openProp;
   const url = urlProp || window.location.href;
   const { url: twitterShareUrlProp, ...twitterProps } = twitter || {};
   const twitterShareUrl = twitter && (twitterShareUrlProp || url);

@@ -34,7 +34,7 @@ function EmbedDropDown({
   ...props
 }) {
   const classes = useStyles(props);
-  const open = typeof openProps === "undefined" ? anchorEl !== null : openProp;
+  const open = typeof openProp === "undefined" ? anchorEl !== null : openProp;
 
   return (
     <DropDown

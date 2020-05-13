@@ -33,6 +33,7 @@ storiesOf("HURUmap UI|ChartContainers/ChartContainer", module)
     React.createElement(() => {
       const loading = boolean("loading", true);
       const variant = select("variant", ["data", "analysis"], "data");
+      const groupActions = boolean("groupActions", true);
       const chartType = select("chartType", ["bar", "pie"], "pie");
       const classes = makeStyles(({ breakpoints }) => ({
         title: {
@@ -70,6 +71,16 @@ storiesOf("HURUmap UI|ChartContainers/ChartContainer", module)
             <ChartContainer
               logo={logo}
               loading={loading}
+              groupActions={groupActions}
+              groupIcons={object("groupIcons", {
+                download: {},
+                embed: {},
+                facebook: {},
+                instagram: {},
+                link: {},
+                linkedin: {},
+                twitter: {},
+              })}
               title={text("title", "Lorem ipsum dolor sit amet.")}
               subtitle={text(
                 "Subtitle",
