@@ -149,29 +149,32 @@ function MapIt({
     });
   }, [fetchMapitArea, fetchGeoJson, generation, url]);
 
-  const fetchChildren = useCallback((areaKey) => {
-    return fetch(`${url}/area/${areaKey}/children`).then((areasRes) => {
-      if (!areasRes.ok) return Promise.reject();
+  const fetchChildren = useCallback(
+    (areaKey) => {
+      return fetch(`${url}/area/${areaKey}/children`).then((areasRes) => {
+        if (!areasRes.ok) return Promise.reject();
 
-      return areasRes.json().then((data) => {
-        let areaData = data;
-        if (
-          filterCountriesMemoized.length > 0 &&
-          !drawProfile &&
-          geoLevel === "continent"
-        ) {
-          areaData = Object.entries(data)
-            .filter((area) => {
-              return filterCountriesMemoized.includes(area[1].country);
-            })
-            .reduce((accum, [k, v]) => {
-              return { ...accum, [k]: v };
-            }, {});
-        }
-        return areaData;
+        return areasRes.json().then((data) => {
+          let areaData = data;
+          if (
+            filterCountriesMemoized.length > 0 &&
+            !drawProfile &&
+            geoLevel === "continent"
+          ) {
+            areaData = Object.entries(data)
+              .filter((area) => {
+                return filterCountriesMemoized.includes(area[1].country);
+              })
+              .reduce((accum, [k, v]) => {
+                return { ...accum, [k]: v };
+              }, {});
+          }
+          return areaData;
+        });
       });
-    });
-  }, [drawProfile, filterCountriesMemoized, geoLevel]);
+    },
+    [drawProfile, filterCountriesMemoized, geoLevel, url]
+  );
 
   const loadGeometryForChildLevel = useCallback(
     async (areaId) => {
