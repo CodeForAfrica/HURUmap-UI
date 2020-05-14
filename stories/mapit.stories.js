@@ -167,7 +167,7 @@ storiesOf("HURUmap UI|MapIt/Geography", module)
         low: "#7d8c6c",
         "very low": "#5bc17d",
       })}
-      geoIndexMapping={array("geoIndexMapping", [
+      geoIndexMapping={object("geoIndexMapping", [
         {
           geoCode: "ZA_1_001",
           geoLevel: "level1",
