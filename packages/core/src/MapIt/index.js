@@ -35,15 +35,18 @@ function MapIt({
   zoom = 3,
   generation = "1",
   drawChildren,
+  drawGrandChildren,
   drawProfile,
   geoCode,
   geoLevel,
   codeType,
+  indexColor,
+  geoIndexMapping,
   filterCountries = ["KE", "ZA"],
   tileLayer,
   geoLayerFocusStyle = {
     color: "#777",
-    fillColor: "#0F0",
+    fillColor: "#ccc",
     weight: 2,
     opacity: 0.3,
     fillOpacity: 0.5,
@@ -94,11 +97,20 @@ function MapIt({
                   const areaInfo = areas.find(
                     (area) => area.name === feature.properties.name
                   );
+                  const geoIndexInfo =
+                    geoIndexMapping &&
+                    geoIndexMapping.find(
+                      (geoIndex) =>
+                        `${geoIndex.geoLevel}-${geoIndex.geoCode}` ===
+                        areaInfo.codes[codeType || "AFR"]
+                    );
+
                   return {
                     ...feature,
                     properties: {
                       ...feature.properties,
                       ...areaInfo,
+                      ...geoIndexInfo,
                     },
                   };
                 })
@@ -107,7 +119,7 @@ function MapIt({
         });
       });
     },
-    [url, tolerance]
+    [url, tolerance, geoIndexMapping, codeType]
   );
 
   const fetchMapitArea = useCallback(async () => {
@@ -137,9 +149,9 @@ function MapIt({
     });
   }, [fetchMapitArea, fetchGeoJson, generation, url]);
 
-  const loadGeometryForChildLevel = useCallback(
-    (areaId) => {
-      return fetch(`${url}/area/${areaId}/children`).then((areasRes) => {
+  const fetchChildren = useCallback(
+    (areaKey) => {
+      return fetch(`${url}/area/${areaKey}/children`).then((areasRes) => {
         if (!areasRes.ok) return Promise.reject();
 
         return areasRes.json().then((data) => {
@@ -157,13 +169,43 @@ function MapIt({
                 return { ...accum, [k]: v };
               }, {});
           }
-          const areaKeys = Object.keys(areaData).join();
-
-          return fetchGeoJson(areaKeys, Object.values(areaData));
+          return areaData;
         });
       });
     },
-    [url, filterCountriesMemoized, drawProfile, geoLevel, fetchGeoJson]
+    [drawProfile, filterCountriesMemoized, geoLevel, url]
+  );
+
+  const loadGeometryForChildLevel = useCallback(
+    async (areaId) => {
+      const childrenData = await fetchChildren(areaId);
+      return fetchGeoJson(
+        Object.keys(childrenData).join(),
+        Object.values(childrenData)
+      );
+    },
+    [fetchChildren, fetchGeoJson]
+  );
+
+  const loadGeometryForGrandChildLevel = useCallback(
+    async (areaId) => {
+      const childrenData = await fetchChildren(areaId);
+      const grandChildrenData = {};
+
+      await Promise.all(
+        Object.keys(childrenData).map(async (child) => {
+          const c = await fetchChildren(child);
+          Object.assign(grandChildrenData, c);
+        })
+      );
+
+      const x = await fetchGeoJson(
+        Object.keys(grandChildrenData).join(),
+        Object.values(grandChildrenData)
+      );
+      return x;
+    },
+    [fetchChildren, fetchGeoJson]
   );
 
   /**
@@ -182,13 +224,28 @@ function MapIt({
           fetchMapitArea().then((area) => {
             loadGeometryForChildLevel(area.id).then(
               (childrenFeatureCollection) => {
-                setFeaturesToDraw({
-                  type: "FeatureCollection",
-                  features: [
-                    ...featureCollection.features,
-                    ...childrenFeatureCollection.features,
-                  ],
-                });
+                if (drawGrandChildren) {
+                  loadGeometryForGrandChildLevel(area.id).then(
+                    (grandChildrenFeatureCollection) => {
+                      setFeaturesToDraw({
+                        type: "FeatureCollection",
+                        features: [
+                          ...featureCollection.features,
+                          ...childrenFeatureCollection.features,
+                          ...grandChildrenFeatureCollection.features,
+                        ],
+                      });
+                    }
+                  );
+                } else {
+                  setFeaturesToDraw({
+                    type: "FeatureCollection",
+                    features: [
+                      ...featureCollection.features,
+                      ...childrenFeatureCollection.features,
+                    ],
+                  });
+                }
               }
             );
           });
@@ -211,6 +268,8 @@ function MapIt({
     loadGeometryForLevel,
     fetchMapitArea,
     loadGeometryForChildLevel,
+    drawGrandChildren,
+    loadGeometryForGrandChildLevel,
   ]);
 
   /**
@@ -260,9 +319,23 @@ function MapIt({
         .addTo(map);
     }
 
+    const setGeoStyles = (layer, geoColor, focusing) => {
+      if (geoColor) {
+        layer.setStyle({
+          fillColor: geoColor,
+          color: "#fff",
+          fillOpacity: 1,
+          weight: 1,
+        });
+      } else {
+        layer.setStyle(geoLayerStyles[focusing]);
+      }
+    };
+
     const geoJsonLayer = leaflet
       .geoJSON(featuresToDraw, {
         onEachFeature: (feature, layer) => {
+          const geoColor = indexColor && indexColor[feature.properties.index];
           if (
             drawProfile &&
             `${geoLevel}-${geoCode}` ===
@@ -273,17 +346,17 @@ function MapIt({
           } else {
             layer.bindTooltip(feature.properties.name, { direction: "auto" });
             layer.on("mouseover", () => {
-              layer.setStyle(geoLayerStyles.hover);
+              setGeoStyles(layer, geoColor, "hover");
             });
             layer.on("mouseout", () => {
-              layer.setStyle(geoLayerStyles.blur);
+              setGeoStyles(layer, geoColor, "blur");
             });
             layer.on("click", () => {
               if (onClickGeoLayer) {
                 onClickGeoLayer(feature.properties);
               }
             });
-            layer.setStyle(geoLayerStyles.blur);
+            setGeoStyles(layer, geoColor, "blur");
           }
         },
       })
@@ -304,6 +377,7 @@ function MapIt({
     geoLayerStyles,
     onClickGeoLayer,
     leafletPropsMemoized,
+    indexColor,
   ]);
   const classes = useStyles();
 
@@ -324,6 +398,7 @@ function MapIt({
 }
 
 MapIt.propTypes = {
+  indexColor: PropTypes.shape({}),
   id: PropTypes.string,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -331,6 +406,7 @@ MapIt.propTypes = {
   tolerance: PropTypes.number,
   zoom: PropTypes.number,
   drawChildren: PropTypes.bool,
+  drawGrandChildren: PropTypes.bool,
   drawProfile: PropTypes.bool,
   geoLevel: PropTypes.string,
   geoCode: PropTypes.string,
@@ -342,16 +418,19 @@ MapIt.propTypes = {
   geoLayerBlurStyle: PropTypes.shape({}),
   geoLayerHoverStyle: PropTypes.shape({}),
   onClickGeoLayer: PropTypes.func,
+  geoIndexMapping: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 MapIt.defaultProps = {
   width: "100%",
   height: "100%",
+  indexColor: undefined,
   id: undefined,
   url: undefined,
   tolerance: undefined,
   zoom: undefined,
   drawChildren: undefined,
+  drawGrandChildren: undefined,
   drawProfile: undefined,
   geoLevel: undefined,
   geoCode: undefined,
@@ -363,6 +442,7 @@ MapIt.defaultProps = {
   geoLayerBlurStyle: undefined,
   geoLayerHoverStyle: undefined,
   onClickGeoLayer: undefined,
+  geoIndexMapping: undefined,
 };
 
 export default MapIt;
