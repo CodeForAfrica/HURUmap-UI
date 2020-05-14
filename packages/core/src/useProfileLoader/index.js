@@ -10,6 +10,8 @@ export default ({
   visuals,
   populationTables,
   indexTable,
+  indexField,
+  countryCode,
 }) => {
   const client = useApolloClient();
   const [profiles, setProfiles] = useState({
@@ -91,7 +93,9 @@ export default ({
   });
 
   const geoIndeces = useGeoIndexLoader({
+    countryCode,
     indexTable,
+    indexField,
   });
 
   return { profiles, chartData, geoIndeces };
