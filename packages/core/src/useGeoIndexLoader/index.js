@@ -29,7 +29,7 @@ export default ({ indexTable, indexField, countryCode }) => {
         });
       })();
     }
-  }, [client, indexTable, countryCode]);
+  }, [client, indexTable, countryCode, indexField]);
 
   return indexMapping;
 };
