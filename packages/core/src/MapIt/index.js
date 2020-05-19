@@ -342,7 +342,7 @@ function MapIt({
             `${geoLevel}-${geoCode}` ===
               feature.properties.codes[codeType || "AFR"]
           ) {
-            layer.setStyle(geoLayerStyles.focus);
+            setGeoStyles(layer, geoColor, "focus");
             map.fitBounds(layer.getBounds());
           } else {
             layer.on("mouseover", () => {
