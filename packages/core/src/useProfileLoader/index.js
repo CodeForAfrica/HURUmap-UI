@@ -9,9 +9,6 @@ export default ({
   comparisonGeoId,
   visuals,
   populationTables,
-  indexTable,
-  indexField,
-  countryCode,
 }) => {
   const client = useApolloClient();
   const [profiles, setProfiles] = useState({
@@ -92,11 +89,5 @@ export default ({
     parent: profiles.parent,
   });
 
-  const geoIndeces = useGeoIndexLoader({
-    countryCode,
-    indexTable,
-    indexField,
-  });
-
-  return { profiles, chartData, geoIndeces };
+  return { profiles, chartData };
 };
