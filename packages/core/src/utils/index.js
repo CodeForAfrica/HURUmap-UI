@@ -52,21 +52,16 @@ export function domToPng(node, { style: nodeStyle, filter, ...options }) {
     clonedNode.style.width = `${node.scrollWidth}px`;
 
     const style = { ...nodeStyle, left, position };
+    const filterByNodeNames = (n) =>
+      n.nodeName !== "SCRIPT" &&
+      (n.nodeName !== "IMG" || n.getAttribute("src"));
 
     const toPng = () => {
       document.body.appendChild(clonedNode);
       return domToImage
         .toPng(clonedNode, {
           ...options,
-          filter: (n) => {
-            if (n.tagName === "SCRIPT") {
-              return false;
-            }
-            if (n.nodeName === "IMG" && !n.getAttribute("src")) {
-              return false;
-            }
-            return filter(n);
-          },
+          filter: (n) => filterByNodeNames(n) && filter(n),
           style,
         })
         .then((dataUrl) => {
@@ -84,15 +79,18 @@ export function domToPng(node, { style: nodeStyle, filter, ...options }) {
         return iframe.contentWindow.domtoimage
           .toPng(iframe.contentDocument.body, {
             ...options,
+            filter: filterByNodeNames,
           })
           .then((dataUrl) => {
-            const img = new Image();
-            img.src = dataUrl;
             // replace the clonedNode's iframe with image
             const clonedNodeIframe = clonedNode.getElementsByTagName(
               "iframe"
             )[0];
-            clonedNodeIframe.parentNode.replaceChild(img, clonedNodeIframe);
+            if (clonedNodeIframe) {
+              const img = document.createElement("img");
+              img.src = dataUrl;
+              clonedNodeIframe.parentNode.replaceChild(img, clonedNodeIframe);
+            }
           })
           .then(() => {
             return toPng();
