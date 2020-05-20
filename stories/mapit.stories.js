@@ -170,364 +170,364 @@ storiesOf("HURUmap UI|MapIt/Geography", module)
       scoreLabel={text("scoreLabel", "All Section Vulnerability Score")}
       geoIndexMapping={object("geoIndexMapping", [
         {
-          "geoCode": "ZA_1_001",
-          "geoLevel": "level1",
-          "score": "0.25",
-          "index": "low"
+          geoCode: "ZA_1_001",
+          geoLevel: "level1",
+          score: "0.25",
+          index: "low",
         },
         {
-          "geoCode": "ZA_1_002",
-          "geoLevel": "level1",
-          "score": "0.875",
-          "index": "very high"
+          geoCode: "ZA_1_002",
+          geoLevel: "level1",
+          score: "0.875",
+          index: "very high",
         },
         {
-          "geoCode": "ZA_1_003",
-          "geoLevel": "level1",
-          "score": "0",
-          "index": "very low"
+          geoCode: "ZA_1_003",
+          geoLevel: "level1",
+          score: "0",
+          index: "very low",
         },
         {
-          "geoCode": "ZA_1_004",
-          "geoLevel": "level1",
-          "score": "0.25",
-          "index": "low"
+          geoCode: "ZA_1_004",
+          geoLevel: "level1",
+          score: "0.25",
+          index: "low",
         },
         {
-          "geoCode": "ZA_1_005",
-          "geoLevel": "level1",
-          "score": "1",
-          "index": "very high"
+          geoCode: "ZA_1_005",
+          geoLevel: "level1",
+          score: "1",
+          index: "very high",
         },
         {
-          "geoCode": "ZA_1_006",
-          "geoLevel": "level1",
-          "score": "0.25",
-          "index": "low"
+          geoCode: "ZA_1_006",
+          geoLevel: "level1",
+          score: "0.25",
+          index: "low",
         },
         {
-          "geoCode": "ZA_1_007",
-          "geoLevel": "level1",
-          "score": "0.125",
-          "index": "very low"
+          geoCode: "ZA_1_007",
+          geoLevel: "level1",
+          score: "0.125",
+          index: "very low",
         },
         {
-          "geoCode": "ZA_1_008",
-          "geoLevel": "level1",
-          "score": "0.625",
-          "index": "high"
+          geoCode: "ZA_1_008",
+          geoLevel: "level1",
+          score: "0.625",
+          index: "high",
         },
         {
-          "geoCode": "ZA_1_009",
-          "geoLevel": "level1",
-          "score": "0.75",
-          "index": "high"
+          geoCode: "ZA_1_009",
+          geoLevel: "level1",
+          score: "0.75",
+          index: "high",
         },
         {
-          "geoCode": "ZA_2_00101",
-          "geoLevel": "level2",
-          "score": "0.6863",
-          "index": "high"
+          geoCode: "ZA_2_00101",
+          geoLevel: "level2",
+          score: "0.6863",
+          index: "high",
         },
         {
-          "geoCode": "ZA_2_00102",
-          "geoLevel": "level2",
-          "score": "0.1961",
-          "index": "very low"
+          geoCode: "ZA_2_00102",
+          geoLevel: "level2",
+          score: "0.1961",
+          index: "very low",
         },
         {
-          "geoCode": "ZA_2_00103",
-          "geoLevel": "level2",
-          "score": "0.8824",
-          "index": "very high"
+          geoCode: "ZA_2_00103",
+          geoLevel: "level2",
+          score: "0.8824",
+          index: "very high",
         },
         {
-          "geoCode": "ZA_2_00104",
-          "geoLevel": "level2",
-          "score": "0.7255",
-          "index": "high"
+          geoCode: "ZA_2_00104",
+          geoLevel: "level2",
+          score: "0.7255",
+          index: "high",
         },
         {
-          "geoCode": "ZA_2_00105",
-          "geoLevel": "level2",
-          "score": "0.1176",
-          "index": "very low"
+          geoCode: "ZA_2_00105",
+          geoLevel: "level2",
+          score: "0.1176",
+          index: "very low",
         },
         {
-          "geoCode": "ZA_2_00191",
-          "geoLevel": "level2",
-          "score": "0.6078",
-          "index": "high"
+          geoCode: "ZA_2_00191",
+          geoLevel: "level2",
+          score: "0.6078",
+          index: "high",
         },
         {
-          "geoCode": "ZA_2_00210",
-          "geoLevel": "level2",
-          "score": "0.6275",
-          "index": "high"
+          geoCode: "ZA_2_00210",
+          geoLevel: "level2",
+          score: "0.6275",
+          index: "high",
         },
         {
-          "geoCode": "ZA_2_00212",
-          "geoLevel": "level2",
-          "score": "0.9608",
-          "index": "very high"
+          geoCode: "ZA_2_00212",
+          geoLevel: "level2",
+          score: "0.9608",
+          index: "very high",
         },
         {
-          "geoCode": "ZA_2_00213",
-          "geoLevel": "level2",
-          "score": "0.6863",
-          "index": "high"
+          geoCode: "ZA_2_00213",
+          geoLevel: "level2",
+          score: "0.6863",
+          index: "high",
         },
         {
-          "geoCode": "ZA_2_00214",
-          "geoLevel": "level2",
-          "score": "0.2745",
-          "index": "low"
+          geoCode: "ZA_2_00214",
+          geoLevel: "level2",
+          score: "0.2745",
+          index: "low",
         },
         {
-          "geoCode": "ZA_2_00215",
-          "geoLevel": "level2",
-          "score": "0.3922",
-          "index": "low"
+          geoCode: "ZA_2_00215",
+          geoLevel: "level2",
+          score: "0.3922",
+          index: "low",
         },
         {
-          "geoCode": "ZA_2_00244",
-          "geoLevel": "level2",
-          "score": "0.9216",
-          "index": "very high"
+          geoCode: "ZA_2_00244",
+          geoLevel: "level2",
+          score: "0.9216",
+          index: "very high",
         },
         {
-          "geoCode": "ZA_2_00292",
-          "geoLevel": "level2",
-          "score": "0.5294",
-          "index": "moderate"
+          geoCode: "ZA_2_00292",
+          geoLevel: "level2",
+          score: "0.5294",
+          index: "moderate",
         },
         {
-          "geoCode": "ZA_2_00293",
-          "geoLevel": "level2",
-          "score": "0.3725",
-          "index": "low"
+          geoCode: "ZA_2_00293",
+          geoLevel: "level2",
+          score: "0.3725",
+          index: "low",
         },
         {
-          "geoCode": "ZA_2_00306",
-          "geoLevel": "level2",
-          "score": "0.0588",
-          "index": "very low"
+          geoCode: "ZA_2_00306",
+          geoLevel: "level2",
+          score: "0.0588",
+          index: "very low",
         },
         {
-          "geoCode": "ZA_2_00307",
-          "geoLevel": "level2",
-          "score": "0.2353",
-          "index": "low"
+          geoCode: "ZA_2_00307",
+          geoLevel: "level2",
+          score: "0.2353",
+          index: "low",
         },
         {
-          "geoCode": "ZA_2_00308",
-          "geoLevel": "level2",
-          "score": "0.1569",
-          "index": "very low"
+          geoCode: "ZA_2_00308",
+          geoLevel: "level2",
+          score: "0.1569",
+          index: "very low",
         },
         {
-          "geoCode": "ZA_2_00309",
-          "geoLevel": "level2",
-          "score": "0.0196",
-          "index": "very low"
+          geoCode: "ZA_2_00309",
+          geoLevel: "level2",
+          score: "0.0196",
+          index: "very low",
         },
         {
-          "geoCode": "ZA_2_00345",
-          "geoLevel": "level2",
-          "score": "0.7843",
-          "index": "high"
+          geoCode: "ZA_2_00345",
+          geoLevel: "level2",
+          score: "0.7843",
+          index: "high",
         },
         {
-          "geoCode": "ZA_2_00416",
-          "geoLevel": "level2",
-          "score": "0.6471",
-          "index": "high"
+          geoCode: "ZA_2_00416",
+          geoLevel: "level2",
+          score: "0.6471",
+          index: "high",
         },
         {
-          "geoCode": "ZA_2_00418",
-          "geoLevel": "level2",
-          "score": "0.5294",
-          "index": "moderate"
+          geoCode: "ZA_2_00418",
+          geoLevel: "level2",
+          score: "0.5294",
+          index: "moderate",
         },
         {
-          "geoCode": "ZA_2_00420",
-          "geoLevel": "level2",
-          "score": "0.902",
-          "index": "very high"
+          geoCode: "ZA_2_00420",
+          geoLevel: "level2",
+          score: "0.902",
+          index: "very high",
         },
         {
-          "geoCode": "ZA_2_00494",
-          "geoLevel": "level2",
-          "score": "0.3529",
-          "index": "low"
+          geoCode: "ZA_2_00494",
+          geoLevel: "level2",
+          score: "0.3529",
+          index: "low",
         },
         {
-          "geoCode": "ZA_2_00521",
-          "geoLevel": "level2",
-          "score": "0.9804",
-          "index": "very high"
+          geoCode: "ZA_2_00521",
+          geoLevel: "level2",
+          score: "0.9804",
+          index: "very high",
         },
         {
-          "geoCode": "ZA_2_00522",
-          "geoLevel": "level2",
-          "score": "0.3333",
-          "index": "low"
+          geoCode: "ZA_2_00522",
+          geoLevel: "level2",
+          score: "0.3333",
+          index: "low",
         },
         {
-          "geoCode": "ZA_2_00523",
-          "geoLevel": "level2",
-          "score": "0.4314",
-          "index": "moderate"
+          geoCode: "ZA_2_00523",
+          geoLevel: "level2",
+          score: "0.4314",
+          index: "moderate",
         },
         {
-          "geoCode": "ZA_2_00524",
-          "geoLevel": "level2",
-          "score": "0.5098",
-          "index": "moderate"
+          geoCode: "ZA_2_00524",
+          geoLevel: "level2",
+          score: "0.5098",
+          index: "moderate",
         },
         {
-          "geoCode": "ZA_2_00525",
-          "geoLevel": "level2",
-          "score": "0.098",
-          "index": "very low"
+          geoCode: "ZA_2_00525",
+          geoLevel: "level2",
+          score: "0.098",
+          index: "very low",
         },
         {
-          "geoCode": "ZA_2_00526",
-          "geoLevel": "level2",
-          "score": "0.7451",
-          "index": "high"
+          geoCode: "ZA_2_00526",
+          geoLevel: "level2",
+          score: "0.7451",
+          index: "high",
         },
         {
-          "geoCode": "ZA_2_00527",
-          "geoLevel": "level2",
-          "score": "0.8235",
-          "index": "very high"
+          geoCode: "ZA_2_00527",
+          geoLevel: "level2",
+          score: "0.8235",
+          index: "very high",
         },
         {
-          "geoCode": "ZA_2_00528",
-          "geoLevel": "level2",
-          "score": "0.5294",
-          "index": "moderate"
+          geoCode: "ZA_2_00528",
+          geoLevel: "level2",
+          score: "0.5294",
+          index: "moderate",
         },
         {
-          "geoCode": "ZA_2_00529",
-          "geoLevel": "level2",
-          "score": "1",
-          "index": "very high"
+          geoCode: "ZA_2_00529",
+          geoLevel: "level2",
+          score: "1",
+          index: "very high",
         },
         {
-          "geoCode": "ZA_2_00543",
-          "geoLevel": "level2",
-          "score": "0.4902",
-          "index": "moderate"
+          geoCode: "ZA_2_00543",
+          geoLevel: "level2",
+          score: "0.4902",
+          index: "moderate",
         },
         {
-          "geoCode": "ZA_2_00595",
-          "geoLevel": "level2",
-          "score": "0.8627",
-          "index": "very high"
+          geoCode: "ZA_2_00595",
+          geoLevel: "level2",
+          score: "0.8627",
+          index: "very high",
         },
         {
-          "geoCode": "ZA_2_00637",
-          "geoLevel": "level2",
-          "score": "0.8039",
-          "index": "very high"
+          geoCode: "ZA_2_00637",
+          geoLevel: "level2",
+          score: "0.8039",
+          index: "very high",
         },
         {
-          "geoCode": "ZA_2_00638",
-          "geoLevel": "level2",
-          "score": "0.4118",
-          "index": "moderate"
+          geoCode: "ZA_2_00638",
+          geoLevel: "level2",
+          score: "0.4118",
+          index: "moderate",
         },
         {
-          "geoCode": "ZA_2_00639",
-          "geoLevel": "level2",
-          "score": "0.5882",
-          "index": "moderate"
+          geoCode: "ZA_2_00639",
+          geoLevel: "level2",
+          score: "0.5882",
+          index: "moderate",
         },
         {
-          "geoCode": "ZA_2_00640",
-          "geoLevel": "level2",
-          "score": "0.0392",
-          "index": "very low"
+          geoCode: "ZA_2_00640",
+          geoLevel: "level2",
+          score: "0.0392",
+          index: "very low",
         },
         {
-          "geoCode": "ZA_2_00742",
-          "geoLevel": "level2",
-          "score": "0.1765",
-          "index": "very low"
+          geoCode: "ZA_2_00742",
+          geoLevel: "level2",
+          score: "0.1765",
+          index: "very low",
         },
         {
-          "geoCode": "ZA_2_00748",
-          "geoLevel": "level2",
-          "score": "0.2157",
-          "index": "low"
+          geoCode: "ZA_2_00748",
+          geoLevel: "level2",
+          score: "0.2157",
+          index: "low",
         },
         {
-          "geoCode": "ZA_2_00797",
-          "geoLevel": "level2",
-          "score": "0.8431",
-          "index": "very high"
+          geoCode: "ZA_2_00797",
+          geoLevel: "level2",
+          score: "0.8431",
+          index: "very high",
         },
         {
-          "geoCode": "ZA_2_00798",
-          "geoLevel": "level2",
-          "score": "0.2549",
-          "index": "low"
+          geoCode: "ZA_2_00798",
+          geoLevel: "level2",
+          score: "0.2549",
+          index: "low",
         },
         {
-          "geoCode": "ZA_2_00799",
-          "geoLevel": "level2",
-          "score": "0.1176",
-          "index": "very low"
+          geoCode: "ZA_2_00799",
+          geoLevel: "level2",
+          score: "0.1176",
+          index: "very low",
         },
         {
-          "geoCode": "ZA_2_00830",
-          "geoLevel": "level2",
-          "score": "0.4314",
-          "index": "moderate"
+          geoCode: "ZA_2_00830",
+          geoLevel: "level2",
+          score: "0.4314",
+          index: "moderate",
         },
         {
-          "geoCode": "ZA_2_00831",
-          "geoLevel": "level2",
-          "score": "0.4706",
-          "index": "moderate"
+          geoCode: "ZA_2_00831",
+          geoLevel: "level2",
+          score: "0.4706",
+          index: "moderate",
         },
         {
-          "geoCode": "ZA_2_00832",
-          "geoLevel": "level2",
-          "score": "0.0784",
-          "index": "very low"
+          geoCode: "ZA_2_00832",
+          geoLevel: "level2",
+          score: "0.0784",
+          index: "very low",
         },
         {
-          "geoCode": "ZA_2_00933",
-          "geoLevel": "level2",
-          "score": "0.3137",
-          "index": "low"
+          geoCode: "ZA_2_00933",
+          geoLevel: "level2",
+          score: "0.3137",
+          index: "low",
         },
         {
-          "geoCode": "ZA_2_00934",
-          "geoLevel": "level2",
-          "score": "0.6667",
-          "index": "high"
+          geoCode: "ZA_2_00934",
+          geoLevel: "level2",
+          score: "0.6667",
+          index: "high",
         },
         {
-          "geoCode": "ZA_2_00935",
-          "geoLevel": "level2",
-          "score": "0.2941",
-          "index": "low"
+          geoCode: "ZA_2_00935",
+          geoLevel: "level2",
+          score: "0.2941",
+          index: "low",
         },
         {
-          "geoCode": "ZA_2_00936",
-          "geoLevel": "level2",
-          "score": "0",
-          "index": "very low"
+          geoCode: "ZA_2_00936",
+          geoLevel: "level2",
+          score: "0",
+          index: "very low",
         },
         {
-          "geoCode": "ZA_2_00947",
-          "geoLevel": "level2",
-          "score": "0.9412",
-          "index": "very high"
+          geoCode: "ZA_2_00947",
+          geoLevel: "level2",
+          score: "0.9412",
+          index: "very high",
         },
       ])}
       tolerance={number("tolerance", 0.01)}

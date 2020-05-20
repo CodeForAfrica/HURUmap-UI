@@ -383,6 +383,7 @@ function MapIt({
     onClickGeoLayer,
     leafletPropsMemoized,
     indexColor,
+    scoreLabel,
   ]);
   const classes = useStyles();
 

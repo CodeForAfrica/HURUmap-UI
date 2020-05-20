@@ -2,14 +2,8 @@ import { useState, useEffect } from "react";
 import { useApolloClient } from "@apollo/react-hooks";
 import buildProfileQuery from "./buildProfileQuery";
 import useVisualLoader from "../useVisualLoader";
-import useGeoIndexLoader from "../useGeoIndexLoader";
 
-export default ({
-  geoId,
-  comparisonGeoId,
-  visuals,
-  populationTables,
-}) => {
+export default ({ geoId, comparisonGeoId, visuals, populationTables }) => {
   const client = useApolloClient();
   const [profiles, setProfiles] = useState({
     isLoading: true,

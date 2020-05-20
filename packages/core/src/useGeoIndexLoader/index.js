@@ -20,7 +20,12 @@ export default ({ indexTable, indexField, countryCode, scoreField }) => {
             geoIndex: { nodes: indeces },
           },
         } = await client.query({
-          query: buildGeoIndexQuery(indexTable, indexField, countryCode, scoreField),
+          query: buildGeoIndexQuery(
+            indexTable,
+            indexField,
+            countryCode,
+            scoreField
+          ),
           variables: { countryCode },
         });
         setIndexMapping({
@@ -29,7 +34,7 @@ export default ({ indexTable, indexField, countryCode, scoreField }) => {
         });
       })();
     }
-  }, [client, indexTable, countryCode, indexField]);
+  }, [client, indexTable, countryCode, indexField, scoreField]);
 
   return indexMapping;
 };
