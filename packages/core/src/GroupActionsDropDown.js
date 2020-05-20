@@ -98,7 +98,8 @@ function GroupActionsDropDown({
   const [showLinkText, setShowLinkText] = useState(false);
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
-  const url = urlProp || window.location.href;
+  const url =
+    urlProp || (typeof window !== "undefined" && window.location.href);
 
   const { url: linkedinShareUrlProp, ...linkedinProps } = linkedin || {};
   const linkedinShareUrl = linkedin && (linkedinShareUrlProp || url);
