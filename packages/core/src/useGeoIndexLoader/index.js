@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useApolloClient } from "@apollo/react-hooks";
 import buildGeoIndexQuery from "./buildGeoIndexQuery";
 
-export default ({ indexTable, indexField, countryCode }) => {
+export default ({ indexTable, indexField, countryCode, scoreField }) => {
   const client = useApolloClient();
   const [indexMapping, setIndexMapping] = useState({
     isLoading: true,
@@ -20,7 +20,7 @@ export default ({ indexTable, indexField, countryCode }) => {
             geoIndex: { nodes: indeces },
           },
         } = await client.query({
-          query: buildGeoIndexQuery(indexTable, indexField, countryCode),
+          query: buildGeoIndexQuery(indexTable, indexField, countryCode, scoreField),
           variables: { countryCode },
         });
         setIndexMapping({
