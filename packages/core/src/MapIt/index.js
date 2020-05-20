@@ -42,7 +42,7 @@ function MapIt({
   codeType,
   indexColor,
   geoIndexMapping,
-  vulnerabilityLabel,
+  scoreLabel,
   filterCountries = ["KE", "ZA"],
   tileLayer,
   geoLayerFocusStyle = {
@@ -359,8 +359,8 @@ function MapIt({
             setGeoStyles(layer, geoColor, "blur");
           }
           let label = feature.properties.name;
-          if (vulnerabilityLabel && feature.properties.score) {
-            label = `${label} <br /> ${vulnerabilityLabel} : ${feature.properties.score}`;
+          if (scoreLabel && feature.properties.score) {
+            label = `${label} <br /> ${scoreLabel} : <strong>${feature.properties.score}</strong>`;
           }
           layer.bindTooltip(label, { direction: "auto" });
         },
@@ -416,7 +416,7 @@ MapIt.propTypes = {
   geoLevel: PropTypes.string,
   geoCode: PropTypes.string,
   codeType: PropTypes.string,
-  vulnerabilityLabel: PropTypes.string,
+  scoreLabel: PropTypes.string,
   filterCountries: PropTypes.arrayOf(PropTypes.string),
   generation: PropTypes.string,
   tileLayer: PropTypes.shape({ addTo: PropTypes.func }),
@@ -449,7 +449,7 @@ MapIt.defaultProps = {
   geoLayerHoverStyle: undefined,
   onClickGeoLayer: undefined,
   geoIndexMapping: undefined,
-  vulnerabilityLabel: undefined,
+  scoreLabel: undefined,
 };
 
 export default MapIt;

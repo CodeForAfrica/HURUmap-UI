@@ -167,7 +167,7 @@ storiesOf("HURUmap UI|MapIt/Geography", module)
         low: "#7d8c6c",
         "very low": "#5bc17d",
       })}
-      vulnerabilityLabel={text("vulnerabilityLabel", "All Section Vulnerability Score")}
+      scoreLabel={text("scoreLabel", "All Section Vulnerability Score")}
       geoIndexMapping={object("geoIndexMapping", [
         {
           "geoCode": "ZA_1_001",
