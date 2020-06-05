@@ -93,7 +93,7 @@ const useStyles = makeStyles(({ palette }) => ({
   },
   attributionSource: {
     flex: "1 1 300px",
-    "& span": {
+    "& div": {
       color: "#fff",
     },
   },
@@ -116,18 +116,19 @@ const useStyles = makeStyles(({ palette }) => ({
 }));
 
 function InsightContainer({
-  hideInsight,
+  attribution: attributionProp,
   actions,
   children,
-  embedCode,
-  gaEvents,
-  insight: insightProp,
-  logo,
-  loading,
-  source,
-  title,
   description,
   dataTable = {},
+  embedCode,
+  gaEvents,
+  hideInsight,
+  insight: insightProp,
+  loading,
+  logo,
+  source,
+  title,
   ...props
 }) {
   const { variant } = props;
@@ -212,6 +213,12 @@ function InsightContainer({
     />
   );
   const insight = insightProp || {};
+  // We're checking for undefined because if it's set to null or empty, we
+  // assume that we're not suppose to show source attribution
+  const attribution =
+    attributionProp === undefined
+      ? source && `Source ${source.href}`
+      : attributionProp;
 
   return (
     <div ref={rootRef} className={classes.root}>
@@ -350,23 +357,37 @@ function InsightContainer({
           </Grid>
         </Grid>
       )}
-      <div className={classes.attribution}>
-        <Grid container wrap="wrap" alignItems="center" justify="space-between">
-          <Grid item className={classes.attributionSource}>
-            {source && (
-              <Typography variant="caption">{`Source ${source.href}`}</Typography>
+      {(attribution || logo) && (
+        <div className={classes.attribution}>
+          <Grid
+            container
+            wrap="wrap"
+            alignItems="center"
+            justify="space-between"
+          >
+            {attribution && (
+              <Grid item className={classes.attributionSource}>
+                <Typography
+                  variant="caption"
+                  component="div"
+                  dangerouslySetInnerHTML={{ __html: attribution }}
+                />
+              </Grid>
+            )}
+            {logo && (
+              <Grid item className={classes.attributionLogo}>
+                <img src={logo} alt="log" />
+              </Grid>
             )}
           </Grid>
-          <Grid item className={classes.attributionLogo}>
-            <img src={logo} alt="logo" />
-          </Grid>
-        </Grid>
-      </div>
+        </div>
+      )}
     </div>
   );
 }
 
 InsightContainer.propTypes = {
+  attribution: PropTypes.string,
   dataTable: PropTypes.shape({
     rawData: propTypes.arrayOf(propTypes.shape({})),
   }),
@@ -415,6 +436,7 @@ InsightContainer.propTypes = {
 };
 
 InsightContainer.defaultProps = {
+  attribution: undefined,
   dataTable: undefined,
   hideInsight: false,
   actions: undefined,

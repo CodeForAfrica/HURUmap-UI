@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import he from "he";
+
 import { storiesOf } from "@storybook/react";
 import {
   boolean,
@@ -35,6 +37,9 @@ storiesOf("HURUmap UI|ChartContainers/ChartContainer", module)
       const variant = select("variant", ["data", "analysis"], "data");
       const groupActions = boolean("groupActions", true);
       const chartType = select("chartType", ["bar", "pie"], "pie");
+      const attributionText = text("attribution", undefined);
+      const attribution =
+        (attributionText && he.decode(attributionText)) || attributionText;
       const classes = makeStyles(({ breakpoints }) => ({
         title: {
           fontWeight: "bold",
@@ -48,6 +53,7 @@ storiesOf("HURUmap UI|ChartContainers/ChartContainer", module)
           },
         },
       }))();
+
       return (
         <Grid
           container
@@ -69,6 +75,7 @@ storiesOf("HURUmap UI|ChartContainers/ChartContainer", module)
             )}
           >
             <ChartContainer
+              attribution={attribution}
               logo={logo}
               loading={loading}
               groupActions={groupActions}
@@ -312,6 +319,9 @@ storiesOf("HURUmap UI|ChartContainers/InsightChartContainer", module)
         groupBy: "Group",
         aggregate: "raw",
       });
+      const attributionText = text("attribution", undefined);
+      const attribution =
+        (attributionText && he.decode(attributionText)) || attributionText;
 
       const dataArray = Array(
         ((definition.groupBy &&
@@ -330,6 +340,7 @@ storiesOf("HURUmap UI|ChartContainers/InsightChartContainer", module)
       return (
         <div style={{ width: containerWidth }}>
           <InsightContainer
+            attribution={attribution}
             classes={{ root: classes.root }}
             embedCode={text("embedCode", "Embed Chart Code")}
             hideInsight={hideInsight}

@@ -97,7 +97,7 @@ const useStyles = makeStyles(({ breakpoints, palette }) => ({
   },
   attributionSource: {
     flex: "1 1 300px",
-    "& span": {
+    "& div": {
       color: "#fff",
     },
   },
@@ -124,6 +124,7 @@ const useStyles = makeStyles(({ breakpoints, palette }) => ({
 }));
 
 function ChartContainer({
+  attribution: attributionProp,
   children,
   content,
   embed,
@@ -447,6 +448,11 @@ function ChartContainer({
       {renderShareDropDown()}
     </>
   );
+  // We're checking for undefined because if it's set to null or empty, we
+  // assume that we're not suppose to show source attribution
+  const attribution =
+    attributionProp === undefined ? `Source ${sourceLink}` : attributionProp;
+
   return (
     <div ref={chartRef} className={classes.root}>
       <Grid container className={classes.containerRoot}>
@@ -546,30 +552,39 @@ function ChartContainer({
         </Grid>
       </Grid>
       {renderDescription([DOWNLOAD_HIDDEN_CLASSNAME])}
-      <Grid
-        container
-        wrap="wrap"
-        alignItems="center"
-        justify="space-between"
-        className={classNames([
-          classes.attribution,
-          classes[DOWNLOAD_ONLY_CLASSNAME],
-        ])}
-      >
-        <Grid item className={classes.attributionSource}>
-          {sourceLink && (
-            <Typography variant="caption">{`Source ${sourceLink}`}</Typography>
+      {(attribution || logo) && (
+        <Grid
+          container
+          wrap="wrap"
+          alignItems="center"
+          justify="space-between"
+          className={classNames([
+            classes.attribution,
+            classes[DOWNLOAD_ONLY_CLASSNAME],
+          ])}
+        >
+          {attribution && (
+            <Grid item className={classes.attributionSource}>
+              <Typography
+                variant="caption"
+                component="div"
+                dangerouslySetInnerHTML={{ __html: attribution }}
+              />
+            </Grid>
+          )}
+          {logo && (
+            <Grid item className={classes.attributionLogo}>
+              <img src={logo} alt="log" />
+            </Grid>
           )}
         </Grid>
-        <Grid item className={classes.attributionLogo}>
-          <img src={logo} alt="log" />
-        </Grid>
-      </Grid>
+      )}
     </div>
   );
 }
 
 ChartContainer.propTypes = {
+  attribution: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
@@ -632,6 +647,7 @@ ChartContainer.propTypes = {
 };
 
 ChartContainer.defaultProps = {
+  attribution: undefined,
   embed: {
     title: "Embed code for this chart",
     subtitle:
