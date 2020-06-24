@@ -71,7 +71,7 @@ function Snippet({
   const defaultShareURL = useMemo(() => {
     const { origin, pathname, search, hash } = window ? window.location : {};
     const searchParams = new URLSearchParams(search);
-    searchParams.append("indicatorId", id);
+    searchParams.set("indicatorId", id);
     const query = searchParams.toString();
 
     return `${origin}${pathname}${query ? `?${query}` : ""}${hash}`;
