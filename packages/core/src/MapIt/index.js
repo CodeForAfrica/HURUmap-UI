@@ -32,7 +32,8 @@ function MapIt({
   width = "100%",
   height = "100%",
   tolerance = 0.001,
-  zoom = 3,
+  zoom,
+  center,
   generation = "1",
   drawChildren,
   drawGrandChildren,
@@ -285,9 +286,7 @@ function MapIt({
         keyboard: false,
         scrollWheelZoom: false,
         touchZoom: false,
-        zoomControl: false,
-        center: [0, 0],
-        zoom,
+        zommControl: false,
         ...leafletPropsMemoized,
       });
 
@@ -367,11 +366,16 @@ function MapIt({
       })
       .addTo(map);
 
-    if (!drawProfile && geoJsonLayer.getBounds().isValid()) {
-      map.fitBounds(geoJsonLayer.getBounds());
+    if (center || zoom) {
+      map.setView(center, zoom);
+    } else {
+      if (!drawProfile && geoJsonLayer.getBounds().isValid()) {
+        map.fitBounds(geoJsonLayer.getBounds());
+      }
     }
   }, [
     mapId,
+    center,
     zoom,
     tileLayer,
     featuresToDraw,
@@ -411,6 +415,7 @@ MapIt.propTypes = {
   url: PropTypes.string,
   tolerance: PropTypes.number,
   zoom: PropTypes.number,
+  center: PropTypes.arrayOf(PropTypes.number),
   drawChildren: PropTypes.bool,
   drawGrandChildren: PropTypes.bool,
   drawProfile: PropTypes.bool,
@@ -436,6 +441,7 @@ MapIt.defaultProps = {
   url: undefined,
   tolerance: undefined,
   zoom: undefined,
+  center: undefined,
   drawChildren: undefined,
   drawGrandChildren: undefined,
   drawProfile: undefined,
