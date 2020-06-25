@@ -366,12 +366,10 @@ function MapIt({
       })
       .addTo(map);
 
-    if (center || zoom) {
+    if (center) {
       map.setView(center, zoom);
-    } else {
-      if (!drawProfile && geoJsonLayer.getBounds().isValid()) {
-        map.fitBounds(geoJsonLayer.getBounds());
-      }
+    } else if (!drawProfile && geoJsonLayer.getBounds().isValid()) {
+      map.fitBounds(geoJsonLayer.getBounds());
     }
   }, [
     mapId,
