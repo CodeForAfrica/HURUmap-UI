@@ -13,6 +13,6 @@ export const CenterDecorator = (storyFn) => (
     alignItems="flex-start"
     style={{ padding: 20, width: "100%", height: "auto", overflow: "hidden" }}
   >
-    <ThemeProvider theme={theme}>{storyFn()}</ThemeProvider>
+    <ThemeProvider theme={theme}>{storyFn({ theme })}</ThemeProvider>
   </Grid>
 );

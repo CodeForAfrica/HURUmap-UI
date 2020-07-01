@@ -68,6 +68,8 @@ export default function createVictoryTheme(chartOptions) {
         },
       },
       tooltip: {
+        cornerRadius: 0,
+        flyoutPadding: 16,
         flyoutStyle: {
           fill: "#fff",
         },

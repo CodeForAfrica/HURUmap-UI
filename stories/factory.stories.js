@@ -14,7 +14,7 @@ import { CenterDecorator } from "./common";
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
 
-storiesOf("HURUmap UI|Charts/ChartFactory", module)
+storiesOf("HURUmap UI/Charts/ChartFactory", module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add("Default", () => {

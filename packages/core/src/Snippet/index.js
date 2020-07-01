@@ -37,7 +37,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-end",
     width: "5rem",
   },
-  cardButton: {},
+  cardButton: {
+    marginTop: "1rem",
+  },
   title: {
     fontSize: "1.25rem",
     fontWeight: "bold",
@@ -104,8 +106,8 @@ function Snippet({
   const renderPost = () => {
     return (
       <>
-        <Grid item container direction="column" spacing={1}>
-          <Grid item>
+        <Grid item xs={12} container>
+          <Grid item xs={12}>
             <Grid
               container
               direction="row"
@@ -161,7 +163,7 @@ function Snippet({
               </Grid>
             </Grid>
           </Grid>
-          <Grid item>
+          <Grid item xs={12}>
             <Typography
               component="div"
               dangerouslySetInnerHTML={{
@@ -174,7 +176,7 @@ function Snippet({
         </Grid>
 
         {!link && post.content.includes("<p><!--more--></p>") && (
-          <Grid item className={DOWNLOAD_HIDDEN_CLASSNAME}>
+          <Grid item xs={12} className={DOWNLOAD_HIDDEN_CLASSNAME}>
             <SnippetButton
               onClick={() => {
                 if (onExpand) {
@@ -202,13 +204,7 @@ function Snippet({
     );
   };
   return (
-    <Grid
-      container
-      ref={cardRef}
-      className={classes.root}
-      direction="column"
-      spacing={2}
-    >
+    <Grid container ref={cardRef} className={classes.root} direction="column">
       {/* eslint-disable-next-line no-nested-ternary */}
       {post ? (
         link ? (

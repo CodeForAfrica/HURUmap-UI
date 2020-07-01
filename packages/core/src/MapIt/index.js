@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 import leaflet from "leaflet";
 
-import "leaflet/dist/leaflet.css";
 import BlockLoader from "../BlockLoader";
 import makeStyles from "../makeStyles";
 import useDeepRef from "./useDeepRef";
