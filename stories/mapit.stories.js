@@ -70,7 +70,7 @@ storiesOf("HURUmap UI/MapIt/Geography", module)
       /**
        * If onClickLayer keeps changing it will trigger rerender
        */
-      const onClickLayer = useCallback(action("onClickGeoLayer"), []);
+      const onClickLayer = useCallback(() => action("onClickGeoLayer")(), []);
       return (
         <MapIt
           height="100vh"
