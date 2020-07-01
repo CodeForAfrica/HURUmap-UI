@@ -21,10 +21,10 @@ import { CenterDecorator } from "./common";
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
 
-storiesOf("HURUmap UI|Charts/BarChart", module)
+storiesOf("HURUmap UI/Charts/BarChart", module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
-  .add("Default", () => {
+  .add("Default", ({ theme }) => {
     const horizontal = boolean("horizontal", false);
     const data = Array(number("data", 3)).fill(null);
     const height = number("height", undefined) || 350;
@@ -55,6 +55,7 @@ storiesOf("HURUmap UI|Charts/BarChart", module)
               },
             },
           }}
+          theme={theme.chart}
         />
       </div>
     );
@@ -119,7 +120,7 @@ storiesOf("HURUmap UI|Charts/BarChart", module)
     );
   });
 
-storiesOf("HURUmap UI|Charts/Bullet Chart", module)
+storiesOf("HURUmap UI/Charts/Bullet Chart", module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add("Default", () => (
@@ -157,7 +158,7 @@ storiesOf("HURUmap UI|Charts/Bullet Chart", module)
     </div>
   ));
 
-storiesOf("HURUmap UI|Charts/ComparisonBarChart", module)
+storiesOf("HURUmap UI/Charts/ComparisonBarChart", module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add("Default", () => {
@@ -180,7 +181,7 @@ storiesOf("HURUmap UI|Charts/ComparisonBarChart", module)
     );
   });
 
-storiesOf("HURUmap UI|Charts/LineChart", module)
+storiesOf("HURUmap UI/Charts/LineChart", module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add("Default", () => (
@@ -250,7 +251,7 @@ storiesOf("HURUmap UI|Charts/LineChart", module)
     </div>
   ));
 
-storiesOf("HURUmap UI|Charts/PieChart", module)
+storiesOf("HURUmap UI/Charts/PieChart", module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add("Default", () => {
@@ -406,7 +407,7 @@ storiesOf("HURUmap UI|Charts/PieChart", module)
 
 const formatter = new Intl.NumberFormat("en-GB");
 
-storiesOf("HURUmap UI|Charts/NestedProportionalAreaChart", module)
+storiesOf("HURUmap UI/Charts/NestedProportionalAreaChart", module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add("Default", () => (

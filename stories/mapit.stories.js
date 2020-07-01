@@ -15,7 +15,9 @@ import countries from "@hurumap-ui/content/countries";
 import MapIt from "@hurumap-ui/core/MapIt";
 import { CenterDecorator } from "./common";
 
-storiesOf("HURUmap UI|MapIt/Geography", module)
+import "leaflet/dist/leaflet.css";
+
+storiesOf("HURUmap UI/MapIt/Geography", module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add("ContinentRoot", () => (
@@ -531,7 +533,7 @@ storiesOf("HURUmap UI|MapIt/Geography", module)
         },
       ])}
       tolerance={number("tolerance", 0.01)}
-      url={text("url", "https://dev.mapit.hurumap.org")}
+      url={text("url", "https://mapit.hurumap.org")}
       drawChildren={boolean("drawChildren", true)}
       drawGrandChildren={boolean("drawGrandChildren", true)}
       filterCountries={array("filterCountries", [])}

@@ -28,7 +28,7 @@ import logo from "./assets/hurumap-logo-white.png";
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
 
-storiesOf("HURUmap UI|ChartContainers/ChartContainer", module)
+storiesOf("HURUmap UI/ChartContainers/ChartContainer", module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add("Default", () =>
@@ -287,7 +287,7 @@ storiesOf("HURUmap UI|ChartContainers/ChartContainer", module)
     })
   );
 
-storiesOf("HURUmap UI|ChartContainers/InsightChartContainer", module)
+storiesOf("HURUmap UI/ChartContainers/InsightChartContainer", module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add("Default", () =>

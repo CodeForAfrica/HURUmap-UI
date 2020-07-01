@@ -16,7 +16,7 @@ import { CenterDecorator } from "./common";
 
 import logo from "./assets/hurumap-logo-white.png";
 
-storiesOf("HURUmap UI|Components/Card", module)
+storiesOf("HURUmap UI/Components/Card", module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
   .add("Default", () => {
