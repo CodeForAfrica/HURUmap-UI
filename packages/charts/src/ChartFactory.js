@@ -524,7 +524,7 @@ const ChartFactory = React.memo(
               key={key}
               subtitle={subtitle}
               statistic={dataStatY}
-              description={`${description} ${xDesc}`}
+              description={(description && `${description} ${xDesc}`) || xDesc}
               comparisonData={[]} // TODO: pending NumberVisuals components (HURUmap-UI) fix on this propTypes
               classes={{}} // TODO: pending NumberVisuals style configurations - update root margin
               {...chartProps}
