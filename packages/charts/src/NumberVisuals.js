@@ -86,9 +86,9 @@ function NumberVisuals({
       </div>
       <Typography className={classes.description}>{description}</Typography>
 
-      <List className={classes.list}>
-        {comparisonData &&
-          comparisonData.map((d) => (
+      {comparisonData && (
+        <List className={classes.list}>
+          {comparisonData.map((d) => (
             <ListItem className={classes.listParent} key={d.id}>
               <ListItemText
                 primary={
@@ -109,7 +109,8 @@ function NumberVisuals({
               />
             </ListItem>
           ))}
-      </List>
+        </List>
+      )}
     </div>
   );
 }
