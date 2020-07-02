@@ -71,6 +71,7 @@
     "regenerator-runtime": "^0.13.5",
     "typescript": "^3.8.3",
     "victory": "^35.0.2",
+    "vue": "^2.6.11",
     "webpack": "^4.39.2"
   },
   "scripts": {
