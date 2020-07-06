@@ -1,6 +1,6 @@
 {
     "name": "@hurumap-ui/core",
-    "version": "0.3.5-alpha.29",
+    "version": "0.3.5-alpha.30",
     "description": "UI components for HURUmap.",
     "author": "CodeForAfrica",
     "license": "GPL-2.0-or-later",
@@ -19,7 +19,7 @@
     },
     "main": "index.js",
     "dependencies": {
-        "@hurumap-ui/charts": "^0.3.5-alpha.29",
+        "@hurumap-ui/charts": "^0.3.5-alpha.30",
         "classnames": "^2.2.6",
         "dequal": "^1.0.0",
         "dom-to-image": "^2.6.0",
