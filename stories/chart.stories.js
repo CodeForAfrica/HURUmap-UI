@@ -196,6 +196,10 @@ storiesOf("HURUmap UI/Charts/LineChart", module)
           { x: 6, y: -2 },
           { x: 7, y: 5 },
         ])}
+        minDomain={object("minDomain", {
+          y: 0,
+        })}
+        domain={object("domain", undefined)}
         parts={{
           container: {
             labels: ({ datum }) => `y: ${datum.x}`,
