@@ -22,6 +22,7 @@
         "test": "jest"
     },
     "dependencies": {
+        "@material-ui/utils": "^4.10.2",
         "prop-types": "^15.7.2",
         "shortid": "^2.2.15"
     },
