@@ -203,9 +203,9 @@ storiesOf("HURUmap UI/Charts/LineChart", module)
           scatter: { size: 5 },
           parent: {
             minDomain: {
-              y: 0
-            }
-          }
+              y: 0,
+            },
+          },
         })}
       />
     </div>

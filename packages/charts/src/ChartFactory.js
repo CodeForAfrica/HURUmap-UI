@@ -4,8 +4,8 @@ import { Box, ButtonBase } from "@material-ui/core";
 
 import { Helpers } from "victory";
 
+import { deepmerge } from "@material-ui/utils";
 import aggregateData, { isSelectFunc, groupData } from "./utils/aggregateData";
-import { deepmerge } from '@material-ui/utils';
 
 import BarChart from "./BarChart";
 import BulletChart from "./BulletChart";
@@ -652,10 +652,9 @@ const ChartFactory = React.memo(
               },
             },
             container: {
-              labels: ({ datum }) =>
-                datum.tooltip || `y: ${format(datum.y)}`,
+              labels: ({ datum }) => datum.tooltip || `y: ${format(datum.y)}`,
             },
-            scatter: { size: 5 }
+            scatter: { size: 5 },
           };
           return (
             <LineChart

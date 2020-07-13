@@ -103,5 +103,8 @@
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@material-ui/utils": "^4.10.2"
+  }
 }
