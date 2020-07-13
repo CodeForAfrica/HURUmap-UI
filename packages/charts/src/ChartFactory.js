@@ -5,6 +5,7 @@ import { Box, ButtonBase } from "@material-ui/core";
 import { Helpers } from "victory";
 
 import aggregateData, { isSelectFunc, groupData } from "./utils/aggregateData";
+import { deepmerge } from '@material-ui/utils';
 
 import BarChart from "./BarChart";
 import BulletChart from "./BulletChart";
@@ -637,6 +638,25 @@ const ChartFactory = React.memo(
         }
         case "line": {
           const { height, width } = calculations;
+          const parts = {
+            axis: {
+              independent: {
+                // Line charts are for time-series and it's OK not show all
+                // labels on axis e.g. 2000, 2005 instead of
+                // 2000, 2001, 2002, 2003, 2004, 2005
+                // NOTE: This works for numbers only!
+                fixLabelOverlap: true,
+                // To support non-numbers, lets hard-limit to 5 ticks
+                // TODO(kilemensi): Find a way to make this a theme config per charts type
+                tickCount: 5,
+              },
+            },
+            container: {
+              labels: ({ datum }) =>
+                datum.tooltip || `y: ${format(datum.y)}`,
+            },
+            scatter: { size: 5 }
+          };
           return (
             <LineChart
               key={key}
@@ -644,25 +664,7 @@ const ChartFactory = React.memo(
               height={height}
               width={width}
               data={!isComparison ? primaryData : [primaryData, comparisonData]}
-              parts={{
-                axis: {
-                  independent: {
-                    // Line charts are for time-series and it's OK not show all
-                    // labels on axis e.g. 2000, 2005 instead of
-                    // 2000, 2001, 2002, 2003, 2004, 2005
-                    // NOTE: This works for numbers only!
-                    fixLabelOverlap: true,
-                    // To support non-numbers, lets hard-limit to 5 ticks
-                    // TODO(kilemensi): Find a way to make this a theme config per charts type
-                    tickCount: 5,
-                  },
-                },
-                container: {
-                  labels: ({ datum }) =>
-                    datum.tooltip || `y: ${format(datum.y)}`,
-                },
-                scatter: { size: 5 },
-              }}
+              parts={deepmerge(parts, theme.line.parts, chartProps.parts)}
               theme={theme}
               {...chartProps}
               horizontal={false}

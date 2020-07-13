@@ -196,12 +196,17 @@ storiesOf("HURUmap UI/Charts/LineChart", module)
           { x: 6, y: -2 },
           { x: 7, y: 5 },
         ])}
-        parts={{
+        parts={object("parts", {
           container: {
             labels: ({ datum }) => `y: ${datum.x}`,
           },
           scatter: { size: 5 },
-        }}
+          parent: {
+            minDomain: {
+              y: 0
+            }
+          }
+        })}
       />
     </div>
   ))

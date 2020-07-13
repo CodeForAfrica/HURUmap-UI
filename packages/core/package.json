@@ -20,6 +20,7 @@
     "main": "index.js",
     "dependencies": {
         "@hurumap-ui/charts": "^0.3.5-alpha.30",
+        "@material-ui/utils": "^4.10.2",
         "classnames": "^2.2.6",
         "dequal": "^1.0.0",
         "dom-to-image": "^2.6.0",
