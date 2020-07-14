@@ -80,6 +80,10 @@ function HURUmapChart({
     ? chartData.profileVisualsData[chart.visual.queryAlias].nodes
     : [];
 
+  const referenceData = !chartData.isLoading && chartData.profileVisualsData[`${chart.visual.queryAlias}Reference`]
+  ? chartData.profileVisualsData[`${chart.visual.queryAlias}Reference`].nodes
+  : [];
+
   return (
     <ChartContainer
       key={chart.id}
@@ -122,6 +126,7 @@ function HURUmapChart({
         <ChartFactory
           profiles={profiles}
           definition={chart.visual}
+          referenceData={referenceData}
           data={rawData}
         />
       )}

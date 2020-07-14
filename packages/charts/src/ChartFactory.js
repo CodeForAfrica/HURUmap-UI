@@ -404,7 +404,9 @@ const ChartFactory = React.memo(
         return {
           ...z,
           y: Number(z.y) ? Number(z.y) : z.y,
-          tooltip: lineLabel ? `${lineLabel}:${format(z.y)}` : `y: ${format(z.y)}`,
+          tooltip: lineLabel
+            ? `${lineLabel}:${format(z.y)}`
+            : `y: ${format(z.y)}`,
         };
       });
     };
@@ -670,12 +672,12 @@ const ChartFactory = React.memo(
           const processedData = [processYValues(primaryData)];
 
           if (isComparison && comparisonData && comparisonData.length) {
-            processedData.concat(
+            processedData.push(
               processYValues(comparisonData, profiles.comparison.name)
             );
           }
           if (referenceData && referenceData.length) {
-            processedData.concat(
+            processedData.push(
               processYValues(referenceData, profiles.parent.name)
             );
           }
