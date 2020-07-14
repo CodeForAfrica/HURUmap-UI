@@ -399,15 +399,15 @@ const ChartFactory = React.memo(
       return null;
     }
 
-    const processYValues = (data, label=null) => {
-      return data.map(z => {
-          return { 
-            ...z, 
-            y: Number(z.y) ? Number(z.y): z.y ,
-            tooltip: label? `${label}:${format(z.y)}` : `y: ${format(z.y)}`
-          }
-      })
-    }
+    const processYValues = (lineData, lineLabel = null) => {
+      return lineData.map((z) => {
+        return {
+          ...z,
+          y: Number(z.y) ? Number(z.y) : z.y,
+          tooltip: lineLabel ? `${lineLabel}:${format(z.y)}` : `y: ${format(z.y)}`,
+        };
+      });
+    };
 
     const renderChart = () => {
       switch (visualType) {
@@ -667,15 +667,15 @@ const ChartFactory = React.memo(
             scatter: { size: 5 },
           };
 
-          let processedData = [processYValues(primaryData)];
+          const processedData = [processYValues(primaryData)];
 
           if (isComparison && comparisonData && comparisonData.length) {
-            processedData.concat( 
+            processedData.concat(
               processYValues(comparisonData, profiles.comparison.name)
             );
-          } 
+          }
           if (referenceData && referenceData.length) {
-            processedData.concat( 
+            processedData.concat(
               processYValues(referenceData, profiles.parent.name)
             );
           }
@@ -777,9 +777,15 @@ ChartFactory.propTypes = {
    * but population is not available in the profile.
    */
   profiles: propTypes.shape({
-    parent: propTypes.shape({}),
-    profile: propTypes.shape({}),
-    comparison: propTypes.shape({}),
+    parent: propTypes.shape({
+      name: propTypes.string,
+    }),
+    profile: propTypes.shape({
+      name: propTypes.string,
+    }),
+    comparison: propTypes.shape({
+      name: propTypes.string,
+    }),
   }),
   disableShowMore: propTypes.bool,
 };
