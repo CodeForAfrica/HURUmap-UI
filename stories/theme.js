@@ -23,12 +23,6 @@ export default createTheme({
     line: {
       legend: {
         labelWidth: 150,
-      },
-     // strokeWidth: [4, 7],
-      style: {
-        data: {
-          strokeWidth: 4,
-        },
       }
     },
   },
