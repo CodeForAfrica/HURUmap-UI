@@ -24,6 +24,12 @@ export default createTheme({
       legend: {
         labelWidth: 150,
       },
+     // strokeWidth: [4, 7],
+      style: {
+        data: {
+          strokeWidth: 4,
+        },
+      }
     },
   },
 });
