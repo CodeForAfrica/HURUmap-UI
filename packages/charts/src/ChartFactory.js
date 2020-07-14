@@ -403,7 +403,7 @@ const ChartFactory = React.memo(
       return data.map(z => {
           return { 
             ...z, 
-            y: Number(z.y),
+            y: Number(z.y) ? Number(z.y): z.y ,
             tooltip: label? `${label}:${format(z.y)}` : `y: ${format(z.y)}`
           }
       })
@@ -667,15 +667,15 @@ const ChartFactory = React.memo(
             scatter: { size: 5 },
           };
 
-          let processedData = processYValues(primaryData);
+          let processedData = [processYValues(primaryData)];
 
           if (isComparison && comparisonData && comparisonData.length) {
-            processedData.push( 
+            processedData.concat( 
               processYValues(comparisonData, profiles.comparison.name)
             );
           } 
           if (referenceData && referenceData.length) {
-            processedData.push( 
+            processedData.concat( 
               processYValues(referenceData, profiles.parent.name)
             );
           }
