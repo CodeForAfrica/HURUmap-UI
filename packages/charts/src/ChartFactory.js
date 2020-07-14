@@ -404,7 +404,7 @@ const ChartFactory = React.memo(
           return { 
             ...z, 
             y: Number(z.y),
-            tooltip: label? label : `y: ${format(datum.y)}`
+            tooltip: label? `${label}:${format(z.y)}` : `y: ${format(z.y)}`
           }
       })
     }
