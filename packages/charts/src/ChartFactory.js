@@ -669,22 +669,15 @@ const ChartFactory = React.memo(
 
           let processedData = processYValues(primaryData);
 
-          if (isComparison && Boolean(comparisonData.length) && Boolean(referenceData.length)) {
-            processedData = [
-              processYValues(primaryData, profiles.parent.name), 
-              processYValues(comparisonData, profiles.comparison.name),
-              processYValues(referenceData, profiles.parent.name)
-            ]
-          } else if (isComparison && Boolean(comparisonData.length)) {
-            processedData = [
-              processYValues(primaryData, profiles.parent.name),
+          if (isComparison && comparisonData && comparisonData.length) {
+            processedData.push( 
               processYValues(comparisonData, profiles.comparison.name)
-            ]
-          } else if (Boolean(referenceData.length)) {
-            processedData = [
-              processYValues(primaryData, profiles.parent.name), 
+            );
+          } 
+          if (referenceData && referenceData.length) {
+            processedData.push( 
               processYValues(referenceData, profiles.parent.name)
-            ]
+            );
           }
 
           return (
