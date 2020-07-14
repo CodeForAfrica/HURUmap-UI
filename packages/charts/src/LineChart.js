@@ -54,7 +54,7 @@ function LineChart({
   const height = suggestedHeight || chart.height;
   const width = suggestedWidth || chart.width;
 
-  const groupData = data.length > 1 && Array.isArray(data[0]) ? data : [data];
+  const groupData = data.length > 0 && Array.isArray(data[0]) ? data : [data];
 
   const axisProps = (parts && toChartAxisProps(parts.axis)) || {};
   const containerProps = parts && parts.container;
