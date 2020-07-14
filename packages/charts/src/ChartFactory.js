@@ -399,6 +399,16 @@ const ChartFactory = React.memo(
       return null;
     }
 
+    const processYValues = (data, label=null) => {
+      return data.map(z => {
+          return { 
+            ...z, 
+            y: Number(z.y) ? Number(z.y): z.y ,
+            tooltip: label? `${label}:${format(z.y)}` : `y: ${format(z.y)}`
+          }
+      })
+    }
+
     const renderChart = () => {
       switch (visualType) {
         case "square_nested_proportional_area":
@@ -656,13 +666,27 @@ const ChartFactory = React.memo(
             },
             scatter: { size: 5 },
           };
+
+          let processedData = [processYValues(primaryData)];
+
+          if (isComparison && comparisonData && comparisonData.length) {
+            processedData.concat( 
+              processYValues(comparisonData, profiles.comparison.name)
+            );
+          } 
+          if (referenceData && referenceData.length) {
+            processedData.concat( 
+              processYValues(referenceData, profiles.parent.name)
+            );
+          }
+
           return (
             <LineChart
               key={key}
               responsive
               height={height}
               width={width}
-              data={!isComparison ? primaryData : [primaryData, comparisonData]}
+              data={processedData}
               parts={deepmerge(parts, theme.line.parts, chartProps.parts)}
               theme={theme}
               {...chartProps}
