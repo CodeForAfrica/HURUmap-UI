@@ -120,7 +120,10 @@ function LineChart({
           style={{
             data: {
               ...{ stroke: colorScale[i % colorScale.length] },
-              ...strokeWidth && strokeWidth.length && { strokeWidth: strokeWidth[i % strokeWidth.length] },
+              ...(strokeWidth &&
+                strokeWidth.length && {
+                  strokeWidth: strokeWidth[i % strokeWidth.length],
+                }),
               ...dataStyle,
             },
             ...otherStyles,

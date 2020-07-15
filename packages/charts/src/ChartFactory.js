@@ -670,20 +670,32 @@ const ChartFactory = React.memo(
           };
 
           const comparativeLabel =
-              ((isComparison && comparisonData && comparisonData.length) || (referenceData && referenceData.length)) 
-              && profiles.profile && profiles.profile.name;
+            ((isComparison && comparisonData && comparisonData.length) ||
+              (referenceData && referenceData.length)) &&
+            profiles.profile &&
+            profiles.profile.name;
           const processedData = [processYValues(primaryData, comparativeLabel)];
 
           if (isComparison && comparisonData && comparisonData.length) {
             processedData.push(
-              processYValues(comparisonData, profiles.comparison && profiles.comparison.name)
+              processYValues(
+                comparisonData,
+                profiles.comparison && profiles.comparison.name
+              )
             );
           }
           if (referenceData && referenceData.length) {
             processedData.push(
-              processYValues(referenceData, profiles.parent && profiles.parent.name)
+              processYValues(
+                referenceData,
+                profiles.parent && profiles.parent.name
+              )
             );
           }
+          const { parts: chartPropsParts, ...otherChartProps} = chartProps;
+
+          let lineParts = deepmerge(parts, theme.line.parts);
+          lineParts = deepmerge(lineParts, chartPropsParts);
 
           return (
             <LineChart
@@ -691,10 +703,10 @@ const ChartFactory = React.memo(
               responsive
               height={height}
               width={width}
-              data={isGroup? primaryData : processedData}
-              parts={deepmerge(parts, theme.line.parts, chartProps.parts)}
+              data={isGroup ? primaryData : processedData}
+              parts={lineParts}
               theme={theme}
-              {...chartProps}
+              {...otherChartProps}
               horizontal={false}
             />
           );
