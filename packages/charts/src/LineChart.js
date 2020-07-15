@@ -59,7 +59,7 @@ function LineChart({
   const axisProps = (parts && toChartAxisProps(parts.axis)) || {};
   const containerProps = parts && parts.container;
   const tooltipProps = (parts && parts.tooltip) || { style: {} };
-  const { colorScale } = chart;
+  const { colorScale, strokeWidth } = chart;
   const { data: dataStyle, ...otherStyles } = style || {};
   const originalPadding = Helpers.getPadding({
     padding: suggestedPadding || chart.padding,
@@ -120,6 +120,7 @@ function LineChart({
           style={{
             data: {
               ...{ stroke: colorScale[i % colorScale.length] },
+              ...strokeWidth && strokeWidth.length && { strokeWidth: strokeWidth[i % strokeWidth.length] },
               ...dataStyle,
             },
             ...otherStyles,

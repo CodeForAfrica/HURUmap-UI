@@ -23,7 +23,7 @@ export default createTheme({
     line: {
       legend: {
         labelWidth: 150,
-      },
+      }
     },
   },
 });

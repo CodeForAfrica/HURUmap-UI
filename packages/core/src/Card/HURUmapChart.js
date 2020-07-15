@@ -80,9 +80,12 @@ function HURUmapChart({
     ? chartData.profileVisualsData[chart.visual.queryAlias].nodes
     : [];
 
-  const referenceData = !chartData.isLoading && chartData.profileVisualsData[`${chart.visual.queryAlias}Reference`]
-  ? chartData.profileVisualsData[`${chart.visual.queryAlias}Reference`].nodes
-  : [];
+  const referenceData =
+    !chartData.isLoading &&
+    chartData.profileVisualsData[`${chart.visual.queryAlias}Reference`]
+      ? chartData.profileVisualsData[`${chart.visual.queryAlias}Reference`]
+          .nodes
+      : [];
 
   return (
     <ChartContainer

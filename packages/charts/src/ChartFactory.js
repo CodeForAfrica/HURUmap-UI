@@ -412,6 +412,7 @@ const ChartFactory = React.memo(
     };
 
     const renderChart = () => {
+      const isGroup = data[0] && data[0].groupBy;
       switch (visualType) {
         case "square_nested_proportional_area":
         case "circle_nested_proportional_area": {
@@ -509,7 +510,6 @@ const ChartFactory = React.memo(
           const [func] = statAggregate.split(":");
           const statUnique =
             unique !== undefined ? unique : !isSelectFunc(func);
-          const isGroup = data[0] && data[0].groupBy;
 
           let dataStat;
           if (isGroup) {
@@ -669,16 +669,19 @@ const ChartFactory = React.memo(
             scatter: { size: 5 },
           };
 
-          const processedData = [processYValues(primaryData)];
+          const comparativeLabel =
+              ((isComparison && comparisonData && comparisonData.length) || (referenceData && referenceData.length)) 
+              && profiles.profile && profiles.profile.name;
+          const processedData = [processYValues(primaryData, comparativeLabel)];
 
           if (isComparison && comparisonData && comparisonData.length) {
             processedData.push(
-              processYValues(comparisonData, profiles.comparison.name)
+              processYValues(comparisonData, profiles.comparison && profiles.comparison.name)
             );
           }
           if (referenceData && referenceData.length) {
             processedData.push(
-              processYValues(referenceData, profiles.parent.name)
+              processYValues(referenceData, profiles.parent && profiles.parent.name)
             );
           }
 
@@ -688,7 +691,7 @@ const ChartFactory = React.memo(
               responsive
               height={height}
               width={width}
-              data={processedData}
+              data={isGroup? primaryData : processedData}
               parts={deepmerge(parts, theme.line.parts, chartProps.parts)}
               theme={theme}
               {...chartProps}
