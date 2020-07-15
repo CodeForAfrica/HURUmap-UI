@@ -692,7 +692,7 @@ const ChartFactory = React.memo(
               )
             );
           }
-          const { parts: chartPropsParts, ...otherChartProps} = chartProps;
+          const { parts: chartPropsParts, ...otherChartProps } = chartProps;
 
           let lineParts = deepmerge(parts, theme.line.parts);
           lineParts = deepmerge(lineParts, chartPropsParts);

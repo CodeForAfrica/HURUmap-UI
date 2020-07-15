@@ -24,8 +24,8 @@ export default createTheme({
       parts: {
         legend: {
           labelWidth: 150,
-        }
-      }
+        },
+      },
     },
   },
 });
