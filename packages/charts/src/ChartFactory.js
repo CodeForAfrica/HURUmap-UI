@@ -669,11 +669,10 @@ const ChartFactory = React.memo(
             scatter: { size: 5 },
           };
 
-          let processedData = [processYValues(primaryData)];
-
-          if ((isComparison && comparisonData && comparisonData.length) || (referenceData && referenceData.length)) {
-            processedData = [processYValues(primaryData, profiles.profile && profiles.profile.name)];
-          }
+          const comparativeLabel =
+              ((isComparison && comparisonData && comparisonData.length) || (referenceData && referenceData.length)) 
+              && profiles.profile && profiles.profile.name;
+          const processedData = [processYValues(primaryData, comparativeLabel)];
 
           if (isComparison && comparisonData && comparisonData.length) {
             processedData.push(
