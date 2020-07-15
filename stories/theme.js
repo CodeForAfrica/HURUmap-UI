@@ -21,8 +21,10 @@ export default createTheme({
       },
     },
     line: {
-      legend: {
-        labelWidth: 150,
+      parts: {
+        legend: {
+          labelWidth: 150,
+        }
       }
     },
   },
