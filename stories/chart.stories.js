@@ -1,11 +1,12 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import {
-  withKnobs,
   boolean,
+  number,
   object,
   select,
-  number,
+  text,
+  withKnobs,
 } from "@storybook/addon-knobs";
 
 import {
@@ -280,6 +281,8 @@ storiesOf("HURUmap UI/Charts/PieChart", module)
               name: "No Place to Wash Hands",
             },
           ])}
+          sortKey={text("sortKey", "x")}
+          sortOrder={text("sortOrder", "descending")}
           donut={boolean("donut", true)}
           donutLabelKey={object("donutLabelKey", {
             dataIndex: 0,
