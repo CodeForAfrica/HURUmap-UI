@@ -245,7 +245,7 @@ function ChartContainer({
           dropDownRoot: classes.groupActionsDropDownRoot,
           dropDownPaper: classes.groupActionsDropDownPaper,
           groupActions: classes.groupActions,
-          groupActionSocialIcon: classes.groupActionSocialIcon,
+          groupActionsSocialIcon: classes.groupActionsSocialIcon,
           groupActionsButton: classes.groupActionsButton,
           groupActionsUrl: classes.groupActionsUrl,
           groupActionsUrlInput: classes.groupActionsUrlInput,
