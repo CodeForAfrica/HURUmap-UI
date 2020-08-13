@@ -286,11 +286,11 @@ function MapIt({
         keyboard: false,
         scrollWheelZoom: false,
         touchZoom: false,
-        zoomControl: false, //disable zoomControl when initializing map (which is topleft by default)
+        zoomControl: false, // disable zoomControl when initializing map (which is topleft by default)
         ...leafletPropsMemoized,
       });
 
-      //if zoom control position is defined, then add zoom control to the desired position
+      // if zoom control position is defined, then add zoom control to the desired position
       if (zoomControlPosition) {
         mapRef.current.addControl(
           new leaflet.Control.Zoom({
