@@ -458,7 +458,7 @@ MapIt.defaultProps = {
   onClickGeoLayer: undefined,
   geoIndexMapping: undefined,
   scoreLabel: undefined,
-  zoomControlPosition: "bottomright",
+  zoomControlPosition: undefined,
 };
 
 export default MapIt;
