@@ -385,6 +385,7 @@ function MapIt({
     geoLayerStyles,
     onClickGeoLayer,
     leafletPropsMemoized,
+    zoomControlPosition,
     indexColor,
     scoreLabel,
   ]);
