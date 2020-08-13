@@ -80,7 +80,7 @@ const useStyles = makeStyles(({ breakpoints, palette }) => ({
   },
   groupActions: {},
   groupActionsButton: {},
-  groupActionSocialIcon: {},
+  groupActionsSocialIcon: {},
   groupActionsDropDownRoot: {},
   groupActionsDropDownPaper: {},
   groupActionsUrl: {},
