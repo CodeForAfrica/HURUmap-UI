@@ -64,6 +64,7 @@ function MapIt({
     fillOpacity: 0.7,
   },
   onClickGeoLayer,
+  zoomControlPosition,
   ...leafletProps
 }) {
   const mapId = id || "mapit";
@@ -285,14 +286,15 @@ function MapIt({
         keyboard: false,
         scrollWheelZoom: false,
         touchZoom: false,
-        zommControl: false,
+        zoomControl: false, //disable zoomControl when initializing map (which is topleft by default)
         ...leafletPropsMemoized,
       });
 
-      if (mapRef.current.dragging) {
+      //if zoom control position is defined, then add zoom control to the desired position
+      if (zoomControlPosition) {
         mapRef.current.addControl(
           new leaflet.Control.Zoom({
-            position: "bottomright",
+            position: zoomControlPosition,
           })
         );
       }
@@ -428,6 +430,7 @@ MapIt.propTypes = {
   geoLayerHoverStyle: PropTypes.shape({}),
   onClickGeoLayer: PropTypes.func,
   geoIndexMapping: PropTypes.arrayOf(PropTypes.shape({})),
+  zoomControlPosition: PropTypes.string,
 };
 
 MapIt.defaultProps = {
@@ -454,6 +457,7 @@ MapIt.defaultProps = {
   onClickGeoLayer: undefined,
   geoIndexMapping: undefined,
   scoreLabel: undefined,
+  zoomControlPosition: "bottomright",
 };
 
 export default MapIt;

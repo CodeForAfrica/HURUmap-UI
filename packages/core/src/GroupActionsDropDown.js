@@ -57,7 +57,7 @@ const useStyles = makeStyles(() => ({
   embedDropDownPaper: {},
   root: {},
   groupActions: {},
-  groupActionSocialIcon: {
+  groupActionsSocialIcon: {
     padding: "0 0.5rem 1.5rem 0.5rem",
   },
   groupActionsButton: {},
@@ -192,7 +192,7 @@ function GroupActionsDropDown({
                   <LinkedinShareButton
                     url={linkedinShareUrl}
                     {...linkedinProps}
-                    className={classes.groupActionSocialIcon}
+                    className={classes.groupActionsSocialIcon}
                   >
                     {linkedin.icon ? (
                       <>{linkedin.icon}</>
@@ -225,7 +225,7 @@ function GroupActionsDropDown({
                   <TwitterShareButton
                     url={twitterShareUrl}
                     {...twitterProps}
-                    className={classes.groupActionSocialIcon}
+                    className={classes.groupActionsSocialIcon}
                   >
                     {twitter.icon ? (
                       <>{twitter.icon}</>
@@ -240,7 +240,7 @@ function GroupActionsDropDown({
                   <FacebookShareButton
                     url={facebookShareUrl}
                     {...facebookProps}
-                    className={classes.groupActionSocialIcon}
+                    className={classes.groupActionsSocialIcon}
                   >
                     {facebook.icon ? (
                       <>{facebook.icon}</>

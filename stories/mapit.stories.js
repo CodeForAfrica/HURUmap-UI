@@ -108,6 +108,7 @@ storiesOf("HURUmap UI/MapIt/Geography", module)
       codeType={text("codeType", "AFR")}
       geoLevel={text("geoLevel", "level1")}
       geoCode={text("geoCode", "KE_1_008")}
+      zoomControlPosition={text("zoomControlPosition", "topright")}
       zoom={number("zoom", 3)}
       center={array("center", [8.7832, 34.5085])}
       tileLayer={
