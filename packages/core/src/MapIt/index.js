@@ -7,8 +7,6 @@ import BlockLoader from "../BlockLoader";
 import makeStyles from "../makeStyles";
 import useDeepRef from "./useDeepRef";
 
-import pointer from "../assets/icons/pointer.svg";
-
 const useStyles = makeStyles({
 	root: {
 		position: "relative",
