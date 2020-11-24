@@ -118,7 +118,7 @@ storiesOf("HURUmap UI/MapIt/Geography", module)
 				<MapIt
 					height="100vh"
 					marker={boolean("marker", false)}
-					markerPointer={array("center", [-1.28333, 36.81667])}
+					markerPointer={array("markerPointer", [-1.28333, 36.81667])}
 					tolerance={number("tolerance", 0.001)}
 					url={text("url", "https://mapit.hurumap.org")}
 					drawChildren={boolean("drawChildren", true)}
