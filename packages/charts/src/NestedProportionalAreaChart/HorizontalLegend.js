@@ -39,9 +39,11 @@ function HorizontalLegend({
       {radii.map((r, i) => (
         <Fragment key={data[i].x}>
           <line
-            x1={cx - (i < 1 ? 1 : -1) * 190} // -1 => left; 1 => right
+            // -1 => left; 1 => right
+            x1={cx - (i < 1 ? 1 : -1) * 190}
             y1={cy}
-            x2={cx - (i < 1 ? 1 : -1) * (r + 5)} // 5px padding between circle and line
+            // 5px padding between circle and line
+            x2={cx - (i < 1 ? 1 : -1) * (r + 5)}
             y2={cy}
             style={{
               stroke: colorScale[i % colorScale.length],
@@ -67,7 +69,8 @@ function HorizontalLegend({
               x={cx - (i < 1 ? 1 : -1) * 200} // 190 + 10
               dx={0}
               y={cy + 18} // 36 / 2 is the bottom half of data value
-              dy={10 + 20} // 10px top padding from data value + label has height of 20px
+              // 10px top padding from data value + label has height of 20px
+              dy={10 + 20}
               style={style && style.labels}
               text={data[i].label}
             />
