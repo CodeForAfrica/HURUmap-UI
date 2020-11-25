@@ -335,17 +335,17 @@ function MapIt({
     };
 
     /* eslint-disable global-require */
-      const locationIcon = leaflet.icon({
-        iconUrl: require("../assets/icons/pointer.svg"),
-        iconRetinaUrl: require("../assets/icons/pointer.svg"),
-        iconAnchor: null,
-        shadowUrl: null,
-        shadowSize: null,
-        shadowAnchor: null,
-        iconSize: [20, 20],
-        className: "leaflet-venue-icon",
-      });
-      leaflet.marker(markerPointer, { icon: locationIcon }).addTo(map);
+    const locationIcon = leaflet.icon({
+      iconUrl: require("../assets/icons/pointer.svg"),
+      iconRetinaUrl: require("../assets/icons/pointer.svg"),
+      iconAnchor: null,
+      shadowUrl: null,
+      shadowSize: null,
+      shadowAnchor: null,
+      iconSize: [20, 20],
+      className: "leaflet-venue-icon",
+    });
+    leaflet.marker(markerPointer, { icon: locationIcon }).addTo(map);
     /* eslint-disable global-require */
 
     const geoJsonLayer = leaflet
