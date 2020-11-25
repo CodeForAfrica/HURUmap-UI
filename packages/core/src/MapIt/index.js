@@ -335,10 +335,11 @@ function MapIt({
       }
     };
 
+    /* eslint-disable global-require */
     if (marker) {
       const locationIcon = leaflet.icon({
-        iconUrl: require("../assets/icons/pointer.svg"), /* eslint-disable global-require */
-        iconRetinaUrl: require("../assets/icons/pointer.svg"), /* eslint-disable global-require */
+        iconUrl: require("../assets/icons/pointer.svg"),
+        iconRetinaUrl: require("../assets/icons/pointer.svg"),
         iconAnchor: null,
         shadowUrl: null,
         shadowSize: null,
@@ -347,8 +348,9 @@ function MapIt({
         className: "leaflet-venue-icon",
       });
 
-      L.marker(markerPointer, { icon: locationIcon }).addTo(map);
+      leaflet.marker(markerPointer, { icon: locationIcon }).addTo(map);
     }
+    /* eslint-disable global-require */
 
     const geoJsonLayer = leaflet
       .geoJSON(featuresToDraw, {
@@ -393,8 +395,8 @@ function MapIt({
     mapId,
     center,
     zoom,
-		marker,
-		markerPointer,
+    marker,
+    markerPointer,
     tileLayer,
     featuresToDraw,
     drawProfile,
