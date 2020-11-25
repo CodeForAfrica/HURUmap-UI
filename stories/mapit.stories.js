@@ -97,7 +97,7 @@ storiesOf("HURUmap UI/MapIt/Geography", module)
       );
     })
   )
-  .add("CountryRoot with Pointer", () =>
+  .add("CountryRoot with Marker", () =>
     React.createElement(() => {
       /**
        * If tileLayer keeps changing it will trigger rerender
@@ -117,7 +117,7 @@ storiesOf("HURUmap UI/MapIt/Geography", module)
       return (
         <MapIt
           height="100vh"
-          markerPointer={array("markerPointer", [-1.28333, 36.81667])}
+          marker={array("marker", [-1.28333, 36.81667])}
           tolerance={number("tolerance", 0.001)}
           url={text("url", "https://mapit.hurumap.org")}
           drawChildren={boolean("drawChildren", true)}

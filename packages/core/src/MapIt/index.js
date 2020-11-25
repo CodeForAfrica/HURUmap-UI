@@ -37,7 +37,7 @@ function MapIt({
   drawChildren,
   drawGrandChildren,
   drawProfile,
-  markerPointer,
+  marker,
   geoCode,
   geoLevel,
   codeType,
@@ -345,7 +345,7 @@ function MapIt({
       iconSize: [20, 20],
       className: "leaflet-venue-icon",
     });
-    leaflet.marker(markerPointer, { icon: locationIcon }).addTo(map);
+    leaflet.marker(marker, { icon: locationIcon }).addTo(map);
     /* eslint-disable global-require */
 
     const geoJsonLayer = leaflet
@@ -391,7 +391,7 @@ function MapIt({
     mapId,
     center,
     zoom,
-    markerPointer,
+    marker,
     tileLayer,
     featuresToDraw,
     drawProfile,
@@ -435,7 +435,7 @@ MapIt.propTypes = {
   drawChildren: PropTypes.bool,
   drawGrandChildren: PropTypes.bool,
   drawProfile: PropTypes.bool,
-  markerPointer: PropTypes.arrayOf(PropTypes.number),
+  marker: PropTypes.arrayOf(PropTypes.number),
   geoLevel: PropTypes.string,
   geoCode: PropTypes.string,
   codeType: PropTypes.string,
@@ -463,7 +463,7 @@ MapIt.defaultProps = {
   drawChildren: undefined,
   drawGrandChildren: undefined,
   drawProfile: undefined,
-  markerPointer: undefined,
+  marker: undefined,
   geoLevel: undefined,
   geoCode: undefined,
   codeType: undefined,
