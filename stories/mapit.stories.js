@@ -74,8 +74,6 @@ storiesOf("HURUmap UI/MapIt/Geography", module)
       return (
         <MapIt
           height="100vh"
-          marker={boolean("marker", false)}
-          markerPointer={array("markerPointer", [-1.28333, 36.81667])}
           tolerance={number("tolerance", 0.001)}
           url={text("url", "https://mapit.hurumap.org")}
           drawChildren={boolean("drawChildren", true)}
@@ -119,7 +117,6 @@ storiesOf("HURUmap UI/MapIt/Geography", module)
       return (
         <MapIt
           height="100vh"
-          marker={boolean("marker", false)}
           markerPointer={array("markerPointer", [-1.28333, 36.81667])}
           tolerance={number("tolerance", 0.001)}
           url={text("url", "https://mapit.hurumap.org")}
@@ -147,8 +144,6 @@ storiesOf("HURUmap UI/MapIt/Geography", module)
   .add("DefaultProfile", () => (
     <MapIt
       height="100vh"
-      marker={boolean("marker", false)}
-      markerPointer={array("markerPointer", [-1.28333, 36.81667])}
       tolerance={number("tolerance", 0.001)}
       url={text("url", "https://mapit.hurumap.org")}
       drawChildren={boolean("drawChildren", false)}
