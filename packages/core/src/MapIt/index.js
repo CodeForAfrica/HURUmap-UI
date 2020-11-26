@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import leaflet from "leaflet";
 
 import BlockLoader from "../BlockLoader";
+
+import leafletIcon from '../assets/leaf-green.png';
 import makeStyles from "../makeStyles";
 import useDeepRef from "./useDeepRef";
 
@@ -336,8 +338,8 @@ function MapIt({
 
     /* eslint-disable global-require */
     const locationIcon = leaflet.icon({
-      iconUrl: require("../assets/icons/pointer.svg"),
-      iconRetinaUrl: require("../assets/icons/pointer.svg"),
+      iconUrl: leafletIcon,
+      iconRetinaUrl: leafletIcon,
       iconAnchor: null,
       shadowUrl: null,
       shadowSize: null,
