@@ -5,7 +5,7 @@ import leaflet from "leaflet";
 
 import BlockLoader from "../BlockLoader";
 
-import leafletIcon from '../assets/leaf-green.png';
+import leafletIcon from '../assets/icons/pointer.png';
 import makeStyles from "../makeStyles";
 import useDeepRef from "./useDeepRef";
 
