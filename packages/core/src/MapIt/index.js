@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import leaflet from "leaflet";
 
 import BlockLoader from "../BlockLoader";
+
+import defaultMarkerIcon from '../assets/icons/marker-icon.png';
 import makeStyles from "../makeStyles";
 import useDeepRef from "./useDeepRef";
 
@@ -37,6 +39,8 @@ function MapIt({
   drawChildren,
   drawGrandChildren,
   drawProfile,
+  latLng,
+  markerIcon: markerIconProp,
   geoCode,
   geoLevel,
   codeType,
@@ -333,6 +337,21 @@ function MapIt({
       }
     };
 
+    if (latLng) {
+      const iconUrl = markerIconProp || defaultMarkerIcon;
+      const markerIcon = leaflet.icon({
+        iconUrl,
+        iconRetinaUrl: iconUrl,
+        iconAnchor: null,
+        shadowUrl: null,
+        shadowSize: null,
+        shadowAnchor: null,
+        iconSize: [20, 20],
+        className: "leaflet-venue-icon",
+      });
+      leaflet.marker(latLng, { icon: markerIcon }).addTo(map);
+    }
+
     const geoJsonLayer = leaflet
       .geoJSON(featuresToDraw, {
         onEachFeature: (feature, layer) => {
@@ -376,6 +395,8 @@ function MapIt({
     mapId,
     center,
     zoom,
+    latLng,
+    markerIconProp,
     tileLayer,
     featuresToDraw,
     drawProfile,
@@ -419,6 +440,8 @@ MapIt.propTypes = {
   drawChildren: PropTypes.bool,
   drawGrandChildren: PropTypes.bool,
   drawProfile: PropTypes.bool,
+  latLng: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.shape({})]),
+  markerIcon: PropTypes.string,
   geoLevel: PropTypes.string,
   geoCode: PropTypes.string,
   codeType: PropTypes.string,
@@ -446,6 +469,8 @@ MapIt.defaultProps = {
   drawChildren: undefined,
   drawGrandChildren: undefined,
   drawProfile: undefined,
+  latLng: undefined,
+  markerIcon: undefined,
   geoLevel: undefined,
   geoCode: undefined,
   codeType: undefined,

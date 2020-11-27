@@ -97,6 +97,50 @@ storiesOf("HURUmap UI/MapIt/Geography", module)
       );
     })
   )
+  .add("CountryRoot with Marker", () =>
+    React.createElement(() => {
+      /**
+       * If tileLayer keeps changing it will trigger rerender
+       */
+      const tileLayer = useRef(
+        new TileLayer(
+          text(
+            "tileLayer",
+            "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+          )
+        )
+      );
+      /**
+       * If onClickLayer keeps changing it will trigger rerender
+       */
+      const onClickLayer = useCallback(() => action("onClickGeoLayer")(), []);
+      return (
+        <MapIt
+          height="100vh"
+          latLng={array("latLng", [-1.28333, 36.81667])}
+          tolerance={number("tolerance", 0.001)}
+          url={text("url", "https://mapit.hurumap.org")}
+          drawChildren={boolean("drawChildren", true)}
+          filterCountries={array("filterCountries", [])}
+          drawProfile={boolean("drawProfile", false)}
+          codeType={text("codeType", "KEN")}
+          geoLevel={text("geoLevel", "country")}
+          geoCode={text("geoCode", "KE")}
+          zoom={number("zoom", 3)}
+          center={array("center", [8.7832, 34.5085])}
+          tileLayer={tileLayer.current}
+          geoLayerBlurStyle={object("geoLayerBlurStyle", {
+            color: "#00d",
+            fillColor: "#ccc",
+            weight: 1.0,
+            opacity: 0.3,
+            fillOpacity: 0.3,
+          })}
+          onClickGeoLayer={onClickLayer}
+        />
+      );
+    })
+  )
   .add("DefaultProfile", () => (
     <MapIt
       height="100vh"

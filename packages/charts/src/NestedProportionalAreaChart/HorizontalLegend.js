@@ -69,8 +69,7 @@ function HorizontalLegend({
               x={cx - (i < 1 ? 1 : -1) * 200} // 190 + 10
               dx={0}
               y={cy + 18} // 36 / 2 is the bottom half of data value
-              // 10px top padding from data value + label has height of 20px
-              dy={10 + 20}
+              dy={10 + 20} // 10px top padding from data value + label has height of 20px
               style={style && style.labels}
               text={data[i].label}
             />
