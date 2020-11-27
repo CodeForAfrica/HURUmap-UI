@@ -5,7 +5,7 @@ import leaflet from "leaflet";
 
 import BlockLoader from "../BlockLoader";
 
-import defaultMarkerIcon from '../assets/icons/marker-icon.png';
+import defaultMarkerIcon from "../assets/icons/marker-icon.png";
 import makeStyles from "../makeStyles";
 import useDeepRef from "./useDeepRef";
 
@@ -440,7 +440,10 @@ MapIt.propTypes = {
   drawChildren: PropTypes.bool,
   drawGrandChildren: PropTypes.bool,
   drawProfile: PropTypes.bool,
-  latLng: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.shape({})]),
+  latLng: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.number),
+    PropTypes.shape({}),
+  ]),
   markerIcon: PropTypes.string,
   geoLevel: PropTypes.string,
   geoCode: PropTypes.string,
