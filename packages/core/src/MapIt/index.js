@@ -5,7 +5,7 @@ import leaflet from "leaflet";
 
 import BlockLoader from "../BlockLoader";
 
-import leafletIcon from '../assets/icons/pointer.png';
+import defaultMarkerIcon from '../assets/icons/marker-icon.png';
 import makeStyles from "../makeStyles";
 import useDeepRef from "./useDeepRef";
 
@@ -39,7 +39,8 @@ function MapIt({
   drawChildren,
   drawGrandChildren,
   drawProfile,
-  marker,
+  latLng,
+  markerIcon: markerIconProp,
   geoCode,
   geoLevel,
   codeType,
@@ -336,19 +337,20 @@ function MapIt({
       }
     };
 
-    /* eslint-disable global-require */
-    const locationIcon = leaflet.icon({
-      iconUrl: leafletIcon,
-      iconRetinaUrl: leafletIcon,
-      iconAnchor: null,
-      shadowUrl: null,
-      shadowSize: null,
-      shadowAnchor: null,
-      iconSize: [20, 20],
-      className: "leaflet-venue-icon",
-    });
-    leaflet.marker(marker, { icon: locationIcon }).addTo(map);
-    /* eslint-disable global-require */
+    if (latLng) {
+      const iconUrl = markerIconProp || defaultMarkerIcon;
+      const markerIcon = leaflet.icon({
+        iconUrl,
+        iconRetinaUrl: iconUrl,
+        iconAnchor: null,
+        shadowUrl: null,
+        shadowSize: null,
+        shadowAnchor: null,
+        iconSize: [20, 20],
+        className: "leaflet-venue-icon",
+      });
+      leaflet.marker(latLng, { icon: markerIcon }).addTo(map);
+    }
 
     const geoJsonLayer = leaflet
       .geoJSON(featuresToDraw, {
@@ -393,7 +395,8 @@ function MapIt({
     mapId,
     center,
     zoom,
-    marker,
+    latLng,
+    markerIconProp,
     tileLayer,
     featuresToDraw,
     drawProfile,
@@ -437,7 +440,8 @@ MapIt.propTypes = {
   drawChildren: PropTypes.bool,
   drawGrandChildren: PropTypes.bool,
   drawProfile: PropTypes.bool,
-  marker: PropTypes.arrayOf(PropTypes.number),
+  latLng: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.shape({})]),
+  markerIcon: PropTypes.string,
   geoLevel: PropTypes.string,
   geoCode: PropTypes.string,
   codeType: PropTypes.string,
@@ -465,7 +469,8 @@ MapIt.defaultProps = {
   drawChildren: undefined,
   drawGrandChildren: undefined,
   drawProfile: undefined,
-  marker: undefined,
+  latLng: undefined,
+  markerIcon: undefined,
   geoLevel: undefined,
   geoCode: undefined,
   codeType: undefined,
