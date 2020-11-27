@@ -105,5 +105,6 @@
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "version": "0.3.5-alpha.41"
 }
