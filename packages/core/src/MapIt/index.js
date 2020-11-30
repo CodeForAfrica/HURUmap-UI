@@ -5,7 +5,7 @@ import leaflet from "leaflet";
 
 import BlockLoader from "../BlockLoader";
 
-import defaultMarkerIcon from "../assets/icons/marker-icon.png";
+import defaultMarkerIcon from "../assets/icons/marker-pointer.png";
 import makeStyles from "../makeStyles";
 import useDeepRef from "./useDeepRef";
 
