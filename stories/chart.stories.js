@@ -18,6 +18,8 @@ import {
   ComparisonBarChart,
 } from "@hurumap-ui/charts";
 import { labels } from "@hurumap-ui/charts/utils";
+
+import theme from "./theme";
 import { CenterDecorator } from "./common";
 
 const rand = () => Number((Math.random() * 100).toFixed(1));
@@ -25,7 +27,7 @@ const rand = () => Number((Math.random() * 100).toFixed(1));
 storiesOf("HURUmap UI/Charts/BarChart", module)
   .addDecorator(CenterDecorator)
   .addDecorator(withKnobs)
-  .add("Default", ({ theme }) => {
+  .add("Default", () => {
     const horizontal = boolean("horizontal", false);
     const data = Array(number("data", 3)).fill(null);
     const height = number("height", undefined) || 350;

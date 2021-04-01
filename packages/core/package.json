@@ -25,7 +25,7 @@
         "dom-to-image": "^2.6.0",
         "prop-types": "^15.7.2",
         "react-content-loader": "^5.0.1",
-        "react-pdf": "^4.1.0",
+        "react-pdf": "^5.2.0",
         "react-share": "^4.0.0",
         "shortid": "^2.2.15"
     },
@@ -39,8 +39,8 @@
         "graphql-tag": "^2.10.1",
         "leaflet": "^1.6.0",
         "lodash": "^4.17.15",
-        "react": "^16.10.2",
-        "react-dom": "^16.10.2",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
         "victory": "^35.0.2"
     },
     "publishConfig": {
