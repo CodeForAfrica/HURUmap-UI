@@ -19,7 +19,7 @@
       ]
     },
     "version": {
-      "allowBranch": "master"
+      "allowBranch": "main"
     }
   },
   "npmClient": "yarn",
